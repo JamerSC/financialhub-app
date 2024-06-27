@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>User Settings Page</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <h1>User Settings</h1>
+    <p>Welcome to User Settings Page<</p>
+    <p>List of Users</p>
+    <table class="table table-striped">
+        <thead class="table-dark">
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="user : ${people}">
+            <td th:text="${user.fullName}"></td>
+            <td th:text="${user.cash}"></td>
+        </tr>
+        </tbody>
+    </table>
+</section>
+</body>
+</html>

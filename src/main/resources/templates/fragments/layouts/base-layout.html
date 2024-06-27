@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Default Title name -->
+    <!-- <title layout:title-pattern="$LAYOUT_TITLE - $CONTENT_TITLE">Financial Hub</title> -->
+    <title layout:title-pattern="$LAYOUT_TITLE"></title>
+    <!-- External Bootstrap CSS  -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <!-- External CSS Design  -->
+    <link rel="stylesheet" type="text/css" media="all" th:href="@{/css/style.css}">
+</head>
+<body>
+<nav th:replace="~{/fragments/header::nav}"></nav>
+<div class="container">
+
+
+    <section layout:fragment="content">
+        <p>Content template</p>
+    </section>
+
+</div>
+
+<footer th:replace="~{/fragments/footer::footer}"></footer>
+
+<!-- External JS   -->
+<script type="text/javascript" th:src="@{/js/script.js}"></script>
+<!-- External Bootstrap JS -->
+<script type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<!-- External Bootstrap Bundle with Popper   -->
+<script type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+</body>
+</html>

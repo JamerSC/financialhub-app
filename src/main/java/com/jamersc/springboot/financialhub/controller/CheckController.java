@@ -8,9 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class CheckController {
 
-    @GetMapping("/")
-    public String helloWorld(Model model) {
-        model.addAttribute("message", "Hello, World!");
-        return  "index";
-    }
+
 }

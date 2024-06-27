@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>Check Voucher</title>
+</head>
+<body>
+
+<section layout:fragment="content">
+    <h1>Check</h1>
+    <p>Welcome to Check Voucher Page</p>
+    <p>Check Banks</p>
+    <ul th:each="bank : ${banks}">
+        <li th:text="${bank}"></li>
+    </ul>
+</section>
+
+</body>
+</html>
