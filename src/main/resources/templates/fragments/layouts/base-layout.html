@@ -17,23 +17,21 @@
 <body>
 
     <div class="wrapper">
-        <!--header fragment-->
-        <nav th:replace="~{/fragments/header :: header}"></nav>
-        <!--layout fragment-->
-        <div class="main" layout:fragment="content">
-            <div class="text-center">
-                <h1>Financial Hub Content</h1>
+        <!--navigation fragment-->
+        <div th:replace="~{/fragments/navigation :: navigation}">Navigation</div>
+        <div class="main">
+            <!--header fragment-->
+            <div th:replace="~{/fragments/header :: header}">Header</div>
+            <!--layout fragment-->
+            <div layout:fragment="content">
+                <div class="text-center">
+                    <h1>FINANCIAL HUB CONTENT</h1>
+                </div>
             </div>
+            <!--footer fragment-->
+            <div th:replace="~{/fragments/footer :: footer}">Footer</div>
         </div>
     </div>
-    <!--footer fragment-->
-    <footer th:replace="~{/fragments/footer :: footer}"></footer>
-
-
-
-
-
-
 
     <!-- External JS   -->
     <script src="../../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
@@ -41,5 +39,6 @@
     <script src="../../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <!-- External Bootstrap Bundle with Popper   -->
     <script src="../../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+
 </body>
 </html>

@@ -3,32 +3,33 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>User Settings Page</title>
+    <title>User Settings</title>
 </head>
 <body>
 
-<section layout:fragment="content">
-    <div class="main">
-        <div class="text-center">
-            <h1>User Settings</h1>
+    <main class="content px-3 py-4" layout:fragment="content">
+        <div class="container-fluid">
+            <div class="mb-3">
+                <h3 class="fw-bold  fs-4 mb-3">User Settings</h3>
+            </div>
+            <p>Welcome to User Settings Page</p>
+            <p>List of Users</p>
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Age</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="user : ${people}">
+                    <td th:text="${user.fullName}"></td>
+                    <td th:text="${user.cash}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
-        <p>Welcome to User Settings Page<</p>
-        <p>List of Users</p>
-        <table class="table table-striped">
-            <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Age</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:each="user : ${people}">
-                <td th:text="${user.fullName}"></td>
-                <td th:text="${user.cash}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</section>
+    </main>
+
 </body>
 </html>
