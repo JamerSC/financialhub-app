@@ -8,23 +8,27 @@
 <body>
 
 <section layout:fragment="content">
-    <h1>User Settings</h1>
-    <p>Welcome to User Settings Page<</p>
-    <p>List of Users</p>
-    <table class="table table-striped">
-        <thead class="table-dark">
-        <tr>
-            <th>Name</th>
-            <th>Age</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr th:each="user : ${people}">
-            <td th:text="${user.fullName}"></td>
-            <td th:text="${user.cash}"></td>
-        </tr>
-        </tbody>
-    </table>
+    <div class="main">
+        <div class="text-center">
+            <h1>User Settings</h1>
+        </div>
+        <p>Welcome to User Settings Page<</p>
+        <p>List of Users</p>
+        <table class="table table-striped">
+            <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Age</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="user : ${people}">
+                <td th:text="${user.fullName}"></td>
+                <td th:text="${user.cash}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </section>
 </body>
 </html>

@@ -3,9 +3,110 @@
 <head>
     <meta charset="UTF-8">
     <title>Header</title>
+    <!--External Bootstrap CSS-->
+<!--
+    <link  rel="stylesheet"  href="../../static/css/bootstrap.min.css" media="all" th:href="@{/css/bootstrap.min.css}">
+-->
+    <!--External CSS Design-->
+<!--
+    <link rel="stylesheet" href="../../static/css/style.css" type="text/css" media="all" th:href="@{/css/style.css}">
+-->
+<!--
+    <link rel="stylesheet" href="../../static/css/style.css" type="text/css" media="all" th:href="@{/css/style.css}">
+-->
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark">
+
+    <aside id="sidebar" th:fragment="header">
+        <div class="d-flex">
+            <button id="toggle-btn" type="button">
+                <i class="lni lni-grid-alt"></i>
+            </button>
+            <div class="sidebar-logo">
+                <a href="#">FinancialHub</a>
+            </div>
+        </div>
+        <ul class="sidebar-nav">
+            <li class="sidebar-item">
+                <a th:href="@{/}" class="sidebar-link">
+                    <i class="lni lni-pie-chart"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <!--2 Nested Unordered List - Dropdown  -->
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#cash" aria-expanded="false" aria-controls="cash">
+                    <i class="lni lni-coin"></i>
+                    <span>Cash</span>
+                </a>
+                <ul id="cash" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a th:href="@{/financial-hub/petty-cash}" class="sidebar-link">
+                            <i class="lni lni-revenue"></i>
+                            Petty Cash
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="lni lni-pencil-alt"></i>
+                            Liquidation
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/financial-hub/check}" class="sidebar-link">
+                    <i class="lni lni-wallet"></i>
+                    <span>Check</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/financial-hub/credit-card}" class="sidebar-link">
+                    <i class="lni lni-credit-cards"></i>
+                    <span>Credit Card</span>
+                </a>
+            </li>
+            <!--3 Nested Unordered List - Dropdown  -->
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
+                    <i class="lni lni-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#two-setting" aria-expanded="false" aria-controls="two-setting">
+                            Other Settings
+                        </a>
+                        <ul id="two-setting" class="sidebar-dropdown list-unstyled collapse">
+                            <li class="sidebar-item">
+                                <a th:href="@{/financial-hub/user-settings}" class="sidebar-link">
+                                    User Setting 1
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">
+                                    Voucher Setting 2
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="sidebar-footer">
+            <a href="#" class="sidebar-link">
+                <i class="lni lni-exit"></i>
+                <span>Logout</span>
+            </a>
+        </div>
+    </aside>
+
+
+    <!-- External JS   -->
+    <!--<script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>-->
+
+<!-- Horizontal Navigation Bar -->
+    <!--<nav class="navbar navbar-expand-lg bg-body-tertiary bg-dark" data-bs-theme="dark" th:fragment="header">
         <div class="container-fluid">
             <a class="navbar-brand" th:href="@{/}">Home</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,6 +142,7 @@
                 </ul>
             </div>
         </div>
-    </nav>
+    </nav>-->
+
 </body>
 </html>

@@ -7,25 +7,29 @@
 </head>
 <body>
 
-<section layout:fragment="content">
-    <h1>Petty Cash</h1>
-    <p>Welcome to Petty Cash Voucher Page</p>
-    <p>Received Petty Cash as of 27 June 2024</p>
-    <table class="table table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Name of Receiver</th>
-                <th>Cash Received</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="receiver : ${people}">
-                <td th:text="${receiver.fullName}"></td>
-                <td th:text="${receiver.cash}"></td>
-            </tr>
-        </tbody>
-    </table>
-</section>
+    <section layout:fragment="content">
+        <div class="main">
+            <div class="text-center">
+                <h1>Petty Cash</h1>
+            </div>
+            <p>Welcome to Petty Cash Voucher Page</p>
+            <p>Received Petty Cash as of 27 June 2024</p>
+            <table class="table table-striped">
+                <thead class="table-dark">
+                <tr>
+                    <th>Name of Receiver</th>
+                    <th>Cash Received</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="receiver : ${people}">
+                    <td th:text="${receiver.fullName}"></td>
+                    <td th:text="${receiver.cash}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
 
 </body>
 </html>
