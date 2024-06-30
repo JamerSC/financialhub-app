@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FinancialHub Login</title>
+    <!--lineicons cdn-->
+    <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
+    <!--External Bootstrap CSS-->
+    <link  rel="stylesheet"  href="../../static/css/bootstrap.min.css" media="all" th:href="@{/css/bootstrap.min.css}">
+    <!--External CSS Design-->
+    <link rel="stylesheet" href="../../static/css/login.css" type="text/css" media="all" th:href="@{/css/login.css}">
+</head>
+<body>
+
+    <div class="container d-flex justify-content-center align-items-center min-vh-100">
+        <div class="row border rounded-5 p-3 bg-dark shadow box-area">
+            <!-- Left Box -->
+            <div class="col-md-6 rounded-4 d-flex justify-content-center align-items-center flex-column left-box">
+                <div class="row align-items-center">
+                    <div class="featured-image mb-3">
+                        <img src="https://placehold.co/600x400" class="image-fluid rounded-1 shadow" style="width: 100%; height: 300px;">
+                    </div>
+                    <h1 class="text-white">Financial Hub</h1>
+                    <p class="text-white" style="width: 100%;">Platform for financial tracking & voucher system.</p>
+                </div>
+            </div>
+            <div class="col-md-6 right-box">
+                <div class="row align-items-center">
+                    <div class="header-text mb-3">
+                        <h1 class="text-white">LOGIN</h1>
+                    </div>
+                    <form th:action="@{/financial-hub/dashboard}" method="GET">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control  form-control-lg bg-light fs-6"
+                                   id="loginUsername" placeholder="Username ...">
+                        </div>
+                        <div class="input-group mb-3">
+                            <input type="password" class="form-control  form-control-lg bg-light fs-6"
+                                   id="loginPassword" placeholder="Password ...">
+                        </div>
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-lg btn-primary w-100 fs-6">Login</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Bootstrap JS -->
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <!-- External Bootstrap Bundle with Popper   -->
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <!-- External JS   -->
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+
+</body>
+</html>

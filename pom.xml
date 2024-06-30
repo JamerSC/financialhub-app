@@ -57,7 +57,11 @@
 			<artifactId>thymeleaf-layout-dialect</artifactId>
 		<!-- <version>3.0.0</version> -->
 		</dependency>
-
+		<!--Lombok Reduce Boilerplate https://projectlombok.org/-->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
 		<!--Spring Web Development-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

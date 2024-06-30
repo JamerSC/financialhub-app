@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface CheckService {
 
-    List<Check> findAllCheckRecord();
+    List<Check> getAllCheckRecord();
 
     CheckDto findCheckRecordById(Integer id);
 

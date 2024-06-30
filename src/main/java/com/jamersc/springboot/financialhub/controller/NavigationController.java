@@ -14,18 +14,18 @@ import java.util.List;
 @RequestMapping("/financial-hub")
 public class NavigationController {
 
-    @GetMapping("/")
-    public String showHome(Model model) {
-        return  "index";
+    @GetMapping("/login")
+    public String financialHubLoginPage(Model model) {
+        return "login/login";
+    }
+
+    @GetMapping("/dashboard")
+    public String adminDashboardPage(Model model) {
+        return  "dashboard/dashboard";
     }
 
     @GetMapping("/petty-cash")
-    public String showPettyCash(Model model) {
-
-//        User user1 = new User("John Doe", 1000);
-//        User user2 = new User("Mary Public", 1500);
-//        User user3 = new User("Walter White", 1000);
-//        model.addAttribute("people", List.of(user1, user2, user3));
+    public String pettyCashVoucherPage(Model model) {
 
         model.addAttribute("people", Arrays.asList(
                 new User("John Doe", 1000),
@@ -33,23 +33,23 @@ public class NavigationController {
                 new User("Mary Public", 1500)
         ));
 
-        return  "petty-cash";
+        return  "cash/petty-cash";
     }
 
     @GetMapping("/check")
-    public String showCheck(Model model) {
+    public String checkVoucherPage(Model model) {
 
         model.addAttribute("banks", List.of("PNB", "BDO", "BPI"));
-        return  "check";
+        return  "check/check";
     }
 
     @GetMapping("/credit-card")
-    public String showCreditCard(Model model) {
-        return  "credit-card";
+    public String creditCardVoucherPage(Model model) {
+        return  "credit-card/credit-card";
     }
 
-    @GetMapping("/user-settings")
-    public String showUserSettings(Model model) {
+    @GetMapping("/settings")
+    public String settingsPage(Model model) {
 
         List<User> users = new ArrayList<>();
         users.add(new User("John Doe", 24));
@@ -58,6 +58,6 @@ public class NavigationController {
 
         model.addAttribute("people", users);
 
-        return  "user-settings";
+        return  "settings/settings";
     }
 }
