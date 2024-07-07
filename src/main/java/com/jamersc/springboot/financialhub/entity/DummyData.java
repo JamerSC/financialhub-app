@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.model;
+package com.jamersc.springboot.financialhub.entity;
 
 import lombok.*;
 
@@ -9,7 +9,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class User {
+public class DummyData {
     private String fullName;
     private int cash;
 }

@@ -1,12 +1,7 @@
 package com.jamersc.springboot.financialhub.service;
 
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
-import com.jamersc.springboot.financialhub.model.PettyCash;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @Transactional

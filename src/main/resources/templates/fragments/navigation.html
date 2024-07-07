@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Navigation</title>
@@ -83,10 +83,12 @@
             </li>
         </ul>
         <div class="sidebar-footer">
-            <a th:href="@{/financial-hub/login}" class="sidebar-link">
-                <i class="lni lni-exit"></i>
-                <span>Logout</span>
-            </a>
+            <form th:action="@{/logout}" method="POST">
+                <button type="submit" class="sidebar-link" style="border: none; background: none;">
+                    <i class="lni lni-exit"></i>
+                    <span>Logout</span>
+                </button>
+            </form>
         </div>
     </aside>
 

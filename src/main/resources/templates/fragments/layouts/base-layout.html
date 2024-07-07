@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://thymeleaf.org"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
     <meta charset="utf-8">
@@ -10,9 +11,9 @@
     <!--lineicons cdn-->
     <link href="https://cdn.lineicons.com/4.0/lineicons.css" rel="stylesheet" />
     <!--External Bootstrap CSS-->
-    <link  rel="stylesheet"  href="../../../static/css/bootstrap.min.css" media="all" th:href="@{/css/bootstrap.min.css}">
-    <!--External CSS Design-->
-    <link rel="stylesheet" href="../../../static/css/index.css" type="text/css" media="all" th:href="@{/css/index.css}">
+    <link  rel="stylesheet" href="../../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <!--External CSS Design type="text/css"  -->
+    <link rel="stylesheet" href="../../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
 </head>
 <body>
 
@@ -26,6 +27,11 @@
             <div layout:fragment="content">
                 <div class="text-center">
                     <h1>FINANCIAL HUB CONTENT</h1>
+                    <p>
+                        User: <span sec:authentication="principal.username"></span>
+                        <br><br>
+                        Role(s): <span sec:authentication="principal.authorities"></span>
+                    </p>
                 </div>
             </div>
             <!--footer fragment-->
@@ -33,12 +39,11 @@
         </div>
     </div>
 
-
     <!-- External Bootstrap JS -->
     <script src="../../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <!-- External Bootstrap Bundle with Popper   -->
     <script src="../../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
-    <!-- External JS   -->
+    <!-- External JS  type="text/javascript"  -->
     <script src="../../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
 
 </body>
