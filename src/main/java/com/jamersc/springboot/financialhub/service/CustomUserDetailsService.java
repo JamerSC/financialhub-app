@@ -17,19 +17,18 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.Set;
 
-@AllArgsConstructor
 @Service
-public class LoginUserDetailsService implements UserDetailsService {
+public class CustomUserDetailsService implements UserDetailsService {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginUserDetailsService.class);
+    private static final Logger logger = LoggerFactory.getLogger(CustomUserDetailsService.class);
     @Autowired
-    private UserRepository userRepository;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         logger.info("Attempting to load user by username: {}", username);
 
-        User user = userRepository.findByUsername(username);
+        User user = userService.findByUsername(username);
         if (user == null) {
             logger.error("User not found with username: {}", username);
             throw new UsernameNotFoundException("Invalid username or password");

@@ -1,9 +1,12 @@
 <!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org"
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Dashboard</title>
 </head>
 <body>
@@ -13,32 +16,26 @@
             <div class="mb-3">
                 <h3 class="fw-bold fs-4 mb-3">Admin Dashboard</h3>
 
-                <h1>Welcome, <span th:text="${username}"></span>!</h1>
 
-                <!--<div th:if="${#objects.isNotEmpty(roles)}">-->
-                    <h2>Your roles:</h2>
-                    <ul>
-                        <li th:each="role : ${roles}" th:text="${role.authority}"></li>
-                    </ul>
-                <!--</div>-->
+<!--                <h1>Username: <span th:text="${userLogin}"></span>!</h1>
+                <h2>Role(s): <span th:text="${usersRoles}"></span>!</h2>-->
 
-                <div th:if="${#lists.isEmpty(roles)}">
-                    <p>No roles assigned.</p>
-                </div>
-
-                <!-- Example of using security tags to conditionally display content -->
-                <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                    <p>This content is visible to users with role 'EMPLOYEE'.</p>
-                </div>
 
                 <div sec:authorize="hasRole('ROLE_ADMIN')">
-                    <p>This content is visible to users with role 'ADMIN'.</p>
+                    <h1>ADMIN ROLE</h1>
+                </div>
+                <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                    <h1>EMPLOYEE ROLE</h1>
+                </div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')">
+                This will only be displayed if authenticated user has role ROLE_ADMIN.
                 </div>
 
-                <!-- Example of using authentication tags to display user information -->
-                <div sec:authorize="isAuthenticated()">
-                    <p>User's name: <span sec:authentication="name"></span></p>
-                </div>
+                <h1 sec:authentication="name">
+                    The value of the "name" property of the authentication object should appear here.
+                </h1>
+
+
 
                 <div class="row">
                     <!-- Column 1 -->

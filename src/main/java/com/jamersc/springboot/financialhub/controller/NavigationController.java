@@ -1,8 +1,10 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.entity.DummyData;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import com.jamersc.springboot.financialhub.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +18,38 @@ import java.util.List;
 @RequestMapping("/financial-hub")
 public class NavigationController {
 
+    @Autowired
+    private UserService userService;
+
+    public static final String USER_LOGIN = "userLogin  ";
+    public static final String USERS_ROLES = "usersRoles";
+
     @GetMapping("/login")
     public String financialHubLoginPage(Model model) {
         return "login/login";
     }
 
     @GetMapping("/dashboard")
-    public String adminDashboardPage(Model model) {
+    public String adminDashboardPage(Model model,
+                                     @AuthenticationPrincipal UserDetails userDetails) {
+/*
+        String username = userDetails.getUsername();
+        System.out.println("Username: " + userDetails.getUsername());
+        model.addAttribute(USER_LOGIN, username);
+
+        String roles = String.valueOf(userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        System.out.println("Role(s): " + userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList());
+        model.addAttribute(USERS_ROLES, roles);
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("Authenticated: " + auth);
+
         if (auth != null) {
             model.addAttribute("username", auth.getName());
             model.addAttribute("roles", auth.getAuthorities());
-        }
+            System.out.println("Get name: " + auth.getName());
+            System.out.println("Get Authorities" + auth.getAuthorities());
+        }*/
         return  "dashboard/dashboard";
     }
 
