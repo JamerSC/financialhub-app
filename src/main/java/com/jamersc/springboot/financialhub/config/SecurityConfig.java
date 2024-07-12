@@ -41,7 +41,7 @@ public class SecurityConfig {
         http.
                 authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                .requestMatchers("/css/**", "/js/**").permitAll()
+                                .requestMatchers("/css/**", "/js/**", "/financial-hub/login").permitAll()
                                 .requestMatchers("/financial-hub/dashboard").hasRole("EMPLOYEE")
                                 .anyRequest().authenticated()
                 )

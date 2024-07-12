@@ -16,11 +16,6 @@
             <div class="mb-3">
                 <h3 class="fw-bold fs-4 mb-3">Admin Dashboard</h3>
 
-
-<!--                <h1>Username: <span th:text="${userLogin}"></span>!</h1>
-                <h2>Role(s): <span th:text="${usersRoles}"></span>!</h2>-->
-
-
                 <div sec:authorize="hasRole('ROLE_ADMIN')">
                     <h1>ADMIN ROLE</h1>
                 </div>
@@ -34,8 +29,6 @@
                 <h1 sec:authentication="name">
                     The value of the "name" property of the authentication object should appear here.
                 </h1>
-
-
 
                 <div class="row">
                     <!-- Column 1 -->
@@ -104,36 +97,24 @@
                             </div>
                         </div>
                     </div>
+
                     <!-- Table -->
-                    <h3 class="fw-bold fs-4 my-3">Ave rage Agent Earnings</h3>
+                    <h3 class="fw-bold fs-4 my-3">For Liquidation</h3>
                     <div class="row">
                         <div class="col-12">
                             <table class="table table-striped shadow">
-                                <thead>
-                                <tr class="highlight">
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                <thead class="table-dark">
+                                <tr>
+                                    <th>First name</th>
+                                    <th>Middle name</th>
+                                    <th>Last name</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>@mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>@fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>@twitter</td>
+                                <tr th:each="user : ${users}">
+                                    <td th:text="${user.firstName}"></td>
+                                    <td th:text="${user.middleName}"></td>
+                                    <td th:text="${user.lastName}"></td>
                                 </tr>
                                 </tbody>
                             </table>

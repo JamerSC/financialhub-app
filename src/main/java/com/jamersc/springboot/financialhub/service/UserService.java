@@ -1,8 +1,11 @@
 package com.jamersc.springboot.financialhub.service;
 
-import com.jamersc.springboot.financialhub.entity.User;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import com.jamersc.springboot.financialhub.model.User;
+
+import java.util.List;
 
 public interface UserService {
     User findByUsername(String username);
+
+    List<User> getAllUsers();
 }

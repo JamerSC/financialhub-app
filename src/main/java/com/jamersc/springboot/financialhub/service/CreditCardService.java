@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service;
 
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
-import com.jamersc.springboot.financialhub.entity.CreditCard;
+import com.jamersc.springboot.financialhub.model.CreditCard;
 
 import java.util.List;
 

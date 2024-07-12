@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
-import com.jamersc.springboot.financialhub.entity.PettyCash;
+import com.jamersc.springboot.financialhub.model.PettyCash;
 
 import java.util.List;
 

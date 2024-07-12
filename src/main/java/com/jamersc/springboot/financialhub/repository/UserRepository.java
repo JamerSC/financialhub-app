@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.repository;
 
-import com.jamersc.springboot.financialhub.entity.User;
+import com.jamersc.springboot.financialhub.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository <User, Long> {

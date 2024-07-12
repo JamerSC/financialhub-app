@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.entity;
+package com.jamersc.springboot.financialhub.model;
 
 import lombok.*;
 

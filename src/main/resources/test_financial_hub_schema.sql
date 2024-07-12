@@ -12,6 +12,10 @@ CREATE TABLE `users` (
     `username` varchar(255) NOT NULL UNIQUE,
     `password` char(80) NOT NULL,
     `enabled` boolean NOT NULL,
+    `created_by` int,
+    `created_at` timestamp default current_timestamp,
+	`updated_by` int,
+    `updated_at` timestamp default current_timestamp on update current_timestamp,
     PRIMARY KEY (`id`)
 );
 
