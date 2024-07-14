@@ -8,6 +8,10 @@
     margin: 0;
 }
 
+.error {
+    color: red;
+}
+
 body {
     font-family: 'Poppins', sans-serif;
     background-color: var(--bs-body-bg);

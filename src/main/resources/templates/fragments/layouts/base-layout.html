@@ -29,20 +29,19 @@
             <div layout:fragment="content">
                 <div class="text-center">
                     <h1>FINANCIAL HUB CONTENT</h1>
-
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                        <h1>ADMIN ROLE</h1>
-                    </div>
-                    <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                        <h1>EMPLOYEE ROLE</h1>
-                    </div>
-                    <div sec:authorize="hasRole('ROLE_ADMIN')">
-                        This will only be displayed if authenticated user has role ROLE_ADMIN.
-                    </div>
-                    <div sec:authentication="name">
+                    <h1 sec:authentication="name">
                         The value of the "name" property of the authentication object should appear here.
+                    </h1>
+                    <h1>Welcome to User Settings Page</h1>
+                    <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
+                        <h3>EMPLOYEE ROLE</h3>
                     </div>
-
+                    <div sec:authorize="hasRole('ROLE_MANAGER')">
+                        <h3>MANAGER ROLE</h3>
+                    </div>
+                    <div sec:authorize="hasRole('ROLE_ADMIN')">
+                        <h3>ADMIN ROLE</h3>
+                    </div>
                 </div>
             </div>
             <!--footer fragment-->
@@ -50,6 +49,8 @@
         </div>
     </div>
 
+    <!--<script src="https://cdn-script.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>-->
+    <script src="../../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
     <!-- External Bootstrap JS -->
     <script src="../../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <!-- External Bootstrap Bundle with Popper   -->

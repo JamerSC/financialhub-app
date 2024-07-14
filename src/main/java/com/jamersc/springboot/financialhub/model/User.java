@@ -54,10 +54,7 @@ public class User {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @ManyToMany(
-            fetch = FetchType.EAGER,
-            cascade = CascadeType.ALL
-    )
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -65,9 +62,16 @@ public class User {
     )
     private Set<Role> roles;
 
-    // Constructor for Login User
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
+    // Add JPA annotations for createdDate and modifiedDate
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
+
 }

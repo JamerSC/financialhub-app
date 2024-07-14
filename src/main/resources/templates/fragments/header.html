@@ -8,7 +8,7 @@
 <body>
 
     <!--Search Bar & Profile Image w/Navigation-->
-    <nav class="navbar navbar-expand px-4 py-3"  th:fragment="header">
+    <nav class="navbar navbar-expand px-4 py-3 z-0"  th:fragment="header">
         <form action="#" class="d-none d-sm-inline-block">
             <div class="input-group input-group-navbar">
                 <input type="text" class="form-control shadow border-1 rounded-1" placeholder="Search...">
@@ -29,11 +29,12 @@
                             <span>Profile</span>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <form th:action="@{/logout}" method="POST">
-                            <button type="submit" class="sidebar-link" style="border: none; background: none;">
-                                <i class="lni lni-exit"></i>
-                                <span>Logout</span>
-                            </button>
+                        <a href="#" class="dropdown-item" onclick="document.getElementById('logout-form-profile').submit();">
+                            <i class="lni lni-exit"></i>
+                            <span>Logout</span>
+                        </a>
+                        <form id="logout-form-profile" th:action="@{/logout}" method="POST" style="display: none;">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
                         </form>
                     </div>
                 </li>

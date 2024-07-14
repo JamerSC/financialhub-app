@@ -7,7 +7,7 @@ CREATE TABLE `users` (
 	`id` int NOT NULL AUTO_INCREMENT,
     `first_name` varchar(255) NOT NULL,
     `last_name` varchar(255) NOT NULL,
-    `middle_name` varchar(255) NOT NULL,
+    `middle_name` varchar(255) NULL,
     `email` varchar(255) NOT NULL,
     `username` varchar(255) NOT NULL UNIQUE,
     `password` char(80) NOT NULL,
@@ -45,9 +45,12 @@ INSERT INTO `roles` (`name`) VALUES ('ROLE_ADMIN');
 
 -- Insert users (passwords should be encoded using BCrypt, below are plaintext for demonstration)
 -- password: 123123 {bcrypt}$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq
-INSERT INTO `users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`) VALUES ('John', 'Doe', 'Eod', 'john@mail.com', 'john', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true);
-INSERT INTO `users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`) VALUES ('Mary', 'Public', 'Private', 'mary@mail.com', 'mary', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true);
-INSERT INTO `users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`) VALUES ('Susan', 'Sun Tzu', 'Yinyang', 'susan@mail.com','susan', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true);
+INSERT INTO `users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`, `created_by`, `updated_by`) 
+VALUES
+('John', 'Doe', 'Eod', 'john@mail.com', 'john', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
+('Mary', 'Public', 'Private', 'mary@mail.com', 'mary', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
+('Susan', 'Sun Tzu', 'Yinyang', 'susan@mail.com','susan', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
+('Eroll', 'Villaraiz', 'Divinaflor', 'huwan17@mail.com', 'huwan', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3);
 
 -- Assign roles to users
 INSERT INTO users_roles (user_id, role_id) VALUES (1, 1); -- Employee
@@ -56,10 +59,13 @@ INSERT INTO users_roles (user_id, role_id) VALUES (2, 2); -- Manager
 INSERT INTO users_roles (user_id, role_id) VALUES (3, 1); -- Employee
 INSERT INTO users_roles (user_id, role_id) VALUES (3, 2); -- Manager
 INSERT INTO users_roles (user_id, role_id) VALUES (3, 3); -- Admin
+INSERT INTO users_roles (user_id, role_id) VALUES (4, 1); -- Employee
+#INSERT INTO users_roles (user_id, role_id) VALUES (10, 1); -- Employee username test5 pass 123123
 
 #TRUNCATE TABLE `users`;
 #TRUNCATE TABLE `roles`;
 #TRUNCATE TABLE `users_roles`;
+
 
 SELECT 
     u.id AS user_id,

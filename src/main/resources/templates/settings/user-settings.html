@@ -14,26 +14,35 @@
             <div class="mb-3">
                 <h3 class="fw-bold  fs-4 mb-3">User Settings</h3>
             </div>
-            <p>Welcome to User Settings Page</p>
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <h1>ADMIN ROLE</h1>
+            <div>
+                Name:
+                <h1 sec:authentication="name">
+                    The value of the "name" property of the authentication object should appear here.
+                </h1>
             </div>
             <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <h1>EMPLOYEE ROLE</h1>
+                <h3>EMPLOYEE ROLE</h3>
+            </div>
+            <div sec:authorize="hasRole('ROLE_MANAGER')">
+                <h3>MANAGER ROLE</h3>
             </div>
             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                This will only be displayed if authenticated user has role ROLE_ADMIN.
+                <h3>ADMIN ROLE</h3>
             </div>
-            <h1 sec:authentication="name">
-                The value of the "name" property of the authentication object should appear here.
-            </h1>
-            <!-- Table -->
-            <h3 class="fw-bold fs-4 my-3">List of Users</h3>
-            <!-- Create User Modal Button -->
-            <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#createModal" data-bs-whatever="@mdo">Create User</button>
             <div class="row">
                 <div class="col-12">
-                    <table class="table table-striped shadow">
+                    <div class="d-flex">
+                        <div class="p-1">
+                            <h3 class="fw-bold fs-4">List of Users</h3>
+                        </div>
+                        <!-- Create User Modal Button -->
+                        <div class="ms-auto p-1">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createNewUserModal">
+                                Create New User
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped shadow table-responsive">
                         <thead class="table-dark">
                         <tr class="table-active">
                             <th>First name</th>
@@ -68,55 +77,86 @@
                         </tr>
                         </tbody>
                     </table>
-
                     <!-- Create User Modal -->
-                    <div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="createNewUserModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <form class="z-3" action="#" th:action="@{/financial-hub/user-settings}"
+                              th:object="${userDto}" method="POST">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create User</h1>
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create New User</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form>
-                                        <div class="mb-3">
-                                            <label for="firstName" class="col-form-label">First name:</label>
-                                            <input type="text" class="form-control" id="firstName">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="col-form-label">First name:</label>
+                                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+                                        <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error">
+                                            Firstname is required!
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="middleName" class="col-form-label">Middle name:</label>
-                                            <input type="text" class="form-control" id="middleName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="middleName" class="col-form-label">Middle name:</label>
+                                        <input type="text" class="form-control" id="middleName" th:field="*{middleName}">
+                                        <!-- Middle name is optional -->
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="lastName" class="col-form-label">Last name:</label>
+                                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+                                        <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error">
+                                            Lastname is required!
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="lastName" class="col-form-label">Last name:</label>
-                                            <input type="text" class="form-control" id="lastName">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="col-form-label">Email:</label>
+                                        <input type="text" class="form-control" id="email" th:field="*{email}">
+                                        <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error">
+                                            Email is required!
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="email" class="col-form-label">Email:</label>
-                                            <input type="text" class="form-control" id="email">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="col-form-label">Roles:</label>
+                                        <div th:each="role : ${roles}">
+                                            <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" />
+                                            <label th:for="${role.id}" th:text="'Select ' + ${#strings.substringAfter(role.name, 'ROLE_')} + ' role'"></label>
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="username" class="col-form-label">Username:</label>
-                                            <input type="text" class="form-control" id="username">
+                                        <div th:if="${#fields.hasErrors('roleIds')}" th:errors="*{roleIds}" class="error">
+                                            User Role is required!
                                         </div>
-                                        <div class="mb-3">
-                                            <label for="password" class="col-form-label">Password:</label>
-                                            <input type="text" class="form-control" id="password">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="username" class="col-form-label">Username:</label>
+                                        <input type="text" class="form-control" id="username" th:field="*{username}">
+                                        <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">
+                                            Username is required!
                                         </div>
-                                    </form>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="password" class="col-form-label">Password:</label>
+                                        <input type="password" class="form-control" id="password" th:field="*{password}">
+                                        <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">
+                                            Password is required!
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="col-form-label">Confirm Password:</label>
+                                        <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}">
+                                        <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error">
+                                            Confirm password is required!
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save</button>
+                                    <button type="submit" class="btn btn-primary">Create User</button>
                                 </div>
                             </div>
                         </div>
+                        </form>
                     </div>
-
                 </div>
             </div>
         </div>
     </main>
-
 </body>
 </html>

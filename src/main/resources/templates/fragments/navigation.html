@@ -83,14 +83,14 @@
             </li>
         </ul>
         <div class="sidebar-footer">
-            <form th:action="@{/logout}" method="POST">
-                <button type="submit" class="sidebar-link" style="border: none; background: none;">
-                    <i class="lni lni-exit"></i>
-                    <span>Logout</span>
-                </button>
+            <a href="#" class="sidebar-link" onclick="document.getElementById('logout-form').submit();">
+                <i class="lni lni-exit"></i>
+                <span>Logout</span>
+            </a>
+            <form id="logout-form" th:action="@{/logout}" method="POST" style="display: none;">
+                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
             </form>
         </div>
     </aside>
-
 </body>
 </html>

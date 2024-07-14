@@ -13,24 +13,25 @@
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
-
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <h1>ADMIN ROLE</h1>
+            <div>
+                Name:
+                <h1 sec:authentication="name">
+                    The value of the "name" property of the authentication object should appear here.
+                </h1>
             </div>
             <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <h1>EMPLOYEE ROLE</h1>
+                <h3>EMPLOYEE ROLE</h3>
+            </div>
+            <div sec:authorize="hasRole('ROLE_MANAGER')">
+                <h3>MANAGER ROLE</h3>
             </div>
             <div sec:authorize="hasRole('ROLE_ADMIN')">
-                This will only be displayed if authenticated user has role ROLE_ADMIN.
+                <h3>ADMIN ROLE</h3>
             </div>
-            <div sec:authentication="name">
-                The value of the "name" property of the authentication object should appear here.
-            </div>
-
             <div class="mb-3">
-                <h3 class="fw-bold fs-4 mb-3">Petty Cash</h3>
+                <h1 class="fw-bold fs-4 mb-3">Petty Cash</h1>
             </div>
-            <p>Welcome to Petty Cash Voucher Page</p>
+            <h3>Welcome to Petty Cash Voucher Page</h3>
             <p>Received Petty Cash as of 27 June 2024</p>
             <table class="table table-striped shadow">
                 <thead class="table-dark">
