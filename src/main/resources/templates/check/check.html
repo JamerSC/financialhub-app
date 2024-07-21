@@ -32,10 +32,31 @@
             <div class="mb-3">
                 <h1 class="fw-bold fs-4 mb-3">Check</h1>
             </div>
-            <h3>Check Banks</h3>
-            <ul th:each="bank : ${banks}">
-                <li th:text="${bank}"></li>
-            </ul>
+            <h3>Check Voucher</h3>
+            <table class="table table-striped shadow">
+                <thead class="table-dark">
+                <tr>
+                    <th>CV Number</th>
+                    <th>Payee Name</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Bank</th>
+                    <th>Check Number</th>
+                    <th>Check Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tempCheck : ${checks}">
+                    <td th:text="${tempCheck.cvNumber}"></td>
+                    <td th:text="${tempCheck.payeeName}"></td>
+                    <td th:text="${#dates.format(tempCheck.date, 'dd MMMM yyyy')}"></td>
+                    <td th:text="${#numbers.formatDecimal(tempCheck.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                    <td th:text="${tempCheck.bank}"></td>
+                    <td th:text="${tempCheck.checkNumber}"></td>
+                    <td th:text="${#dates.format(tempCheck.createdAt, 'dd MMMM yyyy')}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 

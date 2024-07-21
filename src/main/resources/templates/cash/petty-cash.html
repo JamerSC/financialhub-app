@@ -31,22 +31,43 @@
             <div class="mb-3">
                 <h1 class="fw-bold fs-4 mb-3">Petty Cash</h1>
             </div>
-            <h3>Welcome to Petty Cash Voucher Page</h3>
-            <p>Received Petty Cash as of 27 June 2024</p>
-            <table class="table table-striped shadow">
-                <thead class="table-dark">
-                <tr>
-                    <th>Name of Receiver</th>
-                    <th>Cash Received</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="receiver : ${people}">
-                    <td th:text="${receiver.fullName}"></td>
-                    <td th:text="${receiver.cash}"></td>
-                </tr>
-                </tbody>
-            </table>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex">
+                        <div class="p-1">
+                            <h3 class="fw-bold fs-4">Petty Cash Vouchers</h3>
+                        </div>
+                        <!-- Create User Modal Button -->
+                        <div class="ms-auto p-1">
+                            <a th:href="@{/petty-cash/petty-cash-form}" class="btn btn-primary btn-sm mb-3">
+                                Create Todo
+                            </a>
+                        </div>
+                    </div>
+                    <table class="table table-striped shadow">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>PCV Number</th>
+                            <th>Received By</th>
+                            <th>Date</th>
+                            <th>Total Amount</th>
+                            <th>Approved By</th>
+                            <th>Created Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="tempPettyCash : ${pettyCash}">
+                            <td th:text="${tempPettyCash.pcvNumber}"></td>
+                            <td th:text="${tempPettyCash.receivedBy}"></td>
+                            <td th:text="${#dates.format(tempPettyCash.date, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${tempPettyCash.approvedBy}"></td>
+                            <td th:text="${#dates.format(tempPettyCash.createdAt, 'dd MMMM yyyy')}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </main>
 

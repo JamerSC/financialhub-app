@@ -1,21 +1,67 @@
 package com.jamersc.springboot.financialhub.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
-@Data
+import java.util.Date;
+
+@Entity
+@Table(name = "check_vouchers")
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
+@ToString
 public class Check {
-    private int id;
-    private String checkVoucherNo;
-    private double checkAmount;
-    private String checkAmountInWords;
 
-/*    public Check(String checkVoucherNo, double checkAmount, String checkAmountInWords) {
-        this.checkVoucherNo = checkVoucherNo;
-        this.checkAmount = checkAmount;
-        this.checkAmountInWords = checkAmountInWords;
-    }*/
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
+
+    @Column(name = "cv_number")
+    private String cvNumber;
+
+    @Column(name = "payee_name")
+    private String payeeName;
+
+    @Column(name = "date")
+    private Date date;
+
+    @Column(name = "total_amount")
+    private Double totalAmount;
+
+    @Column(name = "amount_in_words")
+    private String amountInWords;
+
+    @Column(name = "bank")
+    private String bank;
+
+    @Column(name = "check_number")
+    private String checkNumber;
+
+    @Column(name = "created_by")
+    private int createdBy;
+
+    @Column(name = "created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @Column(name = "updated_by")
+    private int updatedBy;
+
+    @Column(name = "updated_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date updatedAt;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+        updatedAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }

@@ -11,7 +11,7 @@ public interface PettyCashService {
 
     PettyCashDto findPettyCashById(Integer id);
 
-    void savePettyCashRecord(PettyCashDto pettyCashDto);
+    void savePettyCashRecord(PettyCashDto pettyCashDto, String username);
 
     void deletePettyCashRecordById(Integer id);
 }

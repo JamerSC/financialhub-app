@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,9 +26,9 @@
                         <img src="https://dummyimage.com/300.png/09f/fff" alt="" class="avatar img-fluid rounded-5"/>
                     </a>
                     <div class="dropdown-menu dropdown-menu-end rounded">
-                        <a th:href="@{/financial-hub/settings}" class="dropdown-item">
+                        <a th:href="@{/financial-hub/user-settings}" class="dropdown-item">
                             <i class="lni lni-user"></i>
-                            <span>Profile</span>
+                            <span sec:authentication="name"></span>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item" onclick="document.getElementById('logout-form-profile').submit();">

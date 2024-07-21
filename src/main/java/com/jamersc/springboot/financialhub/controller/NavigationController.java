@@ -1,8 +1,6 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.config.SecurityConfig;
 import com.jamersc.springboot.financialhub.dto.UserDto;
-import com.jamersc.springboot.financialhub.model.DummyData;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.RoleService;
@@ -22,7 +20,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -61,30 +58,6 @@ public class NavigationController {
         return "error";
     }*/
 
-    @GetMapping("/petty-cash")
-    public String pettyCashVoucherPage(Model model) {
-
-        model.addAttribute("people", Arrays.asList(
-                new DummyData ("John Doe", 1000),
-                new DummyData ("Mary Public", 1500),
-                new DummyData ("Mary Public", 1500)
-        ));
-
-        return  "cash/petty-cash";
-    }
-
-    @GetMapping("/check")
-    public String checkVoucherPage(Model model) {
-
-        model.addAttribute("banks", List.of("PNB", "BDO", "BPI"));
-        return  "check/check";
-    }
-
-    @GetMapping("/credit-card")
-    public String creditCardVoucherPage(Model model) {
-        return  "credit-card/credit-card";
-    }
-
     @GetMapping("/user-settings")
     public String settingsPage(Model model) {
         // display all users from database.
@@ -104,11 +77,10 @@ public class NavigationController {
         // logging info
         String username = userDto.getUsername();
         logger.info("Processing registration form for: " + username);
-
         // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
         // Get current session name of user
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String sessionName = authentication.getName();
+        String sessionUsername = authentication.getName();
 
         if (result.hasErrors()) {
             List<User> users = userService.getAllUsers();
@@ -130,7 +102,7 @@ public class NavigationController {
             logger.warn("Username already exists!");
             return "settings/user-settings";
         }
-        userService.save(userDto, sessionName);
+        userService.save(userDto, sessionUsername);
         logger.info("Successfully created user: " + username);
         return  "redirect:/financial-hub/user-settings";
     }

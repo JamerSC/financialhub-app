@@ -31,10 +31,31 @@
             <div sec:authorize="hasRole('ROLE_ADMIN')">
                 <h3>ADMIN ROLE</h3>
             </div>
-                <h3>Welcome to Credit Card Voucher Page</h3>
-                <i class="lni lni-revenue"></i>
-                <i class="lni lni-revenue"></i>
-                <i class="lni lni-revenue"></i>
+            <h3>Credit Card Voucher</h3>
+            <table class="table table-striped shadow">
+                <thead class="table-dark">
+                <tr>
+                    <th>CV Number</th>
+                    <th>Payee Name</th>
+                    <th>Date</th>
+                    <th>Total Amount</th>
+                    <th>Bank</th>
+                    <th>Check Number</th>
+                    <th>Check Date</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="tempCreditCard : ${creditCards}">
+                    <td th:text="${tempCreditCard.ccvNumber}"></td>
+                    <td th:text="${tempCreditCard.payeeName}"></td>
+                    <td th:text="${#dates.format(tempCreditCard, 'dd MMMM yyyy')}"></td>
+                    <td th:text="${#numbers.formatDecimal(tempCreditCard.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                    <td th:text="${tempCreditCard.bank}"></td>
+                    <td th:text="${tempCreditCard.modeOfPayment}"></td>
+                    <td th:text="${#dates.format(tempCreditCard.createdAt, 'dd MMMM yyyy')}"></td>
+                </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 

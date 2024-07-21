@@ -66,7 +66,6 @@ INSERT INTO users_roles (user_id, role_id) VALUES (4, 1); -- Employee
 #TRUNCATE TABLE `roles`;
 #TRUNCATE TABLE `users_roles`;
 
-
 SELECT 
     u.id AS user_id,
     u.first_name,
@@ -82,3 +81,68 @@ JOIN
     users_roles ur ON u.id = ur.user_id
 JOIN 
     roles r ON ur.role_id = r.id;
+
+DROP TABLE `petty_cash_vouchers`;
+CREATE TABLE `petty_cash_vouchers` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `pcv_number` varchar(50) NOT NULL,
+    `received_by` varchar(255) NOT NULL,
+    `date` date NOT NULL,
+    `particulars` varchar(255) NOT NULL,
+    `total_amount` decimal(10, 2) NOT NULL,
+    `approved_by` varchar(255) NOT NULL,
+    `created_by` int NULL,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int NULL,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `petty_cash_vouchers`(`pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
+VALUE ('PCV-2024001', 'John Doe', '2024-07-21', 'Utility expense', 1000, 'Susan Swan', 3, 3);
+
+# DATE - format: YYYY-MM-DD.
+
+DROP TABLE `check_vouchers`;
+CREATE TABLE `check_vouchers` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `cv_number` varchar(50) NOT NULL,
+    `payee_name` varchar(255) NOT NULL,
+	`date` date NOT NULL,
+    `total_amount` decimal(10, 2) NOT NULL,
+    `amount_in_words` varchar(255) NOT NULL,
+    `bank` varchar(255) NOT NULL,
+    `check_number` varchar(50) NOT NULL,
+    `check_date` date NOT NULL,
+	`created_by` int NULL,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `check_vouchers`(`cv_number`, `payee_name`, `date`, `total_amount`, `amount_in_words`, `bank`, `check_number`, `check_date`, `created_by`, `updated_by`)
+VALUE ('CV-2024001', 'John Doe', '2024-07-21', 1000, 'One thousand pesos only.', 'Security Bank', '20240001',  '2024-07-21', 3, 3);
+
+DROP TABLE `credit_card_vouchers`;
+CREATE TABLE `credit_card_vouchers` (
+	`id` int NOT NULL AUTO_INCREMENT,
+	`ccv_number` varchar(50) NOT NULL,
+    `payee_name` varchar(255) NOT NULL,
+	`date` date NOT NULL,
+    `total_amount` decimal(10, 2) NOT NULL,
+    `amount_in_words` varchar(255) NOT NULL,
+    `mode_of_payment` varchar(50) NOT NULL,
+    `bank`	 varchar(50) NOT NULL,
+	`created_by` int NULL,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `credit_card_vouchers`(`ccv_number`, `payee_name`, `date`, `total_amount`, `amount_in_words`, `mode_of_payment`, `bank`, `created_by`, `updated_by`)
+VALUE ('CCV-2024001', 'John Doe', '2024-07-21', 1000, 'One thousand pesos only.', 'Credit Card', 'PNB', 3, 3);
+
+
+

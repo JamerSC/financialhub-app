@@ -1,6 +1,8 @@
 package com.jamersc.springboot.financialhub.repository;
 
-public interface CreditCardRepository {
-    // extends JpaRepository <CreditCard, Integer>
+import com.jamersc.springboot.financialhub.model.CreditCard;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface CreditCardRepository extends JpaRepository<CreditCard, Long> {
     // add custom query here..
 }

@@ -38,19 +38,26 @@
                                 You have been logged out.
                             </div>
                         </div>
-                        <div class="input-group mb-3">
+                        <div class="form-floating mb-3">
                             <input type="text"
                                    class="form-control form-control-lg bg-light fs-6"
-                                   id="loginUsername"
-                                   placeholder="Username ..."
+                                   id="floatingUsername"
+                                   placeholder="name@example.com"
                                    name="username">
+                            <label for="floatingUsername">Username</label>
                         </div>
                         <div class="input-group mb-3">
-                            <input type="password"
-                                   class="form-control form-control-lg bg-light fs-6"
-                                   id="loginPassword"
-                                   placeholder="Password ..."
-                                   name="password">
+                            <div class="form-floating">
+                                <input type="password"
+                                       class="form-control form-control-lg bg-light fs-6"
+                                       id="floatingPassword"
+                                       placeholder="Password ..."
+                                       name="password">
+                                <label for="floatingPassword">Password</label>
+                            </div>
+                            <span class="input-group-text">
+                                <i class="lni lni-eye"></i>
+                            </span>
                         </div>
                         <!-- Check for login error -->
                         <div th:if="${param.error}">
