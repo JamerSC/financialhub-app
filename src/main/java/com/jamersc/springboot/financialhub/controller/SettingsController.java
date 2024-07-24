@@ -24,10 +24,10 @@ import java.util.List;
 
 @AllArgsConstructor
 @Controller
-@RequestMapping("/financial-hub")
-public class NavigationController {
+@RequestMapping("/settings")
+public class SettingsController {
 
-    private static final Logger logger = LoggerFactory.getLogger(NavigationController.class);
+    private static final Logger logger = LoggerFactory.getLogger(HubController.class);
 
     @Autowired
     private UserService userService;
@@ -35,33 +35,11 @@ public class NavigationController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping("/login")
-    public String financialHubLoginPage(Model model) {
-        return "login/login";
-    }
-
-    @GetMapping("/dashboard")
-    public String adminDashboardPage(Model model) {
-        // display all users from database.
-        List<User> users = userService.getAllUsers();
-        model.addAttribute("users", users);
-        return "dashboard/dashboard";
-    }
-
-    @GetMapping("/access-denied")
-    public String accessDenied() {
-        return "access-denied";
-    }
-
-/*    @GetMapping("/error")
-    public String errorOccur() {
-        return "error";
-    }*/
-
     @GetMapping("/user-settings")
-    public String settingsPage(Model model) {
+    public String userSettingsPage(Model model) {
         // display all users from database.
         List<User> users = userService.getAllUsers();
+        logger.info("Get all users:\n" + users);
         model.addAttribute("users", users);
         // fetch all roles
         List<Role> roles = roleService.getAllRoles();
@@ -72,7 +50,7 @@ public class NavigationController {
     }
 
     @PostMapping("/user-settings")
-    public String settingsCreateUser(@Valid @ModelAttribute("userDto") UserDto userDto,
+    public String processCreateUserForm(@Valid @ModelAttribute("userDto") UserDto userDto,
                                      BindingResult result, Model model) {
         // logging info
         String username = userDto.getUsername();
@@ -104,6 +82,6 @@ public class NavigationController {
         }
         userService.save(userDto, sessionUsername);
         logger.info("Successfully created user: " + username);
-        return  "redirect:/financial-hub/user-settings";
+        return  "redirect:/settings/user-settings";
     }
 }

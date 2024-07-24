@@ -5,6 +5,7 @@ import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.RoleRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
 @Getter
 @Setter
 @Service
+@Transactional
 public class UserServiceImpli implements UserService {
 
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpli.class);

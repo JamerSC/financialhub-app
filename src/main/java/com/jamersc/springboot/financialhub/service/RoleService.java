@@ -8,4 +8,5 @@ public interface RoleService {
 
     List<Role> getAllRoles();
 
+    Role getRoleWithUsers(Long id);
 }
