@@ -30,33 +30,57 @@ public class PettyCashServiceImpli implements PettyCashService {
     }
 
     @Override
-    public PettyCashDto findPettyCashById(Integer id) {
+    public PettyCashDto findPettyCashById(Long id) {
+        PettyCash pettyCash = pettyCashRepository.findById(id).orElse(null);
+        if (pettyCash != null) {
+            PettyCashDto pettyCashDto = new PettyCashDto();
+            BeanUtils.copyProperties(pettyCash, pettyCashDto);
+            return pettyCashDto;
+        }
         return null;
     }
 
     @Override
     public void savePettyCashRecord(PettyCashDto pettyCashDto, String username) {
-        PettyCash pettyCash = new PettyCash();
-        pettyCash.setPcvNumber(pettyCashDto.getPcvNumber());
-        pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
-        pettyCash.setDate(pettyCashDto.getDate());
-        pettyCash.setParticulars(pettyCashDto.getParticulars());
-        pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
-        pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
-        User createdBy = userRepository.findByUsername(username);
-        if (createdBy != null) {
-            pettyCash.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            pettyCash.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+        PettyCash pettyCash;
+        if (pettyCashDto.getId() != null) {
+            pettyCash = pettyCashRepository.findById(pettyCashDto.getId()).orElse(new PettyCash());
+            pettyCash.setPcvNumber(pettyCashDto.getPcvNumber());
+            pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
+            pettyCash.setDate(pettyCashDto.getDate());
+            pettyCash.setParticulars(pettyCashDto.getParticulars());
+            pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
+            pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
+            User updatedBy = userRepository.findByUsername(username);
+            if (updatedBy != null) {
+                pettyCash.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
+            }
+            System.out.println("Updated successfully! " + pettyCashDto);
         } else {
-            pettyCash.setCreatedBy(1);
-            pettyCash.setUpdatedBy(1);
+            pettyCash = new PettyCash();
+            pettyCash.setPcvNumber(pettyCashDto.getPcvNumber());
+            pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
+            pettyCash.setDate(pettyCashDto.getDate());
+            pettyCash.setParticulars(pettyCashDto.getParticulars());
+            pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
+            pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
+            User createdBy = userRepository.findByUsername(username);
+            if (createdBy != null) {
+                pettyCash.setCreatedBy(Math.toIntExact(createdBy.getId()));
+                pettyCash.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            } else {
+                pettyCash.setCreatedBy(1);
+                pettyCash.setUpdatedBy(1);
+            }
+            System.out.println("Created successfully! " + pettyCashDto);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashRepository.save(pettyCash);
     }
 
     @Override
-    public void deletePettyCashRecordById(Integer id) {
-
+    public void deletePettyCashRecordById(Long id) {
+        System.out.println("Delete request for id: " + id);
+        pettyCashRepository.deleteById(id);
     }
 }

@@ -9,9 +9,9 @@ public interface PettyCashService {
 
     List<PettyCash> findALlPettyCashRecord();
 
-    PettyCashDto findPettyCashById(Integer id);
+    PettyCashDto findPettyCashById(Long id);
 
     void savePettyCashRecord(PettyCashDto pettyCashDto, String username);
 
-    void deletePettyCashRecordById(Integer id);
+    void deletePettyCashRecordById(Long id);
 }

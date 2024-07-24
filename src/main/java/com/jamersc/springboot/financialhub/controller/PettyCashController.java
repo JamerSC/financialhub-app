@@ -11,10 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -40,15 +37,45 @@ public class PettyCashController {
     }
 
     @PostMapping("/petty-cash-form")
-    public String processPettyCash(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
+    public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
                                    BindingResult result, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String sessionUsername = authentication.getName();
+        String createdBy = authentication.getName();
         if (result.hasErrors()) {
             return "cash/petty-cash-form";
         } else {
-            pettyCashService.savePettyCashRecord(pettyCashDto, sessionUsername);
+            pettyCashService.savePettyCashRecord(pettyCashDto, createdBy);
             return "redirect:/petty-cash/petty-cash-voucher";
         }
+    }
+
+    @GetMapping("/petty-cash-update-form/{id}")
+    public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
+        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
+        if (pettyCashDto != null) {
+            model.addAttribute("pettyCashDto", pettyCashDto);
+            return "cash/petty-cash-update-form";
+        }
+        return "redirect:/petty-cash/petty-cash-voucher";
+    }
+
+    @PostMapping("/petty-cash-update-form")
+    public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
+                                             BindingResult result, Model model) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String updatedBy = authentication.getName();
+        if (result.hasErrors()) {
+            return "cash/petty-cash-update-form";
+        } else {
+            pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
+            return "redirect:/petty-cash/petty-cash-voucher";
+        }
+    }
+
+    @GetMapping("/delete-petty-cash-record/{id}")
+    public String deletePettyCashRecord(@PathVariable(value = "id") Long id) {
+        System.out.println("Delete request for id: " + id);
+        pettyCashService.deletePettyCashRecordById(id);
+        return "redirect:/petty-cash/petty-cash-voucher";
     }
 }
