@@ -58,7 +58,7 @@ public class PettyCashController {
 
     @GetMapping("/petty-cash-update-form/{id}")
     public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
-        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
+        PettyCashDto pettyCashDto = pettyCashService.findPettyCashRecordById(id);
         if (pettyCashDto != null) {
             logger.info("Fetching petty cash form id: " + pettyCashDto.getId());
             model.addAttribute("pettyCashDto", pettyCashDto);

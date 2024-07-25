@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 @Service
@@ -25,5 +26,10 @@ public class RoleServiceImpli implements RoleService {
     @Override
     public Role getRoleWithUsers(Long id) {
         return roleRepository.findByIdWithUsers(id).orElseThrow(() -> new RuntimeException("Role not found!"));
+    }
+
+    @Override
+    public Role findRolesById(Long id) {
+        return roleRepository.findById(id).orElseThrow(null);
     }
 }

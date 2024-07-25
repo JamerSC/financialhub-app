@@ -10,6 +10,10 @@ public interface UserService {
 
     List<User> getAllUsers();
 
+    UserDto findUserRecordById(Long id);
+
     // Save create user & created by user id session.
     void save(UserDto userDto, String sessionName);
+
+    void deleteUserRecordById(Long id);
 }

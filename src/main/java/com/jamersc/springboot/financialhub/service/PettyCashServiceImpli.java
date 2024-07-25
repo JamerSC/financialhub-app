@@ -30,7 +30,7 @@ public class PettyCashServiceImpli implements PettyCashService {
     }
 
     @Override
-    public PettyCashDto findPettyCashById(Long id) {
+    public PettyCashDto findPettyCashRecordById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id).orElse(null);
         if (pettyCash != null) {
             PettyCashDto pettyCashDto = new PettyCashDto();

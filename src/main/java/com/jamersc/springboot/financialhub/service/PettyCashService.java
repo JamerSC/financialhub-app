@@ -9,7 +9,7 @@ public interface PettyCashService {
 
     List<PettyCash> findALlPettyCashRecord();
 
-    PettyCashDto findPettyCashById(Long id);
+    PettyCashDto findPettyCashRecordById(Long id);
 
     void savePettyCashRecord(PettyCashDto pettyCashDto, String username);
 

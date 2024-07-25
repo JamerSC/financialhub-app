@@ -9,4 +9,6 @@ public interface RoleService {
     List<Role> getAllRoles();
 
     Role getRoleWithUsers(Long id);
+
+    Role findRolesById(Long id);
 }

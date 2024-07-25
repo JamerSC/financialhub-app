@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>User Settings</title>
+</head>
+<body>
+
+    <main class="content px-3 py-4"  layout:fragment="content">
+        <div class="container-fluid">
+            <h1 class="mb-5 text-center">Update Petty Cash Voucher Form</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <!-- Insert form-->
+                    <form action="#" th:action="@{/settings/user-settings-update-form}" th:object="${userDto}" method="POST">
+                        <div>
+                            <input type="hidden" th:field="*{id}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="firstName" class="col-form-label">First name:</label>
+                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Enter first name...">
+                            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error">
+                                Firstname is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="middleName" class="col-form-label">Middle name:</label>
+                            <input type="text" class="form-control" id="middleName" th:field="*{middleName}" placeholder="Enter middle name...">
+                            <!-- Middle name is optional -->
+                        </div>
+                        <div class="mb-3">
+                            <label for="lastName" class="col-form-label">Last name:</label>
+                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Enter last name...">
+                            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error">
+                                Lastname is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="col-form-label">Email:</label>
+                            <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Enter email address...">
+                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error" >
+                                Email is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="col-form-label">Roles:</label>
+                            <div th:each="role : ${roles}">
+                                <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" th:checked="${#lists.contains(userDto.roleIds, role.id)}"/>
+                                <label th:for="${role.id}" th:text="'Select ' + ${#strings.substringAfter(role.name, 'ROLE_')} + ' role'"></label>
+                            </div>
+                            <div th:if="${#fields.hasErrors('roleIds')}" th:errors="*{roleIds}" class="error">
+                                User Role is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="username" class="col-form-label">Username:</label>
+                            <input type="text" class="form-control" id="username" th:field="*{username}" placeholder="Enter username">
+                            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error">
+                                Username is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="col-form-label">New Password:</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter new password...">
+                            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">
+                                Password is required!
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirmPassword" class="col-form-label">Confirm New Password:</label>
+                            <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Enter confirm new password...">
+                            <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error">
+                                Confirm password is required!
+                            </div>
+                        </div>
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary">Update</button>
+                        </div>
+                        <div class="d-grid mb-3">
+                            <a th:href="@{/settings/user-settings}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

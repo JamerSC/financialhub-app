@@ -1,6 +1,7 @@
 package com.jamersc.springboot.financialhub.service;
 
 import com.jamersc.springboot.financialhub.dto.UserDto;
+import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.RoleRepository;
@@ -48,6 +49,20 @@ public class UserServiceImpli implements UserService {
     }
 
     @Override
+    public UserDto findUserRecordById(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            UserDto userDto = new UserDto();
+            BeanUtils.copyProperties(user, userDto);
+            // Populate roleIds
+            Set<Long> roleIds = user.getRoles().stream().map(Role::getId).collect(Collectors.toSet());
+            userDto.setRoleIds(roleIds);
+            return userDto;
+        }
+        return null;
+    }
+
+    @Override
     public void save(UserDto userDto, String sessionName) {
         User user = new User();
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
@@ -76,5 +91,11 @@ public class UserServiceImpli implements UserService {
         BeanUtils.copyProperties(userDto, user, "password", "roles");
         userRepository.save(user);
         logger.info("Successfully created user: " + user.getUsername());
+    }
+
+    @Override
+    public void deleteUserRecordById(Long id) {
+        logger.info("Successfully deleted user record by id: " + id);
+        userRepository.deleteById(id);
     }
 }

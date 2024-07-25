@@ -15,11 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 
 @AllArgsConstructor
@@ -83,5 +81,36 @@ public class SettingsController {
         userService.save(userDto, sessionUsername);
         logger.info("Successfully created user: " + username);
         return  "redirect:/settings/user-settings";
+    }
+
+    @GetMapping("/user-settings-update-form/{id}")
+    public String userSettingsUpdateForm(@PathVariable(value = "id") Long id, Model model) {
+        UserDto userDto = userService.findUserRecordById(id);
+        if (userDto != null) {
+            model.addAttribute("userDto", userDto);
+            List<Role> roles = roleService.getAllRoles();
+            model.addAttribute("roles", roles);
+            return "settings/update-user-form";
+        }
+        return "redirect:/settings/user-settings";
+    }
+
+    @PostMapping("/user-settings-update-form")
+    public String processUpdateUserRecord(@Valid @ModelAttribute("userDto") UserDto userDto,
+                                          BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            List<Role> roles = roleService.getAllRoles();
+            model.addAttribute("roles", roles);
+            return "settings/update-user-form";
+        }
+        return "redirect:/settings/user-settings";
+    }
+
+    @GetMapping("/delete-user-record/{id}")
+    public String deleteUserRecordById(@PathVariable(value = "id") Long id) {
+        logger.info("Process deleting user id: " + id);
+        userService.deleteUserRecordById(id);
+        logger.info("Successfully deleted user record id" + id);
+        return "redirect:/settings/user-settings";
     }
 }
