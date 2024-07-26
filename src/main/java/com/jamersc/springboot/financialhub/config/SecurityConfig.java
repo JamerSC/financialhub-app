@@ -44,7 +44,7 @@ public class SecurityConfig {
                 authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers("/css/**", "/js/**", "/financial-hub/login").permitAll()
-                                .requestMatchers("/financial-hub/dashboard").hasRole("EMPLOYEE")
+                                .requestMatchers("/financial-hub/dashboard").hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
                                 .anyRequest().authenticated()
                 )
                 .formLogin(formLogin ->

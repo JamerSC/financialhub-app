@@ -63,34 +63,64 @@ public class UserServiceImpli implements UserService {
     }
 
     @Override
-    public void save(UserDto userDto, String sessionName) {
+    public void save(UserDto userDto, String createdBy) {
         User user = new User();
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(userDto.isEnabled());
-
-        User createdBy = userRepository.findByUsername(sessionName);
+        User creator = userRepository.findByUsername(createdBy);
         if (createdBy != null) {
-            user.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            user.setUpdatedBy(Math.toIntExact(createdBy.getId()));
-            logger.info("Create By: " + createdBy.getUsername());
-            logger.info("User ID: " + createdBy.getId());
+            user.setCreatedBy(Math.toIntExact(creator.getId()));
+            user.setUpdatedBy(Math.toIntExact(creator.getId()));
+            logger.info("Create By: " + creator.getUsername());
+            logger.info("User ID: " + creator.getId());
         } else {
             user.setCreatedBy(1);
             user.setUpdatedBy(1);
         }
-
         Set<Role> roles = userDto.getRoleIds().stream()
                                 .map(roleRepository::findById)
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
                                 .collect(Collectors.toSet());
         user.setRoles(roles);
-
         // BeanUtils.copyProperties(userDto, user, "createdAt");
         BeanUtils.copyProperties(userDto, user, "password", "roles");
         userRepository.save(user);
         logger.info("Successfully created user: " + user.getUsername());
+    }
+
+    @Override
+    public void update(UserDto userDto, String updatedBy) {
+        User user = userRepository.findById(userDto.getId()).orElse(null);
+        if (user != null) {
+            // Update user details except password and roles
+            BeanUtils.copyProperties(userDto, user, "password", "roles", "createdBy", "createdAt");
+            // Update password if provided
+            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+                user.setPassword(encodedPassword);
+            }
+            // Update roles
+            Set<Role> roles = userDto.getRoleIds().stream()
+                    .map(roleRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
+
+            User updater = userRepository.findByUsername(updatedBy);
+            if (updater != null) {
+                user.setUpdatedBy(Math.toIntExact(updater.getId()));
+            } else {
+                user.setUpdatedBy(1);
+            }
+
+            userRepository.save(user);
+            logger.info("Successfully updated user: " + user.getUsername());
+        } else {
+            logger.warn("User with ID " + userDto.getId() + " not found.");
+        }
     }
 
     @Override

@@ -13,7 +13,9 @@ public interface UserService {
     UserDto findUserRecordById(Long id);
 
     // Save create user & created by user id session.
-    void save(UserDto userDto, String sessionName);
+    void save(UserDto userDto, String createdBy);
+
+    void update(UserDto userDto, String updatedBy);
 
     void deleteUserRecordById(Long id);
 }

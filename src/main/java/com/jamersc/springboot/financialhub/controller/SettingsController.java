@@ -53,28 +53,24 @@ public class SettingsController {
         // logging info
         String username = userDto.getUsername();
         logger.info("Processing registration form for: " + username);
-        // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
-        // Get current session name of user
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String sessionUsername = authentication.getName();
-
         if (result.hasErrors()) {
             List<User> users = userService.getAllUsers();
             model.addAttribute("users", users);
             List<Role> roles = roleService.getAllRoles();
             model.addAttribute("roles", roles);
-            //model.addAttribute("formHasErrors", true);
             return "settings/user-settings";
         }
-        User existingUser = userService.findByUsername(username);
-        if(existingUser != null) {
+        // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String sessionUsername = authentication.getName();
+        User existingUsername = userService.findByUsername(username);
+        if(existingUsername != null) {
             List<User> users = userService.getAllUsers();
             model.addAttribute("users", users);
             result.rejectValue("username", "error.username",
                     "Invalid! Username '" + username + "' already exist!");
             List<Role> roles = roleService.getAllRoles();
             model.addAttribute("roles", roles);
-            //model.addAttribute("formHasErrors", true);
             logger.warn("Username already exists!");
             return "settings/user-settings";
         }
@@ -99,10 +95,33 @@ public class SettingsController {
     public String processUpdateUserRecord(@Valid @ModelAttribute("userDto") UserDto userDto,
                                           BindingResult result, Model model) {
         if (result.hasErrors()) {
+            logger.error("Error! Please complete all required fields.");
             List<Role> roles = roleService.getAllRoles();
             model.addAttribute("roles", roles);
             return "settings/update-user-form";
         }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String updatedBy = authentication.getName();
+        // Check if the user exists
+        UserDto existingUser = userService.findUserRecordById(userDto.getId());
+        if (existingUser == null) {
+            logger.error("User not found with id: " + userDto.getId());
+            return "redirect:/settings/user-settings";
+        }
+        // Check if the username has been updated
+        if (!existingUser.getUsername().equals(userDto.getUsername())) {
+            User existingUsername = userService.findByUsername(userDto.getUsername());
+            if (existingUsername != null) {
+                result.rejectValue("username", "error.username",
+                        "Invalid! Username '" + userDto.getUsername() + "' already exists!");
+                List<Role> roles = roleService.getAllRoles();
+                model.addAttribute("roles", roles);
+                logger.warn("Username already exists!");
+                return "settings/update-user-form";
+            }
+        }
+        userService.update(userDto, updatedBy);
+        logger.info("Updated user id: " + userDto.getId());
         return "redirect:/settings/user-settings";
     }
 
