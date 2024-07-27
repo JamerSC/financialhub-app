@@ -15,22 +15,16 @@
             <div class="mb-3">
                 <h3 class="fw-bold  fs-4 mb-3">Credit Card</h3>
             </div>
-            <div>
-                Name:
-                <h1 sec:authentication="name">
-                    The value of the "name" property of the authentication object should appear here.
-                </h1>
-            </div>
 
-            <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                <h3>EMPLOYEE ROLE</h3>
+            <br>
+            <div sec:authentication="name">
+                The value of the "name" property of the authentication object should appear here.
             </div>
-            <div sec:authorize="hasRole('ROLE_MANAGER')">
-                <h3>MANAGER ROLE</h3>
-            </div>
-            <div sec:authorize="hasRole('ROLE_ADMIN')">
-                <h3>ADMIN ROLE</h3>
-            </div>
+            <div sec:authorize="hasRole('ROLE_EMPLOYEE')"> Employee Role </div>
+            <div sec:authorize="hasRole('ROLE_MANAGER')"> Manager Role </div>
+            <div sec:authorize="hasRole('ROLE_ADMIN')"> Employee Role </div>
+            <br>
+
             <h3>Credit Card Voucher</h3>
             <table class="table table-striped shadow">
                 <thead class="table-dark">

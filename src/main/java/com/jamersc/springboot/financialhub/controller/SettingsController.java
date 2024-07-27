@@ -58,6 +58,7 @@ public class SettingsController {
             model.addAttribute("users", users);
             List<Role> roles = roleService.getAllRoles();
             model.addAttribute("roles", roles);
+            model.addAttribute("formHasErrors", true);
             return "settings/user-settings";
         }
         // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
@@ -71,6 +72,7 @@ public class SettingsController {
                     "Invalid! Username '" + username + "' already exist!");
             List<Role> roles = roleService.getAllRoles();
             model.addAttribute("roles", roles);
+            model.addAttribute("formHasErrors", true);
             logger.warn("Username already exists!");
             return "settings/user-settings";
         }

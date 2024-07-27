@@ -15,22 +15,14 @@
         <div class="container-fluid">
             <div class="mb-3">
                 <h3 class="fw-bold fs-4 mb-3">Admin Dashboard</h3>
-                <div>
-                    <span>Name: </span>
-                    <h1 sec:authentication="name">
-                        The value of the "name" property of the authentication object should appear here.
-                    </h1>
+                <br>
+                <div sec:authentication="name">
+                    The value of the "name" property of the authentication object should appear here.
                 </div>
-                <h1>Welcome to User Settings Page</h1>
-                <div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-                    <h3>EMPLOYEE ROLE</h3>
-                </div>
-                <div sec:authorize="hasRole('ROLE_MANAGER')">
-                    <h3>MANAGER ROLE</h3>
-                </div>
-                <div sec:authorize="hasRole('ROLE_ADMIN')">
-                    <h3>ADMIN ROLE</h3>
-                </div>
+                <div sec:authorize="hasRole('ROLE_EMPLOYEE')"> Employee Role </div>
+                <div sec:authorize="hasRole('ROLE_MANAGER')"> Manager Role </div>
+                <div sec:authorize="hasRole('ROLE_ADMIN')"> Employee Role </div>
+                <br>
                 <div class="row">
                     <!-- Column 1 -->
                     <div class="col-12 col-md-4">
