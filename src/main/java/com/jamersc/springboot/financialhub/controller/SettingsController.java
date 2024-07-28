@@ -35,14 +35,8 @@ public class SettingsController {
 
     @GetMapping("/user-settings")
     public String userSettingsPage(Model model) {
-        // display all users from database.
-        List<User> users = userService.getAllUsers();
-        logger.info("Get all users:\n" + users);
-        model.addAttribute("users", users);
-        // fetch all roles
-        List<Role> roles = roleService.getAllRoles();
-        model.addAttribute("roles", roles);
-        // new model for create user dto
+        addUsersToModel(model);
+        addRolesToModel(model);
         model.addAttribute("userDto", new UserDto());
         return  "settings/user-settings";
     }
@@ -50,14 +44,11 @@ public class SettingsController {
     @PostMapping("/user-settings")
     public String processCreateUserForm(@Valid @ModelAttribute("userDto") UserDto userDto,
                                      BindingResult result, Model model) {
-        // logging info
         String username = userDto.getUsername();
         logger.info("Processing registration form for: " + username);
         if (result.hasErrors()) {
-            List<User> users = userService.getAllUsers();
-            model.addAttribute("users", users);
-            List<Role> roles = roleService.getAllRoles();
-            model.addAttribute("roles", roles);
+            addUsersToModel(model);
+            addRolesToModel(model);
             model.addAttribute("formHasErrors", true);
             return "settings/user-settings";
         }
@@ -66,12 +57,10 @@ public class SettingsController {
         String sessionUsername = authentication.getName();
         User existingUsername = userService.findByUsername(username);
         if(existingUsername != null) {
-            List<User> users = userService.getAllUsers();
-            model.addAttribute("users", users);
+            addUsersToModel(model);
             result.rejectValue("username", "error.username",
                     "Invalid! Username '" + username + "' already exist!");
-            List<Role> roles = roleService.getAllRoles();
-            model.addAttribute("roles", roles);
+            addRolesToModel(model);
             model.addAttribute("formHasErrors", true);
             logger.warn("Username already exists!");
             return "settings/user-settings";
@@ -86,8 +75,7 @@ public class SettingsController {
         UserDto userDto = userService.findUserRecordById(id);
         if (userDto != null) {
             model.addAttribute("userDto", userDto);
-            List<Role> roles = roleService.getAllRoles();
-            model.addAttribute("roles", roles);
+            addRolesToModel(model);
             return "settings/update-user-form";
         }
         return "redirect:/settings/user-settings";
@@ -98,8 +86,7 @@ public class SettingsController {
                                           BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
-            List<Role> roles = roleService.getAllRoles();
-            model.addAttribute("roles", roles);
+            addRolesToModel(model);
             return "settings/update-user-form";
         }
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -116,8 +103,7 @@ public class SettingsController {
             if (existingUsername != null) {
                 result.rejectValue("username", "error.username",
                         "Invalid! Username '" + userDto.getUsername() + "' already exists!");
-                List<Role> roles = roleService.getAllRoles();
-                model.addAttribute("roles", roles);
+                addRolesToModel(model);
                 logger.warn("Username already exists!");
                 return "settings/update-user-form";
             }
@@ -133,5 +119,16 @@ public class SettingsController {
         userService.deleteUserRecordById(id);
         logger.info("Successfully deleted user record id" + id);
         return "redirect:/settings/user-settings";
+    }
+
+    private void addUsersToModel(Model model) {
+        List<User> users = userService.getAllUsers();
+        model.addAttribute("users", users);
+        logger.info("Get all users:\n" + users);
+    }
+
+    private void addRolesToModel(Model model) {
+        List<Role> roles = roleService.getAllRoles();
+        model.addAttribute("roles", roles);
     }
 }

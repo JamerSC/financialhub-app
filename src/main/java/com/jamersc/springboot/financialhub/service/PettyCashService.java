@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface PettyCashService {
 
-    List<PettyCash> findALlPettyCashRecord();
+    List<PettyCash> getAllPettyCashRecord();
 
     PettyCashDto findPettyCashRecordById(Long id);
 

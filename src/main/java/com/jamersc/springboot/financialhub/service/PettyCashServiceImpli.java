@@ -25,7 +25,7 @@ public class PettyCashServiceImpli implements PettyCashService {
     private UserRepository userRepository;
 
     @Override
-    public List<PettyCash> findALlPettyCashRecord() {
+    public List<PettyCash> getAllPettyCashRecord() {
         return pettyCashRepository.findAll();
     }
 

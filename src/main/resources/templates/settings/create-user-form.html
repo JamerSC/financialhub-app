@@ -11,16 +11,16 @@
 </head>
 <body>
 
-    <main class="content px-3 py-4"  layout:fragment="content">
-        <div class="container-fluid">
-            <h4 class="mb-5 text-center">Update User</h4>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <!-- Insert form-->
-                    <form action="#" th:action="@{/settings/user-settings-update-form}" th:object="${userDto}" method="POST">
-                        <div>
-                            <input type="hidden" th:field="*{id}">
-                        </div>
+    <div th:fragment="modal(id)" th:id="${id}" class="modal fade" th:classappend="${formHasErrors} ? 'show' : ''"
+         tabindex="-1" aria-labelledby="createNewUserLabel" aria-hidden="true" th:attr="aria-hidden=${formHasErrors} ? 'false' : 'true'">
+        <form class="z-3" action="#" th:action="@{/settings/user-settings}" th:object="${userDto}" method="POST">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title fs-5" id="createNewUserLabel">New User</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
                         <div class="mb-3">
                             <label for="firstName" class="col-form-label">First name:</label>
                             <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Enter first name...">
@@ -50,7 +50,7 @@
                         <div class="mb-3">
                             <label class="col-form-label">Roles:</label>
                             <div th:each="role : ${roles}">
-                                <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" th:checked="${#lists.contains(userDto.roleIds, role.id)}"/>
+                                <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" />
                                 <label th:for="${role.id}" th:text="'Select ' + ${#strings.substringAfter(role.name, 'ROLE_')} + ' role'"></label>
                             </div>
                             <div th:if="${#fields.hasErrors('roleIds')}" th:errors="*{roleIds}" class="error">
@@ -65,30 +65,28 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="password" class="col-form-label">New Password:</label>
-                            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter new password...">
+                            <label for="password" class="col-form-label">Password:</label>
+                            <input type="password" class="form-control" id="password" th:field="*{password}" placeholder="Enter password...">
                             <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error">
                                 Password is required!
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="confirmPassword" class="col-form-label">Confirm New Password:</label>
-                            <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Enter confirm new password...">
+                            <label for="confirmPassword" class="col-form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" id="confirmPassword" th:field="*{confirmPassword}" placeholder="Enter confirm password...">
                             <div th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}" class="error">
                                 Confirm password is required!
                             </div>
                         </div>
-                        <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                        </div>
-                        <div class="d-grid mb-3">
-                            <a th:href="@{/settings/user-settings}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create User</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </form>
+    </div>
 
 </body>
 </html>

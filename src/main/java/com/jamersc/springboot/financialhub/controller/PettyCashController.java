@@ -29,9 +29,7 @@ public class PettyCashController {
 
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model) {
-        List<PettyCash> pettyCash = pettyCashService.findALlPettyCashRecord();
-        logger.info("Get all petty cash record\n" + pettyCash);
-        model.addAttribute("pettyCash", pettyCash);
+        addPettyCashToModel(model);
         return  "cash/petty-cash";
     }
 
@@ -88,5 +86,11 @@ public class PettyCashController {
         pettyCashService.deletePettyCashRecordById(id);
         logger.info("Deleted petty cash form id: " + id);
         return "redirect:/petty-cash/petty-cash-voucher";
+    }
+
+    private void addPettyCashToModel(Model model) {
+        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
+        model.addAttribute("pettyCash", pettyCash);
+        logger.info("Get all petty cash record: " + pettyCash);
     }
 }
