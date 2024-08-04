@@ -29,10 +29,10 @@
                         <div class="card shadow border-1">
                             <div class="card-body py-4">
                                 <h5 class="mb-2 fw-bold">
-                                    Members Progress
+                                     Total of Users
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    $80,000
+                                    <span th:text="${#lists.size(users)}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->
@@ -51,10 +51,10 @@
                         <div class="card shadow border-1">
                             <div class="card-body py-4">
                                 <h5 class="mb-2 fw-bold">
-                                    Members Progress
+                                    Pending Liquidations
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    $80,000
+                                    <span th:text="${#lists.size(pettyCash)}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->
@@ -73,10 +73,10 @@
                         <div class="card shadow border-1">
                             <div class="card-body py-4">
                                 <h5 class="mb-2 fw-bold">
-                                    Members Progress
+                                    Total Checks
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    $80,000
+                                    <span th:text="${#lists.size(checks)}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->

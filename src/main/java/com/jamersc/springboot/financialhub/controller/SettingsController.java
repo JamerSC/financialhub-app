@@ -17,7 +17,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashSet;
 import java.util.List;
 
 @AllArgsConstructor
@@ -36,12 +35,17 @@ public class SettingsController {
     @GetMapping("/user-settings")
     public String userSettingsPage(Model model) {
         addUsersToModel(model);
-        addRolesToModel(model);
-        model.addAttribute("userDto", new UserDto());
         return  "settings/user-settings";
     }
 
-    @PostMapping("/user-settings")
+    @GetMapping("/user-settings-create-form")
+    public String createUserFormPage(Model model) {
+        addRolesToModel(model);
+        model.addAttribute("userDto", new UserDto());
+        return "settings/create-user-form";
+    }
+
+    @PostMapping("/user-settings-create-form")
     public String processCreateUserForm(@Valid @ModelAttribute("userDto") UserDto userDto,
                                      BindingResult result, Model model) {
         String username = userDto.getUsername();
@@ -49,8 +53,7 @@ public class SettingsController {
         if (result.hasErrors()) {
             addUsersToModel(model);
             addRolesToModel(model);
-            model.addAttribute("formHasErrors", true);
-            return "settings/user-settings";
+            return "settings/create-user-form";
         }
         // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -63,7 +66,7 @@ public class SettingsController {
             addRolesToModel(model);
             model.addAttribute("formHasErrors", true);
             logger.warn("Username already exists!");
-            return "settings/user-settings";
+            return "settings/create-user-form";
         }
         userService.save(userDto, sessionUsername);
         logger.info("Successfully created user: " + username);
