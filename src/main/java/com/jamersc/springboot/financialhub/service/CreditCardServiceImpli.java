@@ -5,6 +5,7 @@ import com.jamersc.springboot.financialhub.model.CreditCard;
 import com.jamersc.springboot.financialhub.repository.CreditCardRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +25,13 @@ public class CreditCardServiceImpli implements CreditCardService{
     }
 
     @Override
-    public CreditCardDto findCreditCardRecordById(Integer id) {
+    public CreditCardDto findCreditCardRecordById(Long id) {
+        CreditCard creditCard = creditCardRepository.findById(id).orElse(null);
+        if (creditCard != null) {
+            CreditCardDto creditCardDto = new CreditCardDto();
+            BeanUtils.copyProperties(creditCard, creditCardDto);
+            return creditCardDto;
+        }
         return null;
     }
 
@@ -34,7 +41,7 @@ public class CreditCardServiceImpli implements CreditCardService{
     }
 
     @Override
-    public void deleteCreditCardRecordById(Integer id) {
-
+    public void deleteCreditCardRecordById(Long id) {
+        creditCardRepository.deleteById(id);
     }
 }

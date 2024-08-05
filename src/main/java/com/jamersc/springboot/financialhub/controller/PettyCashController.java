@@ -42,12 +42,12 @@ public class PettyCashController {
     @PostMapping("/petty-cash-form")
     public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
                                    BindingResult result, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String createdBy = authentication.getName();
         if (result.hasErrors()) {
             logger.error("Please complete all required fields!");
             return "cash/petty-cash-form";
         } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String createdBy = authentication.getName();
             logger.info("Created petty cash voucher: " + pettyCashDto);
             pettyCashService.savePettyCashRecord(pettyCashDto, createdBy);
             return "redirect:/petty-cash/petty-cash-voucher";
@@ -68,12 +68,12 @@ public class PettyCashController {
     @PostMapping("/petty-cash-update-form")
     public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
                                              BindingResult result, Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String updatedBy = authentication.getName();
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
             return "cash/petty-cash-update-form";
         } else {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            String updatedBy = authentication.getName();
             pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
             logger.info("Updated petty cash voucher!\n" + pettyCashDto);
             return "redirect:/petty-cash/petty-cash-voucher";

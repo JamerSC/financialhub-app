@@ -9,10 +9,10 @@ public interface CreditCardService {
 
     List<CreditCard> findAllCreditCardRecord();
 
-    CreditCardDto findCreditCardRecordById(Integer id);
+    CreditCardDto findCreditCardRecordById(Long id);
 
     void saveCreditCardRecord(CreditCardDto creditCardDto);
 
-    void deleteCreditCardRecordById(Integer id);
+    void deleteCreditCardRecordById(Long id);
 
 }

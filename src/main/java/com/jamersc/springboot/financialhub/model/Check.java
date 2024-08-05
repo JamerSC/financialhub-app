@@ -40,6 +40,9 @@ public class Check {
     @Column(name = "check_number")
     private String checkNumber;
 
+    @Column(name = "check_date")
+    private Date checkDate;
+
     @Column(name = "created_by")
     private int createdBy;
 

@@ -69,7 +69,7 @@ public class UserServiceImpli implements UserService {
         user.setPassword(encodedPassword);
         user.setEnabled(userDto.isEnabled());
         User creator = userRepository.findByUsername(createdBy);
-        if (createdBy != null) {
+        if (creator != null) {
             user.setCreatedBy(Math.toIntExact(creator.getId()));
             user.setUpdatedBy(Math.toIntExact(creator.getId()));
             logger.info("Create By: " + creator.getUsername());

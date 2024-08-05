@@ -3,6 +3,7 @@ package com.jamersc.springboot.financialhub.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ public class CheckDto {
     private String payeeName;
 
     @NotNull(message = "Date is required!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @NotNull(message = "Total amount is required!")
@@ -33,11 +35,15 @@ public class CheckDto {
     @Size(min = 1, message = "At least 3 to 50 characters!")
     private String amountInWords;
 
-    @NotNull(message = "Bank is required.!")
+    @NotNull(message = "Bank is required!")
     @Size(min = 1, message = "At least 3 to 50 characters!")
     private String bank;
 
     @NotNull(message = "Check number is required!")
-    @Size(min = 8, message = "At least 8 to 50 characters!")
+    @Size(min = 8, message = "At least 8 to 10!")
     private String checkNumber;
+
+    @NotNull(message = "Date is required!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date checkDate;
 }

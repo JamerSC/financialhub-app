@@ -9,9 +9,11 @@ public interface CheckService {
 
     List<Check> getAllCheckRecord();
 
-    CheckDto findCheckRecordById(Integer id);
+    CheckDto findCheckRecordById(Long id);
 
-    void saveCheckRecord(CheckDto checkDto);
+    void saveCheckRecord(CheckDto checkDto, String createdBy);
 
-    void deleteCheckRecordById(Integer id);
+    void updateCheckRecord(CheckDto checkDto, String updatedBy);
+
+    void deleteCheckRecordById(Long id);
 }
