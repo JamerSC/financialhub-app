@@ -115,7 +115,7 @@ CREATE TABLE `check_vouchers` (
     `check_number` varchar(50) NOT NULL,
     `check_date` date NOT NULL,
 	`created_by` int NULL,
-    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)

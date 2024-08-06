@@ -46,8 +46,7 @@ public class PettyCashController {
             logger.error("Please complete all required fields!");
             return "cash/petty-cash-form";
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String createdBy = authentication.getName();
+            String createdBy = getSessionUsername();
             logger.info("Created petty cash voucher: " + pettyCashDto);
             pettyCashService.savePettyCashRecord(pettyCashDto, createdBy);
             return "redirect:/petty-cash/petty-cash-voucher";
@@ -72,8 +71,7 @@ public class PettyCashController {
             logger.error("Error! Please complete all required fields.");
             return "cash/petty-cash-update-form";
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String updatedBy = authentication.getName();
+            String updatedBy = getSessionUsername();
             pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
             logger.info("Updated petty cash voucher!\n" + pettyCashDto);
             return "redirect:/petty-cash/petty-cash-voucher";
@@ -92,5 +90,10 @@ public class PettyCashController {
         List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
         model.addAttribute("pettyCash", pettyCash);
         logger.info("Get all petty cash record: " + pettyCash);
+    }
+
+    private String getSessionUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }

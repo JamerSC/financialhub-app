@@ -47,8 +47,7 @@ public class CheckController {
             logger.error("Please complete the required fields!");
             return "check/check-form";
         } else {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            String createdBy = authentication.getName();
+            String createdBy = getSessionUsername();
             checkService.saveCheckRecord(checkDto, createdBy);
             logger.info("Created new check voucher: " + checkDto);
             return "redirect:/check/check-voucher";
@@ -71,8 +70,12 @@ public class CheckController {
         if (result.hasErrors()) {
             logger.warn("Please complete the required fields!");
             return "check/check-update-form";
+        } else {
+            String updatedBy = getSessionUsername();
+            checkService.updateCheckRecord(checkDto, updatedBy);
+            logger.info("Updated successfully! " + checkDto);
+            return "redirect:/check/check-voucher";
         }
-        return "redirect:/check/check";
     }
 
     @GetMapping("/delete-check-record/{id}")
@@ -83,4 +86,8 @@ public class CheckController {
         return "redirect:/check/check-voucher";
     }
 
+    private String getSessionUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
+    }
 }

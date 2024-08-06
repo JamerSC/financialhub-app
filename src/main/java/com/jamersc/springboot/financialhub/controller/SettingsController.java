@@ -55,9 +55,6 @@ public class SettingsController {
             addRolesToModel(model);
             return "settings/create-user-form";
         }
-        // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String sessionUsername = authentication.getName();
         User existingUsername = userService.findByUsername(username);
         if(existingUsername != null) {
             addUsersToModel(model);
@@ -68,7 +65,8 @@ public class SettingsController {
             logger.warn("Username already exists!");
             return "settings/create-user-form";
         }
-        userService.save(userDto, sessionUsername);
+        String createdBy = getSessionUsername();
+        userService.save(userDto, createdBy);
         logger.info("Successfully created user: " + username);
         return  "redirect:/settings/user-settings";
     }
@@ -92,9 +90,7 @@ public class SettingsController {
             addRolesToModel(model);
             return "settings/update-user-form";
         }
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String updatedBy = authentication.getName();
-        // Check if the user exists
+        String updatedBy = getSessionUsername();
         UserDto existingUser = userService.findUserRecordById(userDto.getId());
         if (existingUser == null) {
             logger.error("User not found with id: " + userDto.getId());
@@ -133,5 +129,11 @@ public class SettingsController {
     private void addRolesToModel(Model model) {
         List<Role> roles = roleService.getAllRoles();
         model.addAttribute("roles", roles);
+    }
+
+    private String getSessionUsername() {
+        // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }
