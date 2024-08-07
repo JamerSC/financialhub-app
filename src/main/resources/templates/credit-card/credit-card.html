@@ -31,10 +31,9 @@
                         </div>
                         <!-- Create User Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <a href="#" class="btn btn-primary btn-sm">
+                            <a href="#" class="btn btn-primary btn-sm" th:href="@{/credit-card/credit-card-form}">
                                 <i class="lni lni-notepad"></i> Add New
                             </a>
-                            <!--th:href="@{/petty-cash/petty-cash-form}"-->
                         </div>
                     </div>
                     <table class="table table-striped shadow">
@@ -54,7 +53,7 @@
                         <tr th:each="tempCreditCard : ${creditCards}">
                             <td th:text="${tempCreditCard.ccvNumber}"></td>
                             <td th:text="${tempCreditCard.payeeName}"></td>
-                            <td th:text="${#dates.format(tempCreditCard, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${#dates.format(tempCreditCard.date, 'dd MMMM yyyy')}"></td>
                             <td th:text="${#numbers.formatDecimal(tempCreditCard.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td th:text="${tempCreditCard.bank}"></td>
                             <td th:text="${tempCreditCard.modeOfPayment}"></td>
@@ -63,19 +62,14 @@
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm">
                                     <i class="lni lni-printer"></i>
                                 </a>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
-                                   href="#" class="btn btn-success btn-sm">
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
+                                   th:href="@{/credit-card/credit-card-update-form/{id}(id=${tempCreditCard.id})}">
                                     <i class="lni lni-pencil-alt"></i>
                                 </a>
-                                <!--
-                                   th:href="@{/petty-cash/petty-cash-update-form/{id}(id=${tempPettyCash.id})}"
-                                -->
-                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn">
+                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                   th:href="@{/credit-card/delete-credit-card-record/{id}(id=${tempCreditCard.id})}">
                                     <i class="lni lni-trash-can"></i>
                                 </a>
-                                <!--
-                                   th:href="@{/petty-cash/delete-petty-cash-record/{id}(id=${tempPettyCash.id})}"
-                                -->
                             </td>
                         </tr>
                         </tbody>

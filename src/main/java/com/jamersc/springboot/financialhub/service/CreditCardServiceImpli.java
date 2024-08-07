@@ -2,6 +2,7 @@ package com.jamersc.springboot.financialhub.service;
 
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.jamersc.springboot.financialhub.model.CreditCard;
+import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CreditCardRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -14,10 +15,13 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 @Transactional
-public class CreditCardServiceImpli implements CreditCardService{
+public class CreditCardServiceImpli implements CreditCardService {
 
     @Autowired
     private CreditCardRepository creditCardRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Override
     public List<CreditCard> findAllCreditCardRecord() {
@@ -36,8 +40,29 @@ public class CreditCardServiceImpli implements CreditCardService{
     }
 
     @Override
-    public void saveCreditCardRecord(CreditCardDto creditCardDto) {
-
+    public void saveCreditCardRecord(CreditCardDto creditCardDto, String username) {
+        CreditCard creditCard;
+        if (creditCardDto.getId() != null) {
+            creditCard = creditCardRepository.findById(creditCardDto.getId()).orElse(new CreditCard());
+            User updatedBy = userService.findByUsername(username);
+            if (updatedBy != null) {
+                creditCard.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
+            } else {
+                creditCard.setUpdatedBy(1);
+            }
+        } else {
+            creditCard = new CreditCard();
+            User createdBy = userService.findByUsername(username);
+            if (createdBy != null) {
+                creditCard.setCreatedBy(Math.toIntExact(createdBy.getId()));
+                creditCard.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            } else {
+                creditCard.setCreatedBy(1);
+                creditCard.setUpdatedBy(1);
+            }
+        }
+        BeanUtils.copyProperties(creditCardDto, creditCard);
+        creditCardRepository.save(creditCard);
     }
 
     @Override

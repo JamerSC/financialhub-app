@@ -3,6 +3,7 @@ package com.jamersc.springboot.financialhub.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -24,6 +25,7 @@ public class CreditCardDto {
     private String payeeName;
 
     @NotNull(message = "Date is required!")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @NotNull(message = "Total amount is required!")

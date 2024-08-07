@@ -11,7 +11,7 @@ public interface CreditCardService {
 
     CreditCardDto findCreditCardRecordById(Long id);
 
-    void saveCreditCardRecord(CreditCardDto creditCardDto);
+    void saveCreditCardRecord(CreditCardDto creditCardDto, String username);
 
     void deleteCreditCardRecordById(Long id);
 

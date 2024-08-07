@@ -61,7 +61,7 @@ public class CheckController {
             model.addAttribute("checkDto", checkDto);
             return "check/check-update-form";
         }
-        return "redirect:/check/check";
+        return "redirect:/check/check-voucher";
     }
 
     @PostMapping("/check-update-form")
