@@ -2,12 +2,16 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.service.PdfService;
 import com.jamersc.springboot.financialhub.service.PettyCashService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,6 +31,9 @@ public class PettyCashController {
 
     @Autowired
     private PettyCashService pettyCashService;
+
+    @Autowired
+    private PdfService pdfService;
 
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model) {
@@ -84,6 +92,20 @@ public class PettyCashController {
         pettyCashService.deletePettyCashRecordById(id);
         logger.info("Deleted petty cash form id: " + id);
         return "redirect:/petty-cash/petty-cash-voucher";
+    }
+
+    @GetMapping("/generate-petty-cash-list")
+    public ResponseEntity<byte[]> generatePdfListOfPettyCash() {
+        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
+        ByteArrayInputStream stream = pdfService.generatePettyCashVoucher(pettyCash);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=pettycash.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream.readAllBytes());
     }
 
     private void addPettyCashToModel(Model model) {

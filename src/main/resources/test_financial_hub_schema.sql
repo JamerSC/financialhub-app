@@ -33,7 +33,7 @@ CREATE TABLE users_roles (
     `role_id` int NOT NULL,
     PRIMARY KEY (`user_id`,`role_id`),
     FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (`ROLE_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- sample data

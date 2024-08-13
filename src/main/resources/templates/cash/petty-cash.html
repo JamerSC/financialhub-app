@@ -56,7 +56,8 @@
                             <td th:text="${tempPettyCash.approvedBy}"></td>
                             <td th:text="${#dates.format(tempPettyCash.createdAt, 'dd MMMM yyyy')}"></td>
                             <td>
-                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm">
+                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
+                                    th:href="@{/petty-cash/generate-petty-cash-list}">
                                     <i class="lni lni-printer"></i>
                                 </a>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
