@@ -94,13 +94,32 @@ public class PettyCashController {
         return "redirect:/petty-cash/petty-cash-voucher";
     }
 
+    // Generate PDF list of Petty Cash Voucher
     @GetMapping("/generate-petty-cash-list")
     public ResponseEntity<byte[]> generatePdfListOfPettyCash() {
         List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
-        ByteArrayInputStream stream = pdfService.generatePettyCashVoucher(pettyCash);
+        ByteArrayInputStream stream = pdfService.generatePettyCashList(pettyCash);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-Disposition", "inline; filename=pettycash.pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream.readAllBytes());
+    }
+
+    @GetMapping("/generate-petty-cash-voucher/{id}")
+    public ResponseEntity<byte[]> generatePettyCashVoucher(@PathVariable(value = "id") Long id) {
+        PettyCashDto pettyCashDto = pettyCashService.findPettyCashRecordById(id);
+        if (pettyCashDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayInputStream stream = pdfService.generatePettyCashVoucher(pettyCashDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=pettycash-" + id + ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)
