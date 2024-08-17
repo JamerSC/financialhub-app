@@ -2,7 +2,7 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.service.PdfService;
+import com.jamersc.springboot.financialhub.service.PettyCashVoucherService;
 import com.jamersc.springboot.financialhub.service.PettyCashService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -33,7 +33,7 @@ public class PettyCashController {
     private PettyCashService pettyCashService;
 
     @Autowired
-    private PdfService pdfService;
+    private PettyCashVoucherService pettyCashVoucherService;
 
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model) {
@@ -94,21 +94,6 @@ public class PettyCashController {
         return "redirect:/petty-cash/petty-cash-voucher";
     }
 
-    // Generate PDF list of Petty Cash Voucher
-    @GetMapping("/generate-petty-cash-list")
-    public ResponseEntity<byte[]> generatePdfListOfPettyCash() {
-        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
-        ByteArrayInputStream stream = pdfService.generatePettyCashList(pettyCash);
-
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=pettycash.pdf");
-
-        return ResponseEntity.ok()
-                .headers(headers)
-                .contentType(MediaType.APPLICATION_PDF)
-                .body(stream.readAllBytes());
-    }
-
     @GetMapping("/generate-petty-cash-voucher/{id}")
     public ResponseEntity<byte[]> generatePettyCashVoucher(@PathVariable(value = "id") Long id) {
         PettyCashDto pettyCashDto = pettyCashService.findPettyCashRecordById(id);
@@ -116,10 +101,10 @@ public class PettyCashController {
             return ResponseEntity.notFound().build();
         }
 
-        ByteArrayInputStream stream = pdfService.generatePettyCashVoucher(pettyCashDto);
+        ByteArrayInputStream stream = pettyCashVoucherService.generatePettyCashVoucher(pettyCashDto);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=pettycash-" + id + ".pdf");
+        headers.add("Content-Disposition", "inline; filename=" + pettyCashDto.getPcvNumber() + ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

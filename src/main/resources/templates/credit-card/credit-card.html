@@ -59,7 +59,8 @@
                             <td th:text="${tempCreditCard.modeOfPayment}"></td>
                             <td th:text="${#dates.format(tempCreditCard.createdAt, 'dd MMMM yyyy')}"></td>
                             <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm">
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
+                                   th:href="@{/credit-card/generate-credit-card-voucher/{id}(id=${tempCreditCard.id})}" target="_blank">
                                     <i class="lni lni-printer"></i>
                                 </a>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"

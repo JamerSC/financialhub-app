@@ -58,7 +58,8 @@
                             <td th:text="${tempCheck.checkNumber}"></td>
                             <td th:text="${#dates.format(tempCheck.createdAt, 'dd MMMM yyyy')}"></td>
                             <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm">
+                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
+                                    th:href="@{/check/generate-check-voucher/{id}(id=${tempCheck.id})}" target="_blank">
                                     <i class="lni lni-printer"></i>
                                 </a>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"

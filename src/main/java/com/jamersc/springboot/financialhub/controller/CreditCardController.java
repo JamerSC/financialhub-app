@@ -1,12 +1,17 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.CheckDto;
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.jamersc.springboot.financialhub.model.CreditCard;
 import com.jamersc.springboot.financialhub.service.CreditCardService;
+import com.jamersc.springboot.financialhub.service.CreditCardVoucherService;
 import com.jamersc.springboot.financialhub.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -14,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @AllArgsConstructor
@@ -23,6 +29,9 @@ public class CreditCardController {
 
     @Autowired
     private CreditCardService creditCardService;
+
+    @Autowired
+    private CreditCardVoucherService creditCardVoucherService;
 
     @GetMapping("/credit-card-voucher")
     public String creditCardVoucherPage(Model model) {
@@ -75,6 +84,24 @@ public class CreditCardController {
     public String deleteCreditCardRecord(@PathVariable(value = "id") Long id, Model model) {
         creditCardService.deleteCreditCardRecordById(id);
         return "redirect:/credit-card/credit-card-voucher";
+    }
+
+    @GetMapping("/generate-credit-card-voucher/{id}")
+    public ResponseEntity<byte[]> generateCreditCardVoucher(@PathVariable(value = "id") Long id) {
+        CreditCardDto creditCardDto = creditCardService.findCreditCardRecordById(id);
+        if (creditCardDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayInputStream stream = creditCardVoucherService.generateCreditCardVoucher(creditCardDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=" + creditCardDto.getCcvNumber() + ".pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream.readAllBytes());
     }
 
     private String getSessionUsername() {

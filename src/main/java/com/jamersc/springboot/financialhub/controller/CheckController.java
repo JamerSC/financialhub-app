@@ -1,13 +1,18 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.CheckDto;
+import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.Check;
 import com.jamersc.springboot.financialhub.service.CheckService;
+import com.jamersc.springboot.financialhub.service.CheckVoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.ByteArrayInputStream;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,6 +32,9 @@ public class CheckController {
 
     @Autowired
     private CheckService checkService;
+
+    @Autowired
+    private CheckVoucherService checkVoucherService;
 
     @GetMapping("/check-voucher")
     public String checkVoucherPage(Model model) {
@@ -84,6 +93,24 @@ public class CheckController {
         checkService.deleteCheckRecordById(id);
         logger.info("Deleted successfully! Check record no.: " + id);
         return "redirect:/check/check-voucher";
+    }
+
+    @GetMapping("/generate-check-voucher/{id}")
+    public ResponseEntity<byte[]> generateCheckVoucher(@PathVariable(value = "id") Long id) {
+        CheckDto checkDto = checkService.findCheckRecordById(id);
+        if (checkDto == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        ByteArrayInputStream stream = checkVoucherService.generateCheckVoucher(checkDto);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=" + checkDto.getCvNumber() + ".pdf");
+
+        return ResponseEntity.ok()
+                .headers(headers)
+                .contentType(MediaType.APPLICATION_PDF)
+                .body(stream.readAllBytes());
     }
 
     private String getSessionUsername() {
