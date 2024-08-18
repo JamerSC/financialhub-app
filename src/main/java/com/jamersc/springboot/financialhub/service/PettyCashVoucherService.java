@@ -27,9 +27,9 @@ public class PettyCashVoucherService {
             document.open();
 
             // Set font style, size, and color
-            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLUE);
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 16, Color.BLACK);
             Font regularFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
-            Font labelFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Color.BLACK);
+            Font labelFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Color.GRAY);
 
             // Function to create the copy (original or duplicate)
             Runnable createCopy = (Runnable) () -> {
@@ -196,7 +196,7 @@ public class PettyCashVoucherService {
                     // Add the approval table to the document
                     document.add(approvalTable);
                 } catch (DocumentException e) {
-                    e.printStackTrace();
+                    throw new RuntimeException("Error generating PDF", e);
                 }
             };
 
@@ -217,7 +217,7 @@ public class PettyCashVoucherService {
 
             document.close();
         } catch (DocumentException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Error generating PDF", e);
         }
 
         return new ByteArrayInputStream(out.toByteArray());
