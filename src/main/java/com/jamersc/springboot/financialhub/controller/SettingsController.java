@@ -10,6 +10,8 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -33,8 +35,12 @@ public class SettingsController {
     private RoleService roleService;
 
     @GetMapping("/user-settings")
-    public String userSettingsPage(Model model) {
-        addUsersToModel(model);
+    public String userSettingsPage(Model model, @RequestParam(defaultValue = "0") int page) {
+        Page<User> usersPage = userService.findAll(PageRequest.of(page, 6));
+        List<User> users = usersPage.getContent();
+        model.addAttribute("users", users);
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", usersPage.getTotalPages());
         return  "settings/user-settings";
     }
 
@@ -51,7 +57,6 @@ public class SettingsController {
         String username = userDto.getUsername();
         logger.info("Processing registration form for: " + username);
         if (result.hasErrors()) {
-            addUsersToModel(model);
             addRolesToModel(model);
             return "settings/create-user-form";
         }
