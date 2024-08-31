@@ -1,10 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.CheckDto;
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.Check;
-import com.jamersc.springboot.financialhub.service.CheckService;
-import com.jamersc.springboot.financialhub.service.CheckVoucherService;
+import com.jamersc.springboot.financialhub.service.check.CheckService;
+import com.jamersc.springboot.financialhub.service.check.CheckVoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

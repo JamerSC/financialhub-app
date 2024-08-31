@@ -1,11 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.dto.CheckDto;
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.jamersc.springboot.financialhub.model.CreditCard;
-import com.jamersc.springboot.financialhub.service.CreditCardService;
-import com.jamersc.springboot.financialhub.service.CreditCardVoucherService;
-import com.jamersc.springboot.financialhub.service.UserService;
+import com.jamersc.springboot.financialhub.service.creditcard.CreditCardService;
+import com.jamersc.springboot.financialhub.service.creditcard.CreditCardVoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

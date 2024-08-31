@@ -1,7 +1,6 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.check;
 
 import com.jamersc.springboot.financialhub.dto.CheckDto;
-import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
@@ -18,9 +17,9 @@ import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 
 @Service
-public class CreditCardVoucherService {
+public class CheckVoucherService {
 
-    public ByteArrayInputStream generateCreditCardVoucher(CreditCardDto creditCardDto) {
+    public ByteArrayInputStream generateCheckVoucher(CheckDto checkDto) {
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -33,8 +32,6 @@ public class CreditCardVoucherService {
             Font regularFont = FontFactory.getFont(FontFactory.HELVETICA, 12, Color.BLACK);
             Font labelFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 14, Color.GRAY);
 
-
-            // Function to create the copy (original or duplicate)
             Runnable createCopy = (Runnable) () -> {
                 try {
                     // 1st Row - Company Name, Address, Check Voucher Title, and CV Number
@@ -49,7 +46,7 @@ public class CreditCardVoucherService {
                     firstRow.addCell(companyNameCell);
 
                     // Check Voucher Title (Right)
-                    PdfPCell checkVoucherCell = new PdfPCell(new Paragraph("Credit Card", titleFont));
+                    PdfPCell checkVoucherCell = new PdfPCell(new Paragraph("Check Voucher", titleFont));
                     checkVoucherCell.setBorder(Rectangle.NO_BORDER);
                     checkVoucherCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     firstRow.addCell(checkVoucherCell);
@@ -62,7 +59,7 @@ public class CreditCardVoucherService {
                     firstRow.addCell(companyAddressCell);
 
                     // CV Number (Right)
-                    PdfPCell cvNumberCell = new PdfPCell(new Paragraph("CV No.: " + creditCardDto.getCcvNumber(), regularFont));
+                    PdfPCell cvNumberCell = new PdfPCell(new Paragraph("CV No.: " + checkDto.getCvNumber(), regularFont));
                     cvNumberCell.setBorder(Rectangle.NO_BORDER);
                     cvNumberCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     firstRow.addCell(cvNumberCell);
@@ -90,14 +87,14 @@ public class CreditCardVoucherService {
                     secondRow.setWidths(new float[]{75, 25});
 
                     // Pay To (Left)
-                    PdfPCell payToCell = new PdfPCell(new Paragraph("Pay to: " + creditCardDto.getPayeeName(), regularFont));
+                    PdfPCell payToCell = new PdfPCell(new Paragraph("Pay to: " + checkDto.getPayeeName(), regularFont));
                     payToCell.setBorder(Rectangle.NO_BORDER);
                     payToCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     secondRow.addCell(payToCell);
 
                     // Date (Right)
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-                    String dateFormatted = dateFormat.format(creditCardDto.getDate());
+                    String dateFormatted = dateFormat.format(checkDto.getDate());
                     PdfPCell dateCell = new PdfPCell(new Paragraph("Date: " + dateFormatted , regularFont));
                     dateCell.setBorder(Rectangle.NO_BORDER);
                     dateCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
@@ -126,13 +123,13 @@ public class CreditCardVoucherService {
                     thirdRow.addCell(amountTitleCell);
 
                     // Particulars Detail (Left)
-                    PdfPCell particularsDetailCell = new PdfPCell(new Paragraph(creditCardDto.getCcvNumber(), regularFont));
+                    PdfPCell particularsDetailCell = new PdfPCell(new Paragraph(checkDto.getCheckNumber(), regularFont));
                     particularsDetailCell.setBorder(Rectangle.NO_BORDER);
                     particularsDetailCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     thirdRow.addCell(particularsDetailCell);
 
                     // Amount Detail (Right)
-                    PdfPCell amountDetailCell = new PdfPCell(new Paragraph(String.format("%.2f", creditCardDto.getTotalAmount()), regularFont));
+                    PdfPCell amountDetailCell = new PdfPCell(new Paragraph(String.format("%.2f", checkDto.getTotalAmount()), regularFont));
                     amountDetailCell.setBorder(Rectangle.NO_BORDER);
                     amountDetailCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     thirdRow.addCell(amountDetailCell);
@@ -160,7 +157,7 @@ public class CreditCardVoucherService {
                     grandTotalTitleCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     grandTotalRow.addCell(grandTotalTitleCell);
 
-                    PdfPCell grandTotalAmountCell = new PdfPCell(new Paragraph(String.format("%.2f", creditCardDto.getTotalAmount()), regularFont));
+                    PdfPCell grandTotalAmountCell = new PdfPCell(new Paragraph(String.format("%.2f", checkDto.getTotalAmount()), regularFont));
                     grandTotalAmountCell.setBorder(Rectangle.NO_BORDER);
                     grandTotalAmountCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
                     grandTotalRow.addCell(grandTotalAmountCell);
@@ -172,12 +169,12 @@ public class CreditCardVoucherService {
                     document.add(Chunk.NEWLINE);
 
                     // Amount in Words
-                    Paragraph amountInWords = new Paragraph("Amount in words: " + creditCardDto.getAmountInWords(), regularFont);
+                    Paragraph amountInWords = new Paragraph("Amount in words: " + checkDto.getAmountInWords(), regularFont);
                     amountInWords.setAlignment(Element.ALIGN_LEFT);
                     document.add(amountInWords);
 
                     // Bank, Check No., and Check Date
-                    Paragraph bankDetails = new Paragraph("Bank: " + creditCardDto.getBank() + ", Check No.: 0000-0000-0000-0000, Check Date: " + creditCardDto.getDate(), regularFont);
+                    Paragraph bankDetails = new Paragraph("Bank: " + checkDto.getBank() + ", Check No.: " + checkDto.getCheckNumber() + ", Check Date: " + checkDto.getCheckDate(), regularFont);
                     bankDetails.setAlignment(Element.ALIGN_LEFT);
                     document.add(bankDetails);
 
@@ -238,22 +235,21 @@ public class CreditCardVoucherService {
                 }
             };
 
-            Paragraph companyCopy = new Paragraph("Company Copy", labelFont);
-            companyCopy.setAlignment(Element.ALIGN_RIGHT);  // Align title to the center
+            Paragraph companyCopy = new Paragraph("Company copy", labelFont);
+            companyCopy.setAlignment(Element.ALIGN_RIGHT);
             document.add(companyCopy);
 
-            // Generate the original copy
             createCopy.run();
 
             // Add a horizontal broken line
             document.add(new Paragraph(new Chunk(new DottedLineSeparator())));
 
-            Paragraph receiversCopy = new Paragraph("Receiver's Copy", labelFont);
-            receiversCopy.setAlignment(Element.ALIGN_RIGHT);  // Align title to the center
+            Paragraph receiversCopy = new Paragraph("Receiver's copy", labelFont);
+            receiversCopy.setAlignment(Element.ALIGN_RIGHT);
             document.add(receiversCopy);
 
-            // Generate the duplicate copy
             createCopy.run();
+
 
             // Close document
             document.close();

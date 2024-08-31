@@ -1,9 +1,11 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.service.PettyCashVoucherService;
-import com.jamersc.springboot.financialhub.service.PettyCashService;
+import com.jamersc.springboot.financialhub.service.cash.LiquidationService;
+import com.jamersc.springboot.financialhub.service.cash.PettyCashVoucherService;
+import com.jamersc.springboot.financialhub.service.cash.PettyCashService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -34,6 +36,9 @@ public class PettyCashController {
 
     @Autowired
     private PettyCashVoucherService pettyCashVoucherService;
+
+    @Autowired
+    private LiquidationService liquidationService;
 
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model) {
@@ -122,4 +127,34 @@ public class PettyCashController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
     }
+
+    @GetMapping("/liquidation-pcv/{id}")
+    public String liquidationForm(@PathVariable(name = "id") Long id, Model model) {
+        PettyCash pettyCash = pettyCashService.findPettyCashById(id);
+        if (pettyCash != null) {
+            List<Liquidation> liquidations = liquidationService.findByPettyCashVoucherId(pettyCash.getId());
+            model.addAttribute("pettyCash", pettyCash);
+            model.addAttribute("liquidations", pettyCash.getLiquidations());
+            logger.info("Petty Cash Voucher details: " + pettyCash);
+            logger.info("For liquidations: " + liquidations);
+            return "cash/liquidation-form";
+        }
+        return "redirect:/petty-cash/petty-cash-voucher";
+    }
+
+    @PostMapping("/save-liquidation")
+    public String saveLiquidation(@ModelAttribute("pettyCash") PettyCash pettyCash) {
+        if (pettyCash != null && pettyCash.getId() != null) {
+            for (Liquidation liquidation : pettyCash.getLiquidations()) {
+                // Ensure the PettyCash is set correctly for all items
+                liquidation.setPettyCash(pettyCash);
+            }
+            // Save all the liquidations
+            liquidationService.saveAll(pettyCash.getLiquidations());
+            logger.info("Liquidation saved successfully!" + pettyCash);
+            pettyCashService.save(pettyCash);
+        }
+        return "redirect:/petty-cash/petty-cash-voucher";
+    }
+
 }

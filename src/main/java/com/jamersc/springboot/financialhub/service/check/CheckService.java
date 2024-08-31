@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.check;
 
 import com.jamersc.springboot.financialhub.dto.CheckDto;
 import com.jamersc.springboot.financialhub.model.Check;

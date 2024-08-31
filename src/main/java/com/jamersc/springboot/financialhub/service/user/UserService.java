@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.user;
 
 import com.jamersc.springboot.financialhub.dto.UserDto;
 import com.jamersc.springboot.financialhub.model.User;

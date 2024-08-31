@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Petty Cash Voucher</title>
+</head>
+<body>
+
+    <main class="content px-3 py-4"  layout:fragment="content">
+        <div class="container-fluid">
+            <h4 class="mb-5 text-center">Liquidation Form <span th:text="${pettyCash.pcvNumber}"></span> </h4>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <form th:action="@{/petty-cash/save-liquidation}" th:object="${pettyCash}" method="post">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Item Description</th>
+                                    <th>Amount</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody id="liquidationItems">
+                                <!-- Iterate over existing liquidations if any -->
+                                <tr th:each="liquidation, iterStat : ${pettyCash.liquidations}">
+                                    <!-- Use hidden input to keep track of the existing liquidation IDs -->
+                                    <input type="hidden" th:field="*{liquidations[__${iterStat.index}__].id}" />
+                                    <td>
+                                        <input type="date" th:field="*{liquidations[__${iterStat.index}__].date}" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="text" th:field="*{liquidations[__${iterStat.index}__].itemDescription}" class="form-control"/>
+                                    </td>
+                                    <td>
+                                        <input type="number" th:field="*{liquidations[__${iterStat.index}__].amount}" step="0.01" class="form-control"/>
+                                    </td>
+                                    <td><button type="button" class="btn btn-danger removeItem"><i class="lni lni-trash-can"></i></button></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        <button type="button" id="addItem" class="btn btn-primary">Add Line</button>
+                        <br><br>
+                        <button type="submit" class="btn btn-success">Save</button>
+                    </form>
+                    <script>
+                        $(document).ready(function () {
+                            // Add new liquidation line
+                            $('#addItem').click(function () {
+                                let index = $('#liquidationItems tr').length;
+                                let newRow = `<tr>
+                                    <input type="hidden" name="liquidations[${index}].id" value="" />
+                                    <td><input type="date" name="liquidations[${index}].date" class="form-control"/></td>
+                                    <td><input type="text" name="liquidations[${index}].itemDescription" class="form-control"/></td>
+                                    <td><input type="number" name="liquidations[${index}].amount" step="0.01" class="form-control"/></td>
+                                    <td><button type="button" class="btn btn-danger removeItem"><i class="lni lni-trash-can"></i></button></td>
+                                </tr>`;
+                                $('#liquidationItems').append(newRow);
+                            });
+
+                            // Remove a liquidation line
+                            $(document).on('click', '.removeItem', function () {
+                                $(this).closest('tr').remove();
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+
+</body>
+</html>

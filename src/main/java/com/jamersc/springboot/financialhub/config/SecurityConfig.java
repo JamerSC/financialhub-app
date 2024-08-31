@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.config;
 
-import com.jamersc.springboot.financialhub.service.CustomUserDetailsService;
+import com.jamersc.springboot.financialhub.service.user.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

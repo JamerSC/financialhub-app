@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.check;
 
 import com.jamersc.springboot.financialhub.dto.CheckDto;
 import com.jamersc.springboot.financialhub.model.Check;
@@ -7,7 +7,6 @@ import com.jamersc.springboot.financialhub.repository.CheckRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import lombok.extern.flogger.Flogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;

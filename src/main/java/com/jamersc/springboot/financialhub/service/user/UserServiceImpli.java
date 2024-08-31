@@ -1,7 +1,6 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.user;
 
 import com.jamersc.springboot.financialhub.dto.UserDto;
-import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.RoleRepository;

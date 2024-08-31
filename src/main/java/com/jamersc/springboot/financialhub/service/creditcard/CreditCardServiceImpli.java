@@ -1,9 +1,10 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.creditcard;
 
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.jamersc.springboot.financialhub.model.CreditCard;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CreditCardRepository;
+import com.jamersc.springboot.financialhub.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.BeanUtils;

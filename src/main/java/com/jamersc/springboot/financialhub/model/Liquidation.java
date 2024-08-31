@@ -2,45 +2,39 @@ package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "petty_cash_vouchers")
+@Table(name = "petty_cash_liquidation")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "liquidations")
-public class PettyCash {
+@ToString(exclude = "pettyCash")
+public class Liquidation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "pcv_number")
-    private String pcvNumber;
-
-    @Column(name = "received_by")
-    private String receivedBy;
+    @ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "petty_cash_voucher_id")
+    private PettyCash pettyCash;
 
     @Column(name = "date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    @Column(name = "particulars")
-    private String particulars;
+    @Column(name = "item_description")
+    private String itemDescription;
 
-    @Column(name = "total_amount")
-    private Double totalAmount;
-
-    @Column(name = "approved_by")
-    private String approvedBy;
-
-    @Column(name = "created_by")
-    private int createdBy;
+    @Column(name = "amount")
+    private BigDecimal amount;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -49,15 +43,10 @@ public class PettyCash {
     @Column(name = "updated_by")
     private int updatedBy;
 
+
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pettyCash",
-            cascade={CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH},
-            orphanRemoval = true)
-    private List<Liquidation> liquidations = new ArrayList<>();
 
     @PrePersist
     protected void onCreate() {

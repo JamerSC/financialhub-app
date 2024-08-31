@@ -98,10 +98,32 @@ CREATE TABLE `petty_cash_vouchers` (
     PRIMARY KEY (`id`)
 );
 
+# DATE - format: YYYY-MM-DD.
 INSERT INTO `petty_cash_vouchers`(`pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
 VALUE ('PCV-2024001', 'John Doe', '2024-07-21', 'Utility expense', 1000, 'Susan Swan', 3, 3);
 
-# DATE - format: YYYY-MM-DD.
+DROP TABLE `petty_cash_liquidation`;
+CREATE TABLE `petty_cash_liquidation` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `petty_cash_voucher_id` int NOT NULL,
+	`date` date NOT NULL,
+    `item_description` varchar(255) NOT NULL,
+    `amount` DECIMAL(10, 2) NOT NULL,
+    `created_by` int NULL,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int NULL,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`petty_cash_voucher_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
+SELECT *
+FROM `petty_cash_vouchers`
+LEFT JOIN `petty_cash_liquidation`
+ON `petty_cash_vouchers`.`id` = `petty_cash_liquidation`.`petty_cash_voucher_id`;
+
+INSERT INTO `petty_cash_liquidation`(`petty_cash_voucher_id`, `date`, `item_description`, `amount`, `created_by`, `updated_by`)
+VALUES (1, '2024-07-21','Gas Fee', 50, 1, 1), (1, '2024-07-21','Certification', 30, 1, 1), (1, '2024-07-21','Photo copy', 20, 1, 1);
 
 DROP TABLE `check_vouchers`;
 CREATE TABLE `check_vouchers` (

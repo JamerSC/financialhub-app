@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.user;
 
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.repository.RoleRepository;
@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.management.relation.RoleNotFoundException;
 import java.util.List;
 
 @Service

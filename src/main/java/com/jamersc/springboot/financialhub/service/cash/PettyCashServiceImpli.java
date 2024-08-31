@@ -1,12 +1,15 @@
-package com.jamersc.springboot.financialhub.service;
+package com.jamersc.springboot.financialhub.service.cash;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.service.user.UserServiceImpli;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,8 @@ import java.util.List;
 @Transactional
 @AllArgsConstructor
 public class PettyCashServiceImpli implements PettyCashService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpli.class);
 
     @Autowired
     private PettyCashRepository pettyCashRepository;
@@ -38,6 +43,14 @@ public class PettyCashServiceImpli implements PettyCashService {
             return pettyCashDto;
         }
         return null;
+    }
+
+    @Override
+    public PettyCash findPettyCashById(Long id) {
+        PettyCash pettyCash = pettyCashRepository.findById(id).orElseThrow(() -> new RuntimeException("Petty Cash not found"));
+        pettyCash.getLiquidations().size();
+        logger.info("Finding petty cash id: " + pettyCash.getId());
+        return pettyCash;
     }
 
     @Override
@@ -75,6 +88,13 @@ public class PettyCashServiceImpli implements PettyCashService {
             System.out.println("Created successfully! " + pettyCashDto);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
+        pettyCashRepository.save(pettyCash);
+    }
+
+    @Override
+    @Transactional
+    public void save(PettyCash pettyCash) {
+        logger.info("Saving... " + pettyCash);
         pettyCashRepository.save(pettyCash);
     }
 
