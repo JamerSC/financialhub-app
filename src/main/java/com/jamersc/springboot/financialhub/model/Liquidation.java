@@ -21,10 +21,12 @@ public class Liquidation {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE,
-                    CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "petty_cash_voucher_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "pcvoucher_id")
     private PettyCash pettyCash;
+
+    /*@ManyToOne(fetch = FetchType.LAZY, cascade={CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH}*/
 
     @Column(name = "date")
     @DateTimeFormat(pattern = "yyyy-MM-dd")

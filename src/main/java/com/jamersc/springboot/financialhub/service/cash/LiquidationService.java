@@ -9,7 +9,8 @@ public interface LiquidationService {
 
     List<Liquidation> findByPettyCashVoucherId(Long id);
 
+    Liquidation findLiquidationById(Long id);
+
     void save(Liquidation liquidation);
 
-    void saveAll(List<Liquidation> liquidations);
 }

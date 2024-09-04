@@ -8,6 +8,7 @@ import com.jamersc.springboot.financialhub.repository.UserRepository;
 import com.jamersc.springboot.financialhub.service.user.UserServiceImpli;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -48,8 +49,8 @@ public class PettyCashServiceImpli implements PettyCashService {
     @Override
     public PettyCash findPettyCashById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id).orElseThrow(() -> new RuntimeException("Petty Cash not found"));
-        pettyCash.getLiquidations().size();
-        logger.info("Finding petty cash id: " + pettyCash.getId());
+        Hibernate.initialize(pettyCash.getLiquidations());
+        //pettyCash.getLiquidations().size();
         return pettyCash;
     }
 

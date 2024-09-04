@@ -6,6 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "petty_cash_vouchers")
@@ -58,6 +59,18 @@ public class PettyCash {
                     CascadeType.DETACH, CascadeType.REFRESH},
             orphanRemoval = true)
     private List<Liquidation> liquidations = new ArrayList<>();
+
+    // Convenience method to add a liquidation
+    public void addLiquidation(Liquidation liquidation) {
+        liquidations.add(liquidation);
+        liquidation.setPettyCash(this);
+    }
+
+    // Convenience method to remove a liquidation
+    public void removeLiquidation(Liquidation liquidation) {
+        liquidations.remove(liquidation);
+        liquidation.setPettyCash(null);
+    }
 
     @PrePersist
     protected void onCreate() {

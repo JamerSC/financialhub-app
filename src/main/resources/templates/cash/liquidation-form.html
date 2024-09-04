@@ -13,59 +13,129 @@
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
-            <h4 class="mb-5 text-center">Liquidation Form <span th:text="${pettyCash.pcvNumber}"></span> </h4>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <form th:action="@{/petty-cash/save-liquidation}" th:object="${pettyCash}" method="post">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Item Description</th>
-                                    <th>Amount</th>
-                                    <th>Actions</th>
-                                </tr>
-                                </thead>
-                                <tbody id="liquidationItems">
-                                <!-- Iterate over existing liquidations if any -->
-                                <tr th:each="liquidation, iterStat : ${pettyCash.liquidations}">
-                                    <!-- Use hidden input to keep track of the existing liquidation IDs -->
-                                    <input type="hidden" th:field="*{liquidations[__${iterStat.index}__].id}" />
-                                    <td>
-                                        <input type="date" th:field="*{liquidations[__${iterStat.index}__].date}" class="form-control"/>
-                                    </td>
-                                    <td>
-                                        <input type="text" th:field="*{liquidations[__${iterStat.index}__].itemDescription}" class="form-control"/>
-                                    </td>
-                                    <td>
-                                        <input type="number" th:field="*{liquidations[__${iterStat.index}__].amount}" step="0.01" class="form-control"/>
-                                    </td>
-                                    <td><button type="button" class="btn btn-danger removeItem"><i class="lni lni-trash-can"></i></button></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        <button type="button" id="addItem" class="btn btn-primary">Add Line</button>
-                        <br><br>
-                        <button type="submit" class="btn btn-success">Save</button>
-                    </form>
+            <h3 class="fw-bold fs-4">Liquidation Form</h3>
+            <br>
+            <div sec:authentication="name">
+                The value of the "name" property of the authentication object should appear here.
+            </div>
+            <div sec:authorize="hasRole('EMPLOYEE')"> Employee Role </div>
+            <div sec:authorize="hasRole('MANAGER')"> Manager Role </div>
+            <div sec:authorize="hasRole('ADMIN')"> Admin Role </div>
+            <br>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex">
+                        <div class="p-1">
+                            <h4 class="fw-bold fs-4">Petty Cash Vouchers <span th:text="${pettyCash.pcvNumber}"></span>  </h4>
+                        </div>
+                        <!-- Create Item Modal Button -->
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                                <i class="lni lni-notepad"></i> Add New Item
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped shadow">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Date</th>
+                            <th>Item Description</th>
+                            <th>Amount</th>
+                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="liquidation : ${liquidations}">
+                            <td th:text="${#dates.format(liquidation.date, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${liquidation.itemDescription}"></td>
+                            <td th:text="${#numbers.formatDecimal(liquidation.amount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td>
+                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
+                                    th:href="@{/petty-cash/generate-petty-cash-voucher/{id}(id=${liquidation.id})}" target="_blank">
+                                    <i class="lni lni-printer"></i>
+                                </a>
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
+                                   th:href="@{/petty-cash/petty-cash-update-form/{id}(id=${liquidation.id})}">
+                                    <i class="lni lni-pencil-alt"></i>
+                                </a>
+                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                   th:href="@{/petty-cash/delete-petty-cash-record/{id}(id=${liquidation.id})}">
+                                    <i class="lni lni-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- Add New Item Modal -->
+                    <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addItemForm" action="#" th:action="@{/liquidation/add-item}" th:object="${newLiquidation}" method="post">
+                                        <input type="hidden" th:value="${pettyCash.id}" th:field="*{pettyCash.id}"/>
+                                        <div class="mb-3">
+                                            <label for="date" class="form-label">Date</label>
+                                            <input type="date" class="form-control" id="date" th:field="*{date}">
+                                            <div class="invalid-feedback">Please select a date.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="itemDescription" class="form-label">Item Description</label>
+                                            <input type="text" class="form-control" id="itemDescription" th:field="*{itemDescription}">
+                                            <div class="invalid-feedback">Please provide a description.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="amount" class="form-label">Amount</label>
+                                            <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}">
+                                            <div class="invalid-feedback">Please enter a valid amount.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Custom Validation Script -->
                     <script>
                         $(document).ready(function () {
-                            // Add new liquidation line
-                            $('#addItem').click(function () {
-                                let index = $('#liquidationItems tr').length;
-                                let newRow = `<tr>
-                                    <input type="hidden" name="liquidations[${index}].id" value="" />
-                                    <td><input type="date" name="liquidations[${index}].date" class="form-control"/></td>
-                                    <td><input type="text" name="liquidations[${index}].itemDescription" class="form-control"/></td>
-                                    <td><input type="number" name="liquidations[${index}].amount" step="0.01" class="form-control"/></td>
-                                    <td><button type="button" class="btn btn-danger removeItem"><i class="lni lni-trash-can"></i></button></td>
-                                </tr>`;
-                                $('#liquidationItems').append(newRow);
-                            });
+                            $('#addItemForm').on('submit', function (event) {
+                                var isValid = true;
 
-                            // Remove a liquidation line
-                            $(document).on('click', '.removeItem', function () {
-                                $(this).closest('tr').remove();
+                                // Validate Date
+                                if ($('#date').val() === '') {
+                                    $('#date').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#date').removeClass('is-invalid');
+                                }
+
+                                // Validate Item Description
+                                if ($('#itemDescription').val().trim() === '') {
+                                    $('#itemDescription').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#itemDescription').removeClass('is-invalid');
+                                }
+
+                                // Validate Amount
+                                var amountValue = $('#amount').val();
+                                if (amountValue === '' || isNaN(amountValue) || parseFloat(amountValue) <= 0) {
+                                    $('#amount').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#amount').removeClass('is-invalid');
+                                }
+
+                                // Prevent form submission if any field is invalid
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
                             });
                         });
                     </script>
@@ -73,7 +143,6 @@
             </div>
         </div>
     </main>
-
 
 </body>
 </html>
