@@ -36,7 +36,7 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" th:href="@{/liquidation/liquidation-list}" class="sidebar-link">
+                        <a href="#" class="sidebar-link">
                             <i class="lni lni-pencil-alt"></i>
                             Liquidation
                         </a>
@@ -56,7 +56,7 @@
                 </a>
             </li>
             <!--3 Nested Unordered List - Dropdown  -->
-            <li class="sidebar-item">
+            <!--<li class="sidebar-item">
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
                     <i class="lni lni-cog"></i>
                     <span>Settings</span>
@@ -64,20 +64,41 @@
                 <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
                         <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#two-setting" aria-expanded="false" aria-controls="two-setting">
-                            Other Settings
+                            Others
                         </a>
                         <ul id="two-setting" class="sidebar-dropdown list-unstyled collapse">
                             <li class="sidebar-item">
                                 <a th:href="@{/settings/user-settings}" class="sidebar-link">
-                                    User Setting 1
+                                    Users
                                 </a>
                             </li>
                             <li class="sidebar-item">
                                 <a href="#" class="sidebar-link">
-                                    Voucher Setting 2
+                                    Vouchers
                                 </a>
                             </li>
                         </ul>
+                    </li>
+                </ul>
+            </li>-->
+            <!--2 Nested Unordered List - Dropdown  -->
+            <li class="sidebar-item">
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
+                    <i class="lni lni-cog"></i>
+                    <span>Settings</span>
+                </a>
+                <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a th:href="@{/settings/user-settings}" class="sidebar-link">
+                            <i class="lni lni-users"></i>
+                            Users
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="lni lni-notepad"></i>
+                            Vouchers
+                        </a>
                     </li>
                 </ul>
             </li>

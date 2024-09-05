@@ -37,20 +37,24 @@ public class HubController {
     private CheckService checkService;
 
     @GetMapping("/login")
-    public String financialHubLoginPage(Model model) {
-        return "login/login";
+    public String showLoginPage() {
+        return "login/login"; // This should correspond to a Thymeleaf template named 'login.html'
     }
 
     @GetMapping("/dashboard")
-    public String adminDashboardPage(Model model, @RequestParam(defaultValue = "0") int page) {
+    public String adminDashboardPage(Model model,
+                                     @RequestParam(defaultValue = "0") int page,
+                                     @RequestParam(defaultValue = "5") int size) {
         model.addAttribute("totalOfUsers", userService.getAllUsers());
         model.addAttribute("totalOfPettyCash", pettyCashService.getAllPettyCashRecord());
         model.addAttribute("totalOfChecks", checkService.getAllCheckRecord());
-        Page<User> usersPage = userService.findAll(PageRequest.of(page, 6));
+
+        Page<User> usersPage = userService.findAll(PageRequest.of(page, size));
         List<User> users = usersPage.getContent();
         model.addAttribute("users", users);
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", usersPage.getTotalPages());
+        model.addAttribute("pageSize", size);  // Send pageSize to Thymeleaf for the selected option
 
         return "dashboard/dashboard";
     }

@@ -6,43 +6,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Header</title>
+    <style>
+        .navbar {
+            z-index: 1030; /* Ensures navbar stays on top */
+        }
+        .dropdown-menu {
+            z-index: 1040; /* Higher than the navbar to ensure visibility */
+        }
+    </style>
 </head>
 <body>
 
-    <!--Search Bar & Profile Image w/Navigation-->
-    <nav class="navbar navbar-expand px-4 py-3 z-0"  th:fragment="header">
-        <form action="#" class="d-none d-sm-inline-block">
-            <div class="input-group input-group-navbar">
-                <input type="text" class="form-control shadow border-1 rounded-1" placeholder="Search...">
-                <button class="btn" type="button">
-                    <i class="lni lni-search-alt"></i>
-                </button>
-            </div>
-        </form>
-        <div class="navbar-collapse collapsed">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a href="#" class="nav-icon pe-md-0" data-bs-toggle="dropdown">
-                        <img src="https://dummyimage.com/300.png/09f/fff" alt="" class="avatar img-fluid rounded-5"/>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-end rounded">
-                        <a th:href="@{/settings/user-settings}" class="dropdown-item">
-                            <i class="lni lni-user"></i>
-                            <span sec:authentication="name"></span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item" onclick="document.getElementById('logout-form-profile').submit();">
-                            <i class="lni lni-exit"></i>
-                            <span>Logout</span>
-                        </a>
-                        <form id="logout-form-profile" th:action="@{/logout}" method="POST" style="display: none;">
-                            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
-                        </form>
-                    </div>
-                </li>
-            </ul>
+<!-- Search Bar & Profile Image w/Navigation -->
+<nav class="navbar navbar-expand px-4 py-3"  th:fragment="header">
+    <form action="#" class="d-none d-sm-inline-block">
+        <div class="input-group input-group-navbar">
+            <input type="text" class="form-control shadow border-1 rounded-1" placeholder="Search...">
+            <button class="btn" type="button">
+                <i class="lni lni-search-alt"></i>
+            </button>
         </div>
-    </nav>
+    </form>
+    <div class="navbar-collapse collapsed">
+        <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+                <a href="#" class="nav-icon pe-md-0" data-bs-toggle="dropdown">
+                    <img src="https://dummyimage.com/300.png/09f/fff" alt="" class="avatar img-fluid rounded-5"/>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end rounded">
+                    <a th:href="@{/settings/user-settings}" class="dropdown-item">
+                        <i class="lni lni-user"></i>
+                        <span sec:authentication="name"></span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item" onclick="document.getElementById('logout-form-profile').submit();">
+                        <i class="lni lni-exit"></i>
+                        <span>Logout</span>
+                    </a>
+                    <form id="logout-form-profile" th:action="@{/logout}" method="POST" style="display: none;">
+                        <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
 
 </body>
 </html>

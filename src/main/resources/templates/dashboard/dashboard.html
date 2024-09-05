@@ -14,14 +14,10 @@
     <main class="content px-3 py-4" layout:fragment="content">
         <div class="container-fluid">
             <h3 class="fw-bold fs-4">Admin Dashboard</h3>
-            <br>
-            <div sec:authentication="name">
-                The value of the "name" property of the authentication object should appear here.
-            </div>
+            <!--<div sec:authentication="name"> The value of the "name" property of the authentication object</div>
             <div sec:authorize="hasRole('EMPLOYEE')"> Employee Role </div>
             <div sec:authorize="hasRole('MANAGER')"> Manager Role </div>
-            <div sec:authorize="hasRole('ADMIN')"> Admin Role </div>
-            <br>
+            <div sec:authorize="hasRole('ADMIN')"> Admin Role </div>-->
             <div class="row">
                 <!-- Column 1 -->
                 <div class="col-12 col-md-4">
@@ -89,8 +85,26 @@
                         </div>
                     </div>
                 </div>
+                <!-- Header and Entries -->
+                <div class="row">
+                    <div class="col-6">
+                        <h4 class="fw-bold fs-4 my-3">For Liquidation</h4>
+                    </div>
+                    <div class="col-6 d-flex justify-content-end">
+                        <label class="d-flex align-items-center">Show
+                            <!--<span class="mx-2"></span> &lt;!&ndash; Adding a span for spacing &ndash;&gt;-->
+                            <select id="entriesSelect" name="entries" class="form-select form-select-sm w-auto mx-2"
+                                    onchange="window.location.href = '?page=0&size=' + this.value;">
+                                <option th:value="6" th:selected="${pageSize == 5}">5</option>
+                                <option th:value="10" th:selected="${pageSize == 10}">10</option>
+                                <option th:value="25" th:selected="${pageSize == 25}">25</option>
+                                <option th:value="50" th:selected="${pageSize == 50}">50</option>
+                            </select>
+                            entries
+                        </label>
+                    </div>
+                </div>
                 <!-- Table -->
-                <h4 class="fw-bold fs-4 my-3">For Liquidation</h4>
                 <div class="row">
                     <div class="col-12">
                         <table class="table table-striped shadow">
@@ -114,7 +128,9 @@
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
-                                        <a class="page-link btn btn-primary" th:href="@{/financial-hub/dashboard(page=${currentPage - 1})}" aria-label="Previous">
+                                        <a class="page-link btn btn-primary"
+                                           th:href="@{/financial-hub/dashboard(page=${currentPage - 1}, size=${pageSize})}"
+                                           aria-label="Previous">
                                             <span aria-hidden="true">&laquo; Previous</span>
                                         </a>
                                     </li>
@@ -124,12 +140,15 @@
                                         </span>
                                     </li>
                                     <li class="page-item" th:classappend="${currentPage + 1 >= totalPages} ? 'disabled'">
-                                        <a class="page-link btn btn-primary" th:href="@{/financial-hub/dashboard(page=${currentPage + 1})}" aria-label="Next">
+                                        <a class="page-link btn btn-primary"
+                                           th:href="@{/financial-hub/dashboard(page=${currentPage + 1}, size=${pageSize})}"
+                                           aria-label="Next">
                                             <span aria-hidden="true">Next &raquo;</span>
                                         </a>
                                     </li>
                                 </ul>
                             </nav>
+
                         </div>
                     </div>
                 </div>

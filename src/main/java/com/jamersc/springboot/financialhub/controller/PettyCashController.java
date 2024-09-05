@@ -71,7 +71,7 @@ public class PettyCashController {
         if (pettyCashDto != null) {
             logger.info("Fetching petty cash form id: " + pettyCashDto.getId());
             model.addAttribute("pettyCashDto", pettyCashDto);
-            return "cash/petty-cash-form";
+            return "cash/petty-cash-update-form";
         }
         return "redirect:/petty-cash/petty-cash-voucher";
     }
@@ -81,7 +81,7 @@ public class PettyCashController {
                                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
-            return "cash/petty-cash-form";
+            return "cash/petty-cash-update-form";
         } else {
             String updatedBy = getSessionUsername();
             pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
