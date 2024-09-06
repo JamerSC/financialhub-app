@@ -18,7 +18,7 @@
         <ul class="sidebar-nav">
             <li class="sidebar-item">
                 <a th:href="@{/financial-hub/dashboard}" class="sidebar-link">
-                    <i class="lni lni-pie-chart"></i>
+                    <i class="lni lni-bar-chart"></i>
                     <span>Dashboard</span>
                 </a>
             </li>
@@ -45,7 +45,7 @@
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/check/check-voucher}" class="sidebar-link">
-                    <i class="lni lni-wallet"></i>
+                    <i class="lni lni-write"></i>
                     <span>Check</span>
                 </a>
             </li>
@@ -53,6 +53,12 @@
                 <a th:href="@{/credit-card/credit-card-voucher}" class="sidebar-link">
                     <i class="lni lni-credit-cards"></i>
                     <span>Credit Card</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/deposit/deposit-cash-check}" class="sidebar-link">
+                    <i class="lni lni-revenue"></i>
+                    <span>Deposit</span>
                 </a>
             </li>
             <!--3 Nested Unordered List - Dropdown  -->
@@ -95,9 +101,9 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="lni lni-notepad"></i>
-                            Vouchers
+                        <a th:href="@{/settings/bank}" class="sidebar-link">
+                            <i class="lni lni-btc"></i>
+                            Bank Account
                         </a>
                     </li>
                 </ul>

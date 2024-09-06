@@ -35,7 +35,7 @@ public class SettingsController {
     private RoleService roleService;
 
     @GetMapping("/user-settings")
-    public String userSettingsPage(Model model, @RequestParam(defaultValue = "0") int page) {
+    public String usersManagementPage(Model model, @RequestParam(defaultValue = "0") int page) {
         Page<User> usersPage = userService.findAll(PageRequest.of(page, 6));
         List<User> users = usersPage.getContent();
         model.addAttribute("users", users);
@@ -45,14 +45,14 @@ public class SettingsController {
     }
 
     @GetMapping("/user-settings-create-form")
-    public String createUserFormPage(Model model) {
+    public String createUsersAccountPage(Model model) {
         addRolesToModel(model);
         model.addAttribute("userDto", new UserDto());
         return "settings/create-user-form";
     }
 
     @PostMapping("/user-settings-create-form")
-    public String processCreateUserForm(@Valid @ModelAttribute("userDto") UserDto userDto,
+    public String processCreateUsersAccount(@Valid @ModelAttribute("userDto") UserDto userDto,
                                      BindingResult result, Model model) {
         String username = userDto.getUsername();
         logger.info("Processing registration form for: " + username);
@@ -77,7 +77,7 @@ public class SettingsController {
     }
 
     @GetMapping("/user-settings-update-form/{id}")
-    public String userSettingsUpdateForm(@PathVariable(value = "id") Long id, Model model) {
+    public String updateUsersAccountPage(@PathVariable(value = "id") Long id, Model model) {
         UserDto userDto = userService.findUserRecordById(id);
         if (userDto != null) {
             model.addAttribute("userDto", userDto);
@@ -88,7 +88,7 @@ public class SettingsController {
     }
 
     @PostMapping("/user-settings-update-form")
-    public String processUpdateUserRecord(@Valid @ModelAttribute("userDto") UserDto userDto,
+    public String processUpdateUsersAccount(@Valid @ModelAttribute("userDto") UserDto userDto,
                                           BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
@@ -118,7 +118,7 @@ public class SettingsController {
     }
 
     @GetMapping("/delete-user-record/{id}")
-    public String deleteUserRecordById(@PathVariable(value = "id") Long id) {
+    public String deleteUsersAccountById(@PathVariable(value = "id") Long id) {
         logger.info("Process deleting user id: " + id);
         userService.deleteUserRecordById(id);
         logger.info("Successfully deleted user record id" + id);
@@ -140,5 +140,11 @@ public class SettingsController {
         // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
+    }
+
+    @GetMapping("/bank")
+    public String showBankPage(Model model) {
+        model.addAttribute("message", "Add Bank Account!");
+        return "settings/bank";
     }
 }
