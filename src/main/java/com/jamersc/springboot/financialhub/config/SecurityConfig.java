@@ -61,12 +61,4 @@ public class SecurityConfig {
                 );
         return http.build();
     }
-
-/*
-    @Bean
-    public HttpSessionEventPublisher httpSessionEventPublisher() {
-        return new HttpSessionEventPublisher();
-    }
-*/
-
 }

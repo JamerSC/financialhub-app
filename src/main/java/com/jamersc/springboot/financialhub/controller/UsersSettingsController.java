@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/settings")
-public class SettingsController {
+public class UsersSettingsController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
 
@@ -34,7 +34,7 @@ public class SettingsController {
     @Autowired
     private RoleService roleService;
 
-    @GetMapping("/user-settings")
+    @GetMapping("/users")
     public String usersManagementPage(Model model, @RequestParam(defaultValue = "0") int page) {
         Page<User> usersPage = userService.findAll(PageRequest.of(page, 6));
         List<User> users = usersPage.getContent();
@@ -73,7 +73,7 @@ public class SettingsController {
         String createdBy = getSessionUsername();
         userService.save(userDto, createdBy);
         logger.info("Successfully created user: " + username);
-        return  "redirect:/settings/user-settings";
+        return  "redirect:/settings/users";
     }
 
     @GetMapping("/user-settings-update-form/{id}")
@@ -84,7 +84,7 @@ public class SettingsController {
             addRolesToModel(model);
             return "settings/update-user-form";
         }
-        return "redirect:/settings/user-settings";
+        return "redirect:/settings/users";
     }
 
     @PostMapping("/user-settings-update-form")
@@ -99,7 +99,7 @@ public class SettingsController {
         UserDto existingUser = userService.findUserRecordById(userDto.getId());
         if (existingUser == null) {
             logger.error("User not found with id: " + userDto.getId());
-            return "redirect:/settings/user-settings";
+            return "redirect:/settings/users";
         }
         // Check if the username has been updated
         if (!existingUser.getUsername().equals(userDto.getUsername())) {
@@ -114,7 +114,7 @@ public class SettingsController {
         }
         userService.update(userDto, updatedBy);
         logger.info("Updated user id: " + userDto.getId());
-        return "redirect:/settings/user-settings";
+        return "redirect:/settings/users";
     }
 
     @GetMapping("/delete-user-record/{id}")
@@ -122,7 +122,7 @@ public class SettingsController {
         logger.info("Process deleting user id: " + id);
         userService.deleteUserRecordById(id);
         logger.info("Successfully deleted user record id" + id);
-        return "redirect:/settings/user-settings";
+        return "redirect:/settings/users";
     }
 
     private void addUsersToModel(Model model) {
@@ -140,11 +140,5 @@ public class SettingsController {
         // session ID of the user who creates a new user using Spring Security's SecurityContextHolder to get the current user's details
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();
-    }
-
-    @GetMapping("/bank")
-    public String showBankPage(Model model) {
-        model.addAttribute("message", "Add Bank Account!");
-        return "settings/bank";
     }
 }

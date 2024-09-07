@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
@@ -30,11 +29,20 @@ public class Liquidation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    @Column(name = "item_description")
-    private String itemDescription;
+    @Column(name = "account_name")
+    private String accountName;
 
     @Column(name = "amount")
     private Double amount;
+
+    @Column(name = "remarks")
+    private String remarks;
+
+    @Column(name = "charge_to")
+    private String chargeTo;
+
+    @Column(name = "billed")
+    private boolean billed;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)

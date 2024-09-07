@@ -13,7 +13,7 @@
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
-            <h3 class="fw-bold fs-4">Liquidation Form</h3>
+            <h3 class="fw-bold fs-4">Liquidation Details</h3>
             <!--<div sec:authentication="name">The value of the "name" property</div>
             <div sec:authorize="hasRole('EMPLOYEE')"> Employee Role </div>
             <div sec:authorize="hasRole('MANAGER')"> Manager Role </div>
@@ -35,16 +35,24 @@
                         <thead class="table-dark">
                         <tr>
                             <th>Date</th>
-                            <th>Item Description</th>
+                            <th>Account Name</th>
                             <th>Amount</th>
+                            <th>Charge to</th>
+                            <th>Billed</th>
                             <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="liquidation : ${liquidations}">
                             <td th:text="${#dates.format(liquidation.date, 'dd MMMM yyyy')}"></td>
-                            <td th:text="${liquidation.itemDescription}"></td>
+                            <td th:text="${liquidation.accountName}"></td>
                             <td th:text="${#numbers.formatDecimal(liquidation.amount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${liquidation.chargeTo}"></td>
+                            <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
+                            <!-- Display checkbox for billed -->
+                            <td>
+                                <input type="checkbox" th:checked="${liquidation.billed}" disabled />
+                            </td>
                             <td>
                                 <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
                                     th:href="@{/petty-cash/generate-petty-cash-voucher/{id}(id=${liquidation.id})}" target="_blank">
@@ -61,8 +69,39 @@
                             </td>
                         </tr>
                         <tr>
-                            <td colspan="2" class="text-end"><strong>Total:</strong></td>
-                            <td><strong th:text="${#numbers.formatDecimal(totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                            <td colspan="2" class="text-end"><strong>Total Amount of Liquidation:</strong></td>
+                            <td><strong th:text="${#numbers.formatDecimal(totalLiquidationAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" class="text-end"><strong>Total Petty Cash Received:</strong></td>
+                            <td><strong th:text="${#numbers.formatDecimal(pettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <!-- Remaining Balance Row -->
+                        <!--<tr>
+                            <td colspan="2" class="text-end"><strong>Remaining Balance:</strong></td>
+                            <td><strong th:text="${#numbers.formatDecimal(remainingBalance, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>-->
+                        <!-- Remaining Balance Row -->
+                        <tr>
+                            <td colspan="2" class="text-end">
+                                <strong>Remaining Balance:</strong>
+                            </td>
+                            <td>
+                                <strong th:text="${#numbers.formatDecimal(remainingBalance, 1, 'COMMA', 2, 'POINT')}"></strong>
+                            </td>
+                            <td><span th:if="${remainingBalance < 0}" class="text-danger" title="Negative Balance">
+                                    (<i class="lni lni-warning"></i> Over/For Reimbursement)
+                            </span></td>
+                            <td></td>
                             <td></td>
                         </tr>
                         </tbody>
@@ -78,21 +117,47 @@
                                 <div class="modal-body">
                                     <form id="addItemForm" action="#" th:action="@{/liquidation/add-item}" th:object="${newLiquidation}" method="post">
                                         <input type="hidden" th:value="${pettyCash.id}" th:field="*{pettyCash.id}"/>
+
                                         <div class="mb-3">
-                                            <label for="date" class="form-label">Date</label>
+                                            <label for="date" class="f  orm-label">Date</label>
                                             <input type="date" class="form-control" id="date" th:field="*{date}">
                                             <div class="invalid-feedback">Please select a date.</div>
                                         </div>
+
                                         <div class="mb-3">
-                                            <label for="itemDescription" class="form-label">Item Description</label>
-                                            <input type="text" class="form-control" id="itemDescription" th:field="*{itemDescription}">
-                                            <div class="invalid-feedback">Please provide a description.</div>
+                                            <label for="accountName" class="form-label">Account Name</label>
+                                            <input type="text" class="form-control" id="accountName" th:field="*{accountName}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
                                         </div>
+
                                         <div class="mb-3">
                                             <label for="amount" class="form-label">Amount</label>
                                             <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}">
                                             <div class="invalid-feedback">Please enter a valid amount.</div>
                                         </div>
+
+                                        <!-- New Field: Remarks -->
+                                        <div class="mb-3">
+                                            <label for="remarks" class="form-label">Remarks</label>
+                                            <textarea class="form-control" id="remarks" th:field="*{remarks}" rows="2"></textarea>
+                                            <div class="invalid-feedback">Please provide remarks.</div>
+                                        </div>
+
+                                        <!-- New Field: Charge To -->
+                                        <div class="mb-3">
+                                            <label for="chargeTo" class="form-label">Charge To</label>
+                                            <input type="text" class="form-control" id="chargeTo" th:field="*{chargeTo}">
+                                            <div class="invalid-feedback">Please specify who or what this is charged to.</div>
+                                        </div>
+
+                                        <!-- New Field: Billed -->
+                                        <div class="form-check mb-3">
+                                            <input class="form-check-input" type="checkbox" id="billed" th:field="*{billed}">
+                                            <label class="form-check-label" for="billed">
+                                                Billed
+                                            </label>
+                                        </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save</button>
@@ -102,7 +167,6 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Custom Validation Script -->
                     <script>
                         $(document).ready(function () {
                             $('#addItemForm').on('submit', function (event) {
@@ -116,12 +180,12 @@
                                     $('#date').removeClass('is-invalid');
                                 }
 
-                                // Validate Item Description
-                                if ($('#itemDescription').val().trim() === '') {
-                                    $('#itemDescription').addClass('is-invalid');
+                                // Validate Account Name
+                                if ($('#accountName').val().trim() === '') {
+                                    $('#accountName').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#itemDescription').removeClass('is-invalid');
+                                    $('#accountName').removeClass('is-invalid');
                                 }
 
                                 // Validate Amount
@@ -132,6 +196,24 @@
                                 } else {
                                     $('#amount').removeClass('is-invalid');
                                 }
+
+                                // Validate Remarks
+                                if ($('#remarks').val().trim() === '') {
+                                    $('#remarks').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#remarks').removeClass('is-invalid');
+                                }
+
+                                // Validate Charge To
+                                if ($('#chargeTo').val().trim() === '') {
+                                    $('#chargeTo').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#chargeTo').removeClass('is-invalid');
+                                }
+
+                                // No need to validate 'billed' as it's a checkbox
 
                                 // Prevent form submission if any field is invalid
                                 if (!isValid) {
