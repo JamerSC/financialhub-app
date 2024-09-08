@@ -27,8 +27,8 @@ public class BankDeposit {
     @Column(name = "deposit_amount")
     private Double depositAmount;
 
-    @Column(name = "note")
-    private String note;
+    @Column(name = "deposit_note")
+    private String depositNote;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_account_id")

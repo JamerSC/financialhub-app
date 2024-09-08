@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Transactional
 @Service
-public class LiquidationServiceImpli implements LiquidationService{
+public class LiquidationServiceImpl implements LiquidationService{
 
     @Autowired
     private LiquidationRepository liquidationRepository;

@@ -5,7 +5,7 @@ import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
-import com.jamersc.springboot.financialhub.service.user.UserServiceImpli;
+import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
@@ -20,9 +20,9 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class PettyCashServiceImpli implements PettyCashService {
+public class PettyCashServiceImpl implements PettyCashService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpli.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private PettyCashRepository pettyCashRepository;

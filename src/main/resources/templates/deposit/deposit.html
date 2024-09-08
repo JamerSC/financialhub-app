@@ -42,6 +42,7 @@
                                     <th>Acc. ID</th>
                                     <th>Acc. Name</th>
                                     <th>Account No.</th>
+                                    <th>Deposit</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -49,6 +50,12 @@
                                     <td th:text="${account.bank.id}"></td>
                                     <td th:text="${account.accountName}"></td>
                                     <td th:text="${account.accountNumber}"></td>
+                                    <td>
+                                        <a href="#" class="btn btn-primary btn-sm"
+                                           th:href="@{/deposits/account-deposit/{id}(id=${account.id})}"    >
+                                            <i class="lni lni-write"></i>
+                                        </a>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>

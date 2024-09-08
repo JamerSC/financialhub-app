@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>Deposit</title>
+</head>
+<body>
+
+    <main class="content px-3 py-4"  layout:fragment="content">
+        <div class="container-fluid">
+            <h3 class="fw-bold fs-4">Deposit Details</h3>
+            <h4 class="fw-bold fs-4" th:text="${bankAccount.bank.abbreviation} + ' - ' +  ${bankAccount.accountName}"></h4>
+            <p th:text="${bankAccount.id}"></p>
+            <p th:text="${bankAccount.accountName}"></p>
+            <p th:text="${bankAccount.accountNumber}"></p>
+            <p th:text="${bankAccount.bank.name}"></p>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex">
+                        <div class="p-1">
+                            <h4 class="fw-bold fs-4">List of Deposits</h4>
+                        </div>
+                        <!-- Create Item Modal Button -->
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDepositModal">
+                                <i class="lni lni-notepad"></i> Add Deposit
+                            </button>
+                        </div>
+                    </div>
+                    <table class="table table-striped shadow">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Deposit Date</th>
+                            <th>Deposit Amount</th>
+                            <th>Deposit Note</th>
+                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="deposit : ${bankDeposits}">
+                            <td th:text="${#dates.format(deposit.depositDate, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${#numbers.formatDecimal(deposit.depositAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${deposit.depositNote}"></td>
+                            <td>
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
+                                   th:href="@{/deposits/account-deposit/{id}(id=${deposit.id})}">
+                                    <i class="lni lni-pencil-alt"></i>
+                                </a>
+                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                   th:href="@{/deposits/account-deposit/{id}(id=${deposit.id})}">
+                                    <i class="lni lni-trash-can"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <!-- Add New Item Modal -->
+                    <div class="modal fade" id="addDepositModal" tabindex="-1" aria-labelledby="addDepositModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addDepositModalLabel">Add New Deposit</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addDepositForm" action="#" th:action="@{/deposits/add-deposit}" th:object="${newDeposit}" method="POST">
+                                        <input type="hidden" th:value="${bankAccount.id}" th:field="*{bankAccount.id}"/>
+                                        <div class="mb-3">
+                                            <label for="depositDate" class="f  orm-label">Date of Deposit</label>
+                                            <input type="date" class="form-control" id="depositDate" th:field="*{depositDate}">
+                                            <div class="invalid-feedback">Please select a deposit date.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="depositAmount" class="form-label">Deposit Amount</label>
+                                            <input type="number" step="0.01" class="form-control" id="depositAmount" th:field="*{depositAmount}">
+                                            <div class="invalid-feedback">Please enter a valid amount.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="depositNote" class="form-label">Note</label>
+                                            <textarea class="form-control" id="depositNote" rows="2" th:field="*{depositNote}"></textarea>
+                                            <div class="invalid-feedback">Please provide note.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        $(document).ready(function () {
+                            $('#addDepositForm').on('submit', function (event) {
+                                var isValid = true;
+
+                                // Validate Date
+                                if ($('#depositDate').val() === '') {
+                                    $('#depositDate').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#depositDate').removeClass('is-invalid');
+                                }
+
+                                // Validate Amount
+                                var amountValue = $('#depositAmount').val();
+                                if (amountValue === '' || isNaN(amountValue) || parseFloat(amountValue) <= 0) {
+                                    $('#depositAmount').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#depositAmount').removeClass('is-invalid');
+                                }
+
+                                // Validate Remarks
+                                if ($('#depositNote').val().trim() === '') {
+                                    $('#depositNote').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#depositNote').removeClass('is-invalid');
+                                }
+
+                                // Prevent form submission if any field is invalid
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
+                            });
+                        });
+                    </script>
+                </div>
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

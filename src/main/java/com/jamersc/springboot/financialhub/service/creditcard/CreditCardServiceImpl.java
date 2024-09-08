@@ -16,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 @Transactional
-public class CreditCardServiceImpli implements CreditCardService {
+public class CreditCardServiceImpl implements CreditCardService {
 
     @Autowired
     private CreditCardRepository creditCardRepository;

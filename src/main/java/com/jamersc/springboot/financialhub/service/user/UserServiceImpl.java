@@ -28,9 +28,9 @@ import java.util.stream.Collectors;
 @Setter
 @Service
 @Transactional
-public class UserServiceImpli implements UserService {
+public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpli.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;

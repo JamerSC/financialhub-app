@@ -18,9 +18,9 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 @Transactional
-public class CheckServiceImpli implements CheckService{
+public class CheckServiceImpl implements CheckService{
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckServiceImpli.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckServiceImpl.class);
 
     @Autowired
     private CheckRepository checkRepository;

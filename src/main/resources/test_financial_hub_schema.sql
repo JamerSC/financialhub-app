@@ -216,7 +216,7 @@ CREATE TABLE `bank_accounts` (
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`bank_id`) REFERENCES banks(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`bank_id`) REFERENCES `banks`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 );
 
@@ -234,4 +234,29 @@ FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`;
 
+CREATE TABLE `bank_deposits`(
+	`id` int NOT NULL AUTO_INCREMENT,
+    `deposit_date` date NOT NULL,
+    `deposit_amount` decimal(10, 2) NOT NULL,
+    `deposit_note` varchar(255) NULL,
+    `bank_account_id` int NOT NULL,
+    `created_by` int,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY(`id`)
+);
 
+INSERT INTO `bank_deposits`
+(`deposit_date`, `deposit_amount`, `deposit_note`, `bank_account_id`, `created_by`, `updated_by`)
+VALUES ('2024-09-01', 3000.00, 'XYZ Corporation', 1, 3, 3), ('2024-09-04', 5000.00, 'XYZ Corporation', 1, 3, 3), ('2024-09-08', 2000.00, 'XYZ Corporation', 1, 3, 3);
+
+SELECT `b`.`id` AS `Bank ID`, `b`.`name` AS `Bank Name`, `b`.`abbreviation` AS `Abrev.`, `b`.`branch` AS `Branch`,
+`ba`.`account_name` AS `Account Name`, `ba`.`account_number` AS `Account Number`, `ba`.`bank_id` AS `Bank ID`, `ba`.`id` AS `Acc. ID`,
+`bd`.`deposit_date` AS `Deposit Date`,  `bd`.`deposit_amount` AS `Deposit Amount`, `bd`.`deposit_note` AS `Note`, `bd`.`bank_account_id` AS `Bank Acc. ID`
+FROM `banks` `b`
+LEFT JOIN `bank_accounts` `ba`
+ON `b`.`id` = `ba`.`bank_id`
+LEFT JOIN `bank_deposits` `bd`
+ON `ba`.`id` = `bd`.`bank_account_id`;

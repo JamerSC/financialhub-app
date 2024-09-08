@@ -12,7 +12,7 @@ import java.util.List;
 @Service
 @Transactional
 @AllArgsConstructor
-public class RoleServiceImpli implements RoleService {
+public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleRepository roleRepository;
