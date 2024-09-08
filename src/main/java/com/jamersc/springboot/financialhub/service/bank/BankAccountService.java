@@ -7,4 +7,6 @@ import java.util.List;
 public interface BankAccountService {
 
     List<BankAccount> getAllBankAccounts();
+
+    BankAccount getBankAccountById(Long id);
 }

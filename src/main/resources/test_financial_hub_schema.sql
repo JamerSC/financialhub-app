@@ -208,26 +208,28 @@ INSERT INTO `banks` (`name`, `abbreviation`, `branch`, `created_by`, `updated_by
 
 DROP TABLE `bank_accounts`;
 CREATE TABLE `bank_accounts` (
-    id int NOT NULL AUTO_INCREMENT,
-    account_number varchar(255) NOT NULL,
-    bank_id int NOT NULL,
-    created_by int,
-    created_at timestamp DEFAULT CURRENT_TIMESTAMP,
-    updated_by int,
-    updated_at timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `id` int NOT NULL AUTO_INCREMENT,
+    `account_name` varchar(255) NOT NULL,
+    `account_number` varchar(255) NOT NULL,
+    `bank_id` int NOT NULL,
+    `created_by` int,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`bank_id`) REFERENCES banks(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
 );
 
 INSERT INTO `bank_accounts`
-(`account_number`, `bank_id`, `created_by`, `updated_by`) VALUES ('20240001', '1', 1, 1), ('20230001', '2', 1, 1), ('20220001', '3', 1, 1);
+(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUES ('AMG Legal', '20240001', '1', 1, 1), ('Ace M. Gomez', '20230001', '2', 1, 1), ('AMG Legal', '20220001', '3', 1, 1);
 
-INSERT INTO `bank_accounts`(`account_number`, `bank_id`, `created_by`, `updated_by`) VALUE ('20220013', '4', 1, 1);
+INSERT INTO `bank_accounts`(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUE ('AMG Legal', '20220013', '4', 1, 1);
+INSERT INTO `bank_accounts`(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUE ('AMG Legal', '20210023', '2', 1, 1);
 
 ### Bank & Bank Account Left Join
 
-SELECT `b`.`name` AS `Bank Name`, `b`.`abbreviation` AS `Abrev.`, `b`.`branch` AS `Branch`,
-`ba`.`account_number` AS `Account Number`, `ba`.`bank_id` AS `Bank ID` 
+SELECT `b`.`id` AS `Bank ID`, `b`.`name` AS `Bank Name`, `b`.`abbreviation` AS `Abrev.`, `b`.`branch` AS `Branch`,
+`ba`.`account_name` AS `Account Name`, `ba`.`account_number` AS `Account Number`, `ba`.`bank_id` AS `Bank ID` 
 FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`;

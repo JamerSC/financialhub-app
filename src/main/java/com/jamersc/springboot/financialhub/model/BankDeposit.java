@@ -2,39 +2,37 @@ package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
-@Table(name = "bank_accounts")
-@NoArgsConstructor
+@Table(name = "bank_deposits")
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "bank")
-public class BankAccount {
+@ToString
+public class BankDeposit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "account_name")
-    private String accountName;
+    @Column(name = "deposit_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date depositDate;
 
-    @Column(name = "account_number", nullable = false)
-    private String accountNumber;
+    @Column(name = "deposit_amount")
+    private Double depositAmount;
+
+    @Column(name = "note")
+    private String note;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bank_id")
-    private Bank bank;
-
-    @OneToMany(mappedBy = "bankAccount", orphanRemoval = true, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH})
-    private List<BankDeposit> bankDeposits = new ArrayList<>();
+    @JoinColumn(name = "bank_account_id")
+    private BankAccount bankAccount;
 
     @Column(name = "created_by")
     private int createdBy;

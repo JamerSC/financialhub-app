@@ -18,26 +18,41 @@
             <div class="col-12">
                 <div class="d-flex">
                     <div class="p-1">
-                        <h4 class="fw-bold fs-4">List of Bank Accounts</h4>
+                        <h4 class="fw-bold fs-4">Deposit Accounts</h4>
                     </div>
-                    <!-- Create Bank Modal Button -->
-                    <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <a th:href="@{/check/check-form}" href="#" class="btn btn-primary btn-sm">
-                            <i class="lni lni-notepad"></i> Add New
-                        </a>
-                    </div>-->
                 </div>
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <th>ID</th>
-                        <th>Account Number</th>
+                        <th>Bank ID</th>
+                        <th>Bank Name</th>
+                        <th>Branch</th>
+                        <th>Accounts</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="account : ${listOfBankAccounts}">
-                        <td th:text="${account.id}"></td>
-                        <td th:text="${account.accountNumber}"></td>
+                    <tr th:each="bank : ${listOfBankAccounts}">
+                        <td th:text="${bank.id}"></td>
+                        <td th:text="${bank.name} + ' (' + ${bank.abbreviation} + ')'"></td>
+                        <td th:text="${bank.branch}"></td>
+                        <td>
+                            <table class="table table-striped shadow">
+                                <thead class="table-info">
+                                <tr>
+                                    <th>Acc. ID</th>
+                                    <th>Acc. Name</th>
+                                    <th>Account No.</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="account : ${bank.accounts}">
+                                    <td th:text="${account.bank.id}"></td>
+                                    <td th:text="${account.accountName}"></td>
+                                    <td th:text="${account.accountNumber}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
                     </tr>
                     </tbody>
                 </table>

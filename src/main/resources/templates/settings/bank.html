@@ -18,14 +18,49 @@
                 <div class="col-12">
                     <div class="d-flex">
                         <div class="p-1">
-                            <h4 class="fw-bold fs-4">List of Banks</h4>
+                            <h4 class="fw-bold fs-4"> Bank Accounts</h4>
+                        </div>
+                        <!-- Create Accounts Modal Button -->
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <a href="#" class="btn btn-primary btn-sm">
+                                <i class="lni lni-notepad"></i> Add Accounts
+                            </a>
+                        </div>
+                    </div>
+                    <table class="table table-striped shadow">
+                        <thead class="table-dark">
+                        <tr>
+                            <th>Acc. ID</th>
+                            <th>Account Name</th>
+                            <th>Account Number</th>
+                            <th>Bank Name</th>
+                            <th>Bank ID</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="account : ${listOfAllBankAccounts}">
+                            <td th:text="${account.id}"></td>
+                            <td th:text="${account.accountName}"></td>
+                            <td th:text="${account.accountNumber}"></td>
+                            <td th:text="${account.bank.name} + ' (' + ${account.bank.abbreviation} + ') - ' + ${account.bank.branch}"></td>
+                            <td th:text="${account.bank.id}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex">
+                        <div class="p-1">
+                            <h4 class="fw-bold fs-4">Banks</h4>
                         </div>
                         <!-- Create Bank Modal Button -->
-                        <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <a th:href="@{/check/check-form}" href="#" class="btn btn-primary btn-sm">
-                                <i class="lni lni-notepad"></i> Add New
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <a href="#" class="btn btn-primary btn-sm">
+                                <i class="lni lni-notepad"></i>Add Bank
                             </a>
-                        </div>-->
+                        </div>
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
@@ -37,7 +72,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="   bank : ${listOfAllBanks}">
+                            <tr th:each="bank : ${listOfAllBanks}">
                                 <td th:text="${bank.id}"></td>
                                 <td th:text="${bank.name}"></td>
                                 <td th:text="${bank.abbreviation}"></td>

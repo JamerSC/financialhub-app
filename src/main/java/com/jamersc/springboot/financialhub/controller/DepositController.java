@@ -21,13 +21,12 @@ import java.util.List;
 public class DepositController {
 
     @Autowired
-    private BankAccountService bankAccountService;
-
     private BankService bankService;
 
     @GetMapping("/deposit-cash-check")
     public String depositPage(Model model) {
-        List<BankAccount> listOfBankAccounts = bankAccountService.getAllBankAccounts();
+        // fetch Banks & Bank Accounts
+        List<Bank> listOfBankAccounts = bankService.getAllBankAccounts();
         model.addAttribute("listOfBankAccounts", listOfBankAccounts);
         return "deposit/deposit";
     }

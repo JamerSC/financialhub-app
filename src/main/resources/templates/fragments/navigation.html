@@ -22,11 +22,17 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-            <!--2 Nested Unordered List - Dropdown  -->
             <li class="sidebar-item">
+                <a th:href="@{/petty-cash/petty-cash-voucher}" class="sidebar-link">
+                    <i class="lni lni-coin"></i>
+                    <span>Petty Cash</span>
+                </a>
+            </li>
+            <!--2 Nested Unordered List - Dropdown  -->
+            <!--<li class="sidebar-item">
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#cash" aria-expanded="false" aria-controls="cash">
                     <i class="lni lni-coin"></i>
-                    <span>Cash</span>
+                    <span>Petty Cash</span>
                 </a>
                 <ul id="cash" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
                     <li class="sidebar-item">
@@ -42,7 +48,7 @@
                         </a>
                     </li>
                 </ul>
-            </li>
+            </li>-->
             <li class="sidebar-item">
                 <a th:href="@{/check/check-voucher}" class="sidebar-link">
                     <i class="lni lni-write"></i>
@@ -58,35 +64,9 @@
             <li class="sidebar-item">
                 <a th:href="@{/deposit/deposit-cash-check}" class="sidebar-link">
                     <i class="lni lni-revenue"></i>
-                    <span>Deposit</span>
+                    <span>Bank Deposit</span>
                 </a>
             </li>
-            <!--3 Nested Unordered List - Dropdown  -->
-            <!--<li class="sidebar-item">
-                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
-                    <i class="lni lni-cog"></i>
-                    <span>Settings</span>
-                </a>
-                <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed" data-bs-toggle="collapse" data-bs-target="#two-setting" aria-expanded="false" aria-controls="two-setting">
-                            Others
-                        </a>
-                        <ul id="two-setting" class="sidebar-dropdown list-unstyled collapse">
-                            <li class="sidebar-item">
-                                <a th:href="@{/settings/user-settings}" class="sidebar-link">
-                                    Users
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">
-                                    Vouchers
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>-->
             <!--2 Nested Unordered List - Dropdown  -->
             <li class="sidebar-item">
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
@@ -97,13 +77,13 @@
                     <li class="sidebar-item">
                         <a th:href="@{/settings/users}" class="sidebar-link">
                             <i class="lni lni-users"></i>
-                            Users Account
+                            Users
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a th:href="@{/bank/banks}" class="sidebar-link">
-                            <i class="lni lni-btc"></i>
-                            Bank Account
+                            <i class="lni lni-briefcase"></i>
+                            Banks & Accounts
                         </a>
                     </li>
                 </ul>

@@ -21,4 +21,24 @@ public class BankServiceImpl implements BankService{
     public List<Bank> getAllBanks() {
         return bankRepository.findAll();
     }
+
+    @Override
+    public List<Bank> getAllBankAccounts() {
+        return bankRepository.findAllWithAccounts();
+    }
+
+    @Override
+    public Bank findBankById(Long id) {
+        return bankRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Not Found"));
+    }
+
+    @Override
+    public void save(Bank bank) {
+        bankRepository.save(bank);
+    }
+
+    @Override
+    public void deleteBankById(Long id) {
+        bankRepository.deleteById(id);
+    }
 }

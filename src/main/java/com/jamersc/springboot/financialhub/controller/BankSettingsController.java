@@ -1,6 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.Bank;
+import com.jamersc.springboot.financialhub.model.BankAccount;
+import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
+import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +20,17 @@ import java.util.List;
 public class BankSettingsController {
 
     @Autowired
+    private BankAccountService bankAccountService;
+
+    @Autowired
     private BankService bankService;
 
     @GetMapping("/banks")
     public String showBankPage(Model model) {
         List<Bank> listOfAllBanks = bankService.getAllBanks();
+        List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
         model.addAttribute("listOfAllBanks", listOfAllBanks);
+        model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
         return "settings/bank";
     }
 }

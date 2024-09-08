@@ -21,4 +21,9 @@ public class BankAccountServiceImpl implements BankAccountService{
     public List<BankAccount> getAllBankAccounts() {
         return bankAccountRepository.findAll();
     }
+
+    @Override
+    public BankAccount getBankAccountById(Long id) {
+        return bankAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Account not found."));
+    }
 }
