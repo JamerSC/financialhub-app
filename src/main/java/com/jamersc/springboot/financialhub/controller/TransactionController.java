@@ -3,13 +3,11 @@ package com.jamersc.springboot.financialhub.controller;
 import com.jamersc.springboot.financialhub.model.Bank;
 import com.jamersc.springboot.financialhub.model.BankAccount;
 import com.jamersc.springboot.financialhub.model.BankDeposit;
-import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankDepositService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.Banner;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +17,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/deposits")
-public class DepositController {
+public class TransactionController {
 
     @Autowired
     private BankService bankService;

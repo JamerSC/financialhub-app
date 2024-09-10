@@ -209,9 +209,10 @@ INSERT INTO `banks` (`name`, `abbreviation`, `branch`, `created_by`, `updated_by
 DROP TABLE `bank_accounts`;
 CREATE TABLE `bank_accounts` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `account_name` varchar(255) NOT NULL,
-    `account_number` varchar(255) NOT NULL,
     `bank_id` int NOT NULL,
+    `account_holder_name` varchar(255) NOT NULL,
+    `account_number` varchar(255) UNIQUE NOT NULL,
+    `account_balance` decimal(10,2) DEFAULT 0.00,
     `created_by` int,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,
@@ -221,10 +222,10 @@ CREATE TABLE `bank_accounts` (
 );
 
 INSERT INTO `bank_accounts`
-(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUES ('AMG Legal', '20240001', '1', 1, 1), ('Ace M. Gomez', '20230001', '2', 1, 1), ('AMG Legal', '20220001', '3', 1, 1);
+(`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`) VALUES (1, 'AMG Legal', '20240001', 3000.00, 1, 1), (2, 'Ace M. Gomez', '20230001', 1000.00, 1, 1), (3, 'AMG Legal', '20220001', 2000.00, 1, 1);
 
-INSERT INTO `bank_accounts`(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUE ('AMG Legal', '20220013', '4', 1, 1);
-INSERT INTO `bank_accounts`(`account_name`, `account_number`, `bank_id`, `created_by`, `updated_by`) VALUE ('AMG Legal', '20210023', '2', 1, 1);
+INSERT INTO `bank_accounts`(`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`) VALUE (2, 'AMG Legal', '20220013', 500.00, 1, 1);
+INSERT INTO `bank_accounts`(`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`) VALUE (3, 'AMG Legal', '20210023', 5000.00, 1, 1);
 
 ### Bank & Bank Account Left Join
 
@@ -234,18 +235,36 @@ FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`;
 
+DROP TABLE `bank_deposits`;
 CREATE TABLE `bank_deposits`(
 	`id` int NOT NULL AUTO_INCREMENT,
+	`bank_account_id` int NOT NULL,
     `deposit_date` date NOT NULL,
     `deposit_amount` decimal(10, 2) NOT NULL,
     `deposit_note` varchar(255) NULL,
-    `bank_account_id` int NOT NULL,
     `created_by` int,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
+);
+
+-- Create a table for Transactions (both Deposit and Withdrawal)
+DROP TABLE `transactions`;
+CREATE TABLE `transactions` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `bank_account_id` int NOT NULL,
+    `transaction_date` date NOT NULL,    
+    `transaction_type` enum('DEPOSIT', 'WITHDRAWAL') NOT NULL,
+    `amount` decimal(10, 2) NOT NULL,
+	`transaction_note` varchar(255) NULL,
+	`created_by` int,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
 );
 
 INSERT INTO `bank_deposits`

@@ -34,17 +34,19 @@
                             <th>Acc. ID</th>
                             <th>Account Name</th>
                             <th>Account Number</th>
+                            <th>Balance</th>
                             <th>Bank Name</th>
                             <th>Bank ID</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="account : ${listOfAllBankAccounts}">
-                            <td th:text="${account.id}"></td>
-                            <td th:text="${account.accountName}"></td>
-                            <td th:text="${account.accountNumber}"></td>
-                            <td th:text="${account.bank.name} + ' (' + ${account.bank.abbreviation} + ') - ' + ${account.bank.branch}"></td>
-                            <td th:text="${account.bank.id}"></td>
+                        <tr th:each="tempAccount : ${listOfAllBankAccounts}">
+                            <td th:text="${tempAccount.id}"></td>
+                            <td th:text="${tempAccount.accountHolderName}"></td>
+                            <td th:text="${tempAccount.accountNumber}"></td>
+                            <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
+                            <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
+                            <td th:text="${tempAccount.bank.id}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -57,17 +59,22 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addAccountForm" action="#" th:action="@{/bank/add-account}" th:object="${newAccount}" method="POST">
+                                    <form id="addAccountForm" action="#" th:action="@{/bank/add-account}" th:object="${account}" method="POST">
                                         <!--<input type="hidden" th:value="${bankAccount.id}" th:field="*{bankAccount.id}"/>-->
                                         <div class="mb-3">
-                                            <label for="accountName" class="form-label">Account Name</label>
-                                            <input type="text" class="form-control" id="accountName" th:field="*{accountName}">
-                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                            <label for="accountHolderName" class="form-label">Account Name</label>
+                                            <input type="text" class="form-control" id="accountHolderName" th:field="*{accountHolderName}">
+                                            <div class="invalid-feedback">Please provide an account holder name.</div>
                                         </div>
                                         <div class="mb-3">
                                             <label for="accountNumber" class="form-label">Account Number</label>
                                             <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
                                             <div class="invalid-feedback">Please provide an account number.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountBalance" class="form-label">Account Balance</label>
+                                            <input type="number" step="0.01" class="form-control" id="accountBalance" th:field="*{accountBalance}">
+                                            <!--<div class="invalid-feedback">Please enter a valid amount.</div>-->
                                         </div>
                                         <div class="mb-3">
                                             <label for="bank" class="form-label">Select Bank</label>
@@ -111,11 +118,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="bank : ${listOfAllBanks}">
-                                <td th:text="${bank.id}"></td>
-                                <td th:text="${bank.name}"></td>
-                                <td th:text="${bank.abbreviation}"></td>
-                                <td th:text="${bank.branch}"></td>
+                            <tr th:each="tempBank : ${listOfAllBanks}">
+                                <td th:text="${tempBank.id}"></td>
+                                <td th:text="${tempBank.name}"></td>
+                                <td th:text="${tempBank.abbreviation}"></td>
+                                <td th:text="${tempBank.branch}"></td>
                             </tr>
                         </tbody>
                     </table>
@@ -128,7 +135,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addBankForm" action="#" th:action="@{/bank/add-bank}" th:object="${newBank}" method="POST">
+                                    <form id="addBankForm" action="#" th:action="@{/bank/add-bank}" th:object="${bank}" method="POST">
                                         <div class="mb-3">
                                             <label for="bankName" class="form-label">Bank Name</label>
                                             <input type="text" class="form-control" id="bankName" th:field="*{name}">

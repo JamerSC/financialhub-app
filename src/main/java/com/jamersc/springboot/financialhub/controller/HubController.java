@@ -61,7 +61,13 @@ public class HubController {
 
     @GetMapping("/access-denied")
     public String accessDenied() {
-        logger.error("Access denied!");
+        logger.warn("Access denied!");
         return "access-denied";
     }
+
+    /*@GetMapping("/error")
+    public String error() {
+        logger.error("Error!");
+        return "error";
+    }*/
 }

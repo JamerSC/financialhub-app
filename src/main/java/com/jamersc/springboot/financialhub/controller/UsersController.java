@@ -24,7 +24,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/settings")
-public class UsersSettingsController {
+public class UsersController {
 
     private static final Logger logger = LoggerFactory.getLogger(HubController.class);
 

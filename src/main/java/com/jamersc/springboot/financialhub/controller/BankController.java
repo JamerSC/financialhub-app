@@ -2,7 +2,6 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.Bank;
 import com.jamersc.springboot.financialhub.model.BankAccount;
-import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/bank")
-public class BankSettingsController {
+public class BankController {
 
     @Autowired
     private BankAccountService bankAccountService;
@@ -31,23 +30,23 @@ public class BankSettingsController {
     public String showBankPage(Model model) {
         List<Bank> listOfAllBanks = bankService.getAllBanks();
         List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
-        BankAccount newAccount = new BankAccount();
-        Bank newBank = new Bank();
+        BankAccount account = new BankAccount();
+        Bank bank = new Bank();
         model.addAttribute("listOfAllBanks", listOfAllBanks);
         model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
-        model.addAttribute("newAccount", newAccount);
-        model.addAttribute("newBank", newBank);
+        model.addAttribute("account", account);
+        model.addAttribute("bank", bank);
         return "settings/bank";
     }
 
     @PostMapping("/add-account")
-    public String addBankAccount(@ModelAttribute("newAccount") BankAccount account) {
+    public String addBankAccount(@ModelAttribute("account") BankAccount account) {
         bankAccountService.save(account);
         return "redirect:/bank/banks";
     }
 
     @PostMapping("/add-bank")
-    public String addBankAccount(@ModelAttribute("newBank") Bank bank) {
+    public String addBankAccount(@ModelAttribute("bank") Bank bank) {
         bankService.save(bank);
         return "redirect:/bank/banks";
     }

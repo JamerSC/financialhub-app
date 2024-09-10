@@ -21,19 +21,29 @@ public class BankAccount {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "account_name")
-    private String accountName;
-
-    @Column(name = "account_number", nullable = false)
-    private String accountNumber;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")
     private Bank bank;
 
+    @Column(name = "account_holder_name")
+    private String accountHolderName;
+
+    @Column(name = "account_number")
+    private String accountNumber;
+
+    @Column(name = "account_balance")
+    private Double accountBalance;
+
     @OneToMany(mappedBy = "bankAccount", orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH})
+            CascadeType.REFRESH, CascadeType.DETACH
+    })
+    private List<Transaction> transactions = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bankAccount", orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.REFRESH, CascadeType.DETACH
+    })
     private List<BankDeposit> bankDeposits = new ArrayList<>();
 
     @Column(name = "created_by")
