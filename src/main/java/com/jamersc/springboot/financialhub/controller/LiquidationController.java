@@ -48,4 +48,11 @@ public class LiquidationController {
         liquidationService.save(liquidation);
         return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getId();
     }
+
+    @GetMapping("/delete-item/{id}")
+    public String deleteItem(@PathVariable(value = "id") Long id) {
+        Liquidation liquidation = liquidationService.findLiquidationById(id);
+        liquidationService.deleteLiquidationItemById(liquidation.getId());
+        return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getId();
+    }
 }

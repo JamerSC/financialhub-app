@@ -25,10 +25,10 @@ public class DepositController {
     private BankService bankService;
 
     @Autowired
-    private BankAccountService accountService;
+    private BankAccountService bankAccountService;
 
     @Autowired
-    private BankDepositService depositService;
+    private BankDepositService bankDepositService;
 
     @GetMapping("/deposit")
     public String depositPage(Model model) {
@@ -39,9 +39,9 @@ public class DepositController {
     }
 
     @GetMapping("/account-deposit/{id}")
-    public String accountDeposit(@PathVariable(name = "id") Long id, Model model) {
-        BankAccount bankAccount = accountService.getBankAccountById(id);
-        List<BankDeposit> bankDeposits = depositService.findBankAccountById(bankAccount.getId());
+    public String accountDeposit(@PathVariable(value = "id") Long id, Model model) {
+        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+        List<BankDeposit> bankDeposits = bankDepositService.findBankAccountById(bankAccount.getId());
         BankDeposit newDeposit = new BankDeposit();
         newDeposit.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
@@ -51,8 +51,15 @@ public class DepositController {
     }
 
     @PostMapping("/add-deposit")
-    public String savaAccountDeposit(@ModelAttribute("newDeposit") BankDeposit bankDeposit) {
-        depositService.save(bankDeposit);
+    public String addDeposit(@ModelAttribute("newDeposit") BankDeposit bankDeposit) {
+        bankDepositService.save(bankDeposit);
+        return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
+    }
+
+    @GetMapping("/delete-deposit/{id}")
+    public String deleteDeposit(@PathVariable(value = "id") Long id) {
+        BankDeposit bankDeposit = bankDepositService.getBankDepositById(id);
+        bankDepositService.deleteBankDepositById(bankDeposit.getId());
         return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
     }
 }

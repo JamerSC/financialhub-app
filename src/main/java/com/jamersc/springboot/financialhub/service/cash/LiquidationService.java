@@ -13,4 +13,6 @@ public interface LiquidationService {
 
     void save(Liquidation liquidation);
 
+    void deleteLiquidationItemById(Long id);
+
 }

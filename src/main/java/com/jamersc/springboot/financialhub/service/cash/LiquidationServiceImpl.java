@@ -41,4 +41,9 @@ public class LiquidationServiceImpl implements LiquidationService{
         }
         liquidationRepository.save(liquidation);
     }
+
+    @Override
+    public void deleteLiquidationItemById(Long id) {
+        liquidationRepository.deleteById(id);
+    }
 }

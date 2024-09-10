@@ -50,7 +50,7 @@
                                     <i class="lni lni-pencil-alt"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/deposits/account-deposit/{id}(id=${deposit.id})}">
+                                   th:href="@{/deposits/delete-deposit/{id}(id=${deposit.id})}">
                                     <i class="lni lni-trash-can"></i>
                                 </a>
                             </td>
@@ -88,6 +88,24 @@
                                             <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Delete modal popup-->
+                    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Confirm Delete Record</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Are you sure you want to delete this deposit record?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <a href="" class="btn btn-danger" id="deleteId">Yes, Delete</a>
                                 </div>
                             </div>
                         </div>
