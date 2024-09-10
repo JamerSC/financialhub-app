@@ -26,4 +26,9 @@ public class BankAccountServiceImpl implements BankAccountService{
     public BankAccount getBankAccountById(Long id) {
         return bankAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Account not found."));
     }
+
+    @Override
+    public void save(BankAccount bankAccount) {
+        bankAccountRepository.save(bankAccount);
+    }
 }

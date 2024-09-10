@@ -21,10 +21,11 @@
                             <h4 class="fw-bold fs-4"> Bank Accounts</h4>
                         </div>
                         <!-- Create Accounts Modal Button -->
+                        <!-- Add new Bank Account Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="lni lni-notepad"></i> Add New Account
-                            </a>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                                <i class="lni lni-notepad"></i> Add Account
+                            </button>
                         </div>
                     </div>
                     <table class="table table-striped shadow">
@@ -47,19 +48,57 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Add Account Modal -->
+                    <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addAccountModalLabel">New Bank Account</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addAccountForm" action="#" th:action="@{/bank/add-account}" th:object="${newAccount}" method="POST">
+                                        <!--<input type="hidden" th:value="${bankAccount.id}" th:field="*{bankAccount.id}"/>-->
+                                        <div class="mb-3">
+                                            <label for="accountName" class="form-label">Account Name</label>
+                                            <input type="text" class="form-control" id="accountName" th:field="*{accountName}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="accountNumber" class="form-label">Account Number</label>
+                                            <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
+                                            <div class="invalid-feedback">Please provide an account number.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="bank" class="form-label">Select Bank</label>
+                                            <select class="form-select" id="bank" th:field="*{bank}">
+                                                <option value="" disabled selected>Select a bank</option>
+                                                <option th:each="bank : ${listOfAllBanks}"  th:value="${bank.id}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                                </option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a bank.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex">
                         <div class="p-1">
-                            <h4 class="fw-bold fs-4">Banks</h4>
+                            <h4 class="fw-bold fs-4">List of Banks</h4>
                         </div>
-                        <!-- Create Bank Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <a href="#" class="btn btn-primary btn-sm">
-                                <i class="lni lni-notepad"></i>Add New Bank
-                            </a>
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
+                                <i class="lni lni-notepad"></i> Add Bank
+                            </button>
                         </div>
                     </div>
                     <table class="table table-striped shadow">
@@ -80,6 +119,40 @@
                             </tr>
                         </tbody>
                     </table>
+                    <!-- Add Bank Modal -->
+                    <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="addBankModalLabel">New Bank</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="addBankForm" action="#" th:action="@{/bank/add-bank}" th:object="${newBank}" method="POST">
+                                        <div class="mb-3">
+                                            <label for="bankName" class="form-label">Bank Name</label>
+                                            <input type="text" class="form-control" id="bankName" th:field="*{name}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="bankAbbreviation" class="form-label">Abbreviation</label>
+                                            <input type="text" class="form-control" id="bankAbbreviation" th:field="*{abbreviation}">
+                                            <div class="invalid-feedback">Please provide an account number.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="branch" class="form-label">Bank Branch</label>
+                                            <input type="text" class="form-control" id="branch" th:field="*{branch}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
