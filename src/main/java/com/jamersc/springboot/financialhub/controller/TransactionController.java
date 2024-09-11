@@ -2,10 +2,10 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.Bank;
 import com.jamersc.springboot.financialhub.model.BankAccount;
-import com.jamersc.springboot.financialhub.model.BankDeposit;
+import com.jamersc.springboot.financialhub.model.Transaction;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
-import com.jamersc.springboot.financialhub.service.bank.BankDepositService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
+import com.jamersc.springboot.financialhub.service.bank.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ import java.util.List;
 
 @Controller
 @AllArgsConstructor
-@RequestMapping("/deposits")
+@RequestMapping("/transactions")
 public class TransactionController {
 
     @Autowired
@@ -26,38 +26,38 @@ public class TransactionController {
     private BankAccountService bankAccountService;
 
     @Autowired
-    private BankDepositService bankDepositService;
+    private TransactionService transactionService;
 
-    @GetMapping("/deposit")
+    @GetMapping("/accounts")
     public String depositPage(Model model) {
         // fetch Banks & Bank Accounts
         List<Bank> listOfBankAccounts = bankService.getAllBankAccounts();
         model.addAttribute("listOfBankAccounts", listOfBankAccounts);
-        return "deposit/deposit";
+        return "transaction/accounts";
     }
 
-    @GetMapping("/account-deposit/{id}")
-    public String accountDeposit(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping("/account-transaction/{id}")
+    public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccount bankAccount = bankAccountService.getBankAccountById(id);
-        List<BankDeposit> bankDeposits = bankDepositService.findBankAccountById(bankAccount.getId());
-        BankDeposit newDeposit = new BankDeposit();
-        newDeposit.setBankAccount(bankAccount);
+        List<Transaction> ListOfAccountTransaction = transactionService.findBankAccountById(bankAccount.getId());
+        //Transaction newTransaction = new Transaction();
+        //newTransaction.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
-        model.addAttribute("bankDeposits", bankDeposits);
-        model.addAttribute("newDeposit", newDeposit);
-        return "deposit/account-deposit";
+        model.addAttribute("transactions", ListOfAccountTransaction);
+        //model.addAttribute("newTransaction", newTransaction);
+        return "transaction/account-transaction";
     }
 
-    @PostMapping("/add-deposit")
+    /*@PostMapping("/add-deposit")
     public String addDeposit(@ModelAttribute("newDeposit") BankDeposit bankDeposit) {
         bankDepositService.save(bankDeposit);
         return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
-    }
+    }*/
 
-    @GetMapping("/delete-deposit/{id}")
+    @GetMapping("/delete-transaction/{id}")
     public String deleteDeposit(@PathVariable(value = "id") Long id) {
-        BankDeposit bankDeposit = bankDepositService.getBankDepositById(id);
-        bankDepositService.deleteBankDepositById(bankDeposit.getId());
-        return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
+        Transaction transaction = transactionService.getTransactionById(id);
+        transactionService.deleteTransactionById(transaction.getId());
+        return "redirect:/transactions/account-transaction/" + transaction.getBankAccount().getId();
     }
 }

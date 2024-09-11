@@ -5,52 +5,55 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>Deposit</title>
+    <title>Account Transaction</title>
 </head>
 <body>
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
             <h3 class="fw-bold fs-4">Deposit Details</h3>
-            <h4 class="fw-bold fs-4" th:text="${bankAccount.bank.abbreviation} + ' - ' +  ${bankAccount.accountName}"></h4>
+            <h4 class="fw-bold fs-4" th:text="${bankAccount.bank.abbreviation} + ' - ' +  ${bankAccount.accountHolderName}"></h4>
             <p th:text="${bankAccount.id}"></p>
-            <p th:text="${bankAccount.accountName}"></p>
-            <p th:text="${bankAccount.accountNumber}"></p>
             <p th:text="${bankAccount.bank.name}"></p>
+            <p th:text="${bankAccount.accountHolderName}"></p>
+            <p th:text="${bankAccount.accountNumber}"></p>
+            <p th:text="${bankAccount.accountBalance}"></p>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex">
                         <div class="p-1">
-                            <h4 class="fw-bold fs-4">List of Deposits</h4>
+                            <h4 class="fw-bold fs-4">List of Transactions</h4>
                         </div>
                         <!-- Create Item Modal Button -->
-                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDepositModal">
                                 <i class="lni lni-notepad"></i> Add Deposit
                             </button>
-                        </div>
+                        </div>-->
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                         <tr>
-                            <th>Deposit Date</th>
-                            <th>Deposit Amount</th>
-                            <th>Deposit Note</th>
+                            <th>Transaction Date</th>
+                            <th>Transaction Type</th>
+                            <th>Transaction Amount</th>
+                            <th>Transaction Note</th>
                             <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="deposit : ${bankDeposits}">
-                            <td th:text="${#dates.format(deposit.depositDate, 'dd MMMM yyyy')}"></td>
-                            <td th:text="${#numbers.formatDecimal(deposit.depositAmount, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td th:text="${deposit.depositNote}"></td>
+                            <tr th:each="tempTransaction : ${transactions}">
+                            <td th:text="${#dates.format(tempTransaction.transactionDate, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${tempTransaction.transactionType}"></td>
+                            <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${tempTransaction.transactionNote}"></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                                   th:href="@{/deposits/account-deposit/{id}(id=${deposit.id})}">
+                                   th:href="@{/transactions/update-transaction/{id}(id=${tempTransaction.id})}">
                                     <i class="lni lni-pencil-alt"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/deposits/delete-deposit/{id}(id=${deposit.id})}">
+                                   th:href="@{/transactions/delete-transaction/{id}(id=${tempTransaction.id})}">
                                     <i class="lni lni-trash-can"></i>
                                 </a>
                             </td>
@@ -58,7 +61,7 @@
                         </tbody>
                     </table>
                     <!-- Add New Item Modal -->
-                    <div class="modal fade" id="addDepositModal" tabindex="-1" aria-labelledby="addDepositModalLabel" aria-hidden="true">
+                    <!--<div class="modal fade" id="addDepositModal" tabindex="-1" aria-labelledby="addDepositModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -91,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <!--Delete modal popup-->
                     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                         <div class="modal-dialog">

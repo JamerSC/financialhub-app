@@ -5,7 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>Deposit</title>
+    <title>Accounts</title>
 </head>
 <body>
 
@@ -18,7 +18,7 @@
             <div class="col-12">
                 <div class="d-flex">
                     <div class="p-1">
-                        <h4 class="fw-bold fs-4">Deposit Accounts</h4>
+                        <h4 class="fw-bold fs-4">Bank Accounts</h4>
                     </div>
                 </div>
                 <table class="table table-striped shadow">
@@ -42,17 +42,19 @@
                                     <th>Acc. ID</th>
                                     <th>Acc. Name</th>
                                     <th>Account No.</th>
-                                    <th>Deposit</th>
+                                    <th>Balance</th>
+                                    <th>Transactions</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="account : ${bank.accounts}">
                                     <td th:text="${account.bank.id}"></td>
-                                    <td th:text="${account.accountName}"></td>
+                                    <td th:text="${account.accountHolderName}"></td>
                                     <td th:text="${account.accountNumber}"></td>
+                                    <td th:text="${account.accountBalance}"></td>
                                     <td>
                                         <a href="#" class="btn btn-primary btn-sm"
-                                           th:href="@{/deposits/account-deposit/{id}(id=${account.id})}"    >
+                                           th:href="@{/transactions/account-transaction/{id}(id=${account.id})}"    >
                                             <i class="lni lni-write"></i>
                                         </a>
                                     </td>

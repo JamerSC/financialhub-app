@@ -10,6 +10,8 @@ public interface TransactionService {
 
     Transaction getTransactionById(Long id);
 
+    List<Transaction> findBankAccountById(Long id);
+
     void save(Transaction transaction);
 
     void deleteTransactionById(Long id);

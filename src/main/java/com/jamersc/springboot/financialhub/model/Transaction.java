@@ -7,7 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "transactions")
+@Table(name = "bank_transactions")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
@@ -31,8 +31,8 @@ public class Transaction {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "transaction_amount")
+    private Double transactionAmount;
 
     @Column(name = "transaction_note")
     private String transactionNote;
@@ -61,8 +61,4 @@ public class Transaction {
     protected void onUpdate() {
         updatedAt = new Date();
     }
-}
-
-enum TransactionType {
-    DEPOSIT, WITHDRAWAL
 }

@@ -40,12 +40,6 @@ public class BankAccount {
     })
     private List<Transaction> transactions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "bankAccount", orphanRemoval = true, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH
-    })
-    private List<BankDeposit> bankDeposits = new ArrayList<>();
-
     @Column(name = "created_by")
     private int createdBy;
 
