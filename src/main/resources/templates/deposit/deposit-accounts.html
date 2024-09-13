@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>Accounts</title>
+</head>
+<body>
+
+<main class="content px-3 py-4" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <div class="p-1">
+                        <h5 class="fw-bold fs-4">Deposit Accounts</h5>
+                    </div>
+                </div>
+                <table class="table table-striped shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Bank</th>
+                        <th>Branch</th>
+                        <th>Accounts</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="bank : ${listOfBankAccounts}">
+                        <td th:text="${bank.id}"></td>
+                        <td th:text="${bank.name} + ' (' + ${bank.abbreviation} + ')'"></td>
+                        <td th:text="${bank.branch}"></td>
+                        <td>
+                            <table class="table table-striped shadow">
+                                <thead class="table-info">
+                                <tr>
+                                    <th>Bank ID</th>
+                                    <th>Acc. Name</th>
+                                    <th>Account No.</th>
+                                    <th>Balance</th>
+                                    <th>Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="account : ${bank.accounts}">
+                                    <td th:text="${account.bank.id}"></td>
+                                    <td th:text="${account.accountHolderName}"></td>
+                                    <td th:text="${account.accountNumber}"></td>
+                                    <td th:text="${account.accountBalance}"></td>
+                                    <td>
+                                        <a title="Deposit" href="#" class="btn btn-primary btn-sm"
+                                           th:href="@{/transactions/deposit-transaction/{id}(id=${account.id})}"    >
+                                            <i class="lni lni-write"></i> Deposit
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

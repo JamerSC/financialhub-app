@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>Bank Statements</title>
+</head>
+<body>
+
+<main class="content px-3 py-4" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <div class="p-1">
+                        <h4 class="fw-bold fs-4">Payee List</h4>
+                    </div>
+                </div>
+                <table class="table table-striped shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Age</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tempPayee : ${payees}">
+                        <td th:text="${tempPayee.firstName}"></td>
+                        <td th:text="${tempPayee.lastName}"></td>
+                        <td th:text="${tempPayee.age}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

@@ -257,7 +257,7 @@ CREATE TABLE `bank_transactions` (
     FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
-
+### DEPOSIT
 INSERT INTO `bank_transactions`
 (`bank_account_id`, `transaction_date`, `transaction_type`, `transaction_amount`, `transaction_note`, `created_by`, `updated_by`)
 VALUES (1, '2024-09-11', 'DEPOSIT', 1000.00, 'ABC Corp', 1, 1), (1, '2024-09-11', 'DEPOSIT', 500.00, 'EFG Corp', 1, 1), (1, '2024-09-11', 'DEPOSIT', 2500.00, 'ABC Legal', 1, 1);
@@ -268,7 +268,11 @@ VALUES (2, '2024-09-11', 'DEPOSIT', 500.00, 'EFG Corp', 1, 1), (2, '2024-09-11',
 
 INSERT INTO `bank_transactions`
 (`bank_account_id`, `transaction_date`, `transaction_type`, `transaction_amount`, `transaction_note`, `created_by`, `updated_by`)
-VALUE (5, '2024-09-11', 'DEPOSIT', 500.00, 'EFG Corp', 1, 1);
+VALUES (1, '2024-09-13', 'WITHDRAWAL', 3000.00, 'AMG Legal - Electricity Bills', 1, 1), (1, '2024-09-13', 'WITHDRAWAL', 2500.00, 'AMG Legal - Employee Salary', 1, 1), (1, '2024-09-13', 'WITHDRAWAL', 2500.00, 'Ace M. Gomez - Petty Cash', 1, 1);
+
+INSERT INTO `bank_transactions`
+(`bank_account_id`, `transaction_date`, `transaction_type`, `transaction_amount`, `transaction_note`, `created_by`, `updated_by`)
+VALUE (2, '2024-09-13', 'WITHDRAWAL', 3000.00, 'Ace M. Gomez - Bills Payment', 1, 1);
 
 SELECT `b`.`name` AS `Bank`, `ba`.`id` AS `Acc. ID`, `ba`.`account_number` AS `Acc. Number`, `ba`.`account_holder_name` AS `Acc. Holder Name`,
 `ba`.`account_balance` AS `Balance`, `bt`.`transaction_date` AS `Transaction Date`, `bt`.`transaction_type` AS `Transaction Type`,
@@ -277,21 +281,8 @@ FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`
 LEFT JOIN `bank_transactions` `bt`
-ON `ba`.`id` = `bt`.`bank_account_id`;
+ON `ba`.`id` = `bt`.`bank_account_id`
+WHERE `bt`.`transaction_type` = 'WITHDRAWAL';
 
+UPDATE `test_financial_hub_db`.`bank_transactions` SET `transaction_note` = 'AMG Legal -  Petty Cash' WHERE (`id` = '12');
 
-
-DROP TABLE `bank_deposits`;
-CREATE TABLE `bank_deposits`(
-	`id` int NOT NULL AUTO_INCREMENT,
-	`bank_account_id` int NOT NULL,
-    `deposit_date` date NOT NULL,
-    `deposit_amount` decimal(10, 2) NOT NULL,
-    `deposit_note` varchar(255) NULL,
-    `created_by` int,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
-    PRIMARY KEY(`id`)
-);

@@ -12,6 +12,8 @@ public interface TransactionService {
 
     List<Transaction> findBankAccountById(Long id);
 
+    List<Transaction> getTransactionType(String transactionType);
+
     void save(Transaction transaction);
 
     void deleteTransactionById(Long id);

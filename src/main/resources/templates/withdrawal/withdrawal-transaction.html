@@ -5,24 +5,46 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>Account Transaction</title>
+    <title>Withdrawal Transaction</title>
 </head>
 <body>
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
-            <h3 class="fw-bold fs-4">Deposit Details</h3>
-            <h4 class="fw-bold fs-4" th:text="${bankAccount.bank.abbreviation} + ' - ' +  ${bankAccount.accountHolderName}"></h4>
-            <p th:text="${bankAccount.id}"></p>
-            <p th:text="${bankAccount.bank.name}"></p>
-            <p th:text="${bankAccount.accountHolderName}"></p>
-            <p th:text="${bankAccount.accountNumber}"></p>
-            <p th:text="${bankAccount.accountBalance}"></p>
+            <div class="row">
+                <!-- Account Details Card Group -->
+                <div class="card-group">
+                    <!-- Card 1: Bank Info -->
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title fw-bold fs-4">Account Information</h5>
+                            <!--<span class="card-title" th:text="${bankAccount.bank.abbreviation} + ' - ' + ${bankAccount.accountHolderName}"></span>-->
+                            <p class="card-text">
+                                <span th:text="'Bank Account ID: ' + ${bankAccount.id}"></span><br/>
+                                <span th:text="'Bank Name: ' + ${bankAccount.bank.name} + ' (' + ${bankAccount.bank.abbreviation} + ')'"></span><br/>
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Card 2: Account Info -->
+                    <div class="card">
+                        <div class="card-body">
+                            <!--<h5 class="card-title">Account Information</h5>-->
+                            <p class="card-text">
+                                <span th:text="'Account Holder: ' + ${bankAccount.accountHolderName}"></span><br/>
+                                <span th:text="'Account Number: ' + ${bankAccount.accountNumber}"></span><br/>
+                                <span th:text="'Balance: ' + ${bankAccount.accountBalance}"></span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of Card Group -->
+            </div>
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex">
                         <div class="p-1">
-                            <h4 class="fw-bold fs-4">List of Transactions</h4>
+                            <h4 class="fw-bold fs-4">Withdrawal Transactions</h4>
                         </div>
                         <!-- Create Item Modal Button -->
                         <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">

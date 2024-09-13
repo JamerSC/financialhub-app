@@ -17,7 +17,7 @@ import java.util.List;
 @Controller
 @AllArgsConstructor
 @RequestMapping("/transactions")
-public class TransactionController {
+public class BankTransactionController {
 
     @Autowired
     private BankService bankService;
@@ -28,16 +28,16 @@ public class TransactionController {
     @Autowired
     private TransactionService transactionService;
 
-    @GetMapping("/accounts")
-    public String depositPage(Model model) {
+    @GetMapping("/deposit-accounts")
+    public String depositAccounts(Model model) {
         // fetch Banks & Bank Accounts
         List<Bank> listOfBankAccounts = bankService.getAllBankAccounts();
         model.addAttribute("listOfBankAccounts", listOfBankAccounts);
-        return "transaction/accounts";
+        return "deposit/deposit-accounts";
     }
 
-    @GetMapping("/account-transaction/{id}")
-    public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
+    @GetMapping("/deposit-transaction/{id}")
+    public String depositTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccount bankAccount = bankAccountService.getBankAccountById(id);
         List<Transaction> ListOfAccountTransaction = transactionService.findBankAccountById(bankAccount.getId());
         //Transaction newTransaction = new Transaction();
@@ -45,7 +45,7 @@ public class TransactionController {
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("transactions", ListOfAccountTransaction);
         //model.addAttribute("newTransaction", newTransaction);
-        return "transaction/account-transaction";
+        return "deposit/deposit-transaction";
     }
 
     /*@PostMapping("/add-deposit")
@@ -54,10 +54,30 @@ public class TransactionController {
         return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
     }*/
 
-    @GetMapping("/delete-transaction/{id}")
+    @GetMapping("/delete-deposit-transaction/{id}")
     public String deleteDeposit(@PathVariable(value = "id") Long id) {
         Transaction transaction = transactionService.getTransactionById(id);
         transactionService.deleteTransactionById(transaction.getId());
-        return "redirect:/transactions/account-transaction/" + transaction.getBankAccount().getId();
+        return "redirect:/transactions/deposit-transaction/" + transaction.getBankAccount().getId();
+    }
+
+    @GetMapping("/withdrawal-accounts")
+    public String withdrawalAccounts(Model model) {
+        // fetch Banks & Bank Accounts
+        List<Bank> listOfBankAccounts = bankService.getAllBankAccounts();
+        model.addAttribute("listOfBankAccounts", listOfBankAccounts);
+        return "withdrawal/withdraw-accounts";
+    }
+
+    @GetMapping("/withdrawal-transaction/{id}")
+    public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
+        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+        List<Transaction> ListOfAccountTransaction = transactionService.findBankAccountById(bankAccount.getId());
+        //Transaction newTransaction = new Transaction();
+        //newTransaction.setBankAccount(bankAccount);
+        model.addAttribute("bankAccount", bankAccount);
+        model.addAttribute("transactions", ListOfAccountTransaction);
+        //model.addAttribute("newTransaction", newTransaction);
+        return "withdrawal/withdrawal-transaction";
     }
 }

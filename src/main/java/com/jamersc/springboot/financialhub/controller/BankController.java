@@ -36,7 +36,7 @@ public class BankController {
         model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
         model.addAttribute("account", account);
         model.addAttribute("bank", bank);
-        return "settings/bank";
+        return "bank/bank";
     }
 
     @PostMapping("/add-account")
@@ -49,5 +49,12 @@ public class BankController {
     public String addBankAccount(@ModelAttribute("bank") Bank bank) {
         bankService.save(bank);
         return "redirect:/bank/banks";
+    }
+
+    @GetMapping("/bank-statements")
+    public String bankStatements(Model model) {
+        List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
+        model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
+        return "bank/bank-statements";
     }
 }

@@ -33,6 +33,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
+    public List<Transaction> getTransactionType(String transactionType) {
+        return transactionRepository.findByTransactionType(transactionType);
+    }
+
+    @Override
     public void save(Transaction transaction) {
         transactionRepository.save(transaction);
     }

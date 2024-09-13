@@ -23,36 +23,39 @@
                 </a>
             </li>
             <li class="sidebar-item">
+                <a th:href="@{/payees/payee-list}" class="sidebar-link">
+                    <i class="lni lni-user"></i>
+                    <span>Payees</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/bank/banks}" class="sidebar-link">
+                    <i class="lni lni-briefcase"></i>
+                    Bank Accounts
+                </a>
+            </li>
+            <li class="sidebar-item">
                 <a th:href="@{/petty-cash/petty-cash-voucher}" class="sidebar-link">
                     <i class="lni lni-coin"></i>
                     <span>Petty Cash</span>
                 </a>
             </li>
-            <!--2 Nested Unordered List - Dropdown  -->
-            <!--<li class="sidebar-item">
-                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#cash" aria-expanded="false" aria-controls="cash">
-                    <i class="lni lni-coin"></i>
-                    <span>Petty Cash</span>
-                </a>
-                <ul id="cash" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
-                        <a th:href="@{/petty-cash/petty-cash-voucher}" class="sidebar-link">
-                            <i class="lni lni-revenue"></i>
-                            Petty Cash
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="lni lni-pencil-alt"></i>
-                            Liquidation
-                        </a>
-                    </li>
-                </ul>
-            </li>-->
             <li class="sidebar-item">
                 <a th:href="@{/check/check-voucher}" class="sidebar-link">
                     <i class="lni lni-write"></i>
-                    <span>Check</span>
+                    <span>Checks</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/transactions/withdrawal-accounts}" class="sidebar-link">
+                    <i class="lni lni-wallet"></i>
+                    <span>Withdrawals</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a th:href="@{/transactions/deposit-accounts}" class="sidebar-link">
+                    <i class="lni lni-revenue"></i>
+                    <span>Deposits</span>
                 </a>
             </li>
             <li class="sidebar-item">
@@ -62,15 +65,15 @@
                 </a>
             </li>
             <li class="sidebar-item">
-                <a th:href="@{/transactions/accounts}" class="sidebar-link">
-                    <i class="lni lni-revenue"></i>
-                    <span>Bank Transaction</span>
+                <a th:href="@{/bank/bank-statements}" class="sidebar-link">
+                    <i class="lni lni-library"></i>
+                    Bank Statement
                 </a>
             </li>
             <!--2 Nested Unordered List - Dropdown  -->
             <li class="sidebar-item">
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
-                    <i class="lni lni-cog"></i>
+                    <i class="lni lni-cogs"></i>
                     <span>Settings</span>
                 </a>
                 <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -81,9 +84,9 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a th:href="@{/bank/banks}" class="sidebar-link">
-                            <i class="lni lni-briefcase"></i>
-                            Banks & Accounts
+                        <a href="#" class="sidebar-link">
+                            <i class="lni lni-cog"></i>
+                            Maintenance
                         </a>
                     </li>
                 </ul>
