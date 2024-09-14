@@ -35,11 +35,11 @@ public class LiquidationController {
         Double remainingBalance = pettyCash.getTotalAmount() - totalLiquidationAmount;
         Liquidation newLiquidation = new Liquidation();
         newLiquidation.setPettyCash(pettyCash);
-        model.addAttribute("pettyCash", pettyCash);
-        model.addAttribute("liquidations", liquidations);
-        model.addAttribute("totalLiquidationAmount", totalLiquidationAmount);
+        model.addAttribute("pettyCash", pettyCash); // display petty cash info
+        model.addAttribute("liquidations", liquidations); // display liquidations
+        model.addAttribute("totalLiquidationAmount", totalLiquidationAmount); // sum total liquidation
         model.addAttribute("remainingBalance", remainingBalance);
-        model.addAttribute("newLiquidation", newLiquidation);
+        model.addAttribute("newLiquidation", newLiquidation); // create new item
         return "cash/liquidation-form";
     }
 

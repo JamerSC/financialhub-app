@@ -33,7 +33,7 @@
                             <p class="card-text">
                                 <span th:text="'Account Holder: ' + ${bankAccount.accountHolderName}"></span><br/>
                                 <span th:text="'Account Number: ' + ${bankAccount.accountNumber}"></span><br/>
-                                <span th:text="'Balance: ' + ${bankAccount.accountBalance}"></span>
+                                <span th:text="'Balance: ' + ${#numbers.formatDecimal(bankAccount.accountBalance, 1, 'COMMA', 2, 'POINT')}"></span>
                             </p>
                         </div>
                     </div>
@@ -47,11 +47,11 @@
                             <h4 class="fw-bold fs-4">Withdrawal Transactions</h4>
                         </div>
                         <!-- Create Item Modal Button -->
-                        <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDepositModal">
-                                <i class="lni lni-notepad"></i> Add Deposit
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWithdrawModal">
+                                <i class="lni lni-notepad"></i> Create Withdrawal
                             </button>
-                        </div>-->
+                        </div>
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
@@ -67,7 +67,8 @@
                             <tr th:each="tempWithdrawal: ${accountWithdrawals}">
                             <td th:text="${#dates.format(tempWithdrawal.transactionDate, 'dd MMMM yyyy')}"></td>
                             <td th:text="${tempWithdrawal.transactionType}"></td>
-                            <td th:text="${#numbers.formatDecimal(tempWithdrawal.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${tempWithdrawal.transactionAmount != null ? #numbers.formatDecimal(tempWithdrawal.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
+                            <!--<td th:text="${#numbers.formatDecimal(tempWithdrawal.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>-->
                             <td th:text="${tempWithdrawal.transactionNote}"></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
@@ -82,30 +83,30 @@
                         </tr>
                         </tbody>
                     </table>
-                    <!-- Add New Item Modal -->
-                    <!--<div class="modal fade" id="addDepositModal" tabindex="-1" aria-labelledby="addDepositModalLabel" aria-hidden="true">
+                    <!-- Add Withdraw Modal -->
+                    <div class="modal fade" id="addWithdrawModal" tabindex="-1" aria-labelledby="addWithdrawModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addDepositModalLabel">Add New Deposit</h5>
+                                    <h5 class="modal-title" id="addWithdrawModalLabel">Create Account Withdrawal</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addDepositForm" action="#" th:action="@{/deposits/add-deposit}" th:object="${newDeposit}" method="POST">
+                                    <form id="addWithdrawForm" action="#" th:action="@{/transactions/save-account-withdrawal}" th:object="${withdraw}" method="POST">
                                         <input type="hidden" th:value="${bankAccount.id}" th:field="*{bankAccount.id}"/>
                                         <div class="mb-3">
-                                            <label for="depositDate" class="f  orm-label">Date of Deposit</label>
-                                            <input type="date" class="form-control" id="depositDate" th:field="*{depositDate}">
-                                            <div class="invalid-feedback">Please select a deposit date.</div>
+                                            <label for="withdrawDate" class="form-label">Date of Withdrawal</label>
+                                            <input type="date" class="form-control" id="withdrawDate" th:field="*{transactionDate}">
+                                            <div class="invalid-feedback">Please select a withdrawal date.</div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="depositAmount" class="form-label">Deposit Amount</label>
-                                            <input type="number" step="0.01" class="form-control" id="depositAmount" th:field="*{depositAmount}">
-                                            <div class="invalid-feedback">Please enter a valid amount.</div>
+                                            <label for="withdrawAmount" class="form-label">Withdraw Amount</label>
+                                            <input type="number" step="0.01" class="form-control" id="withdrawAmount" th:field="*{transactionAmount}">
+                                            <div class="invalid-feedback">Please enter a withdrawal amount.</div>
                                         </div>
                                         <div class="mb-3">
-                                            <label for="depositNote" class="form-label">Note</label>
-                                            <textarea class="form-control" id="depositNote" rows="2" th:field="*{depositNote}"></textarea>
+                                            <label for="withdrawNote" class="form-label">Withdrawal Note</label>
+                                            <textarea class="form-control" id="withdrawNote" rows="2" th:field="*{transactionNote}"></textarea>
                                             <div class="invalid-feedback">Please provide note.</div>
                                         </div>
                                         <div class="modal-footer">
@@ -116,7 +117,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>-->
+                    </div>
                     <!--Delete modal popup-->
                     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                         <div class="modal-dialog">
@@ -137,32 +138,32 @@
                     </div>
                     <script>
                         $(document).ready(function () {
-                            $('#addDepositForm').on('submit', function (event) {
+                            $('#addWithdrawForm').on('submit', function (event) {
                                 var isValid = true;
 
                                 // Validate Date
-                                if ($('#depositDate').val() === '') {
-                                    $('#depositDate').addClass('is-invalid');
+                                if ($('#withdrawDate').val() === '') {
+                                    $('#withdrawDate').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#depositDate').removeClass('is-invalid');
+                                    $('#withdrawDate').removeClass('is-invalid');
                                 }
 
                                 // Validate Amount
-                                var amountValue = $('#depositAmount').val();
+                                var amountValue = $('#withdrawAmount').val();
                                 if (amountValue === '' || isNaN(amountValue) || parseFloat(amountValue) <= 0) {
-                                    $('#depositAmount').addClass('is-invalid');
+                                    $('#withdrawAmount').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#depositAmount').removeClass('is-invalid');
+                                    $('#withdrawAmount').removeClass('is-invalid');
                                 }
 
                                 // Validate Remarks
-                                if ($('#depositNote').val().trim() === '') {
-                                    $('#depositNote').addClass('is-invalid');
+                                if ($('#withdrawNote').val().trim() === '') {
+                                    $('#withdrawNote').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#depositNote').removeClass('is-invalid');
+                                    $('#withdrawNote').removeClass('is-invalid');
                                 }
 
                                 // Prevent form submission if any field is invalid

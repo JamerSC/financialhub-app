@@ -11,17 +11,13 @@
 
     <main class="content px-3 py-4" layout:fragment="content">
         <div class="container-fluid">
-            <!--<h3 class="fw-bold fs-4">Check Vouchers</h3>-->
-            <!--<div sec:authentication="name"> The value of the "name" property of the authentication object</div>
-            <div sec:authorize="hasRole('EMPLOYEE')"> Employee Role </div>-->
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex">
                         <div class="p-1">
-                            <h4 class="fw-bold fs-4"> Bank Accounts</h4>
+                            <h4 class="fw-bold fs-4">Bank Accounts</h4>
                         </div>
                         <!-- Create Accounts Modal Button -->
-                        <!-- Add new Bank Account Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
                                 <i class="lni lni-notepad"></i> Add Account
@@ -34,7 +30,6 @@
                             <th>Acc. ID</th>
                             <th>Account Name</th>
                             <th>Account Number</th>
-                            <th>Balance</th>
                             <th>Bank Name</th>
                             <th>Bank ID</th>
                         </tr>
@@ -44,7 +39,6 @@
                             <td th:text="${tempAccount.id}"></td>
                             <td th:text="${tempAccount.accountHolderName}"></td>
                             <td th:text="${tempAccount.accountNumber}"></td>
-                            <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
                             <td th:text="${tempAccount.bank.id}"></td>
                         </tr>
@@ -71,11 +65,11 @@
                                             <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
                                             <div class="invalid-feedback">Please provide an account number.</div>
                                         </div>
-                                        <div class="mb-3">
+                                        <!--<div class="mb-3">
                                             <label for="accountBalance" class="form-label">Account Balance</label>
                                             <input type="number" step="0.01" class="form-control" id="accountBalance" th:field="*{accountBalance}">
-                                            <!--<div class="invalid-feedback">Please enter a valid amount.</div>-->
-                                        </div>
+                                            &lt;!&ndash;<div class="invalid-feedback">Please enter a valid amount.</div>&ndash;&gt;
+                                        </div>-->
                                         <div class="mb-3">
                                             <label for="bank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="bank" th:field="*{bank}">
@@ -160,6 +154,78 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Validation Script -->
+                    <script>
+                        $(document).ready(function () {
+                            // Validate Add Account Form
+                            $('#addAccountForm').on('submit', function (event) {
+                                var isValid = true;
+
+                                // Validate Account Name
+                                if ($('#accountHolderName').val().trim() === '') {
+                                    $('#accountHolderName').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#accountHolderName').removeClass('is-invalid');
+                                }
+
+                                // Validate Account Number
+                                if ($('#accountNumber').val().trim() === '') {
+                                    $('#accountNumber').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#accountNumber').removeClass('is-invalid');
+                                }
+
+                                // Validate Bank Selection
+                                if ($('#bank').val() === '') {
+                                    $('#bank').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#bank').removeClass('is-invalid');
+                                }
+
+                                // Prevent form submission if invalid
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
+                            });
+
+                            // Validate Add Bank Form
+                            $('#addBankForm').on('submit', function (event) {
+                                var isValid = true;
+
+                                // Validate Bank Name
+                                if ($('#bankName').val().trim() === '') {
+                                    $('#bankName').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#bankName').removeClass('is-invalid');
+                                }
+
+                                // Validate Abbreviation
+                                if ($('#bankAbbreviation').val().trim() === '') {
+                                    $('#bankAbbreviation').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#bankAbbreviation').removeClass('is-invalid');
+                                }
+
+                                // Validate Bank Branch
+                                if ($('#branch').val().trim() === '') {
+                                    $('#branch').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#branch').removeClass('is-invalid');
+                                }
+
+                                // Prevent form submission if invalid
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
+                            });
+                        });
+                    </script>
                 </div>
             </div>
         </div>

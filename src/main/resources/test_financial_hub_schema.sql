@@ -97,9 +97,9 @@ CREATE TABLE `petty_cash_vouchers` (
     `particulars` varchar(255) NOT NULL,
     `total_amount` decimal(10, 2) NOT NULL,
     `approved_by` varchar(255) NOT NULL,
-    `created_by` int NULL,
+    `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int NULL,	
+    `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
@@ -120,9 +120,9 @@ CREATE TABLE `petty_cash_liquidation` (
     `remarks` varchar(255) NULL,
 	`charge_to` varchar(250) NOT NULL,
     `billed` boolean NULL,
-    `created_by` int NULL,
+    `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int NULL,	
+    `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`pcvoucher_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
@@ -154,9 +154,9 @@ CREATE TABLE `check_vouchers` (
     `bank` varchar(255) NOT NULL,
     `check_number` varchar(50) NOT NULL,
     `check_date` date NOT NULL,
-	`created_by` int NULL,
+	`created_by` int,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int NULL,
+    `updated_by` int,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
@@ -175,9 +175,9 @@ CREATE TABLE `credit_card_vouchers` (
     `amount_in_words` varchar(255) NOT NULL,
     `mode_of_payment` varchar(50) NOT NULL,
     `bank`	 varchar(50) NOT NULL,
-	`created_by` int NULL,
+	`created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int NULL,
+    `updated_by` int,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 );
@@ -193,9 +193,9 @@ CREATE TABLE `banks` (
     `name` varchar(255) NOT NULL,
     `abbreviation` varchar(255) NULL,
 	`branch` varchar(255) NOT NULL,
-    `created_by` int NULL,
+    `created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int NULL,
+    `updated_by` int DEFAULT NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 	PRIMARY KEY(`id`)
 );
@@ -213,9 +213,9 @@ CREATE TABLE `bank_accounts` (
     `account_holder_name` varchar(255) NOT NULL,
     `account_number` varchar(255) UNIQUE NOT NULL,
     `account_balance` decimal(10,2) DEFAULT 0.00,
-    `created_by` int,
+    `created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int,
+    `updated_by` int DEFAULT NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`bank_id`) REFERENCES `banks`(`id`) ON DELETE CASCADE,
     PRIMARY KEY(`id`)
@@ -224,19 +224,19 @@ CREATE TABLE `bank_accounts` (
 INSERT INTO `bank_accounts`
 (`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`)
 VALUES 
-(1, 'AMG Legal', '20240001', 3000.00, 1, 1),
-(2, 'Ace M. Gomez', '20230001', 1000.00, 1, 1), 
-(3, 'AMG Legal', '20220001', 2000.00, 1, 1);
+(1, 'AMG Legal', '20240001', 0, 1, 1),
+(2, 'Ace M. Gomez', '20230001', 0, 1, 1), 
+(3, 'AMG Legal', '20220001', 0, 1, 1);
 
 INSERT INTO `bank_accounts`(`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`) 
-VALUE (2, 'AMG Legal', '20220013', 500.00, 1, 1);
+VALUE (2, 'AMG Legal', '20220013', 0, 1, 1);
 INSERT INTO `bank_accounts`(`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`) 
-VALUE (3, 'AMG Legal', '20210023', 5000.00, 1, 1);
+VALUE (4, 'AMG Legal', '20210023', 0, 1, 1);
 
 ### Bank & Bank Account Left Join
 
 SELECT `b`.`id` AS `Bank ID`, `b`.`name` AS `Bank Name`, `b`.`abbreviation` AS `Abrev.`, `b`.`branch` AS `Branch`,
-`ba`.`account_name` AS `Account Name`, `ba`.`account_number` AS `Account Number`, `ba`.`bank_id` AS `Bank ID` 
+`ba`.`account_holder_name` AS `Account Name`, `ba`.`account_number` AS `Account Number`, `ba`.`bank_id` AS `Bank ID` 
 FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`;
@@ -250,9 +250,9 @@ CREATE TABLE `bank_transactions` (
     `transaction_type` enum('DEPOSIT', 'WITHDRAWAL') NOT NULL,
     `transaction_amount` decimal(10, 2) NOT NULL,
 	`transaction_note` varchar(255) NULL,
-	`created_by` int,
+	`created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int,
+    `updated_by` int DEFAULT NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`bank_account_id`) REFERENCES `bank_accounts`(`id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
@@ -281,8 +281,8 @@ FROM `banks` `b`
 LEFT JOIN `bank_accounts` `ba`
 ON `b`.`id` = `ba`.`bank_id`
 LEFT JOIN `bank_transactions` `bt`
-ON `ba`.`id` = `bt`.`bank_account_id`
-WHERE `bt`.`transaction_type` = 'WITHDRAWAL';
+ON `ba`.`id` = `bt`.`bank_account_id`;
+# WHERE `bt`.`transaction_type` = 'WITHDRAWAL';
 
 UPDATE `test_financial_hub_db`.`bank_transactions` SET `transaction_note` = 'AMG Legal -  Petty Cash' WHERE (`id` = '12');
 

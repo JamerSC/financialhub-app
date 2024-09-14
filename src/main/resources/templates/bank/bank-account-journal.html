@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
+<head>
+    <title>Bank Account Journal</title>
+    <style>
+        .credit { color: green; }
+        .debit { color: red; }
+    </style>
+</head>
+<body>
+
+<main class="content px-3 py-4" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <h1>Account Details</h1>
+            <p>Account Holder: <span th:text="${account.accountHolderName}"></span></p>
+            <p>Account Number: <span th:text="${account.accountNumber}"></span></p>
+            <p>Balance:
+                <span th:text="${account.accountBalance != null ? #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span>
+            </p>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <div class="p-1">
+                        <h4 class="fw-bold fs-4">Journal Entry</h4>
+                    </div>
+                </div>
+                <table class="table table-striped shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Acc. ID</th>
+                        <th>Transaction Date</th>
+                        <th>Trans. Type</th>
+                        <th>Debit</th>
+                        <th>Credit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="tempTransaction : ${transactions}">
+                        <td th:text="${tempTransaction.id}"></td>
+                        <td th:text="${#dates.format(tempTransaction.transactionDate, 'dd MMMM yyyy')}"></td>
+                        <td th:text="${tempTransaction.transactionType}"></td>
+                        <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
+                        <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
+
+</body>
+</html>

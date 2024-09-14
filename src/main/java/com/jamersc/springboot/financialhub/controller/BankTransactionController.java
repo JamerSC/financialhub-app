@@ -40,21 +40,20 @@ public class BankTransactionController {
     @GetMapping("/deposit-transaction/{id}")
     public String depositTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccount bankAccount = bankAccountService.getBankAccountById(id);
-        //List<Transaction> allAccountTransactions = transactionService.findBankAccountById(bankAccount.getId());
         List<Transaction> accountDeposits = transactionService.findTransactionsByBankAccountAndType(bankAccount.getId(), TransactionType.DEPOSIT);
-        //Transaction newTransaction = new Transaction();
-        //newTransaction.setBankAccount(bankAccount);
+        Transaction deposit = new Transaction();
+        deposit.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("accountDeposits", accountDeposits);
-        //model.addAttribute("newTransaction", newTransaction);
+        model.addAttribute("deposit", deposit);
         return "deposit/deposit-transaction";
     }
 
-    /*@PostMapping("/add-deposit")
-    public String addDeposit(@ModelAttribute("newDeposit") BankDeposit bankDeposit) {
-        bankDepositService.save(bankDeposit);
-        return "redirect:/deposits/account-deposit/" + bankDeposit.getBankAccount().getId();
-    }*/
+    @PostMapping("/save-account-deposit")
+    public String addAccountDeposit(@ModelAttribute("deposit") Transaction deposit) {
+        transactionService.deposit(deposit);
+        return "redirect:/transactions/deposit-transaction/" + deposit.getBankAccount().getId();
+    }
 
     @GetMapping("/delete-deposit-transaction/{id}")
     public String deleteDeposit(@PathVariable(value = "id") Long id) {
@@ -74,13 +73,18 @@ public class BankTransactionController {
     @GetMapping("/withdrawal-transaction/{id}")
     public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccount bankAccount = bankAccountService.getBankAccountById(id);
-        //List<Transaction> allAccountTransactions = transactionService.findBankAccountById(bankAccount.getId());
         List<Transaction> accountWithdrawals = transactionService.findTransactionsByBankAccountAndType(bankAccount.getId(), TransactionType.WITHDRAWAL);
-        //Transaction newTransaction = new Transaction();
-        //newTransaction.setBankAccount(bankAccount);
+        Transaction withdraw = new Transaction();
+        withdraw.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("accountWithdrawals", accountWithdrawals);
-        //model.addAttribute("newTransaction", newTransaction);
+        model.addAttribute("withdraw", withdraw);
         return "withdrawal/withdrawal-transaction";
+    }
+
+    @PostMapping("/save-account-withdrawal")
+    public String addWithdrawal(@ModelAttribute("withdraw") Transaction withdraw) {
+        transactionService.withdraw(withdraw);
+        return "redirect:/transactions/withdrawal-transaction/" + withdraw.getBankAccount().getId();
     }
 }
