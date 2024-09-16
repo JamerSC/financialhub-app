@@ -286,3 +286,65 @@ ON `ba`.`id` = `bt`.`bank_account_id`;
 
 UPDATE `test_financial_hub_db`.`bank_transactions` SET `transaction_note` = 'AMG Legal -  Petty Cash' WHERE (`id` = '12');
 
+
+DROP TABLE `contact_type`;
+CREATE TABLE `contact_type` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `type` varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contact_type` (`type`, `created_by`, `updated_by`)
+VALUES ('Client', 1, 1), ('Supplier', 1, 1), ('Vendor', 1, 1),
+('Partners', 1, 1), ('Internal', 1, 1), ('Others', 1, 1);
+
+DROP TABLE `contact_sub_type`;
+CREATE TABLE `contact_sub_type` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `sub_type` varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`)
+VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Government', 1, 1),
+('ABC Legal', 1, 1), ('Bank & Payment Channels', 1, 1), ('Others', 1, 1);
+
+INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
+
+DROP TABLE `contacts`;
+CREATE TABLE `contacts` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `contact_type_id` int NOT NULL,
+    `contact_sub_type_id` int NOT NULL,
+    `first_name` varchar(255) NOT NULL,
+    `last_name` varchar(255) NOT NULL,
+    `middle_name` varchar(255) NULL,
+    `contact_no` varchar(255) NOT NULL,
+    `address`varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	
+	FOREIGN KEY (`contact_type_id`) REFERENCES `contact_type`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`contact_sub_type_id`) REFERENCES `contact_sub_type`(`id`) ON DELETE CASCADE,    
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `contact_no`, `address`, `created_by`, `updated_by`)
+VALUES (1, 1, 'Johnny', 'Deff', '', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister', '09XXXXXX', 'Manila', 1, 1),
+ (3, 1, 'Tony', 'Stark', 'Downey', '09XXXXXX', 'Boracay', 1, 1);
+
+SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,
+`c`.`address` AS `Address`, `ct`.`type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
+FROM `contact_type` `ct`
+RIGHT JOIN `contacts` `c`
+ON `ct`.`id` = `c`.`contact_type_id`
+LEFT JOIN `contact_sub_type` `cs`
+ON `c`.`contact_sub_type_id` = `cs`.`id`;
