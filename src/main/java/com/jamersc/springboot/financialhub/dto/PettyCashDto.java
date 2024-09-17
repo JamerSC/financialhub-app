@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.dto;
 
+import com.jamersc.springboot.financialhub.model.Fund;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -38,4 +39,6 @@ public class PettyCashDto {
     @NotNull(message = "Approver name is required!")
     @Size(min = 8, message = "Approver name is between 8 - 50 characters!")
     private String approvedBy;
+
+    private Fund fund;
 }

@@ -2,8 +2,8 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.service.cash.LiquidationService;
-import com.jamersc.springboot.financialhub.service.cash.PettyCashService;
+import com.jamersc.springboot.financialhub.service.pettycash.LiquidationService;
+import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,7 +40,7 @@ public class LiquidationController {
         model.addAttribute("totalLiquidationAmount", totalLiquidationAmount); // sum total liquidation
         model.addAttribute("remainingBalance", remainingBalance);
         model.addAttribute("newLiquidation", newLiquidation); // create new item
-        return "cash/liquidation-form";
+        return "petty-cash/liquidation-form";
     }
 
     @PostMapping("/add-item")

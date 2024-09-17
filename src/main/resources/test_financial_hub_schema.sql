@@ -30,9 +30,7 @@ VALUES
 ('Susan', 'Sun Tzu', 'Yinyang', 'susan@mail.com','susan', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
 ('Eroll', 'Villaraiz', 'Divinaflor', 'huwan17@mail.com', 'huwan', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3);
 
-
 ### ROLES
-
 DROP TABLE `roles`;
 CREATE TABLE roles (
 	`id` int NOT NULL AUTO_INCREMENT,
@@ -70,27 +68,94 @@ INSERT INTO users_roles (user_id, role_id) VALUES (4, 1); -- Employee
 #TRUNCATE TABLE `roles`;
 #TRUNCATE TABLE `users_roles`;
 
-SELECT 
-    u.id AS user_id,
-    u.first_name,
-    u.last_name,
-    u.middle_name,
-    u.email,
-    u.username,
-    r.id AS role_id,
-    r.name AS role_name
-FROM 
-    users u
-JOIN 
-    users_roles ur ON u.id = ur.user_id
-JOIN 
-    roles r ON ur.role_id = r.id;
+SELECT u.id AS user_id, u.first_name, u.last_name, u.middle_name,
+u.email, u.username, r.id AS role_id, r.name AS role_name
+FROM users u
+JOIN users_roles ur ON u.id = ur.user_id
+JOIN roles r ON ur.role_id = r.id;
     
-### PETTY CASH VOUCHERS
+DROP TABLE `contact_type`;
+CREATE TABLE `contact_type` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `type` varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contact_type` (`type`, `created_by`, `updated_by`)
+VALUES ('Client', 1, 1), ('Supplier', 1, 1), ('Vendor', 1, 1),
+('Partners', 1, 1), ('Internal', 1, 1), ('Others', 1, 1);
+
+DROP TABLE `contact_sub_type`;
+CREATE TABLE `contact_sub_type` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `sub_type` varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`)
+VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Government', 1, 1),
+('ABC Legal', 1, 1), ('Bank & Payment Channels', 1, 1), ('Others', 1, 1);
+
+INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
+
+DROP TABLE `contacts`;
+CREATE TABLE `contacts` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `contact_type_id` int NOT NULL,
+    `contact_sub_type_id` int NOT NULL,
+    `first_name` varchar(255) NOT NULL,
+    `last_name` varchar(255) NOT NULL,
+    `middle_name` varchar(255) NULL,
+    `contact_no` varchar(255) NOT NULL,
+    `address`varchar(255) NOT NULL,
+	`created_by` int DEFAULT NULL,
+    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int DEFAULT NULL,
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	
+	FOREIGN KEY (`contact_type_id`) REFERENCES `contact_type`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`contact_sub_type_id`) REFERENCES `contact_sub_type`(`id`) ON DELETE CASCADE,    
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `contact_no`, `address`, `created_by`, `updated_by`)
+VALUES (1, 1, 'Johnny', 'Deff', '', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister', '09XXXXXX', 'Manila', 1, 1),
+ (3, 1, 'Tony', 'Stark', 'Downey', '09XXXXXX', 'Boracay', 1, 1);
+
+### Join Contacts, Contact Category, & Contact Sub Category
+SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,
+`c`.`address` AS `Address`, `ct`.`type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
+FROM `contact_type` `ct`
+RIGHT JOIN `contacts` `c`
+ON `ct`.`id` = `c`.`contact_type_id`
+LEFT JOIN `contact_sub_type` `cs`
+ON `c`.`contact_sub_type_id` = `cs`.`id`;
+    
+# FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
+
+DROP TABLE `fund`;
+CREATE TABLE `fund` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `fund_balance` decimal(10,2) NOT NULL,
+    `created_by` int,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+);
+
+INSERT INTO `fund`(`fund_balance`, `created_by`, `updated_by` ) VALUE (5000.00, 1, 1);
 
 DROP TABLE `petty_cash_vouchers`;
 CREATE TABLE `petty_cash_vouchers` (
 	`id` int NOT NULL AUTO_INCREMENT,
+    `fund_id` int NOT NULL,
     `pcv_number` varchar(50) NOT NULL,
     `received_by` varchar(255) NOT NULL,
     `date` date NOT NULL,
@@ -105,18 +170,18 @@ CREATE TABLE `petty_cash_vouchers` (
 );
 
 # DATE - format: YYYY-MM-DD.
-INSERT INTO `petty_cash_vouchers`(`pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
-VALUE ('PCV-2024001', 'John Doe', '2024-07-21', 'Utility expense', 1000, 'Susan Swan', 3, 3);
+INSERT INTO `petty_cash_vouchers`(`fund_id`, `pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
+VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000, 'John Doe', 1, 1);
 
 ### PETTY CASH LIQUIDATION
 
-DROP TABLE `petty_cash_liquidation`;
+DROP TABLE `petty_cash_liquidations`;
 CREATE TABLE `petty_cash_liquidation` (
 	`id` int NOT NULL AUTO_INCREMENT,
-    `pcvoucher_id` int NOT NULL,
+    `petty_cash_id` int NOT NULL,
 	`date` date NOT NULL,
     `account_name` varchar(255) NOT NULL,
-    `amount` DECIMAL(10, 2) NOT NULL,
+    `amount` decimal(10, 2) NOT NULL,
     `remarks` varchar(255) NULL,
 	`charge_to` varchar(250) NOT NULL,
     `billed` boolean NULL,
@@ -124,12 +189,12 @@ CREATE TABLE `petty_cash_liquidation` (
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`pcvoucher_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
+    FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
 INSERT INTO `petty_cash_liquidation` 
-(`pcvoucher_id`, `date`, `account_name`, `amount`, `remarks`, `charge_to`,`billed`, `created_by`, `updated_by`)
+(`petty_cash_id`, `date`, `account_name`, `amount`, `remarks`, `charge_to`,`billed`, `created_by`, `updated_by`)
 VALUES 
 (1, '2024-09-07', 'Office Supplies', 150.50, 'Purchased printer paper and pens', 'Juan Dela Cruz', true, 3, 3),
 (1, '2024-09-07', 'Utility Supplies', 200, null, 'Gomez Legal', false, 3, 3),
@@ -137,9 +202,12 @@ VALUES
 (1, '2024-09-07', 'Certification Fee', 300, 'Metro manila transaction', 'ABC Corporation', false, 3, 3);
 
 SELECT *
-FROM `petty_cash_vouchers`
-LEFT JOIN `petty_cash_liquidation`
-ON `petty_cash_vouchers`.`id` = `petty_cash_liquidation`.`pcvoucher_id`;
+FROM `fund` `f`
+LEFT JOIN `petty_cash_vouchers` `pcv`
+ON `f`.`id` = `pcv`.`fund_id`
+LEFT JOIN `petty_cash_liquidation` `pcl`
+ON `pcv`.`id` = `pcl`.`petty_cash_id`
+ORDER BY `pcl`.`created_at` ASC;
 
 ### CHECK VOUCHERS
 
@@ -285,66 +353,3 @@ ON `ba`.`id` = `bt`.`bank_account_id`;
 # WHERE `bt`.`transaction_type` = 'WITHDRAWAL';
 
 UPDATE `test_financial_hub_db`.`bank_transactions` SET `transaction_note` = 'AMG Legal -  Petty Cash' WHERE (`id` = '12');
-
-
-DROP TABLE `contact_type`;
-CREATE TABLE `contact_type` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `type` varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contact_type` (`type`, `created_by`, `updated_by`)
-VALUES ('Client', 1, 1), ('Supplier', 1, 1), ('Vendor', 1, 1),
-('Partners', 1, 1), ('Internal', 1, 1), ('Others', 1, 1);
-
-DROP TABLE `contact_sub_type`;
-CREATE TABLE `contact_sub_type` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `sub_type` varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`)
-VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Government', 1, 1),
-('ABC Legal', 1, 1), ('Bank & Payment Channels', 1, 1), ('Others', 1, 1);
-
-INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
-
-DROP TABLE `contacts`;
-CREATE TABLE `contacts` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `contact_type_id` int NOT NULL,
-    `contact_sub_type_id` int NOT NULL,
-    `first_name` varchar(255) NOT NULL,
-    `last_name` varchar(255) NOT NULL,
-    `middle_name` varchar(255) NULL,
-    `contact_no` varchar(255) NOT NULL,
-    `address`varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	
-	FOREIGN KEY (`contact_type_id`) REFERENCES `contact_type`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`contact_sub_type_id`) REFERENCES `contact_sub_type`(`id`) ON DELETE CASCADE,    
-    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `contact_no`, `address`, `created_by`, `updated_by`)
-VALUES (1, 1, 'Johnny', 'Deff', '', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister', '09XXXXXX', 'Manila', 1, 1),
- (3, 1, 'Tony', 'Stark', 'Downey', '09XXXXXX', 'Boracay', 1, 1);
-
-SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,
-`c`.`address` AS `Address`, `ct`.`type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
-FROM `contact_type` `ct`
-RIGHT JOIN `contacts` `c`
-ON `ct`.`id` = `c`.`contact_type_id`
-LEFT JOIN `contact_sub_type` `cs`
-ON `c`.`contact_sub_type_id` = `cs`.`id`;

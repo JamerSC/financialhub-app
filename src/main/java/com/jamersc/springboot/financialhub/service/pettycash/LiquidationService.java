@@ -1,9 +1,8 @@
-package com.jamersc.springboot.financialhub.service.cash;
+package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.model.Liquidation;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface LiquidationService {
 

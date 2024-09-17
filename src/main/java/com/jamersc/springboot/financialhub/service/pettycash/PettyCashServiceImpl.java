@@ -1,8 +1,10 @@
-package com.jamersc.springboot.financialhub.service.cash;
+package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.model.Fund;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.repository.FundRepository;
 import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
@@ -29,6 +31,9 @@ public class PettyCashServiceImpl implements PettyCashService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private FundRepository fundRepository;
 
     @Override
     public List<PettyCash> getAllPettyCashRecord() {
@@ -65,6 +70,8 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setParticulars(pettyCashDto.getParticulars());
             pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
             pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
+            Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());
+            pettyCash.setFund(manageFund);
             User updatedBy = userRepository.findByUsername(username);
             if (updatedBy != null) {
                 pettyCash.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
@@ -78,6 +85,8 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setParticulars(pettyCashDto.getParticulars());
             pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
             pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
+            Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());
+            pettyCash.setFund(manageFund);
             User createdBy = userRepository.findByUsername(username);
             if (createdBy != null) {
                 pettyCash.setCreatedBy(Math.toIntExact(createdBy.getId()));

@@ -1,10 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.model.Check;
-import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.check.CheckService;
-import com.jamersc.springboot.financialhub.service.cash.PettyCashService;
+import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;

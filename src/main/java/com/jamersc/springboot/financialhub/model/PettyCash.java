@@ -54,6 +54,10 @@ public class PettyCash {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fund_id")
+    private Fund fund;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pettyCash",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH},

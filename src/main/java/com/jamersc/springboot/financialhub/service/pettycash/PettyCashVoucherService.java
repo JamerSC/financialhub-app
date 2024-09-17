@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.service.cash;
+package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.lowagie.text.*;

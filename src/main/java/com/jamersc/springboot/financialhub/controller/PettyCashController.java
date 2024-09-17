@@ -1,10 +1,12 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.model.Fund;
 import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.service.cash.LiquidationService;
-import com.jamersc.springboot.financialhub.service.cash.PettyCashService;
-import com.jamersc.springboot.financialhub.service.cash.PettyCashVoucherService;
+import com.jamersc.springboot.financialhub.service.pettycash.FundService;
+import com.jamersc.springboot.financialhub.service.pettycash.LiquidationService;
+import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
+import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -37,18 +39,25 @@ public class PettyCashController {
     private PettyCashVoucherService pettyCashVoucherService;
 
     @Autowired
-    private LiquidationService liquidationService;
+    private FundService fundService;
 
     @GetMapping("/petty-cash-voucher")
-    public String pettyCashVoucherPage(Model model) {
-        addPettyCashToModel(model);
-        return  "cash/petty-cash";
+    public String pettyCashVoucherPage(Model model,  @RequestParam(defaultValue = "1") Long id) {
+        Fund fund = fundService.getFundById(id); // fund id# 1
+        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
+        model.addAttribute("pettyCash", pettyCash);
+        model.addAttribute("fund", fund);
+        return  "petty-cash/petty-cash";
     }
 
-    @GetMapping("/petty-cash-form")
-    public String pettyCashForm(Model model) {
-        model.addAttribute("pettyCashDto", new PettyCashDto());
-        return "cash/petty-cash-form";
+    @GetMapping("/{id}/petty-cash-form")
+    public String pettyCashForm(@PathVariable(value = "id") Long id, Model model) {
+        Fund fund = fundService.getFundById(id);
+        PettyCashDto pettyCashDto = new PettyCashDto();
+        pettyCashDto.setFund(fund);
+        model.addAttribute("pettyCashDto",pettyCashDto);
+        model.addAttribute("fund", fund);
+        return "petty-cash/petty-cash-form";
     }
 
     @PostMapping("/petty-cash-form")
@@ -56,7 +65,7 @@ public class PettyCashController {
                                    BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Please complete all required fields!");
-            return "cash/petty-cash-form";
+            return "petty-cash/petty-cash-form";
         } else {
             String createdBy = getSessionUsername();
             logger.info("Created petty cash voucher: " + pettyCashDto);
@@ -71,7 +80,7 @@ public class PettyCashController {
         if (pettyCashDto != null) {
             logger.info("Fetching petty cash form id: " + pettyCashDto.getId());
             model.addAttribute("pettyCashDto", pettyCashDto);
-            return "cash/petty-cash-update-form";
+            return "petty-cash/petty-cash-update-form";
         }
         return "redirect:/petty-cash/petty-cash-voucher";
     }
@@ -81,7 +90,7 @@ public class PettyCashController {
                                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
-            return "cash/petty-cash-update-form";
+            return "petty-cash/petty-cash-update-form";
         } else {
             String updatedBy = getSessionUsername();
             pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
@@ -114,12 +123,6 @@ public class PettyCashController {
                 .headers(headers)
                 .contentType(MediaType.APPLICATION_PDF)
                 .body(stream.readAllBytes());
-    }
-
-    private void addPettyCashToModel(Model model) {
-        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
-        model.addAttribute("pettyCash", pettyCash);
-        logger.info("Get all petty cash record: " + pettyCash);
     }
 
     private String getSessionUsername() {

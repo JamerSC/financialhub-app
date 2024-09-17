@@ -2,48 +2,36 @@ package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "petty_cash_liquidation")
+@Table(name = "fund")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "pettyCash")
-public class Liquidation {
+@ToString
+public class Fund {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade={
+    // Petty Cash
+    @OneToMany(mappedBy = "fund", orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "petty_cash_id")
-    private PettyCash pettyCash;
+    private List<PettyCash> pettyCash = new ArrayList<>();
 
-    @Column(name = "date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date date;
+    @Column(name = "fund_balance")
+    private Double fundBalance;
 
-    @Column(name = "account_name")
-    private String accountName;
-
-    @Column(name = "amount")
-    private Double amount;
-
-    @Column(name = "remarks")
-    private String remarks;
-
-    @Column(name = "charge_to")
-    private String chargeTo;
-
-    @Column(name = "billed")
-    private boolean billed;
+    @Column(name = "created_by")
+    private int createdBy;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
@@ -51,7 +39,6 @@ public class Liquidation {
 
     @Column(name = "updated_by")
     private int updatedBy;
-
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)

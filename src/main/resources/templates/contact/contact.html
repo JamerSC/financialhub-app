@@ -27,10 +27,10 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="tempPayee : ${payees}">
-                        <td th:text="${tempPayee.firstName}"></td>
-                        <td th:text="${tempPayee.lastName}"></td>
-                        <td th:text="${tempPayee.age}"></td>
+                    <tr th:each="tempContact : ${contacts}">
+                        <td th:text="${tempContact.firstName}"></td>
+                        <td th:text="${tempContact.lastName}"></td>
+                        <td th:text="${tempContact.age}"></td>
                     </tr>
                     </tbody>
                 </table>
