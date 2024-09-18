@@ -15,7 +15,13 @@
             <div class="col-12">
                 <div class="d-flex">
                     <div class="p-1">
-                        <h4 class="fw-bold fs-4">Payee List</h4>
+                        <h4 class="fw-bold fs-4">Contacts</h4>
+                    </div>
+                    <!-- Create Accounts Modal Button -->
+                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addContactModal">
+                            <i class="lni lni-notepad"></i> Add Contact
+                        </button>
                     </div>
                 </div>
                 <table class="table table-striped shadow">
@@ -23,17 +29,86 @@
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
-                        <th>Age</th>
+                        <th>Contact Type</th>
+                        <th>Contact Sub Type</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="tempContact : ${contacts}">
+                    <tr th:each="tempContact : ${listOfContacts}">
                         <td th:text="${tempContact.firstName}"></td>
                         <td th:text="${tempContact.lastName}"></td>
-                        <td th:text="${tempContact.age}"></td>
+                        <td th:text="${tempContact.contactType.type}"></td>
+                        <td th:text="${tempContact.contactSubType.subType}"></td>
                     </tr>
                     </tbody>
                 </table>
+                <!-- Add Contact Modal -->
+                <div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addContactModalLabel">New Contact</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="addContactForm" action="#" th:action="@{/contacts/add-contact}" th:object="${contact}" method="POST">
+                                    <div class="mb-3">
+                                        <label for="firstName" class="form-label">First name</label>
+                                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+                                        <div class="invalid-feedback">Please provide a contact first name.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="middleName" class="form-label">Middle name</label>
+                                        <input type="text" class="form-control" id="middleName" th:field="*{middleName}">
+                                        <div class="invalid-feedback">Please provide a middle name.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="lastName" class="form-label">Last name</label>
+                                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+                                        <div class="invalid-feedback">Please provide a last name.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label">Email</label>
+                                        <input type="email" class="form-control" id="email" th:field="*{email}">
+                                        <div class="invalid-feedback">Please provide a contact first name.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="address" class="form-label">Address</label>
+                                        <input type="text" class="form-control" id="address" th:field="*{address}">
+                                        <div class="invalid-feedback">Please provide an address.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contactNo" class="form-label">Contact No.</label>
+                                        <input type="text" class="form-control" id="contactNo" th:field="*{contactNo}">
+                                        <div class="invalid-feedback">Please provide a contact number.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contactType" class="form-label">Select Contact Type</label>
+                                        <select class="form-select" id="contactType" th:field="*{contactType}">
+                                            <option value="" disabled selected>Select a type</option>
+                                            <option th:each="contactType : ${contactTypeList}"  th:value="${contactType.id}" th:text="${contactType.type}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a contact type.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="contactSubType" class="form-label">Select Contact Sub Type</label>
+                                        <select class="form-select" id="contactSubType" th:field="*{contactSubType}">
+                                            <option value="" disabled selected>Select a sub type</option>
+                                            <option th:each="contactSubType : ${contactSubTypeList}"  th:value="${contactSubType.id}" th:text="${contactSubType.subType}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a contact type.</div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

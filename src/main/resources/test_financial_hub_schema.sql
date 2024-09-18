@@ -77,7 +77,7 @@ JOIN roles r ON ur.role_id = r.id;
 DROP TABLE `contact_type`;
 CREATE TABLE `contact_type` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `type` varchar(255) NOT NULL,
+    `con_type` varchar(255) NOT NULL,
 	`created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int DEFAULT NULL,
@@ -85,7 +85,7 @@ CREATE TABLE `contact_type` (
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `contact_type` (`type`, `created_by`, `updated_by`)
+INSERT INTO `contact_type` (`con_type`, `created_by`, `updated_by`)
 VALUES ('Client', 1, 1), ('Supplier', 1, 1), ('Vendor', 1, 1),
 ('Partners', 1, 1), ('Internal', 1, 1), ('Others', 1, 1);
 
@@ -113,6 +113,7 @@ CREATE TABLE `contacts` (
     `first_name` varchar(255) NOT NULL,
     `last_name` varchar(255) NOT NULL,
     `middle_name` varchar(255) NULL,
+    `email` varchar(255) NOT NULL,
     `contact_no` varchar(255) NOT NULL,
     `address`varchar(255) NOT NULL,
 	`created_by` int DEFAULT NULL,
@@ -124,13 +125,13 @@ CREATE TABLE `contacts` (
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `contact_no`, `address`, `created_by`, `updated_by`)
-VALUES (1, 1, 'Johnny', 'Deff', '', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister', '09XXXXXX', 'Manila', 1, 1),
- (3, 1, 'Tony', 'Stark', 'Downey', '09XXXXXX', 'Boracay', 1, 1);
+INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `email`, `contact_no`, `address`, `created_by`, `updated_by`)
+VALUES (1, 1, 'Johnny', 'Deff', '', 'john@mail.com', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister',  'peter@mail.com', '09XXXXXX', 'Manila', 1, 1),
+ (3, 1, 'Tony', 'Stark', 'Downey', 'stark@mail.com', '09XXXXXX', 'Boracay', 1, 1);
 
 ### Join Contacts, Contact Category, & Contact Sub Category
-SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,
-`c`.`address` AS `Address`, `ct`.`type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
+SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,`c`.`middle_name` AS `Middle Name`,
+`c`.`email` AS `Email`, `c`.`address` AS `Address`, `ct`.`con_type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
 FROM `contact_type` `ct`
 RIGHT JOIN `contacts` `c`
 ON `ct`.`id` = `c`.`contact_type_id`
