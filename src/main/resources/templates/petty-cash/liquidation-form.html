@@ -14,10 +14,6 @@
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
             <h3 class="fw-bold fs-4">Liquidation Details</h3>
-            <!--<div sec:authentication="name">The value of the "name" property</div>
-            <div sec:authorize="hasRole('EMPLOYEE')"> Employee Role </div>
-            <div sec:authorize="hasRole('MANAGER')"> Manager Role </div>
-            <div sec:authorize="hasRole('ADMIN')"> Admin Role </div>-->
             <div class="row">
                 <div class="col-12">
                     <div class="d-flex">
@@ -47,7 +43,7 @@
                             <td th:text="${#dates.format(liquidation.date, 'dd MMMM yyyy')}"></td>
                             <td th:text="${liquidation.accountName}"></td>
                             <td th:text="${#numbers.formatDecimal(liquidation.amount, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td th:text="${liquidation.chargeTo}"></td>
+                            <td th:text="${liquidation.chargeTo.firstName} + ' '+ ${liquidation.chargeTo.lastName} "></td>
                             <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
                             <!-- Display checkbox for billed -->
                             <td>
@@ -78,15 +74,6 @@
                             <td></td>
                             <td></td>
                         </tr>
-                        <!-- Remaining Balance Row -->
-                        <!--<tr>
-                            <td colspan="2" class="text-end"><strong>Remaining Balance:</strong></td>
-                            <td><strong th:text="${#numbers.formatDecimal(remainingBalance, 1, 'COMMA', 2, 'POINT')}"></strong></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>-->
-                        <!-- Remaining Balance Row -->
                         <tr>
                             <td colspan="2" class="text-end">
                                 <strong>Remaining Balance:</strong>
@@ -142,8 +129,12 @@
                                         <!-- New Field: Charge To -->
                                         <div class="mb-3">
                                             <label for="chargeTo" class="form-label">Charge To</label>
-                                            <input type="text" class="form-control" id="chargeTo" th:field="*{chargeTo}">
-                                            <div class="invalid-feedback">Please specify who or what this is charged to.</div>
+                                            <select class="form-select" id="chargeTo" th:field="*{chargeTo}">
+                                                <option value="" disabled selected>Select a contact</option>
+                                                <!-- Loop through listOfChargeTo -->
+                                                <option th:each="contact : ${listOfChargeTo}" th:value="${contact.id}" th:text="${contact.firstName} + ' ' + ${contact.lastName}"></option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a contact.</div>
                                         </div>
 
                                         <!-- New Field: Billed -->
@@ -220,7 +211,7 @@
                                 }
 
                                 // Validate Charge To
-                                if ($('#chargeTo').val().trim() === '') {
+                                if ($('#chargeTo').val() === '' || $('#chargeTo').val() == null) {
                                     $('#chargeTo').addClass('is-invalid');
                                     isValid = false;
                                 } else {

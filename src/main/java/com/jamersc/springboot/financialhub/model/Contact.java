@@ -19,11 +19,11 @@ public class Contact {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_type_id")
     private ContactType contactType;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_sub_type_id")
     private ContactSubType contactSubType;
 

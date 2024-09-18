@@ -1,7 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.model.Contact;
 import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import com.jamersc.springboot.financialhub.service.pettycash.LiquidationService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import lombok.AllArgsConstructor;
@@ -27,6 +29,9 @@ public class LiquidationController {
     @Autowired
     private LiquidationService liquidationService;
 
+    @Autowired
+    private ContactService contactService;
+
     @GetMapping("/liquidation-pcv/{id}")
     public String liquidationForm(@PathVariable(value = "id") Long id, Model model) {
         PettyCash pettyCash = pettyCashService.findPettyCashById(id);
@@ -34,11 +39,13 @@ public class LiquidationController {
         Double totalLiquidationAmount = liquidations.stream().mapToDouble(Liquidation::getAmount).sum();
         Double remainingBalance = pettyCash.getTotalAmount() - totalLiquidationAmount;
         Liquidation newLiquidation = new Liquidation();
+        List<Contact> listOfChargeTo = contactService.getAllContacts();
         newLiquidation.setPettyCash(pettyCash);
         model.addAttribute("pettyCash", pettyCash); // display petty cash info
         model.addAttribute("liquidations", liquidations); // display liquidations
         model.addAttribute("totalLiquidationAmount", totalLiquidationAmount); // sum total liquidation
         model.addAttribute("remainingBalance", remainingBalance);
+        model.addAttribute("listOfChargeTo", listOfChargeTo);
         model.addAttribute("newLiquidation", newLiquidation); // create new item
         return "petty-cash/liquidation-form";
     }

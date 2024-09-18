@@ -176,31 +176,33 @@ VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000
 
 ### PETTY CASH LIQUIDATION
 
-DROP TABLE `petty_cash_liquidations`;
+DROP TABLE `petty_cash_liquidation`;
 CREATE TABLE `petty_cash_liquidation` (
 	`id` int NOT NULL AUTO_INCREMENT,
     `petty_cash_id` int NOT NULL,
+    `contact_id` int NOT NULL,
 	`date` date NOT NULL,
     `account_name` varchar(255) NOT NULL,
     `amount` decimal(10, 2) NOT NULL,
     `remarks` varchar(255) NULL,
-	`charge_to` varchar(250) NOT NULL,
     `billed` boolean NULL,
     `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
+#`charge_to` varchar(250) NOT NULL,
 
 INSERT INTO `petty_cash_liquidation` 
-(`petty_cash_id`, `date`, `account_name`, `amount`, `remarks`, `charge_to`,`billed`, `created_by`, `updated_by`)
+(`petty_cash_id`, `contact_id`, `date`, `account_name`, `amount`, `remarks`, `billed`, `created_by`, `updated_by`)
 VALUES 
-(1, '2024-09-07', 'Office Supplies', 150.50, 'Purchased printer paper and pens', 'Juan Dela Cruz', true, 3, 3),
-(1, '2024-09-07', 'Utility Supplies', 200, null, 'Gomez Legal', false, 3, 3),
-(1, '2024-09-07', 'Meals', 150.50, 'Metro manila transaction', 'ABC Corporation', false, 3, 3),
-(1, '2024-09-07', 'Certification Fee', 300, 'Metro manila transaction', 'ABC Corporation', false, 3, 3);
+(1, 1, '2024-09-07', 'Office Supplies', 150.50, 'Purchased printer', true, 3, 3),
+(1, 1, '2024-09-07', 'Utility Supplies', 200, null, false, 3, 3),
+(1, 1, '2024-09-07', 'Meals', 150.50, 'Metro manila transaction', false, 3, 3),
+(1, 1, '2024-09-07', 'Certification Fee', 300, 'Metro manila transaction', false, 3, 3);
 
 SELECT *
 FROM `fund` `f`
@@ -208,6 +210,8 @@ LEFT JOIN `petty_cash_vouchers` `pcv`
 ON `f`.`id` = `pcv`.`fund_id`
 LEFT JOIN `petty_cash_liquidation` `pcl`
 ON `pcv`.`id` = `pcl`.`petty_cash_id`
+LEFT JOIN `contacts` `c`
+ON `pcl`.`contact_id` = `c`.`id`
 ORDER BY `pcl`.`created_at` ASC;
 
 ### CHECK VOUCHERS

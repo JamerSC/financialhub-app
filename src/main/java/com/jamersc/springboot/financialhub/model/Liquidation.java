@@ -39,8 +39,12 @@ public class Liquidation {
     @Column(name = "remarks")
     private String remarks;
 
-    @Column(name = "charge_to")
-    private String chargeTo;
+    /*@Column(name = "charge_to")
+    private String chargeTo;*/
+    // Change chargeTo to reference Contact entity
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "contact_id")
+    private Contact chargeTo;
 
     @Column(name = "billed")
     private boolean billed;
