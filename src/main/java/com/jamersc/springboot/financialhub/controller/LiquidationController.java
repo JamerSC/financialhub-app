@@ -36,7 +36,7 @@ public class LiquidationController {
     public String liquidationForm(@PathVariable(value = "id") Long id, Model model) {
         PettyCash pettyCash = pettyCashService.findPettyCashById(id);
         List<Liquidation> liquidations = liquidationService.findByPettyCashVoucherId(pettyCash.getId());
-        Double totalLiquidationAmount = liquidations.stream().mapToDouble(Liquidation::getAmount).sum();
+        Double totalLiquidationAmount = liquidations.stream().mapToDouble(Liquidation::getCost).sum();
         Double remainingBalance = pettyCash.getTotalAmount() - totalLiquidationAmount;
         Liquidation newLiquidation = new Liquidation();
         List<Contact> listOfChargeTo = contactService.getAllContacts();

@@ -6,21 +6,21 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "contact_sub_type")
+@Table(name = "contact_category")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
-public class ContactSubType {
+public class ContactCategory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "sub_type")
-    private String subType;
+    @Column(name = "contact_category_name")
+    private String contactCategoryName;
 
     @Column(name = "created_by")
     private int createdBy;

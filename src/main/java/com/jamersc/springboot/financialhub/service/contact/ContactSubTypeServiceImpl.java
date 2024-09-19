@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
-import com.jamersc.springboot.financialhub.model.ContactSubType;
+import com.jamersc.springboot.financialhub.model.ContactSubCategory;
 import com.jamersc.springboot.financialhub.repository.ContactSubTypeRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -18,18 +18,18 @@ public class ContactSubTypeServiceImpl implements ContactSubTypeService {
     private ContactSubTypeRepository contactSubTypeRepository;
 
     @Override
-    public List<ContactSubType> getAllContactSubTypes() {
+    public List<ContactSubCategory> getAllContactSubTypes() {
         return contactSubTypeRepository.findAll();
     }
 
     @Override
-    public ContactSubType getContactSubTypeById(Long contactSubTypeId) {
+    public ContactSubCategory getContactSubTypeById(Long contactSubTypeId) {
         return contactSubTypeRepository.findById(contactSubTypeId).orElseThrow(() -> new RuntimeException("Contact Sub Type ID not found."));
     }
 
     @Override
-    public void save(ContactSubType contactSubType) {
-        contactSubTypeRepository.save(contactSubType);
+    public void save(ContactSubCategory contactSubCategory) {
+        contactSubTypeRepository.save(contactSubCategory);
     }
 
     @Override

@@ -73,7 +73,7 @@
                                         <div class="mb-3">
                                             <label for="bank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="bank" th:field="*{bank}">
-                                                <option value="" disabled selected>Select a bank</option>
+                                                <option value="" selected>Select a bank</option>
                                                 <option th:each="bank : ${listOfAllBanks}"  th:value="${bank.id}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                 </option>
                                             </select>

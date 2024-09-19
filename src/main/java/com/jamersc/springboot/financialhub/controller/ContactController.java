@@ -1,9 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.Contact;
-import com.jamersc.springboot.financialhub.model.ContactSubType;
-import com.jamersc.springboot.financialhub.model.ContactType;
-import com.jamersc.springboot.financialhub.model.Sample;
+import com.jamersc.springboot.financialhub.model.ContactCategory;
+import com.jamersc.springboot.financialhub.model.ContactSubCategory;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import com.jamersc.springboot.financialhub.service.contact.ContactSubTypeService;
 import com.jamersc.springboot.financialhub.service.contact.ContactTypeService;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Arrays;
 import java.util.List;
 
 @AllArgsConstructor
@@ -35,12 +33,12 @@ public class ContactController {
 
     @GetMapping("/contact-list")
     public String payeeList(Model model) {
-        List<ContactType> contactTypeList = contactTypeService.getAllContactTypes();
-        List<ContactSubType> contactSubTypeList = contactSubTypeService.getAllContactSubTypes();
+        List<ContactCategory> contactCategoryList = contactTypeService.getAllContactTypes();
+        List<ContactSubCategory> contactSubCategoryList = contactSubTypeService.getAllContactSubTypes();
         List<Contact> listOfContacts = contactService.getAllContacts();
         Contact contact = new Contact();
-        model.addAttribute("contactTypeList", contactTypeList);
-        model.addAttribute("contactSubTypeList", contactSubTypeList);
+        model.addAttribute("contactCategoryList", contactCategoryList);
+        model.addAttribute("contactSubCategoryList", contactSubCategoryList);
         model.addAttribute("listOfContacts", listOfContacts);
         model.addAttribute("contact", contact);
         return "contact/contact";

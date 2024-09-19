@@ -20,12 +20,12 @@ public class Contact {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_type_id")
-    private ContactType contactType;
+    @JoinColumn(name = "contact_category_id")
+    private ContactCategory contactCategory;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_sub_type_id")
-    private ContactSubType contactSubType;
+    @JoinColumn(name = "contact_sub_category_id")
+    private ContactSubCategory contactSubCategory;
 
     @Column(name = "first_name")
     private String firstName;

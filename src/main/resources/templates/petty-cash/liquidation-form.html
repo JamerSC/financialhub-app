@@ -31,8 +31,9 @@
                         <thead class="table-dark">
                         <tr>
                             <th>Date</th>
-                            <th>Account Name</th>
+                            <th>Particulars</th>
                             <th>Amount</th>
+                            <th>Receipt</th>
                             <th>Charge to</th>
                             <th>Billed</th>
                             <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
@@ -41,8 +42,9 @@
                         <tbody>
                         <tr th:each="liquidation : ${liquidations}">
                             <td th:text="${#dates.format(liquidation.date, 'dd MMMM yyyy')}"></td>
-                            <td th:text="${liquidation.accountName}"></td>
-                            <td th:text="${#numbers.formatDecimal(liquidation.amount, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${liquidation.particulars}"></td>
+                            <td th:text="${#numbers.formatDecimal(liquidation.cost, 1, 'COMMA', 2, 'POINT')}"></td>
+                            <td th:text="${liquidation.receiptNo}"></td>
                             <td th:text="${liquidation.chargeTo.firstName} + ' '+ ${liquidation.chargeTo.lastName} "></td>
                             <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
                             <!-- Display checkbox for billed -->
@@ -108,15 +110,21 @@
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="accountName" class="form-label">Account Name</label>
-                                            <input type="text" class="form-control" id="accountName" th:field="*{accountName}">
+                                            <label for="particulars" class="form-label">Particulars</label>
+                                            <input type="text" class="form-control" id="particulars" th:field="*{particulars}">
                                             <div class="invalid-feedback">Please provide an account name.</div>
                                         </div>
 
                                         <div class="mb-3">
-                                            <label for="amount" class="form-label">Amount</label>
-                                            <input type="number" step="0.01" class="form-control" id="amount" th:field="*{amount}">
-                                            <div class="invalid-feedback">Please enter a valid amount.</div>
+                                            <label for="cost" class="form-label">Cost/Expense</label>
+                                            <input type="number" step="0.01" class="form-control" id="cost" th:field="*{cost}">
+                                            <div class="invalid-feedback">Please enter a valid cost/expense.</div>
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="receiptNo" class="form-label">OR/Invoice No.</label>
+                                            <input type="text" class="form-control" id="receiptNo" th:field="*{receiptNo}">
+                                            <div class="invalid-feedback">Please provide a receipt number.</div>
                                         </div>
 
                                         <!-- New Field: Remarks -->
@@ -130,11 +138,11 @@
                                         <div class="mb-3">
                                             <label for="chargeTo" class="form-label">Charge To</label>
                                             <select class="form-select" id="chargeTo" th:field="*{chargeTo}">
-                                                <option value="" disabled selected>Select a contact</option>
+                                                <option value="" selected>Select a charge to</option>
                                                 <!-- Loop through listOfChargeTo -->
                                                 <option th:each="contact : ${listOfChargeTo}" th:value="${contact.id}" th:text="${contact.firstName} + ' ' + ${contact.lastName}"></option>
                                             </select>
-                                            <div class="invalid-feedback">Please select a contact.</div>
+                                            <div class="invalid-feedback">Please select charge to.</div>
                                         </div>
 
                                         <!-- New Field: Billed -->
@@ -186,20 +194,28 @@
                                 }
 
                                 // Validate Account Name
-                                if ($('#accountName').val().trim() === '') {
-                                    $('#accountName').addClass('is-invalid');
+                                if ($('#particulars').val().trim() === '') {
+                                    $('#particulars').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#accountName').removeClass('is-invalid');
+                                    $('#particulars').removeClass('is-invalid');
                                 }
 
                                 // Validate Amount
-                                var amountValue = $('#amount').val();
-                                if (amountValue === '' || isNaN(amountValue) || parseFloat(amountValue) <= 0) {
-                                    $('#amount').addClass('is-invalid');
+                                var costValue = $('#cost').val();
+                                if (costValue === '' || isNaN(costValue) || parseFloat(costValue) <= 0) {
+                                    $('#cost').addClass('is-invalid');
                                     isValid = false;
                                 } else {
-                                    $('#amount').removeClass('is-invalid');
+                                    $('#cost').removeClass('is-invalid');
+                                }
+
+                                // Validate Account Name
+                                if ($('#receiptNo').val().trim() === '') {
+                                    $('#receiptNo').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#receiptNo').removeClass('is-invalid');
                                 }
 
                                 // Validate Remarks

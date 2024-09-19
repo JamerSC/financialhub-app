@@ -30,11 +30,14 @@ public class Liquidation {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
-    @Column(name = "account_name")
-    private String accountName;
+    @Column(name = "particulars")
+    private String particulars;
 
-    @Column(name = "amount")
-    private Double amount;
+    @Column(name = "cost")
+    private Double cost;
+
+    @Column(name = "receipt_no")
+    private String receiptNo;
 
     @Column(name = "remarks")
     private String remarks;

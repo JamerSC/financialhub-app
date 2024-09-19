@@ -74,10 +74,10 @@ FROM users u
 JOIN users_roles ur ON u.id = ur.user_id
 JOIN roles r ON ur.role_id = r.id;
     
-DROP TABLE `contact_type`;
-CREATE TABLE `contact_type` (
+DROP TABLE `contact_category`;
+CREATE TABLE `contact_category` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `con_type` varchar(255) NOT NULL,
+    `contact_category_name` varchar(255) NOT NULL,
 	`created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int DEFAULT NULL,
@@ -85,31 +85,30 @@ CREATE TABLE `contact_type` (
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `contact_type` (`con_type`, `created_by`, `updated_by`)
-VALUES ('Client', 1, 1), ('Supplier', 1, 1), ('Vendor', 1, 1),
-('Partners', 1, 1), ('Internal', 1, 1), ('Others', 1, 1);
+INSERT INTO `contact_category` (`contact_category_name`, `created_by`, `updated_by`)
+VALUES ('Client', 1, 1), ('Supplier/Vendor/Partner', 1, 1), ('Employee', 1, 1),
+('Internal', 1, 1), ('Others', 1, 1);
 
-DROP TABLE `contact_sub_type`;
-CREATE TABLE `contact_sub_type` (
+DROP TABLE `contact_sub_category`;
+CREATE TABLE `contact_sub_category` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `sub_type` varchar(255) NOT NULL,
+    `contact_sub_category_name` varchar(255) NOT NULL,
 	`created_by` int DEFAULT NULL,
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int DEFAULT NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	    PRIMARY KEY (`id`)
 );
 
-INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`)
-VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Government', 1, 1),
-('ABC Legal', 1, 1), ('Bank & Payment Channels', 1, 1), ('Others', 1, 1);
+INSERT INTO `contact_sub_category` (`contact_sub_category_name`, `created_by`, `updated_by`)
+VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Others', 1, 1);
 
-INSERT INTO `contact_sub_type` (`sub_type`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
+INSERT INTO `contact_sub_category` (`contact_sub_category_name`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
 
 DROP TABLE `contacts`;
 CREATE TABLE `contacts` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `contact_type_id` int NOT NULL,
-    `contact_sub_type_id` int NOT NULL,
+    `contact_category_id` int NOT NULL,
+    `contact_sub_category_id` int NOT NULL,
     `first_name` varchar(255) NOT NULL,
     `last_name` varchar(255) NOT NULL,
     `middle_name` varchar(255) NULL,
@@ -120,23 +119,23 @@ CREATE TABLE `contacts` (
     `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int DEFAULT NULL,
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	
-	FOREIGN KEY (`contact_type_id`) REFERENCES `contact_type`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`contact_sub_type_id`) REFERENCES `contact_sub_type`(`id`) ON DELETE CASCADE,    
+	FOREIGN KEY (`contact_category_id`) REFERENCES `contact_category`(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`contact_sub_category_id`) REFERENCES `contact_sub_category`(`id`) ON DELETE CASCADE,    
     PRIMARY KEY (`id`)
 );
 
-INSERT INTO `contacts` (`contact_type_id`, `contact_sub_type_id`, `first_name`,`last_name`, `middle_name`, `email`, `contact_no`, `address`, `created_by`, `updated_by`)
+INSERT INTO `contacts` (`contact_category_id`, `contact_sub_category_id`, `first_name`,`last_name`, `middle_name`, `email`, `contact_no`, `address`, `created_by`, `updated_by`)
 VALUES (1, 1, 'Johnny', 'Deff', '', 'john@mail.com', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister',  'peter@mail.com', '09XXXXXX', 'Manila', 1, 1),
  (3, 1, 'Tony', 'Stark', 'Downey', 'stark@mail.com', '09XXXXXX', 'Boracay', 1, 1);
 
 ### Join Contacts, Contact Category, & Contact Sub Category
-SELECT `c`.`id` AS `Contact ID`, `c`.`first_name` AS `First Name`, `c`.`last_name` AS `Last Name`,`c`.`middle_name` AS `Middle Name`,
-`c`.`email` AS `Email`, `c`.`address` AS `Address`, `ct`.`con_type` AS `Contact Type`, `cs`.`sub_type` AS `Contact Sub-type`
-FROM `contact_type` `ct`
+SELECT `c`.`first_name` AS `Firstname`, `c`.`last_name` AS `Lastname`, `c`.`email` AS `Email`, `c`.`contact_no`,
+`cc`.`contact_category_name`, `csc`.`contact_sub_category_name` 
+FROM `contact_category` `cc`
 RIGHT JOIN `contacts` `c`
-ON `ct`.`id` = `c`.`contact_type_id`
-LEFT JOIN `contact_sub_type` `cs`
-ON `c`.`contact_sub_type_id` = `cs`.`id`;
+ON `cc`.`id` = `c`.`contact_category_id`
+LEFT JOIN `contact_sub_category` `csc`
+ON `c`.`contact_sub_category_id` = `csc`.`id`;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
 
@@ -151,7 +150,38 @@ CREATE TABLE `fund` (
     PRIMARY KEY (`id`)
 );
 
+
 INSERT INTO `fund`(`fund_balance`, `created_by`, `updated_by` ) VALUE (5000.00, 1, 1);
+
+# FUND TRANSACTION
+DROP TABLE `fund_transactions`;
+CREATE TABLE `fund_transactions` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `fund_id` int NOT NULL,
+	`date` date NOT NULL,
+    `total_amount` decimal(10, 2) NOT NULL,
+    `fund_type` enum('PETTY_CASH', 'REPLENISHEMENT', 'REIMBURSEMENT', 'CHANGE') NOT NULL,
+	`created_by` int,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`fund_id`) REFERENCES `fund`(id) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
+
+DROP TABLE `fund_transaction_details`;
+CREATE TABLE `fund_transaction_details` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `fund_transaction_id` int NOT NULL,
+	`created_by` int,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`fund_transaction_id`) REFERENCES `fund_transactions`(id) ON DELETE CASCADE,
+    PRIMARY KEY (`id`)
+);
+
 
 DROP TABLE `petty_cash_vouchers`;
 CREATE TABLE `petty_cash_vouchers` (
@@ -167,6 +197,7 @@ CREATE TABLE `petty_cash_vouchers` (
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`fund_id`) REFERENCES `fund`(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 
@@ -182,8 +213,9 @@ CREATE TABLE `petty_cash_liquidation` (
     `petty_cash_id` int NOT NULL,
     `contact_id` int NOT NULL,
 	`date` date NOT NULL,
-    `account_name` varchar(255) NOT NULL,
-    `amount` decimal(10, 2) NOT NULL,
+    `particulars` varchar(255) NOT NULL,
+    `cost` decimal(10, 2) NOT NULL,
+    `receipt_no` varchar(50) NULL,
     `remarks` varchar(255) NULL,
     `billed` boolean NULL,
     `created_by` int,
@@ -197,14 +229,15 @@ CREATE TABLE `petty_cash_liquidation` (
 #`charge_to` varchar(250) NOT NULL,
 
 INSERT INTO `petty_cash_liquidation` 
-(`petty_cash_id`, `contact_id`, `date`, `account_name`, `amount`, `remarks`, `billed`, `created_by`, `updated_by`)
+(`petty_cash_id`, `contact_id`, `date`, `particulars`, `cost`, `receipt_no`, `remarks`, `billed`, `created_by`, `updated_by`)
 VALUES 
-(1, 1, '2024-09-07', 'Office Supplies', 150.50, 'Purchased printer', true, 3, 3),
-(1, 1, '2024-09-07', 'Utility Supplies', 200, null, false, 3, 3),
-(1, 1, '2024-09-07', 'Meals', 150.50, 'Metro manila transaction', false, 3, 3),
-(1, 1, '2024-09-07', 'Certification Fee', 300, 'Metro manila transaction', false, 3, 3);
+(1, 1, '2024-09-07', 'Office Supplies', 150.50, '00000001', 'Purchased printer', true, 3, 3),
+(1, 1, '2024-09-07', 'Utility Supplies', 200, '0000212321', null, false, 3, 3),
+(1, 1, '2024-09-07', 'Meals', 150.50, '0002024001', 'Metro manila transaction', false, 3, 3),
+(1, 1, '2024-09-07', 'Certification Fee', 300, '000202400012', 'Metro manila transaction', false, 3, 3);
 
-SELECT *
+SELECT `pcv`.`total_amount`, `pcv`.`received_by`, `pcv`.`date`, `pcl`.`contact_id`, `c`.`first_name`, `c`.`last_name`,
+`ct`.`con_type`, `cst`.`sub_type`
 FROM `fund` `f`
 LEFT JOIN `petty_cash_vouchers` `pcv`
 ON `f`.`id` = `pcv`.`fund_id`
@@ -212,6 +245,10 @@ LEFT JOIN `petty_cash_liquidation` `pcl`
 ON `pcv`.`id` = `pcl`.`petty_cash_id`
 LEFT JOIN `contacts` `c`
 ON `pcl`.`contact_id` = `c`.`id`
+LEFT JOIN `contact_type` `ct`
+ON `c`.`contact_type_id` = `ct`.`id`
+LEFT JOIN `contact_sub_type` `cst`
+ON `c`.`contact_sub_type_id` = `cst`.`id`
 ORDER BY `pcl`.`created_at` ASC;
 
 ### CHECK VOUCHERS

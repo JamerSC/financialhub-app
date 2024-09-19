@@ -1,16 +1,16 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
-import com.jamersc.springboot.financialhub.model.ContactType;
+import com.jamersc.springboot.financialhub.model.ContactCategory;
 
 import java.util.List;
 
 public interface ContactTypeService {
 
-    List<ContactType> getAllContactTypes();
+    List<ContactCategory> getAllContactTypes();
 
-    ContactType getContactTypeById(Long contactTypeId);
+    ContactCategory getContactTypeById(Long contactTypeId);
 
-    void save(ContactType contactType);
+    void save(ContactCategory contactCategory);
 
     void deleteContactTypeById(Long contactTypeId);
 }

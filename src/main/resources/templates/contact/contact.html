@@ -37,8 +37,8 @@
                     <tr th:each="tempContact : ${listOfContacts}">
                         <td th:text="${tempContact.firstName}"></td>
                         <td th:text="${tempContact.lastName}"></td>
-                        <td th:text="${tempContact.contactType.type}"></td>
-                        <td th:text="${tempContact.contactSubType.subType}"></td>
+                        <td th:text="${tempContact.contactCategory.contactCategoryName}"></td>
+                        <td th:text="${tempContact.contactSubCategory.contactSubCategoryName}"></td>
                     </tr>
                     </tbody>
                 </table>
@@ -54,7 +54,7 @@
                                 <form id="addContactForm" action="#" th:action="@{/contacts/add-contact}" th:object="${contact}" method="POST">
                                     <div class="mb-3">
                                         <label for="firstName" class="form-label">First name</label>
-                                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}">
+                                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
                                         <div class="invalid-feedback">Please provide a contact first name.</div>
                                     </div>
                                     <div class="mb-3">
@@ -64,38 +64,38 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="lastName" class="form-label">Last name</label>
-                                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}">
+                                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" readonly>
                                         <div class="invalid-feedback">Please provide a last name.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" th:field="*{email}">
+                                        <input type="email" class="form-control" id="email" th:field="*{email}" required>
                                         <div class="invalid-feedback">Please provide a contact first name.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="address" class="form-label">Address</label>
-                                        <input type="text" class="form-control" id="address" th:field="*{address}">
+                                        <input type="text" class="form-control" id="address" th:field="*{address}" required>
                                         <div class="invalid-feedback">Please provide an address.</div>
                                     </div>
                                     <div class="mb-3">
                                         <label for="contactNo" class="form-label">Contact No.</label>
-                                        <input type="text" class="form-control" id="contactNo" th:field="*{contactNo}">
+                                        <input type="text" class="form-control" id="contactNo" th:field="*{contactNo}" required>
                                         <div class="invalid-feedback">Please provide a contact number.</div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="contactType" class="form-label">Select Contact Type</label>
-                                        <select class="form-select" id="contactType" th:field="*{contactType}">
-                                            <option value="" disabled selected>Select a type</option>
-                                            <option th:each="contactType : ${contactTypeList}"  th:value="${contactType.id}" th:text="${contactType.type}">
+                                        <label for="contactCategory" class="form-label">Contact category</label>
+                                        <select class="form-select" id="contactCategory" th:field="*{contactCategory}" required>
+                                            <option value="" selected>Select a category</option>
+                                            <option th:each="contactCategory : ${contactCategoryList}"  th:value="${contactCategory.id}" th:text="${contactCategory.contactCategoryName}">
                                             </option>
                                         </select>
-                                        <div class="invalid-feedback">Please select a contact type.</div>
+                                        <div class="invalid-feedback">Please select a contact category.</div>
                                     </div>
                                     <div class="mb-3">
-                                        <label for="contactSubType" class="form-label">Select Contact Sub Type</label>
-                                        <select class="form-select" id="contactSubType" th:field="*{contactSubType}">
-                                            <option value="" disabled selected>Select a sub type</option>
-                                            <option th:each="contactSubType : ${contactSubTypeList}"  th:value="${contactSubType.id}" th:text="${contactSubType.subType}">
+                                        <label for="contactSubCategory" class="form-label">Contact sub category</label>
+                                        <select class="form-select" id="contactSubCategory" th:field="*{contactSubCategory}" required>
+                                            <option value="" selected>Select a sub category</option>
+                                            <option th:each="contactSubCategory : ${contactSubCategoryList}"  th:value="${contactSubCategory.id}" th:text="${contactSubCategory.contactSubCategoryName}">
                                             </option>
                                         </select>
                                         <div class="invalid-feedback">Please select a contact type.</div>
