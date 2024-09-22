@@ -25,11 +25,11 @@
                     </div>
 
                     <!-- Contact Type Modal // center modal dialog -> modal-dialog-centered -->
-                    <div class="modal fade" id="contactTypeModal" tabindex="-1" role="dialog" aria-labelledby="contactTypeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                    <div class="modal fade" id="contactTypeModal" tabindex="-1" aria-labelledby="contactTypeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="contactTypeModalLabel">Select Contact Type</h5>
+                                    <h1 class="modal-title fs-5" id="contactTypeModalLabel">Type of Contact</h1>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -37,33 +37,110 @@
                                     <br>
                                     <button class="btn btn-secondary w-100 text-center mb-2" id="companyBtn">Company</button>
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Individual Contact Form Modal -->
-                    <div class="modal fade" id="individualModal" tabindex="-1" role="dialog" aria-labelledby="individualModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                    <div class="modal fade" id="individualModal" tabindex="-1" aria-labelledby="individualModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="individualModalLabel">Create Individual Contact</h5>
+                                    <h5 class="modal-title" id="individualModalLabel">Individual (New Contact)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="individualForm">
-                                        <div class="form-group">
-                                            <label for="individualName">Name</label>
-                                            <input type="text" class="form-control" id="individualName" required>
+                                    <form class="row g-3 mb-3" id="addContactForm" action="#" th:action="@{/contacts/add-contact-individual}" th:object="${contact}" method="POST">
+                                        <!-- One column row for state select option -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+                                                <label for="categoryType">Individual Category</label>
+                                                <select class="form-control" id="categoryType" th:field="*{contactCategoryType}">
+                                                    <option value="" selected>Choose category type ...</option>
+                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category}"></option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="individualEmail">Email</label>
-                                            <input type="email" class="form-control" id="individualEmail" required>
+                                        <!-- First row with 5 columns for Title, First Name, Middle Name, Last Name, Suffix -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-2">                                                     
+                                                <label for="title" class="form-label">Title</label>                    
+                                                <select id="title" class="form-select" th:field="*{individual.title}">
+                                                    <option value="" selected>Choose...</option>  <!-- Ensuring a value is present -->
+                                                    <option th:value="Mr.">Mr.</option>                                
+                                                    <option th:value="Ms.">Ms.</option>                                
+                                                    <option th:value="Mrs.">Mrs.</option>                              
+                                                    <option th:value="Dr.">Dr.</option>                                
+                                                </select>                                                              
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <input type="text" class="form-control" id="firstName" placeholder="First name ..." th:field="*{individual.firstName}">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="middleName" class="form-label">Middle Name</label>
+                                                <input type="text" class="form-control" id="middleName" placeholder="Middle name if applicable ..." th:field="*{individual.middleName}">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" id="lastName" placeholder="Last name ..." th:field="*{individual.lastName}">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="suffix" class="form-label">Suffix</label>
+                                                <select id="suffix" class="form-select" th:field="*{individual.suffix}">
+                                                    <option value="" selected>Choose...</option>
+                                                    <option th:value="Jr.">Jr.</option>
+                                                    <option th:value="Sr.">Sr.</option>
+                                                    <option th:value="III">III</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="individualPhone">Phone</label>
-                                            <input type="text" class="form-control" id="individualPhone">
+                                        <!-- Other fields -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="mobileNumber" class="form-label">Mobile Number</label>
+                                                <input type="text" class="form-control" id="mobileNumber" placeholder="Mobile number" th:field="*{individual.mobileNumber}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="individualEmail" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="individualEmail" placeholder="Email add ..." th:field="*{individual.emailAddress}">
+                                            </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Create Contact</button>
+                                        <div class="col-12 mb-3">
+                                            <label for="individualAddress" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="individualAddress" placeholder="Home/Office Address" th:field="*{individual.address}">
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="channel" class="form-label">Best Channel to Contact</label>
+                                                <input type="text" class="form-control" id="channel" placeholder="Channel to contact" th:field="*{bestChannelToContact}">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="engagementDate" class="form-label">Engagement Date</label>
+                                                <input type="date" class="form-control" id="engagementDate" th:field="*{engagementDate}">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-sm-3">
+                                                <label for="designationFor" class="form-label">Designation/For</label>
+                                                <input type="text" class="form-control" id="designationFor" placeholder="Designation/For" th:field="*{additionalDetails.designationFor}">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="bankName" class="form-label">Bank name</label>
+                                                <input type="text" class="form-control" id="bankName" placeholder="Bank name" th:field="*{additionalDetails.bankName}">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <label for="accountNo" class="form-label">Account no.</label>
+                                                <input type="text" class="form-control" id="accountNo" placeholder="Account number" th:field="*{additionalDetails.accountNo}">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save Contact</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -71,28 +148,83 @@
                     </div>
 
                     <!-- Company Contact Form Modal -->
-                    <div class="modal fade" id="companyModal" tabindex="-1" role="dialog" aria-labelledby="companyModalLabel" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
+                    <div class="modal fade" id="companyModal" tabindex="-1" aria-labelledby="companyModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="companyModalLabel">Create Company Contact</h5>
+                                    <h5 class="modal-title" id="companyModalLabel">Company (New Contact)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="companyForm">
-                                        <div class="form-group">
-                                            <label for="companyName">Company Name</label>
-                                            <input type="text" class="form-control" id="companyName" required>
+                                    <form class="row g-3">
+                                        <!-- One column row for state select option -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-5">
+                                                <label for="states" class="form-label">State</label>
+                                                <select id="states" class="form-select">
+                                                    <option selected>Choose...</option>
+                                                    <option>California</option>
+                                                    <option>Texas</option>
+                                                    <option>New York</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="companyEmail">Email</label>
-                                            <input type="email" class="form-control" id="companyEmail" required>
+                                        <!-- First row with 5 columns for Title, First Name, Middle Name, Last Name, Suffix -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-2">
+                                                <label for="title" class="form-label">Title</label>
+                                                <select id="titles" class="form-select">
+                                                    <option selected>Choose...</option>
+                                                    <option>Mr</option>
+                                                    <option>Ms</option>
+                                                    <option>Mrs</option>
+                                                    <option>Dr</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="firstName" class="form-label">First Name</label>
+                                                <input type="text" class="form-control" id="firstNames">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="middleName" class="form-label">Middle Name</label>
+                                                <input type="text" class="form-control" id="middleNames">
+                                            </div>
+                                            <div class="col-md-3">
+                                                <label for="lastName" class="form-label">Last Name</label>
+                                                <input type="text" class="form-control" id="lastNames">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label for="suffix" class="form-label">Suffix</label>
+                                                <select id="suffixs" class="form-select">
+                                                    <option selected>Choose...</option>
+                                                    <option>Jr</option>
+                                                    <option>Sr</option>
+                                                    <option>III</option>
+                                                </select>
+                                            </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="companyPhone">Phone</label>
-                                            <input type="text" class="form-control" id="companyPhone">
+
+                                        <!-- Other fields -->
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="mobileNumber" class="form-label">Mobile Number</label>
+                                                <input type="text" class="form-control" id="mobileNumbers">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="test" class="form-label">Email</label>
+                                                <input type="email" class="form-control" id="test">
+                                            </div>
                                         </div>
-                                        <button type="submit" class="btn btn-primary">Create Contact</button>
+
+                                        <div class="col-12 mb-3">
+                                            <label for="test2" class="form-label">Address</label>
+                                            <input type="text" class="form-control" id="test2" placeholder="1234 Main St">
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save Contact</button>
+                                        </div>
                                     </form>
                                 </div>
                             </div>
@@ -112,31 +244,31 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="contact : ${contacts}">
-                        <td th:text="${contact.contactId}"></td>
-                        <td th:text="${contact.contactType}"></td>
-                        <td th:text="${contact.contactCategoryType}"></td>
-                        <td th:text="${contact.engagementDate}"></td>
-                        <td th:text="${contact.bestChannelToContact}"></td>
+                    <tr th:each="tempContact : ${contacts}">
+                        <td th:text="${tempContact.contactId}"></td>
+                        <td th:text="${tempContact.contactType}"></td>
+                        <td th:text="${tempContact.contactCategoryType}"></td>
+                        <td th:text="${tempContact.engagementDate}"></td>
+                        <td th:text="${tempContact.bestChannelToContact}"></td>
                         <td>
-                            <div th:if="${contact.individual != null}">
+                            <div th:if="${tempContact.individual != null}">
                                 <strong>Individual:</strong>
-                                <span th:text="${contact.individual.firstName + ' ' + contact.individual.lastName}"></span><br>
-                                <span th:text="'Mobile: ' + ${contact.individual.mobileNumber}"></span><br>
-                                <span th:text="'Email: ' + ${contact.individual.emailAddress}"></span>
+                                <span th:text="${tempContact.individual.firstName + ' ' + tempContact.individual.lastName}"></span><br>
+                                <span th:text="'Mobile: ' + ${tempContact.individual.mobileNumber}"></span><br>
+                                <span th:text="'Email: ' + ${tempContact.individual.emailAddress}"></span>
                             </div>
-                            <div th:if="${contact.company != null}">
+                            <div th:if="${tempContact.company != null}">
                                 <strong>Company:</strong>
-                                <span th:text="${contact.company.companyName}"></span><br>
-                                <span th:text="'Representative: ' + ${contact.company.representativeName}"></span><br>
-                                <span th:text="'Mobile: ' + ${contact.company.mobileNumber}"></span><br>
-                                <span th:text="'Email: ' + ${contact.company.emailAddress}"></span>
+                                <span th:text="${tempContact.company.companyName}"></span><br>
+                                <span th:text="'Representative: ' + ${tempContact.company.representativeName}"></span><br>
+                                <span th:text="'Mobile: ' + ${tempContact.company.mobileNumber}"></span><br>
+                                <span th:text="'Email: ' + ${tempContact.company.emailAddress}"></span>
                             </div>
-                            <div th:if="${contact.additionalDetails != null}">
+                            <div th:if="${tempContact.additionalDetails != null}">
                                 <strong>Vendor/Internal:</strong><br>
-                                <span th:text="'Designation For: ' + ${contact.additionalDetails.designationFor}"></span><br>
-                                <span th:text="'Bank: ' + ${contact.additionalDetails.bankName}"></span><br>
-                                <span th:text="'Account No: ' + ${contact.additionalDetails.accountNo}"></span>
+                                <span th:text="'Designation For: ' + ${tempContact.additionalDetails.designationFor}"></span><br>
+                                <span th:text="'Bank: ' + ${tempContact.additionalDetails.bankName}"></span><br>
+                                <span th:text="'Account No: ' + ${tempContact.additionalDetails.accountNo}"></span>
                             </div>
                         </td>
                     </tr>
@@ -161,72 +293,3 @@
 
 </body>
 </html>
-
-
-<!-- Add Contact Modal -->
-<!--<div class="modal fade" id="addContactModal" tabindex="-1" aria-labelledby="addContactModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addContactModalLabel">New Contact</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="addContactForm" action="#" th:action="@{/contacts/add-contact}" th:object="${contact}" method="POST">
-                    <div class="mb-3">
-                        <label for="firstName" class="form-label">First name</label>
-                        <input type="text" class="form-control" id="firstName" th:field="*{firstName}" required>
-                        <div class="invalid-feedback">Please provide a contact first name.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="middleName" class="form-label">Middle name</label>
-                        <input type="text" class="form-control" id="middleName" th:field="*{middleName}">
-                        <div class="invalid-feedback">Please provide a middle name.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="lastName" class="form-label">Last name</label>
-                        <input type="text" class="form-control" id="lastName" th:field="*{lastName}" readonly>
-                        <div class="invalid-feedback">Please provide a last name.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" th:field="*{email}" required>
-                        <div class="invalid-feedback">Please provide a contact first name.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="address" class="form-label">Address</label>
-                        <input type="text" class="form-control" id="address" th:field="*{address}" required>
-                        <div class="invalid-feedback">Please provide an address.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactNo" class="form-label">Contact No.</label>
-                        <input type="text" class="form-control" id="contactNo" th:field="*{contactNo}" required>
-                        <div class="invalid-feedback">Please provide a contact number.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactCategory" class="form-label">Contact category</label>
-                        <select class="form-select" id="contactCategory" th:field="*{contactCategory}" required>
-                            <option value="" selected>Select a category</option>
-                            <option th:each="contactCategory : ${contactCategoryList}"  th:value="${contactCategory.id}" th:text="${contactCategory.contactCategoryName}">
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">Please select a contact category.</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="contactSubCategory" class="form-label">Contact sub category</label>
-                        <select class="form-select" id="contactSubCategory" th:field="*{contactSubCategory}" required>
-                            <option value="" selected>Select a sub category</option>
-                            <option th:each="contactSubCategory : ${contactSubCategoryList}"  th:value="${contactSubCategory.id}" th:text="${contactSubCategory.contactSubCategoryName}">
-                            </option>
-                        </select>
-                        <div class="invalid-feedback">Please select a contact type.</div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>-->

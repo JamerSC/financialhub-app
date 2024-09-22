@@ -78,8 +78,8 @@ JOIN roles r ON ur.role_id = r.id;
 DROP TABLE `contacts`;
 CREATE TABLE `contacts` (
     `contact_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `contact_type` ENUM('Individual', 'Company') NOT NULL,
-    `category_type` ENUM('Client', 'Vendor', 'Internal') NOT NULL,
+    `contact_type` ENUM('INDIVIDUAL', 'COMPANY') NOT NULL,
+    `category_type` ENUM('CLIENT', 'VENDOR', 'INTERNAL') NOT NULL,
     `engagement_date` DATE,
     `best_channel_to_contact` VARCHAR(255),
     `created_by` int,
@@ -90,11 +90,11 @@ CREATE TABLE `contacts` (
 
 -- Insert into Contact table for individual
 INSERT INTO `contacts` (`contact_type`, `category_type`, `engagement_date`, `best_channel_to_contact`, `created_by`, `updated_by`) 
-VALUES ('Individual', 'client', '2024-09-21', 'Email', 1, 1);
+VALUES ('INDIVIDUAL', 'CLIENT', '2024-09-21', 'Email', 1, 1);
 
 -- Insert into Contact table for company
 INSERT INTO `contacts` (`contact_type`, `category_type`, `engagement_date`, `best_channel_to_contact`, `created_by`, `updated_by`)
-VALUES ('Company', 'Vendor', '2024-09-20', 'Phone', 1, 1);
+VALUES ('COMPANY', 'VENDOR', '2024-09-20', 'Phone', 1, 1);
 
 -- Table for individuals
 DROP TABLE `contact_individual`;
@@ -107,7 +107,7 @@ CREATE TABLE `contact_individual` (
     `middle_name` VARCHAR(255),
     `suffix` VARCHAR(10),
     `mobile_number` VARCHAR(20),
-    `email_address` VARCHAR(255),
+    `email_address` VARCHAR(255),	
     `address` TEXT,
     FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`)
 );
@@ -122,7 +122,7 @@ CREATE TABLE `contact_company` (
     `company_id` INT AUTO_INCREMENT PRIMARY KEY,
     `contact_id` INT NOT NULL,
     `company_name` VARCHAR(255) NOT NULL,
-	`registration_type` ENUM('Corporation', 'Partnership', 'Single Proprietorship', 'Foundation', 'Association', 'Others') NOT NULL,
+	`registration_type` ENUM('CORPORATION', 'PARTNERSHIP', 'SINGLE_PROPRIETORSHIP', 'FOUNDATION', 'ASSOCIATION', 'OTHERS') NOT NULL,
     `representative_name` VARCHAR(255),
     `representative_designation` VARCHAR(255),
     `mobile_number` VARCHAR(20),
@@ -133,7 +133,7 @@ CREATE TABLE `contact_company` (
 
 -- Insert into Company table
 INSERT INTO `contact_company` (`contact_id`, `company_name`, `registration_type`, `representative_name`, `representative_designation`, `mobile_number`, `email_address`, `address`) 
-VALUES (2, 'Tech Solutions', 'Corporation', 'Jane Smith', 'CEO', '9876543210', 'info@techsolutions.com', '456 Oak St, City');
+VALUES (2, 'Tech Solutions', 'CORPORATION', 'Jane Smith', 'CEO', '9876543210', 'info@techsolutions.com', '456 Oak St, City');
 
 -- Table for additional details (Vendor/Internal)
 DROP TABLE `contact_additional_details`; 
@@ -185,70 +185,6 @@ FROM contacts c
 LEFT JOIN contact_individual i ON c.contact_id = i.contact_id
 LEFT JOIN contact_company co ON c.contact_id = co.contact_id
 LEFT JOIN contact_additional_details ad ON c.contact_id = ad.contact_id;
-
-    
-DROP TABLE `contact_category`;
-CREATE TABLE `contact_category` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `contact_category_name` varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contact_category` (`contact_category_name`, `created_by`, `updated_by`)
-VALUES ('Client', 1, 1), ('Supplier/Vendor/Partner', 1, 1), ('Employee', 1, 1),
-('Internal', 1, 1), ('Others', 1, 1);
-
-DROP TABLE `contact_sub_category`;
-CREATE TABLE `contact_sub_category` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `contact_sub_category_name` varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contact_sub_category` (`contact_sub_category_name`, `created_by`, `updated_by`)
-VALUES ('Individual', 1, 1), ('Company', 1, 1), ('Others', 1, 1);
-
-INSERT INTO `contact_sub_category` (`contact_sub_category_name`, `created_by`, `updated_by`) VALUE ('Employee', 1, 1);
-
-DROP TABLE `contacts`;
-CREATE TABLE `contacts` (
-    `id` int NOT NULL AUTO_INCREMENT,
-    `contact_category_id` int NOT NULL,
-    `contact_sub_category_id` int NOT NULL,
-    `first_name` varchar(255) NOT NULL,
-    `last_name` varchar(255) NOT NULL,
-    `middle_name` varchar(255) NULL,
-    `email` varchar(255) NOT NULL,
-    `contact_no` varchar(255) NOT NULL,
-    `address`varchar(255) NOT NULL,
-	`created_by` int DEFAULT NULL,
-    `created_at` timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int DEFAULT NULL,
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,	
-	FOREIGN KEY (`contact_category_id`) REFERENCES `contact_category`(`id`) ON DELETE CASCADE,
-    FOREIGN KEY (`contact_sub_category_id`) REFERENCES `contact_sub_category`(`id`) ON DELETE CASCADE,    
-    PRIMARY KEY (`id`)
-);
-
-INSERT INTO `contacts` (`contact_category_id`, `contact_sub_category_id`, `first_name`,`last_name`, `middle_name`, `email`, `contact_no`, `address`, `created_by`, `updated_by`)
-VALUES (1, 1, 'Johnny', 'Deff', '', 'john@mail.com', '09XXXXXX', 'Laguna', 1, 1), (2, 1, 'Peter', 'Dinklage', 'Lannister',  'peter@mail.com', '09XXXXXX', 'Manila', 1, 1),
- (3, 1, 'Tony', 'Stark', 'Downey', 'stark@mail.com', '09XXXXXX', 'Boracay', 1, 1);
-
-### Join Contacts, Contact Category, & Contact Sub Category
-SELECT `c`.`first_name` AS `Firstname`, `c`.`last_name` AS `Lastname`, `c`.`email` AS `Email`, `c`.`contact_no`,
-`cc`.`contact_category_name`, `csc`.`contact_sub_category_name` 
-FROM `contact_category` `cc`
-RIGHT JOIN `contacts` `c`
-ON `cc`.`id` = `c`.`contact_category_id`
-LEFT JOIN `contact_sub_category` `csc`
-ON `c`.`contact_sub_category_id` = `csc`.`id`;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
 
@@ -335,7 +271,7 @@ CREATE TABLE `petty_cash_liquidation` (
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
-    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(id) ON DELETE CASCADE,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 #`charge_to` varchar(250) NOT NULL,
@@ -348,19 +284,19 @@ VALUES
 (1, 1, '2024-09-07', 'Meals', 150.50, '0002024001', 'Metro manila transaction', false, 3, 3),
 (1, 1, '2024-09-07', 'Certification Fee', 300, '000202400012', 'Metro manila transaction', false, 3, 3);
 
-SELECT `pcv`.`total_amount`, `pcv`.`received_by`, `pcv`.`date`, `pcl`.`contact_id`, `c`.`first_name`, `c`.`last_name`,
-`ct`.`con_type`, `cst`.`sub_type`
+SELECT `pcv`.`total_amount`, `pcv`.`received_by`, `pcv`.`date`, `pcl`.`contact_id`, `c`.`contact_type`, `c`.`category_type`,
+concat(`ci`.`first_name`, ' ', `ci`.`middle_name`, ' ', `ci`.`last_name`) AS `Fullname`, `cc`.`company_name`
 FROM `fund` `f`
 LEFT JOIN `petty_cash_vouchers` `pcv`
 ON `f`.`id` = `pcv`.`fund_id`
 LEFT JOIN `petty_cash_liquidation` `pcl`
 ON `pcv`.`id` = `pcl`.`petty_cash_id`
 LEFT JOIN `contacts` `c`
-ON `pcl`.`contact_id` = `c`.`id`
-LEFT JOIN `contact_type` `ct`
-ON `c`.`contact_type_id` = `ct`.`id`
-LEFT JOIN `contact_sub_type` `cst`
-ON `c`.`contact_sub_type_id` = `cst`.`id`
+ON `pcl`.`contact_id` = `c`.`contact_id`
+LEFT JOIN `contact_individual` `ci`
+ON `c`.`contact_id` = `ci`.`contact_id`
+LEFT JOIN `contact_company` `cc`
+ON `c`.`contact_id` = `cc`.`contact_id`
 ORDER BY `pcl`.`created_at` ASC;
 
 ### CHECK VOUCHERS

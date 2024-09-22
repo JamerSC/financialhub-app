@@ -45,12 +45,17 @@
                             <td th:text="${liquidation.particulars}"></td>
                             <td th:text="${#numbers.formatDecimal(liquidation.cost, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td th:text="${liquidation.receiptNo}"></td>
-                            <td th:text="${liquidation.chargeTo.firstName} + ' '+ ${liquidation.chargeTo.lastName} "></td>
-                            <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
-                            <!-- Display checkbox for billed -->
+                            <!--<td th:text="${liquidation.chargeTo.individual} + ' '+ ${liquidation.chargeTo.contactCategoryType} "></td>-->
                             <td>
-                                <input type="checkbox" th:checked="${liquidation.billed}" disabled />
+                                <span th:if="${liquidation.chargeTo.individual != null}"
+                                      th:text="${liquidation.chargeTo.individual.firstName} + ' ' + ${liquidation.chargeTo.individual.lastName} + ' ('
+                                      + ${liquidation.chargeTo.contactType} + '/' + ${liquidation.chargeTo.contactCategoryType} + ')'"></span>
+                                <span th:if="${liquidation.chargeTo.company != null}"
+                                      th:text="${liquidation.chargeTo.company.companyName} + ' ('
+                                      + ${liquidation.chargeTo.contactType} + '/' + ${liquidation.chargeTo.contactCategoryType} + ')'"></span>
                             </td>
+                            <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
+                            <td><input type="checkbox" th:checked="${liquidation.billed}" disabled/></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
                                    th:href="@{/liquidation/update-item/{id}(id=${liquidation.id})}">
@@ -68,10 +73,12 @@
                             <td></td>
                             <td></td>
                             <td></td>
+                            <td></td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-end"><strong>Total Petty Cash Received:</strong></td>
                             <td><strong th:text="${#numbers.formatDecimal(pettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -86,6 +93,7 @@
                             <td><span th:if="${remainingBalance < 0}" class="text-danger" title="Negative Balance">
                                     (<i class="lni lni-warning"></i> Over/For Reimbursement)
                             </span></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                         </tr>
@@ -140,7 +148,11 @@
                                             <select class="form-select" id="chargeTo" th:field="*{chargeTo}">
                                                 <option value="" selected>Select a charge to</option>
                                                 <!-- Loop through listOfChargeTo -->
-                                                <option th:each="contact : ${listOfChargeTo}" th:value="${contact.id}" th:text="${contact.firstName} + ' ' + ${contact.lastName}"></option>
+                                                <option th:each="contact : ${listOfChargeTo}"
+                                                        th:value="${contact.contactId}"
+                                                        th:text="${contact.contactType.name() == 'INDIVIDUAL' ?
+                                                        (contact.individual.firstName + ' ' + contact.individual.lastName + ' (' + contact.contactType + '/' + contact.contactCategoryType + ')' )
+                                                        : contact.company.companyName + ' (' + contact.contactType + '/' + contact.contactCategoryType + ')'}"></option>
                                             </select>
                                             <div class="invalid-feedback">Please select charge to.</div>
                                         </div>

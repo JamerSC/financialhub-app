@@ -10,7 +10,7 @@ public interface ContactService {
 
     Contact getContactById(Long contactId);
 
-    void save(Contact contact);
+    void saveIndividual(Contact contact, String username);
 
     void deleteContactById(Long contactId);
 
