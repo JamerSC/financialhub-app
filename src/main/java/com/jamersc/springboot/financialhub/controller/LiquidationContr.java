@@ -19,9 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/liquidation")
-public class LiquidationController {
+public class LiquidationContr {
 
-    private static final Logger logger = LoggerFactory.getLogger(PettyCashController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PettyCashContr.class);
 
     @Autowired
     private PettyCashService pettyCashService;

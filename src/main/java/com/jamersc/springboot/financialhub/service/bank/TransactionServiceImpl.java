@@ -3,8 +3,8 @@ package com.jamersc.springboot.financialhub.service.bank;
 import com.jamersc.springboot.financialhub.model.BankAccount;
 import com.jamersc.springboot.financialhub.model.Transaction;
 import com.jamersc.springboot.financialhub.model.TransactionType;
-import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
-import com.jamersc.springboot.financialhub.repository.TransactionRepository;
+import com.jamersc.springboot.financialhub.repository.BankAccountRepo;
+import com.jamersc.springboot.financialhub.repository.TransactionRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,48 +18,48 @@ import java.util.List;
 public class TransactionServiceImpl implements TransactionService {
 
     @Autowired
-    private TransactionRepository transactionRepository;
+    private TransactionRepo transactionRepo;
 
     @Autowired
-    private BankAccountRepository bankAccountRepository;
+    private BankAccountRepo bankAccountRepo;
 
     @Override
     public List<Transaction> getAllTransactions() {
-        return transactionRepository.findAll();
+        return transactionRepo.findAll();
     }
 
     @Override
     public Transaction getTransactionById(Long transactionId) {
-        return transactionRepository.findById(transactionId).orElseThrow(()-> new RuntimeException("Transaction ID not found."));
+        return transactionRepo.findById(transactionId).orElseThrow(()-> new RuntimeException("Transaction ID not found."));
     }
 
     @Override
     public List<Transaction> findBankAccountById(Long bankAccountId) {
-        return transactionRepository.findByBankAccount_Id(bankAccountId);
+        return transactionRepo.findByBankAccount_Id(bankAccountId);
     }
 
     @Override
     public List<Transaction> getTransactionType(String transactionType) {
-        return transactionRepository.findByTransactionType(transactionType);
+        return transactionRepo.findByTransactionType(transactionType);
     }
 
     @Override
     public List<Transaction> findTransactionsByBankAccountAndType(Long bankAccountId, TransactionType transactionType) {
-        return transactionRepository.findByBankAccount_IdAndTransactionType(bankAccountId, transactionType);
+        return transactionRepo.findByBankAccount_IdAndTransactionType(bankAccountId, transactionType);
     }
 
     @Override
     public void save(Transaction transaction) {
-        transactionRepository.save(transaction);
+        transactionRepo.save(transaction);
     }
 
     @Override
     public void deposit(Transaction deposit) {
-        BankAccount account = bankAccountRepository.findById(deposit.getBankAccount().getId())
+        BankAccount account = bankAccountRepo.findById(deposit.getBankAccount().getId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
         // Total account balance = account balance + deposit amount
         account.setAccountBalance(account.getAccountBalance() + deposit.getTransactionAmount());
-        bankAccountRepository.save(account); // save deposit to bank account based on id
+        bankAccountRepo.save(account); // save deposit to bank account based on id
 
         Transaction transaction = new Transaction();
         transaction.setBankAccount(account);
@@ -67,19 +67,19 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionDate(deposit.getTransactionDate());
         transaction.setTransactionAmount(deposit.getTransactionAmount());
         transaction.setTransactionNote(deposit.getTransactionNote());
-        transactionRepository.save(transaction); // save deposit transaction
+        transactionRepo.save(transaction); // save deposit transaction
     }
 
     @Override
     public void withdraw(Transaction withdraw) {
-        BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount().getId())
+        BankAccount account = bankAccountRepo.findById(withdraw.getBankAccount().getId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
         if (account.getAccountBalance() < withdraw.getTransactionAmount()) {
             throw new RuntimeException("Insufficient funds.!");
         }
         // total account balance = account balance - withdraw amount
         account.setAccountBalance(account.getAccountBalance() - withdraw.getTransactionAmount());
-        bankAccountRepository.save(account);
+        bankAccountRepo.save(account);
 
         Transaction transaction = new Transaction();
         transaction.setBankAccount(account);
@@ -87,13 +87,13 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setTransactionType(TransactionType.WITHDRAWAL);
         transaction.setTransactionAmount(withdraw.getTransactionAmount());
         transaction.setTransactionNote(withdraw.getTransactionNote());
-        transactionRepository.save(transaction); // save deposit transaction
+        transactionRepo.save(transaction); // save deposit transaction
     }
 
 
     @Override
     public void deleteTransactionById(Long transactionId) {
-        transactionRepository.deleteById(transactionId);
+        transactionRepo.deleteById(transactionId);
     }
 
 

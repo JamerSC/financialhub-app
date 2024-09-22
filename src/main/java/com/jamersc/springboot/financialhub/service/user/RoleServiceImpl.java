@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.user;
 
 import com.jamersc.springboot.financialhub.model.Role;
-import com.jamersc.springboot.financialhub.repository.RoleRepository;
+import com.jamersc.springboot.financialhub.repository.RoleRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.List;
 public class RoleServiceImpl implements RoleService {
 
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleRepo roleRepo;
 
     @Override
     public List<Role> getAllRoles() {
-        return roleRepository.findAll();
+        return roleRepo.findAll();
     }
 
     @Override
     public Role getRoleWithUsers(Long id) {
-        return roleRepository.findByIdWithUsers(id).orElseThrow(() -> new RuntimeException("Role not found!"));
+        return roleRepo.findByIdWithUsers(id).orElseThrow(() -> new RuntimeException("Role not found!"));
     }
 
     @Override
     public Role findRolesById(Long id) {
-        return roleRepository.findById(id).orElseThrow(null);
+        return roleRepo.findById(id).orElseThrow(null);
     }
 }

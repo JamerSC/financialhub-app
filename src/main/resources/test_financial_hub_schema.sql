@@ -73,6 +73,119 @@ u.email, u.username, r.id AS role_id, r.name AS role_name
 FROM users u
 JOIN users_roles ur ON u.id = ur.user_id
 JOIN roles r ON ur.role_id = r.id;
+
+-- Table to store all contact types (Individual/Company)
+DROP TABLE `contacts`;
+CREATE TABLE `contacts` (
+    `contact_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `contact_type` ENUM('Individual', 'Company') NOT NULL,
+    `category_type` ENUM('Client', 'Vendor', 'Internal') NOT NULL,
+    `engagement_date` DATE,
+    `best_channel_to_contact` VARCHAR(255),
+    `created_by` int,
+    `created_at` timestamp default current_timestamp,
+	`updated_by` int,
+    `updated_at` timestamp default current_timestamp on update current_timestamp
+);
+
+-- Insert into Contact table for individual
+INSERT INTO `contacts` (`contact_type`, `category_type`, `engagement_date`, `best_channel_to_contact`, `created_by`, `updated_by`) 
+VALUES ('Individual', 'client', '2024-09-21', 'Email', 1, 1);
+
+-- Insert into Contact table for company
+INSERT INTO `contacts` (`contact_type`, `category_type`, `engagement_date`, `best_channel_to_contact`, `created_by`, `updated_by`)
+VALUES ('Company', 'Vendor', '2024-09-20', 'Phone', 1, 1);
+
+-- Table for individuals
+DROP TABLE `contact_individual`;
+CREATE TABLE `contact_individual` (
+    `individual_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `contact_id` INT NOT NULL,
+    `title` VARCHAR(10),
+    `last_name` VARCHAR(255) NOT NULL,
+    `first_name` VARCHAR(255) NOT NULL,
+    `middle_name` VARCHAR(255),
+    `suffix` VARCHAR(10),
+    `mobile_number` VARCHAR(20),
+    `email_address` VARCHAR(255),
+    `address` TEXT,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`)
+);
+
+-- Insert into Individual table
+INSERT INTO `contact_individual` (`contact_id`, `title`, `last_name`, `first_name`, `middle_name`, `suffix`, `mobile_number`, `email_address`, `address`) 
+VALUES (1, 'Mr.', 'Doe', 'John', 'A.', 'Jr.', '1234567890', 'john.doe@example.com', '123 Elm St, City');
+
+-- Table for companies
+DROP TABLE `contact_company`;
+CREATE TABLE `contact_company` (
+    `company_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `contact_id` INT NOT NULL,
+    `company_name` VARCHAR(255) NOT NULL,
+	`registration_type` ENUM('Corporation', 'Partnership', 'Single Proprietorship', 'Foundation', 'Association', 'Others') NOT NULL,
+    `representative_name` VARCHAR(255),
+    `representative_designation` VARCHAR(255),
+    `mobile_number` VARCHAR(20),
+    `email_address` VARCHAR(255),
+    `address` TEXT,
+    FOREIGN KEY (`contact_id`) REFERENCES contacts(`contact_id`)
+);
+
+-- Insert into Company table
+INSERT INTO `contact_company` (`contact_id`, `company_name`, `registration_type`, `representative_name`, `representative_designation`, `mobile_number`, `email_address`, `address`) 
+VALUES (2, 'Tech Solutions', 'Corporation', 'Jane Smith', 'CEO', '9876543210', 'info@techsolutions.com', '456 Oak St, City');
+
+-- Table for additional details (Vendor/Internal)
+DROP TABLE `contact_additional_details`; 
+CREATE TABLE `contact_additional_details` (
+    `detail_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `contact_id` INT NOT NULL,
+    `designation_for` VARCHAR(255),
+    `bank_name` VARCHAR(255),
+    `account_no` VARCHAR(50),
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`)
+);
+
+-- Insert additional details for a Company/Vendor/Internal (using the contact_id from the previous insert)
+INSERT INTO `contact_additional_details` (`contact_id`, `designation_for`, `bank_name`, `account_no`) 
+VALUES (2, 'IT Solutions Provider', 'Tech Bank', '1234567890');
+
+SELECT 
+    c.contact_id, 
+    c.contact_type, 
+    c.category_type,
+    c.engagement_date,
+    c.best_channel_to_contact,
+    
+    -- Individual details
+    i.title,
+    i.last_name,
+    i.first_name,
+    i.middle_name,
+    i.suffix,
+    i.mobile_number AS individual_mobile,
+    i.email_address AS individual_email,
+    i.address AS individual_address,
+    
+    -- Company details
+    co.company_name,
+    co.registration_type,
+    co.representative_name,
+    co.representative_designation,
+    co.mobile_number AS company_mobile,
+    co.email_address AS company_email,
+    co.address AS company_address,
+    
+    -- Additional details for Vendor/Internal
+    ad.designation_for,
+    ad.bank_name,
+    ad.account_no
+
+FROM contacts c
+LEFT JOIN contact_individual i ON c.contact_id = i.contact_id
+LEFT JOIN contact_company co ON c.contact_id = co.contact_id
+LEFT JOIN contact_additional_details ad ON c.contact_id = ad.contact_id;
+
     
 DROP TABLE `contact_category`;
 CREATE TABLE `contact_category` (
@@ -181,7 +294,6 @@ CREATE TABLE `fund_transaction_details` (
     FOREIGN KEY (`fund_transaction_id`) REFERENCES `fund_transactions`(id) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
-
 
 DROP TABLE `petty_cash_vouchers`;
 CREATE TABLE `petty_cash_vouchers` (

@@ -7,7 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface RoleRepository extends JpaRepository <Role, Long> {
+public interface RoleRepo extends JpaRepository <Role, Long> {
     @Query("SELECT r FROM Role r LEFT JOIN FETCH r.users WHERE r.id = :id")
     Optional<Role> findByIdWithUsers(@Param("id") Long id);
 }

@@ -2,8 +2,8 @@ package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.repository.LiquidationRepository;
-import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
+import com.jamersc.springboot.financialhub.repository.LiquidationRepo;
+import com.jamersc.springboot.financialhub.repository.PettyCashRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,33 +17,33 @@ import java.util.List;
 public class LiquidationServiceImpl implements LiquidationService{
 
     @Autowired
-    private LiquidationRepository liquidationRepository;
+    private LiquidationRepo liquidationRepo;
 
     @Autowired
-    private PettyCashRepository pettyCashRepository;
+    private PettyCashRepo pettyCashRepo;
 
     @Override
     public List<Liquidation> findByPettyCashVoucherId(Long id) {
-        return liquidationRepository.findByPettyCash_Id(id);
+        return liquidationRepo.findByPettyCash_Id(id);
     }
 
     @Override
     public Liquidation findLiquidationById(Long id) {
-        return liquidationRepository.findById(id).orElseThrow(null);
+        return liquidationRepo.findById(id).orElseThrow(null);
     }
 
     @Override
     public void save(Liquidation liquidation) {
         if (liquidation.getPettyCash() != null && liquidation.getPettyCash().getId() != null) {
             // Ensure PettyCash is managed
-            PettyCash managedPettyCash = pettyCashRepository.getReferenceById(liquidation.getPettyCash().getId());
+            PettyCash managedPettyCash = pettyCashRepo.getReferenceById(liquidation.getPettyCash().getId());
             liquidation.setPettyCash(managedPettyCash);
         }
-        liquidationRepository.save(liquidation);
+        liquidationRepo.save(liquidation);
     }
 
     @Override
     public void deleteLiquidationItemById(Long id) {
-        liquidationRepository.deleteById(id);
+        liquidationRepo.deleteById(id);
     }
 }

@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.model.Bank;
-import com.jamersc.springboot.financialhub.repository.BankRepository;
+import com.jamersc.springboot.financialhub.repository.BankRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,30 +15,30 @@ import java.util.List;
 public class BankServiceImpl implements BankService{
 
     @Autowired
-    private BankRepository bankRepository;
+    private BankRepo bankRepo;
 
     @Override
     public List<Bank> getAllBanks() {
-        return bankRepository.findAll();
+        return bankRepo.findAll();
     }
 
     @Override
     public List<Bank> getAllBankAccounts() {
-        return bankRepository.findAllWithAccounts();
+        return bankRepo.findAllWithAccounts();
     }
 
     @Override
     public Bank findBankById(Long id) {
-        return bankRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Not Found"));
+        return bankRepo.findById(id).orElseThrow(() -> new RuntimeException("Bank Not Found"));
     }
 
     @Override
     public void save(Bank bank) {
-        bankRepository.save(bank);
+        bankRepo.save(bank);
     }
 
     @Override
     public void deleteBankById(Long id) {
-        bankRepository.deleteById(id);
+        bankRepo.deleteById(id);
     }
 }

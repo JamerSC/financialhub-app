@@ -2,6 +2,7 @@ package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -11,39 +12,39 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString()
 public class Contact {
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "contact_id")
+    private Long contactId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_category_id")
-    private ContactCategory contactCategory;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "contact_type")
+    private ContactType contactType;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_sub_category_id")
-    private ContactSubCategory contactSubCategory;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "category_type")
+    private ContactCategoryType contactCategoryType;
 
-    @Column(name = "first_name")
-    private String firstName;
+    @Column(name = "engagement_date")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date engagementDate;
 
-    @Column(name = "last_name")
-    private String lastName;
+    @Column(name = "best_channel_to_contact")
+    private String bestChannelToContact;
 
-    @Column(name = "middle_name")
-    private String middleName;
+    // Bi-directional relationships
+    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    private ContactIndividual individual;
 
-    @Column(name = "email")
-    private String email;
+    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    private ContactCompany company;
 
-    @Column(name = "contact_no")
-    private String contactNo;
-
-    @Column(name = "address")
-    private String address;
+    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    private ContactAdditionalDetails additionalDetails;
 
     @Column(name = "created_by")
     private int createdBy;
@@ -55,7 +56,7 @@ public class Contact {
     @Column(name = "updated_by")
     private int updatedBy;
 
-    @Column(name = "updated_at")
+    //@Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
@@ -70,3 +71,5 @@ public class Contact {
         updatedAt = new Date();
     }
 }
+
+

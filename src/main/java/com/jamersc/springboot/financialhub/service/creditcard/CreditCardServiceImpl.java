@@ -3,7 +3,7 @@ package com.jamersc.springboot.financialhub.service.creditcard;
 import com.jamersc.springboot.financialhub.dto.CreditCardDto;
 import com.jamersc.springboot.financialhub.model.CreditCard;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.repository.CreditCardRepository;
+import com.jamersc.springboot.financialhub.repository.CreditCardRepo;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -19,19 +19,19 @@ import java.util.List;
 public class CreditCardServiceImpl implements CreditCardService {
 
     @Autowired
-    private CreditCardRepository creditCardRepository;
+    private CreditCardRepo creditCardRepo;
 
     @Autowired
     private UserService userService;
 
     @Override
     public List<CreditCard> findAllCreditCardRecord() {
-        return creditCardRepository.findAll();
+        return creditCardRepo.findAll();
     }
 
     @Override
     public CreditCardDto findCreditCardRecordById(Long id) {
-        CreditCard creditCard = creditCardRepository.findById(id).orElse(null);
+        CreditCard creditCard = creditCardRepo.findById(id).orElse(null);
         if (creditCard != null) {
             CreditCardDto creditCardDto = new CreditCardDto();
             BeanUtils.copyProperties(creditCard, creditCardDto);
@@ -44,7 +44,7 @@ public class CreditCardServiceImpl implements CreditCardService {
     public void saveCreditCardRecord(CreditCardDto creditCardDto, String username) {
         CreditCard creditCard;
         if (creditCardDto.getId() != null) {
-            creditCard = creditCardRepository.findById(creditCardDto.getId()).orElse(new CreditCard());
+            creditCard = creditCardRepo.findById(creditCardDto.getId()).orElse(new CreditCard());
             User updatedBy = userService.findByUsername(username);
             if (updatedBy != null) {
                 creditCard.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
@@ -63,11 +63,11 @@ public class CreditCardServiceImpl implements CreditCardService {
             }
         }
         BeanUtils.copyProperties(creditCardDto, creditCard);
-        creditCardRepository.save(creditCard);
+        creditCardRepo.save(creditCard);
     }
 
     @Override
     public void deleteCreditCardRecordById(Long id) {
-        creditCardRepository.deleteById(id);
+        creditCardRepo.deleteById(id);
     }
 }

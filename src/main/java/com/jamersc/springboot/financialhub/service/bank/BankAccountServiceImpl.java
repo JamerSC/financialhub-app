@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.model.BankAccount;
-import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
+import com.jamersc.springboot.financialhub.repository.BankAccountRepo;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.List;
 public class BankAccountServiceImpl implements BankAccountService{
 
     @Autowired
-    private BankAccountRepository bankAccountRepository;
+    private BankAccountRepo bankAccountRepo;
 
     @Override
     public List<BankAccount> getAllBankAccounts() {
-        return bankAccountRepository.findAll();
+        return bankAccountRepo.findAll();
     }
 
     @Override
     public BankAccount getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Account not found."));
+        return bankAccountRepo.findById(id).orElseThrow(() -> new RuntimeException("Bank Account not found."));
     }
 
     @Override
     public void save(BankAccount bankAccount) {
-        bankAccountRepository.save(bankAccount);
+        bankAccountRepo.save(bankAccount);
     }
 }

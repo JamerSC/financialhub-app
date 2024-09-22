@@ -4,7 +4,6 @@ import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.Fund;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.service.pettycash.FundService;
-import com.jamersc.springboot.financialhub.service.pettycash.LiquidationService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
 import jakarta.validation.Valid;
@@ -28,9 +27,9 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/petty-cash")
-public class PettyCashController {
+public class PettyCashContr {
 
-    private static final Logger logger = LoggerFactory.getLogger(PettyCashController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PettyCashContr.class);
 
     @Autowired
     private PettyCashService pettyCashService;

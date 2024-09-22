@@ -23,7 +23,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/credit-card")
-public class CreditCardController {
+public class CreditCardContr {
 
     @Autowired
     private CreditCardService creditCardService;

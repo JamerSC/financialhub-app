@@ -24,9 +24,9 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/settings")
-public class UsersController {
+public class UsersContr {
 
-    private static final Logger logger = LoggerFactory.getLogger(HubController.class);
+    private static final Logger logger = LoggerFactory.getLogger(HubContr.class);
 
     @Autowired
     private UserService userService;
