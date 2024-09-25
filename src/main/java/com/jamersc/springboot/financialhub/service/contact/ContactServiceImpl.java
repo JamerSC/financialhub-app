@@ -40,15 +40,15 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
-    public void saveIndividual(Contact contact, String username) {
+    public void saveContactIndividual(Contact contactIndividual, String username) {
         ContactIndividual individual;
         ContactAdditionalDetails details;
         Contact contactInv = new Contact();
         // saving contact primary info
         contactInv.setContactType(ContactType.INDIVIDUAL);
-        contactInv.setContactCategoryType(contact.getContactCategoryType());
-        contactInv.setEngagementDate(contact.getEngagementDate());
-        contactInv.setBestChannelToContact(contact.getBestChannelToContact());
+        contactInv.setContactCategoryType(contactIndividual.getContactCategoryType());
+        contactInv.setEngagementDate(contactIndividual.getEngagementDate());
+        contactInv.setBestChannelToContact(contactIndividual.getBestChannelToContact());
         User createdBy = userRepo.findByUsername(username);
         if (username != null) {
             contactInv.setCreatedBy(Math.toIntExact(createdBy.getId()));
@@ -56,30 +56,39 @@ public class ContactServiceImpl implements ContactService {
         }
         contactRepo.save(contactInv);
         // saving individual details
-        if (contact.getIndividual() != null){
+        if (contactIndividual.getIndividual() != null){
             individual = new ContactIndividual();
             individual.setContact(contactInv);
-            individual.setTitle(contact.getIndividual().getTitle());
-            individual.setFirstName(contact.getIndividual().getFirstName());
-            individual.setMiddleName(contact.getIndividual().getMiddleName());
-            individual.setLastName(contact.getIndividual().getLastName());
-            individual.setSuffix(contact.getIndividual().getSuffix());
-            individual.setMobileNumber(contact.getIndividual().getMobileNumber());
-            individual.setEmailAddress(contact.getIndividual().getEmailAddress());
-            individual.setAddress(contact.getIndividual().getAddress());
+            individual.setTitle(contactIndividual.getIndividual().getTitle());
+            individual.setFirstName(contactIndividual.getIndividual().getFirstName());
+            individual.setMiddleName(contactIndividual.getIndividual().getMiddleName());
+            individual.setLastName(contactIndividual.getIndividual().getLastName());
+            individual.setSuffix(contactIndividual.getIndividual().getSuffix());
+            individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
+            individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
+            individual.setAddress(contactIndividual.getIndividual().getAddress());
             contactIndividualRepo.save(individual);
         }
         // saving individual additional details
-        if (contact.getAdditionalDetails() != null) {
+        if (contactIndividual.getAdditionalDetails() != null) {
             details = new ContactAdditionalDetails();
             details.setContact(contactInv);
-            details.setDesignationFor(contact.getAdditionalDetails().getDesignationFor());
-            details.setBankName(contact.getAdditionalDetails().getBankName());
-            details.setAccountNo(contact.getAdditionalDetails().getAccountNo());
+            details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
+            details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
+            details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
             contactAdditionalDetailsRepo.save(details);
         }
 
 
+    }
+
+    @Override
+    public void saveContactCompany(Contact contactCompany, String username) {
+        User createdBy = userRepo.findByUsername(username);
+        Contact contactComp = new Contact();
+        contactComp.setCreatedBy(Math.toIntExact(createdBy.getId()));
+        contactComp.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+        contactRepo.save(contactComp);
     }
 
     @Override
