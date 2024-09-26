@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/contacts")
-public class ContactContr {
+public class ContactController {
 
     @Autowired
     private ContactService contactService;
@@ -46,7 +46,7 @@ public class ContactContr {
     @PostMapping("/save-contact-company")
     public String addContactCompany(@ModelAttribute("contactCompany") Contact contactCompany) {
         String createdBy = getSessionUsername();
-        contactService.saveContactIndividual(contactCompany, createdBy);
+        contactService.saveContactCompany(contactCompany, createdBy);
         return "redirect:/contacts/contact-list";
     }
 

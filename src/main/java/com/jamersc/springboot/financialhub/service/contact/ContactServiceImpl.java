@@ -15,50 +15,50 @@ import java.util.List;
 public class ContactServiceImpl implements ContactService {
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepo;
 
     @Autowired
-    private ContactRepo contactRepo;
+    private ContactRepository contactRepository;
 
     @Autowired
-    private ContactIndividualRepo contactIndividualRepo;
+    private ContactIndividualRepository contactIndividualRepository;
 
     @Autowired
-    private ContactCompanyRepo contactCompanyRepo;
+    private ContactCompanyRepository contactCompanyRepository;
 
     @Autowired
-    private ContactAdditionalDetailsRepo contactAdditionalDetailsRepo;
+    private ContactAdditionalDetailsRepository contactAdditionalDetailsRepository;
 
     @Override
     public List<Contact> getAllContacts() {
-        return contactRepo.findAll();
+        return contactRepository.findAll();
     }
 
     @Override
     public Contact getContactById(Long contactId) {
-        return contactRepo.findById(contactId).orElseThrow(() -> new RuntimeException("Contact ID not found."));
+        return contactRepository.findById(contactId).orElseThrow(() -> new RuntimeException("Contact ID not found."));
     }
 
     @Override
     public void saveContactIndividual(Contact contactIndividual, String username) {
         ContactIndividual individual;
         ContactAdditionalDetails details;
-        Contact contactInv = new Contact();
+        Contact tempContactIndividual = new Contact();
         // saving contact primary info
-        contactInv.setContactType(ContactType.INDIVIDUAL);
-        contactInv.setContactCategoryType(contactIndividual.getContactCategoryType());
-        contactInv.setEngagementDate(contactIndividual.getEngagementDate());
-        contactInv.setBestChannelToContact(contactIndividual.getBestChannelToContact());
+        tempContactIndividual.setContactType(ContactType.INDIVIDUAL);
+        tempContactIndividual.setContactCategoryType(contactIndividual.getContactCategoryType());
+        tempContactIndividual.setEngagementDate(contactIndividual.getEngagementDate());
+        tempContactIndividual.setBestChannelToContact(contactIndividual.getBestChannelToContact());
         User createdBy = userRepo.findByUsername(username);
         if (username != null) {
-            contactInv.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            contactInv.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            tempContactIndividual.setCreatedBy(Math.toIntExact(createdBy.getId()));
+            tempContactIndividual.setUpdatedBy(Math.toIntExact(createdBy.getId()));
         }
-        contactRepo.save(contactInv);
+        contactRepository.save(tempContactIndividual);
         // saving individual details
         if (contactIndividual.getIndividual() != null){
             individual = new ContactIndividual();
-            individual.setContact(contactInv);
+            individual.setContact(tempContactIndividual);
             individual.setTitle(contactIndividual.getIndividual().getTitle());
             individual.setFirstName(contactIndividual.getIndividual().getFirstName());
             individual.setMiddleName(contactIndividual.getIndividual().getMiddleName());
@@ -67,16 +67,16 @@ public class ContactServiceImpl implements ContactService {
             individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
             individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
             individual.setAddress(contactIndividual.getIndividual().getAddress());
-            contactIndividualRepo.save(individual);
+            contactIndividualRepository.save(individual);
         }
         // saving individual additional details
         if (contactIndividual.getAdditionalDetails() != null) {
             details = new ContactAdditionalDetails();
-            details.setContact(contactInv);
+            details.setContact(tempContactIndividual);
             details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
             details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
             details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
-            contactAdditionalDetailsRepo.save(details);
+            contactAdditionalDetailsRepository.save(details);
         }
 
 
@@ -84,15 +84,44 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public void saveContactCompany(Contact contactCompany, String username) {
+        ContactCompany company;
+        ContactAdditionalDetails details;
+        Contact tempContactCompany = new Contact();
+        tempContactCompany.setContactType(ContactType.COMPANY);
+        tempContactCompany.setContactCategoryType(contactCompany.getContactCategoryType());
+        tempContactCompany.setEngagementDate(contactCompany.getEngagementDate());
+        tempContactCompany.setBestChannelToContact(contactCompany.getBestChannelToContact());
         User createdBy = userRepo.findByUsername(username);
-        Contact contactComp = new Contact();
-        contactComp.setCreatedBy(Math.toIntExact(createdBy.getId()));
-        contactComp.setUpdatedBy(Math.toIntExact(createdBy.getId()));
-        contactRepo.save(contactComp);
+        if (createdBy != null) {
+            tempContactCompany.setCreatedBy(Math.toIntExact(createdBy.getId()));
+            tempContactCompany.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+        }
+        contactRepository.save(tempContactCompany);
+        // save contact company details
+        if (contactCompany.getCompany() != null) {
+            company = new ContactCompany();
+            company.setContact(tempContactCompany);
+            company.setCompanyName(contactCompany.getCompany().getCompanyName());
+            company.setRegistrationType(contactCompany.getCompany().getRegistrationType());
+            company.setRepresentativeName(contactCompany.getCompany().getRepresentativeName());
+            company.setRepresentativeDesignation(contactCompany.getCompany().getRepresentativeDesignation());
+            company.setMobileNumber(contactCompany.getCompany().getMobileNumber());
+            company.setEmailAddress(contactCompany.getCompany().getEmailAddress());
+            company.setAddress(contactCompany.getCompany().getAddress());
+            contactCompanyRepository.save(company);
+        }
+        if (contactCompany.getAdditionalDetails() != null) {
+            details = new ContactAdditionalDetails();
+            details.setContact(tempContactCompany);
+            details.setDesignationFor(contactCompany.getAdditionalDetails().getDesignationFor());
+            details.setBankName(contactCompany.getAdditionalDetails().getBankName());
+            details.setAccountNo(contactCompany.getAdditionalDetails().getAccountNo());
+            contactAdditionalDetailsRepository.save(details);
+        }
     }
 
     @Override
     public void deleteContactById(Long contactId) {
-        contactRepo.deleteById(contactId);
+        contactRepository.deleteById(contactId);
     }
 }

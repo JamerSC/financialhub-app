@@ -58,7 +58,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-5">
                                                 <label for="individualCategoryType">Individual Category</label>
-                                                <select class="form-control" id="individualCategoryType" th:field="*{contactCategoryType}">
+                                                <select class="form-control" id="individualCategoryType" th:field="*{contactCategoryType}" required>
                                                     <option value="" selected>Choose individual category ...</option>
                                                     <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category}"></option>
                                                 </select>
@@ -78,7 +78,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="firstName" class="form-label">First Name</label>
-                                                <input type="text" class="form-control" id="firstName" placeholder="First name ..." th:field="*{individual.firstName}">
+                                                <input type="text" class="form-control" id="firstName" placeholder="First name ..." th:field="*{individual.firstName}" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="middleName" class="form-label">Middle Name</label>
@@ -86,7 +86,7 @@
                                             </div>
                                             <div class="col-md-3">
                                                 <label for="lastName" class="form-label">Last Name</label>
-                                                <input type="text" class="form-control" id="lastName" placeholder="Last name ..." th:field="*{individual.lastName}">
+                                                <input type="text" class="form-control" id="lastName" placeholder="Last name ..." th:field="*{individual.lastName}" required>
                                             </div>
                                             <div class="col-md-2">
                                                 <label for="suffix" class="form-label">Suffix</label>
@@ -102,21 +102,21 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="mobileNumber" class="form-label">Mobile Number</label>
-                                                <input type="text" class="form-control" id="mobileNumber" placeholder="Mobile number" th:field="*{individual.mobileNumber}">
+                                                <input type="text" class="form-control" id="mobileNumber" placeholder="Mobile number" th:field="*{individual.mobileNumber}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="individualEmail" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="individualEmail" placeholder="Email add ..." th:field="*{individual.emailAddress}">
+                                                <input type="email" class="form-control" id="individualEmail" placeholder="Email add ..." th:field="*{individual.emailAddress}" required>
                                             </div>
                                         </div>
                                         <div class="col-12 mb-3">
                                             <label for="individualAddress" class="form-label">Address</label>
-                                            <input type="text" class="form-control" id="individualAddress" placeholder="Home/Office Address" th:field="*{individual.address}">
+                                            <input type="text" class="form-control" id="individualAddress" placeholder="Home/Office Address" th:field="*{individual.address}" required>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="channel" class="form-label">Best Channel to Contact</label>
-                                                <input type="text" class="form-control" id="channel" placeholder="Channel to contact" th:field="*{bestChannelToContact}">
+                                                <input type="text" class="form-control" id="channel" placeholder="Channel to contact" th:field="*{bestChannelToContact}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="engagementDate" class="form-label">Engagement Date</label>
@@ -161,7 +161,7 @@
                                         <div class="row mb-3">
                                             <div class="col-md-5">
                                                 <label for="companyCategoryType">Company Category</label>
-                                                <select class="form-control" id="companyCategoryType" th:field="*{contactCategoryType}">
+                                                <select class="form-control" id="companyCategoryType" th:field="*{contactCategoryType}" required>
                                                     <option value="" selected>Choose company category ...</option>
                                                     <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category}"></option>
                                                 </select>
@@ -171,11 +171,11 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="companyName" class="form-label">Company Name</label>
-                                                <input type="text" class="form-control" id="companyName" th:field="*{company.companyName}">
+                                                <input type="text" class="form-control" id="companyName" th:field="*{company.companyName}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="registrationType">Registration type</label>
-                                                <select class="form-control" id="registrationType" th:field="*{company.registrationType}">
+                                                <select class="form-control" id="registrationType" th:field="*{company.registrationType}" required>
                                                     <option value="" selected>Choose registration type ...</option>
                                                     <option th:each="registration : ${registrationType}" th:value="${registration}" th:text="${registration}"></option>
                                                 </select>
@@ -185,33 +185,33 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="representativeName" class="form-label">Representative Name</label>
-                                                <input type="text" class="form-control" id="representativeName" placeholder="Representative Name ..." th:field="*{company.representativeName}">
+                                                <input type="text" class="form-control" id="representativeName" placeholder="Representative Name ..." th:field="*{company.representativeName}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="representativeDesignation" class="form-label">Representative Designation</label>
-                                                <input type="text" class="form-control" id="representativeDesignation" placeholder="Representative Designation ..." th:field="*{company.representativeDesignation}">
+                                                <input type="text" class="form-control" id="representativeDesignation" placeholder="Representative Designation ..." th:field="*{company.representativeDesignation}" required>
                                             </div>
                                         </div>
                                         <!-- Other fields -->
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="companyMobileNumber" class="form-label">Mobile Number</label>
-                                                <input type="text" class="form-control" id="companyMobileNumber" th:field="*{company.mobileNumber}">
+                                                <input type="text" class="form-control" id="companyMobileNumber" th:field="*{company.mobileNumber}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="companyEmail" class="form-label">Email</label>
-                                                <input type="email" class="form-control" id="companyEmail" th:field="*{company.emailAddress}">
+                                                <input type="email" class="form-control" id="companyEmail" th:field="*{company.emailAddress}" required>
                                             </div>
                                         </div>
 
                                         <div class="col-12 mb-3">
                                             <label for="companyAddress" class="form-label">Company Address</label>
-                                            <input type="text" class="form-control" id="companyAddress" placeholder="1234 Main St" th:field="*{company.address}">
+                                            <input type="text" class="form-control" id="companyAddress" placeholder="1234 Main St" th:field="*{company.address}" required>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="companyChannel" class="form-label">Best Channel to Contact</label>
-                                                <input type="text" class="form-control" id="companyChannel" placeholder="Channel to contact" th:field="*{bestChannelToContact}">
+                                                <input type="text" class="form-control" id="companyChannel" placeholder="Channel to contact" th:field="*{bestChannelToContact}" required>
                                             </div>
                                             <div class="col-md-6">
                                                 <label for="companyEngagementDate" class="form-label">Engagement Date</label>

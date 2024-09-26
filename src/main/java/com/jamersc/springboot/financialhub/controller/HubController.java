@@ -21,9 +21,9 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/financial-hub")
-public class HubContr {
+public class HubController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HubContr.class);
+    private static final Logger logger = LoggerFactory.getLogger(HubController.class);
 
     @Autowired
     private UserService userService;

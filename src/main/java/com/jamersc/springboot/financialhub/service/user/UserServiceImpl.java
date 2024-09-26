@@ -3,8 +3,8 @@ package com.jamersc.springboot.financialhub.service.user;
 import com.jamersc.springboot.financialhub.dto.UserDto;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.repository.RoleRepo;
-import com.jamersc.springboot.financialhub.repository.UserRepo;
+import com.jamersc.springboot.financialhub.repository.RoleRepository;
+import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,30 +33,30 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepository;
     @Autowired
-    private RoleRepo roleRepo;
+    private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Override
     public User findByUsername(String username) {
-        return userRepo.findByUsername(username);
+        return userRepository.findByUsername(username);
     }
 
     @Override
     public List<User> getAllUsers() {
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
 
     @Override
     public Page<User> findAll(Pageable pageable) {
-        return userRepo.findAll(pageable);
+        return userRepository.findAll(pageable);
     }
 
     @Override
     public UserDto findUserRecordById(Long id) {
-        User user = userRepo.findById(id).orElse(null);
+        User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             UserDto userDto = new UserDto();
             BeanUtils.copyProperties(user, userDto);
@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserService {
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(userDto.isEnabled());
-        User creator = userRepo.findByUsername(createdBy);
+        User creator = userRepository.findByUsername(createdBy);
         if (creator != null) {
             user.setCreatedBy(Math.toIntExact(creator.getId()));
             user.setUpdatedBy(Math.toIntExact(creator.getId()));
@@ -85,20 +85,20 @@ public class UserServiceImpl implements UserService {
             user.setUpdatedBy(1);
         }
         Set<Role> roles = userDto.getRoleIds().stream()
-                                .map(roleRepo::findById)
+                                .map(roleRepository::findById)
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
                                 .collect(Collectors.toSet());
         user.setRoles(roles);
         // BeanUtils.copyProperties(userDto, user, "createdAt");
         BeanUtils.copyProperties(userDto, user, "password", "roles");
-        userRepo.save(user);
+        userRepository.save(user);
         logger.info("Successfully created user: " + user.getUsername());
     }
 
     @Override
     public void update(UserDto userDto, String updatedBy) {
-        User user = userRepo.findById(userDto.getId()).orElse(null);
+        User user = userRepository.findById(userDto.getId()).orElse(null);
         if (user != null) {
             // Update user details except password and roles
             BeanUtils.copyProperties(userDto, user, "password", "roles", "createdBy", "createdAt");
@@ -109,20 +109,20 @@ public class UserServiceImpl implements UserService {
             }
             // Update roles
             Set<Role> roles = userDto.getRoleIds().stream()
-                    .map(roleRepo::findById)
+                    .map(roleRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
             user.setRoles(roles);
 
-            User updater = userRepo.findByUsername(updatedBy);
+            User updater = userRepository.findByUsername(updatedBy);
             if (updater != null) {
                 user.setUpdatedBy(Math.toIntExact(updater.getId()));
             } else {
                 user.setUpdatedBy(1);
             }
 
-            userRepo.save(user);
+            userRepository.save(user);
             logger.info("Successfully updated user: " + user.getUsername());
         } else {
             logger.warn("User with ID " + userDto.getId() + " not found.");
@@ -132,6 +132,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserRecordById(Long id) {
         logger.info("Successfully deleted user record by id: " + id);
-        userRepo.deleteById(id);
+        userRepository.deleteById(id);
     }
 }

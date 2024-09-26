@@ -17,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/bank")
-public class BankAccountContr {
+public class BankAccountController {
 
     @Autowired
     private BankAccountService bankAccountService;

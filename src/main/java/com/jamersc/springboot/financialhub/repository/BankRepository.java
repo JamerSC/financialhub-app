@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface BankRepo extends JpaRepository<Bank, Long> {
+public interface BankRepository extends JpaRepository<Bank, Long> {
     @Query("SELECT b FROM Bank b JOIN FETCH b.accounts")
     List<Bank> findAllWithAccounts();
  }

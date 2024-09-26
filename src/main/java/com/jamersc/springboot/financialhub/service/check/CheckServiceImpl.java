@@ -3,8 +3,8 @@ package com.jamersc.springboot.financialhub.service.check;
 import com.jamersc.springboot.financialhub.dto.CheckDto;
 import com.jamersc.springboot.financialhub.model.Check;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.repository.CheckRepo;
-import com.jamersc.springboot.financialhub.repository.UserRepo;
+import com.jamersc.springboot.financialhub.repository.CheckRepository;
+import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -23,19 +23,19 @@ public class CheckServiceImpl implements CheckService{
     private static final Logger logger = LoggerFactory.getLogger(CheckServiceImpl.class);
 
     @Autowired
-    private CheckRepo checkRepo;
+    private CheckRepository checkRepository;
 
     @Autowired
-    private UserRepo userRepo;
+    private UserRepository userRepo;
 
     @Override
     public List<Check> getAllCheckRecord() {
-        return checkRepo.findAll();
+        return checkRepository.findAll();
     }
 
     @Override
     public CheckDto findCheckRecordById(Long id) {
-        Check check = checkRepo.findById(id).orElse(null);
+        Check check = checkRepository.findById(id).orElse(null);
         if (check != null) {
             CheckDto checkDto = new CheckDto();
             BeanUtils.copyProperties(check, checkDto);
@@ -56,12 +56,12 @@ public class CheckServiceImpl implements CheckService{
             check.setUpdatedBy(1);
         }
         BeanUtils.copyProperties(checkDto, check);
-        checkRepo.save(check);
+        checkRepository.save(check);
     }
 
     @Override
     public void updateCheckRecord(CheckDto checkDto, String updatedBy) {
-        Check check = checkRepo.findById(checkDto.getId()).orElse(null);
+        Check check = checkRepository.findById(checkDto.getId()).orElse(null);
         if (check != null) {
             User updater = userRepo.findByUsername(updatedBy);
             if (updater != null) {
@@ -70,7 +70,7 @@ public class CheckServiceImpl implements CheckService{
                 check.setUpdatedBy(1);
             }
             BeanUtils.copyProperties(checkDto, check, "createdAt");
-            checkRepo.save(check);
+            checkRepository.save(check);
         } else {
             logger.error("Check with ID: " +  checkDto.getId() + " not found!");
         }
@@ -78,6 +78,6 @@ public class CheckServiceImpl implements CheckService{
 
     @Override
     public void deleteCheckRecordById(Long id) {
-        checkRepo.deleteById(id);
+        checkRepository.deleteById(id);
     }
 }

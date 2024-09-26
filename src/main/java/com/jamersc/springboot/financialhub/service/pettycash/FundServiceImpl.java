@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.model.Fund;
-import com.jamersc.springboot.financialhub.repository.FundRepo;
+import com.jamersc.springboot.financialhub.repository.FundRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,20 +15,20 @@ import java.util.List;
 public class FundServiceImpl implements FundService{
 
     @Autowired
-    private FundRepo fundRepo;
+    private FundRepository fundRepository;
 
     @Override
     public List<Fund> getAllFund() {
-        return fundRepo.findAll();
+        return fundRepository.findAll();
     }
 
     @Override
     public Fund getFundById(Long id) {
-        return fundRepo.findById(id).orElseThrow(() -> new RuntimeException("Fund id not found."));
+        return fundRepository.findById(id).orElseThrow(() -> new RuntimeException("Fund id not found."));
     }
 
     @Override
     public void save(Fund fund) {
-       fundRepo.save(fund);
+       fundRepository.save(fund);
     }
 }

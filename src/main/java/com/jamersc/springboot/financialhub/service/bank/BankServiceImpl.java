@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.model.Bank;
-import com.jamersc.springboot.financialhub.repository.BankRepo;
+import com.jamersc.springboot.financialhub.repository.BankRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.List;
 public class BankServiceImpl implements BankService{
 
     @Autowired
-    private BankRepo bankRepo;
+    private BankRepository bankRepo;
 
     @Override
     public List<Bank> getAllBanks() {

@@ -25,9 +25,9 @@ import java.util.List;
 @AllArgsConstructor
 @Controller
 @RequestMapping("/check")
-public class CheckContr {
+public class CheckController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckContr.class);
+    private static final Logger logger = LoggerFactory.getLogger(CheckController.class);
 
     @Autowired
     private CheckService checkService;
