@@ -13,7 +13,11 @@ public class ProjectController {
 
     @GetMapping("list-of-projects")
     public String listOfProjects(Model model) {
-
         return "project/project";
+    }
+
+    @GetMapping("/project-summary")
+    public String projectSummary(Model model) {
+        return "project/project-summary";
     }
 }

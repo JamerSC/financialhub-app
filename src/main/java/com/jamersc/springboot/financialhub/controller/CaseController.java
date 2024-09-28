@@ -17,8 +17,8 @@ public class CaseController {
         return "case/case";
     }
 
-    @GetMapping("/case-information")
+    @GetMapping("/case-summary")
     public String caseInformation(Model model) {
-        return "case/case-information";
+        return "case/case-summary";
     }
 }

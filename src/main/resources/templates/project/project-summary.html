@@ -5,7 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>Projects</title>
+    <title>Project Summary</title>
 </head>
 <body>
 
@@ -15,7 +15,7 @@
             <div class="col-12">
                 <div class="d-flex">
                     <div class="p-1">
-                        <h4 class="fw-bold fs-4">Projects</h4>
+                        <h4 class="fw-bold fs-4">Project Summary</h4>
                     </div>
                     <!-- Contact Option Modal Button -->
                     <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
@@ -341,7 +341,7 @@
                         <td>In progress</td>
                         <td>Case Study</td>
                         <td>
-                            <a th:href="@{/projects/project-summary}" class="btn btn-secondary btn-sm">
+                            <a href="#" class="btn btn-secondary btn-sm">
                                 <i class="lni lni-eye"></i>
                             </a>
                         </td>
