@@ -1,10 +1,207 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <meta charset="UTF-8">
     <title>Case</title>
 </head>
 <body>
 
+<main class="content px-3 py-4" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <div class="p-1">
+                        <h4 class="fw-bold fs-4">Case</h4>
+                    </div>
+                    <!-- Contact Option Modal Button -->
+                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCaseModal">
+                            <i class="lni lni-notepad"></i> Add Case
+                        </button>
+                    </div>
+                </div>
+                <!-- Create Case - Form Modal -->
+                <div class="modal fade" id="addCaseModal" tabindex="-1" aria-labelledby="#addCaseModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addCaseModalLabel">Case (New Account)</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 mb-3" id="addCaseForm" method="POST">
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-5">
+                                            <label for="suffix" class="form-label">Case Type</label>
+                                            <select id="suffix" class="form-select" required>
+                                                <option value="" selected>Select case type...</option>
+                                                <option>Civil</option>
+                                                <option>Criminal</option>
+                                                <option>Labor</option>
+                                                <option>Administrative</option>
+                                                <option>Election</option>
+                                                <option>Special Proceedings</option>
+                                                <option>Others</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="caseTitle" class="form-label">Case Title</label>
+                                            <input type="text" class="form-control" id="caseTitle" placeholder="Case title ..." required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="docketNo" class="form-label">Docket No.</label>
+                                            <input type="text" class="form-control" id="docketNo" placeholder="Docket number ..." required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="nature" class="form-label">Nature</label>
+                                            <input type="text" class="form-control" id="nature" placeholder="Nature ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="court" class="form-label">Court</label>
+                                            <input type="text" class="form-control" id="court" placeholder="Court ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="branch" class="form-label">Branch</label>
+                                            <input type="text" class="form-control" id="branch" placeholder="Branch ..." required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="judge" class="form-label">Judge</label>
+                                            <input type="text" class="form-control" id="judge" placeholder="Judge ..." required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="courtEmail" class="form-label">Court</label>
+                                            <input type="email" class="form-control" id="courtEmail" placeholder="Court email ..." required>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="prosecutor" class="form-label">Prosecutor</label>
+                                            <input type="text" class="form-control" id="prosecutor" placeholder="Prosecutor ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="prosecutorOffice" class="form-label">Prosecutor Office</label>
+                                            <input type="text" class="form-control" id="prosecutorOffice" placeholder="Prosecutor Office ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="prosecutorEmail" class="form-label">Prosecutor Email</label>
+                                            <input type="email" class="form-control" id="prosecutorEmail" placeholder="Prosecutor Email ..." required>
+                                        </div>
+                                    </div>
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-5">
+                                            <label for="client" class="form-label">Client</label>
+                                            <select id="client" class="form-select" required>
+                                                <option value="" selected>Select client...</option>
+                                                <option>Juan Dela Cruz</option>
+                                                <option>ABC Corporation</option>
+                                                <option>Maria Juan</option>
+                                                <option>CDE Inc.</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            <label for="opposingParty" class="form-label">Opposing Party</label>
+                                            <input type="text" class="form-control" id="opposingParty" placeholder="Opposing Party ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="opposingCounsel" class="form-label">Opposing Counsel</label>
+                                            <input type="text" class="form-control" id="opposingCounsel" placeholder="Opposing Counsel ..." required>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="counselEmail" class="form-label">Counsel Email</label>
+                                            <input type="email" class="form-control" id="counselEmail" placeholder="Counsel Email ..." required>
+                                        </div>
+                                    </div>
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="status" class="form-label">Status</label>
+                                            <select id="status" class="form-select" required>
+                                                <option value="" selected>Select status...</option>
+                                                <option>Open</option>
+                                                <option>In Progress</option>
+                                                <option>Pending</option>
+                                                <option>Completed</option>
+                                                <option>Closed</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="stage" class="form-label">Stage</label>
+                                            <select id="stage" class="form-select" required>
+                                                <option value="" selected>Select stage...</option>
+                                                <option>Case Study</option>
+                                                <option>Consultation</option>
+                                                <option>Filing</option>
+                                                <option>Pleading</option>
+                                                <option>Hearing</option>
+                                                <option>Counseling</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="startDate" class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" id="startDate" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="endDate" class="form-label">End Date</label>
+                                            <input type="date" class="form-control" id="endDate">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Create Case</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <table class="table table-striped shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Case Title</th>
+                        <th>Status</th>
+                        <th>Stage</th>
+                        <th>Last Activity</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>People vs. People</td>
+                        <td>In progress</td>
+                        <td>Case Study</td>
+                        <td>Consultation</td>
+                        <td>September 1, 2024</td>
+                        <td>-</td>
+                        <td>
+                            <a th:href="@{/cases/case-information}" class="btn btn-secondary btn-sm">
+                                <i class="lni lni-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>

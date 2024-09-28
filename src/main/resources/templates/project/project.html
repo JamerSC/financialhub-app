@@ -1,10 +1,255 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <meta charset="UTF-8">
-    <title>Project</title>
+    <title>Projects</title>
 </head>
 <body>
+
+<main class="content px-3 py-4" layout:fragment="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="d-flex">
+                    <div class="p-1">
+                        <h4 class="fw-bold fs-4">Projects</h4>
+                    </div>
+                    <!-- Contact Option Modal Button -->
+                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#projectTypeModal">
+                            <i class="lni lni-notepad"></i> Add Project
+                        </button>
+                    </div>
+
+                    <!-- Contact Type Modal // center modal dialog -> modal-dialog-centered -->
+                    <div class="modal fade" id="projectTypeModal" tabindex="-1" aria-labelledby="projectTypeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="contactTypeModalLabel">Type of Contact</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="propertiesBtn">Properties</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessBtn">Business</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secBtn">Securities and Exchange (SEC)</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Property Form Modal -->
+                    <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="propertiesModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="propertiesModalLabel">Process of Property</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="transferOfTitleBtn">Transfer of Title</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="settlementOfEstateBtn">Settlement of State</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleAnnotationBtn">Annotation</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleOtherProcessBtn">Others</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Transfer of Title Form Modal -->
+                    <div class="modal fade" id="transferOfTitleModal" tabindex="-1" aria-labelledby="transferOfTitleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="transferOfTitleModalLabel">Transfer of Title (New Project)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Transfer of Title Project
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Settlement of Estate Form Modal -->
+                    <div class="modal fade" id="settlementOfEstateModal" tabindex="-1" aria-labelledby="settlementOfEstateModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="settlementOfEstateModalLabel">Settlement Of Estate (New Project)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Settlement Of Estate Project
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Annotation of Title Form Modal -->
+                    <div class="modal fade" id="titleAnnotationModal" tabindex="-1" aria-labelledby="titleAnnotationModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="titleAnnotationModalLabel">Title Annotation (New Project)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Title Annotation Project
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Other Title Transaction Form Modal -->
+                    <div class="modal fade" id="titleOtherProcessModal" tabindex="-1" aria-labelledby="titleOtherProcessModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="titleOtherProcessModalLabel">Title Other Process (New Project)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Title Other Process Project
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Business Selection Modal -->
+                    <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="businessModalLabel">Business Process</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRegBtn">Business Registration</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRenewalBtn">Business Renewal</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessClosureBtn">Business Closure</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessOtherProcessBtn">Others</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SEC Selection Modal -->
+                    <div class="modal fade" id="secModal" tabindex="-1" aria-labelledby="secModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="secModalLabel">Securities & Exchange Process</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secRegistrationBtn">Securities and Exchange (SEC) Registration</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secArticlesBtn">Amendment of Articles of Incorporation</button>
+                                    <br>
+                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secIncreaseBtn">Increase in Authorized Capital Stock</button>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="table table-striped shadow">
+                    <thead class="table-dark">
+                    <tr>
+                        <th>Project Title</th>
+                        <th>Status</th>
+                        <th>Last Activity</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Transfer of Title</td>
+                        <td>In progress</td>
+                        <td>Case Study</td>
+                        <td>
+                            <a href="#" class="btn btn-secondary btn-sm">
+                                <i class="lni lni-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <script>
+                    $(document).ready(function() {
+                        // project category
+                        $('#propertiesBtn').click(function() {
+                            $('#projectTypeModal').modal('hide');
+                            $('#propertiesModal').modal('show');
+                        });
+                        $('#businessBtn').click(function() {
+                            $('#projectTypeModal').modal('hide');
+                            $('#businessModal').modal('show');
+                        });
+                        $('#secBtn').click(function() {
+                            $('#projectTypeModal').modal('hide');
+                            $('#secModal').modal('show');
+                        });
+
+                        // Properties
+                        $('#transferOfTitleBtn').click(function() {
+                            $('#propertiesModal').modal('hide');
+                            $('#transferOfTitleModal').modal('show');
+                        });
+                        $('#settlementOfEstateBtn').click(function() {
+                            $('#propertiesModal').modal('hide');
+                            $('#settlementOfEstateModal').modal('show');
+                        });
+                        $('#titleAnnotationBtn').click(function() {
+                            $('#propertiesModal').modal('hide');
+                            $('#titleAnnotationModal').modal('show');
+                        });
+                        $('#titleOtherProcessBtn').click(function() {
+                            $('#propertiesModal').modal('hide');
+                            $('#titleOtherProcessModal').modal('show');
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</main>
 
 </body>
 </html>

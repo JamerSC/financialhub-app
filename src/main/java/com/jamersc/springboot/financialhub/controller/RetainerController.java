@@ -16,4 +16,9 @@ public class RetainerController {
     public String listOfRetainers(Model model) {
         return "retainer/retainer";
     }
+
+    @GetMapping("/retainer-activity")
+    public String retainerActivity(Model model) {
+        return "retainer/retainer-activity";
+    }
 }

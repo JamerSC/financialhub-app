@@ -5,7 +5,7 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{/fragments/layouts/base-layout}">
 <head>
-    <title>Retainer</title>
+    <title>Case</title>
 </head>
 <body>
 
@@ -21,22 +21,26 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <th>Name/Company Name</th>
+                        <th>Case Title</th>
                         <th>Status</th>
-                        <th>Last Activity</th>
-                        <th>Action</th>
+                        <th>Client</th>
+                        <th>Activity Description</th>
+                        <th>Activity Category</th>
+                        <th>PIC</th>
+                        <th>Start Date</th>
+                        <th>End Date</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>People vs. People</td>
                         <td>In progress</td>
+                        <td>ABC Corporation</td>
+                        <td>Secure Documents</td>
                         <td>Case Study</td>
-                        <td>
-                            <a th:href="@{/retainers/retainer-activity}" class="btn btn-secondary btn-sm">
-                                <i class="lni lni-eye"></i>
-                            </a>
-                        </td>
+                        <td>Employee Sample 1</td>
+                        <td>September 1, 2024</td>
+                        <td>-</td>
                     </tr>
                     </tbody>
                 </table>

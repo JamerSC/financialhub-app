@@ -16,4 +16,9 @@ public class CaseController {
         //model.addAttribute("cases", "List of cases");
         return "case/case";
     }
+
+    @GetMapping("/case-information")
+    public String caseInformation(Model model) {
+        return "case/case-information";
+    }
 }

@@ -150,12 +150,14 @@
                                                 <!-- Loop through listOfChargeTo -->
                                                 <option th:each="contact : ${listOfChargeTo}"
                                                         th:value="${contact.contactId}"
-                                                        th:text="${contact.contactType.name() == 'INDIVIDUAL' ?
-                                                        (contact.individual.firstName + ' ' + contact.individual.lastName + ' (' + contact.contactType + '/' + contact.contactCategoryType + ')' )
-                                                        : contact.company.companyName + ' (' + contact.contactType + '/' + contact.contactCategoryType + ')'}"></option>
+                                                        th:text="${contact.contactType != null && contact.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(contact.individual?.firstName, ' ', contact.individual?.lastName, ' (', contact.contactType, '/', contact.contactCategoryType, ')'))
+                                                         : (#strings.concat(contact.company?.companyName, ' (', contact.contactType, '/', contact.contactCategoryType, ')'))}">
+                                                </option>
                                             </select>
                                             <div class="invalid-feedback">Please select charge to.</div>
                                         </div>
+
 
                                         <!-- New Field: Billed -->
                                         <div class="form-check mb-3">
