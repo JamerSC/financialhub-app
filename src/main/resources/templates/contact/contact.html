@@ -60,7 +60,8 @@
                                                 <label for="individualCategoryType">Individual Category</label>
                                                 <select class="form-control" id="individualCategoryType" th:field="*{contactCategoryType}" required>
                                                     <option value="" selected>Choose individual category ...</option>
-                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
+                                                    <option th:each="category : ${contactCategoryType}"
+                                                            th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
                                                 </select>
                                             </div>
                                         </div>

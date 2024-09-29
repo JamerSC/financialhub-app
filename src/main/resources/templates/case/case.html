@@ -40,13 +40,9 @@
                                             <label for="suffix" class="form-label">Case Type</label>
                                             <select id="suffix" class="form-select" required>
                                                 <option value="" selected>Select case type...</option>
-                                                <option>Civil</option>
-                                                <option>Criminal</option>
-                                                <option>Labor</option>
-                                                <option>Administrative</option>
-                                                <option>Election</option>
-                                                <option>Special Proceedings</option>
-                                                <option>Others</option>
+                                                <option th:each="cases : ${caseType}"
+                                                        th:value="${cases}"
+                                                        th:text="${cases.convertCaseType}"></option>
                                             </select>
                                         </div>
                                     </div>
