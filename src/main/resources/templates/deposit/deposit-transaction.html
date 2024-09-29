@@ -66,7 +66,7 @@
                         <tbody>
                             <tr th:each="tempDeposit : ${accountDeposits}">
                             <td th:text="${#dates.format(tempDeposit.transactionDate, 'dd MMMM yyyy')}"></td>
-                            <td th:text="${tempDeposit.transactionType}"></td>
+                            <td th:text="${tempDeposit.transactionType.convertTransactionType()}"></td>
                             <td th:text="${tempDeposit.transactionAmount != null ? #numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <!--<td th:text="${#numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>-->
                             <td th:text="${tempDeposit.transactionNote}"></td>

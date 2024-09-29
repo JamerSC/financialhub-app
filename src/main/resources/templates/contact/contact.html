@@ -60,7 +60,7 @@
                                                 <label for="individualCategoryType">Individual Category</label>
                                                 <select class="form-control" id="individualCategoryType" th:field="*{contactCategoryType}" required>
                                                     <option value="" selected>Choose individual category ...</option>
-                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category}"></option>
+                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -163,7 +163,7 @@
                                                 <label for="companyCategoryType">Company Category</label>
                                                 <select class="form-control" id="companyCategoryType" th:field="*{contactCategoryType}" required>
                                                     <option value="" selected>Choose company category ...</option>
-                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category}"></option>
+                                                    <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -177,7 +177,7 @@
                                                 <label for="registrationType">Registration type</label>
                                                 <select class="form-control" id="registrationType" th:field="*{company.registrationType}" required>
                                                     <option value="" selected>Choose registration type ...</option>
-                                                    <option th:each="registration : ${registrationType}" th:value="${registration}" th:text="${registration}"></option>
+                                                    <option th:each="registration : ${registrationType}" th:value="${registration}" th:text="${registration.convertRegistrationType()}"></option>
                                                 </select>
                                             </div>
                                         </div>
@@ -257,8 +257,8 @@
                     <tbody>
                     <tr th:each="tempContact : ${contacts}">
                         <td th:text="${tempContact.contactId}"></td>
-                        <td th:text="${tempContact.contactType}"></td>
-                        <td th:text="${tempContact.contactCategoryType}"></td>
+                        <td th:text="${tempContact.contactType.convertContactType()}"></td>
+                        <td th:text="${tempContact.contactCategoryType.convertContactCategoryType()}"></td>
                         <td th:text="${tempContact.engagementDate}"></td>
                         <td th:text="${tempContact.bestChannelToContact}"></td>
                         <td>

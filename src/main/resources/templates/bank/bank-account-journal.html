@@ -44,7 +44,7 @@
                     <tr th:each="tempTransaction : ${transactions}">
                         <td th:text="${tempTransaction.id}"></td>
                         <td th:text="${#dates.format(tempTransaction.transactionDate, 'dd MMMM yyyy')}"></td>
-                        <td th:text="${tempTransaction.transactionType}"></td>
+                        <td th:text="${tempTransaction.transactionType.convertTransactionType()}"></td>
                         <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
                         <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
                     </tr>
