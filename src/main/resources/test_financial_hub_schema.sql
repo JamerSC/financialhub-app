@@ -78,8 +78,8 @@ JOIN roles r ON ur.role_id = r.id;
 DROP TABLE `contacts`;
 CREATE TABLE `contacts` (
     `contact_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `contact_type` ENUM('INDIVIDUAL', 'COMPANY') NOT NULL,
-    `category_type` ENUM('CLIENT', 'VENDOR', 'INTERNAL') NOT NULL,
+    `contact_type` enum('INDIVIDUAL', 'COMPANY') NOT NULL,
+    `category_type` enum('CLIENT', 'VENDOR', 'INTERNAL') NOT NULL,
     `engagement_date` DATE,
     `best_channel_to_contact` VARCHAR(255),
     `created_by` int,
@@ -187,6 +187,101 @@ LEFT JOIN contact_company co ON c.contact_id = co.contact_id
 LEFT JOIN contact_additional_details ad ON c.contact_id = ad.contact_id;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
+
+CREATE TABLE `cases` (
+	`case_id` int NOT NULL AUTO_INCREMENT,
+    `contact_id` int NOT NULL,
+    `case_type` enum('CIVIL', 'CRIMINAL', 'LABOR', 'ADMINISTRATIVE', 'ELECTION', 'SPECIAL_PROCEEDINGS', 'OTHERS') NOT NULL,
+    `case_title` varchar(255) NOT NULL,
+    `docket_no` varchar(255) NOT NULL,
+    `nature` varchar(255) NOT NULL,
+    `court` varchar(255) NOT NULL,
+    `branch` varchar(255) NOT NULL,
+    `judge` varchar(255) NOT NULL,
+	`court_email` varchar(255) NOT NULL,
+    `prosecutor` varchar(255) NOT NULL,
+    `prosecutor_office`varchar(255) NOT NULL,
+    `prosecutor_email` varchar(255) NOT NULL,
+    `opposing_party` varchar(255) NOT NULL,
+    `opposing_counsel` varchar(255) NOT NULL,
+    `counsel_email` varchar(255) NOT NULL,
+    `start_date` date NOT NULL,
+    `end_date` date NOT NULL,
+	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
+    `stage`  varchar(255) NOT NULL,
+    `created_by` int,
+    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    `updated_by` int,	
+    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`),
+    PRIMARY KEY (`case_id`)
+);
+
+INSERT INTO `cases` (
+  `contact_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
+  `court`, `branch`, `judge`, `court_email`, `prosecutor`, 
+  `prosecutor_office`, `prosecutor_email`, `opposing_party`, `opposing_counsel`, 
+  `counsel_email`, `start_date`, `end_date`, `status`, `stage`, `created_by`, `updated_by`
+) 
+VALUES
+  (1, 'CIVIL', 'Case Title 1', 'DCK12345', 'Breach of Contract', 
+   'Supreme Court', 'Branch 1', 'Judge John Doe', 'court1@example.com', 'Jane Smith', 
+   'Office of Prosecutor A', 'prosecutor1@example.com', 'Opposing Party A', 'Opposing Counsel A', 
+   'counsel1@example.com', '2024-01-01', '2024-06-01', 'OPEN', 'Stage 1', 1, 1),
+
+  (2, 'CRIMINAL', 'Case Title 2', 'DCK54321', 'Fraud', 
+   'Regional Trial Court', 'Branch 2', 'Judge Jane Roe', 'court2@example.com', 'John Doe', 
+   'Office of Prosecutor B', 'prosecutor2@example.com', 'Opposing Party B', 'Opposing Counsel B', 
+   'counsel2@example.com', '2023-10-15', '2024-05-15', 'IN_PROGRESS', 'Stage 2', 2, 1),
+
+  (9, 'LABOR', 'Case Title 3', 'DCK67890', 'Unfair Labor Practices', 
+   'Labor Court', 'Branch 3', 'Judge Emily White', 'court3@example.com', 'Sarah Green', 
+   'Office of Prosecutor C', 'prosecutor3@example.com', 'Opposing Party C', 'Opposing Counsel C', 
+   'counsel3@example.com', '2023-12-01', '2024-07-01', 'PENDING', 'Stage 3', 3, 1),
+
+  (10, 'ADMINISTRATIVE', 'Case Title 4', 'DCK09876', 'Misconduct', 
+   'Administrative Court', 'Branch 4', 'Judge William Black', 'court4@example.com', 'Paul Blue', 
+   'Office of Prosecutor D', 'prosecutor4@example.com', 'Opposing Party D', 'Opposing Counsel D', 
+   'counsel4@example.com', '2023-09-01', '2024-02-01', 'COMPLETED', 'Stage 4', 4, 1),
+
+  (11, 'ELECTION', 'Case Title 5', 'DCK34567', 'Election Violation', 
+   'Election Court', 'Branch 5', 'Judge Michael Brown', 'court5@example.com', 'Alice Red', 
+   'Office of Prosecutor E', 'prosecutor5@example.com', 'Opposing Party E', 'Opposing Counsel E', 
+   'counsel5@example.com', '2023-11-10', '2024-08-10', 'CLOSED', 'Stage 5', 5, 1);
+
+SELECT 
+    c.case_id,
+    c.case_type,
+    c.case_title,
+    c.docket_no,
+    c.nature,
+    ci.contact_id,
+    ct.contact_type,
+    -- For individual contacts
+    ci.title AS individual_title,
+    ci.first_name AS individual_first_name,
+    ci.last_name AS individual_last_name,
+    ci.mobile_number AS individual_mobile,
+    ci.email_address AS individual_email,
+    -- For company contacts
+    cc.company_name AS company_name,
+    cc.representative_name AS company_representative,
+    cc.mobile_number AS company_mobile,
+    cc.email_address AS company_email,
+    -- Common fields
+    ct.best_channel_to_contact,
+    c.start_date,
+    c.end_date,
+    c.status,
+    c.stage
+FROM 
+    `cases` c
+    -- Join with contacts table
+    JOIN `contacts` ct ON c.contact_id = ct.contact_id
+    -- Conditionally join with contact_individual and contact_company
+    LEFT JOIN `contact_individual` ci ON ct.contact_id = ci.contact_id AND ct.contact_type = 'INDIVIDUAL'
+    LEFT JOIN `contact_company` cc ON ct.contact_id = cc.contact_id AND ct.contact_type = 'COMPANY';
+
 
 DROP TABLE `fund`;
 CREATE TABLE `fund` (

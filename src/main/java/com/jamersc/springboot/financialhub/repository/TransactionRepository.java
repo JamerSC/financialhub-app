@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.repository;
 
-import com.jamersc.springboot.financialhub.model.Transaction;
-import com.jamersc.springboot.financialhub.model.TransactionType;
+import com.jamersc.springboot.financialhub.model.bank.Transaction;
+import com.jamersc.springboot.financialhub.model.bank.TransactionType;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

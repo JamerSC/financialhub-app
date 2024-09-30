@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
-import com.jamersc.springboot.financialhub.model.BankAccount;
+import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;

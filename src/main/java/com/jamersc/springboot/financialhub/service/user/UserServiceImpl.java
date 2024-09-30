@@ -76,13 +76,13 @@ public class UserServiceImpl implements UserService {
         user.setEnabled(userDto.isEnabled());
         User creator = userRepository.findByUsername(createdBy);
         if (creator != null) {
-            user.setCreatedBy(Math.toIntExact(creator.getId()));
-            user.setUpdatedBy(Math.toIntExact(creator.getId()));
+            user.setCreatedBy(creator.getId());
+            user.setUpdatedBy(creator.getId());
             logger.info("Create By: " + creator.getUsername());
             logger.info("User ID: " + creator.getId());
         } else {
-            user.setCreatedBy(1);
-            user.setUpdatedBy(1);
+            user.setCreatedBy(1L);
+            user.setUpdatedBy(1L);
         }
         Set<Role> roles = userDto.getRoleIds().stream()
                                 .map(roleRepository::findById)
@@ -117,9 +117,9 @@ public class UserServiceImpl implements UserService {
 
             User updater = userRepository.findByUsername(updatedBy);
             if (updater != null) {
-                user.setUpdatedBy(Math.toIntExact(updater.getId()));
+                user.setUpdatedBy(updater.getId());
             } else {
-                user.setUpdatedBy(1);
+                user.setUpdatedBy(1L);
             }
 
             userRepository.save(user);

@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.model;
 
+import com.jamersc.springboot.financialhub.model.contact.Contact;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -42,8 +43,6 @@ public class Liquidation {
     @Column(name = "remarks")
     private String remarks;
 
-    /*@Column(name = "charge_to")
-    private String chargeTo;*/
     // Change chargeTo to reference Contact entity
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
@@ -52,13 +51,15 @@ public class Liquidation {
     @Column(name = "billed")
     private boolean billed;
 
+    @Column(name = "created_by")
+    private Long createdBy;
+
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Column(name = "updated_by")
-    private int updatedBy;
-
+    private Long updatedBy;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)

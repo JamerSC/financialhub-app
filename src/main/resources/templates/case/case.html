@@ -33,7 +33,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 mb-3" id="addCaseForm" method="POST">
+                                <form class="row g-3 mb-3" id="addCaseForm" th:action="@{/cases/add-new-case}" th:object="${case}" method="POST">
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-5">
@@ -49,113 +49,107 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="caseTitle" class="form-label">Case Title</label>
-                                            <input type="text" class="form-control" id="caseTitle" placeholder="Case title ..." required>
+                                            <input type="text" class="form-control" id="caseTitle" placeholder="Case title ..." th:field="*{caseTitle}" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="docketNo" class="form-label">Docket No.</label>
-                                            <input type="text" class="form-control" id="docketNo" placeholder="Docket number ..." required>
+                                            <input type="text" class="form-control" id="docketNo" placeholder="Docket number ..." th:field="*{docketNo}" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="nature" class="form-label">Nature</label>
-                                            <input type="text" class="form-control" id="nature" placeholder="Nature ..." required>
+                                            <input type="text" class="form-control" id="nature" placeholder="Nature ..." th:field="*{nature}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="court" class="form-label">Court</label>
-                                            <input type="text" class="form-control" id="court" placeholder="Court ..." required>
+                                            <input type="text" class="form-control" id="court" placeholder="Court ..." th:field="*{court}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="branch" class="form-label">Branch</label>
-                                            <input type="text" class="form-control" id="branch" placeholder="Branch ..." required>
+                                            <input type="text" class="form-control" id="branch" placeholder="Branch ..." th:field="*{branch}" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="judge" class="form-label">Judge</label>
-                                            <input type="text" class="form-control" id="judge" placeholder="Judge ..." required>
+                                            <input type="text" class="form-control" id="judge" placeholder="Judge ..." th:field="*{judge}" required>
                                         </div>
                                         <div class="col-md-6">
-                                            <label for="courtEmail" class="form-label">Court</label>
-                                            <input type="email" class="form-control" id="courtEmail" placeholder="Court email ..." required>
+                                            <label for="courtEmail" class="form-label">Court Email</label>
+                                            <input type="email" class="form-control" id="courtEmail" placeholder="Court email ..." th:field="*{courtEmail}" required>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="prosecutor" class="form-label">Prosecutor</label>
-                                            <input type="text" class="form-control" id="prosecutor" placeholder="Prosecutor ..." required>
+                                            <input type="text" class="form-control" id="prosecutor" placeholder="Prosecutor ..." th:field="*{prosecutor}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="prosecutorOffice" class="form-label">Prosecutor Office</label>
-                                            <input type="text" class="form-control" id="prosecutorOffice" placeholder="Prosecutor Office ..." required>
+                                            <input type="text" class="form-control" id="prosecutorOffice" placeholder="Prosecutor Office ..." th:field="*{prosecutorOffice}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="prosecutorEmail" class="form-label">Prosecutor Email</label>
-                                            <input type="email" class="form-control" id="prosecutorEmail" placeholder="Prosecutor Email ..." required>
+                                            <input type="email" class="form-control" id="prosecutorEmail" placeholder="Prosecutor Email ..." th:field="*{prosecutorEmail}" required>
                                         </div>
                                     </div>
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-5">
                                             <label for="client" class="form-label">Client</label>
-                                            <select id="client" class="form-select" required>
+                                            <select id="client" class="form-select" th:field="*{client}" required>
                                                 <option value="" selected>Select client...</option>
-                                                <option>Juan Dela Cruz</option>
-                                                <option>ABC Corporation</option>
-                                                <option>Maria Juan</option>
-                                                <option>CDE Inc.</option>
+                                                <option th:each="tempClient : ${clients}"
+                                                        th:value="${tempClient.contactId}"
+                                                        th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual?.firstName, ' ', tempClient.individual?.lastName,
+                                                         ' (', tempClient.contactType.convertContactType(), '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' (', tempClient.contactType.convertContactType(),
+                                                         '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))}"></option>
                                             </select>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-4">
                                             <label for="opposingParty" class="form-label">Opposing Party</label>
-                                            <input type="text" class="form-control" id="opposingParty" placeholder="Opposing Party ..." required>
+                                            <input type="text" class="form-control" id="opposingParty" placeholder="Opposing Party ..." th:field="*{opposingParty}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="opposingCounsel" class="form-label">Opposing Counsel</label>
-                                            <input type="text" class="form-control" id="opposingCounsel" placeholder="Opposing Counsel ..." required>
+                                            <input type="text" class="form-control" id="opposingCounsel" placeholder="Opposing Counsel ..." th:field="*{opposingCounsel}" required>
                                         </div>
                                         <div class="col-md-4">
                                             <label for="counselEmail" class="form-label">Counsel Email</label>
-                                            <input type="email" class="form-control" id="counselEmail" placeholder="Counsel Email ..." required>
+                                            <input type="email" class="form-control" id="counselEmail" placeholder="Counsel Email ..." th:field="*{counselEmail}" required>
                                         </div>
                                     </div>
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="status" class="form-label">Status</label>
-                                            <select id="status" class="form-select" required>
+                                            <select id="status" class="form-select" th:field="*{status}" required>
                                                 <option value="" selected>Select status...</option>
-                                                <option>Open</option>
-                                                <option>In Progress</option>
-                                                <option>Pending</option>
-                                                <option>Completed</option>
-                                                <option>Closed</option>
+                                                <option th:each="tempStatus : ${status}"
+                                                        th:value="${tempStatus}"
+                                                        th:text="${tempStatus.convertStatus()}"></option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="stage" class="form-label">Stage</label>
-                                            <select id="stage" class="form-select" required>
-                                                <option value="" selected>Select stage...</option>
-                                                <option>Case Study</option>
-                                                <option>Consultation</option>
-                                                <option>Filing</option>
-                                                <option>Pleading</option>
-                                                <option>Hearing</option>
-                                                <option>Counseling</option>
-                                            </select>
+                                            <input type="text" class="form-control" id="stage" placeholder="Stage ..." th:field="*{stage}" required>
+
                                         </div>
                                     </div>
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <label for="startDate" class="form-label">Start Date</label>
-                                            <input type="date" class="form-control" id="startDate" required>
+                                            <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required>
                                         </div>
                                         <div class="col-md-6">
                                             <label for="endDate" class="form-label">End Date</label>
-                                            <input type="date" class="form-control" id="endDate">
+                                            <input type="date" class="form-control" id="endDate" th:field="*{endDate}">
                                         </div>
                                     </div>
                                     <div class="modal-footer">

@@ -1,6 +1,7 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
 import com.jamersc.springboot.financialhub.model.*;
+import com.jamersc.springboot.financialhub.model.contact.*;
 import com.jamersc.springboot.financialhub.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -51,8 +52,8 @@ public class ContactServiceImpl implements ContactService {
         tempContactIndividual.setBestChannelToContact(contactIndividual.getBestChannelToContact());
         User createdBy = userRepo.findByUsername(username);
         if (username != null) {
-            tempContactIndividual.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            tempContactIndividual.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            tempContactIndividual.setCreatedBy(createdBy.getId());
+            tempContactIndividual.setUpdatedBy(createdBy.getId());
         }
         contactRepository.save(tempContactIndividual);
         // saving individual details
@@ -93,8 +94,8 @@ public class ContactServiceImpl implements ContactService {
         tempContactCompany.setBestChannelToContact(contactCompany.getBestChannelToContact());
         User createdBy = userRepo.findByUsername(username);
         if (createdBy != null) {
-            tempContactCompany.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            tempContactCompany.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            tempContactCompany.setCreatedBy(createdBy.getId());
+            tempContactCompany.setUpdatedBy(createdBy.getId());
         }
         contactRepository.save(tempContactCompany);
         // save contact company details

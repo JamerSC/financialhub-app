@@ -49,11 +49,11 @@ public class CheckServiceImpl implements CheckService{
         Check check = new Check();
         User creator = userRepo.findByUsername(createdBy);
         if (creator != null) {
-            check.setCreatedBy(Math.toIntExact(creator.getId()));
-            check.setUpdatedBy(Math.toIntExact(creator.getId()));
+            check.setCreatedBy(creator.getId());
+            check.setUpdatedBy(creator.getId());
         } else {
-            check.setCreatedBy(1);
-            check.setUpdatedBy(1);
+            check.setCreatedBy(1L);
+            check.setUpdatedBy(1L);
         }
         BeanUtils.copyProperties(checkDto, check);
         checkRepository.save(check);
@@ -65,9 +65,9 @@ public class CheckServiceImpl implements CheckService{
         if (check != null) {
             User updater = userRepo.findByUsername(updatedBy);
             if (updater != null) {
-                check.setUpdatedBy(Math.toIntExact(updater.getId()));
+                check.setUpdatedBy(updater.getId());
             } else {
-                check.setUpdatedBy(1);
+                check.setUpdatedBy(1L);
             }
             BeanUtils.copyProperties(checkDto, check, "createdAt");
             checkRepository.save(check);

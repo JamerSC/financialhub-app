@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.model;
+package com.jamersc.springboot.financialhub.model.bank;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -38,14 +38,14 @@ public class Transaction {
     private String transactionNote;
 
     @Column(name = "created_by")
-    private int createdBy;
+    private Long createdBy;
 
     @Column(name = "created_at", updatable = false)
     @Temporal(TemporalType.TIMESTAMP)
     private Date createdAt;
 
     @Column(name = "updated_by")
-    private int updatedBy;
+    private Long updatedBy;
 
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)

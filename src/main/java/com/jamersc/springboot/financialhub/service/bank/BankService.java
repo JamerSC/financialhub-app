@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
-import com.jamersc.springboot.financialhub.model.Bank;
+import com.jamersc.springboot.financialhub.model.bank.Bank;
 
 import java.util.List;
 

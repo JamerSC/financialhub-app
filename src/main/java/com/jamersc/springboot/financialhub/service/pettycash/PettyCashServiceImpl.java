@@ -74,7 +74,7 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setFund(manageFund);
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
-                pettyCash.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
+                pettyCash.setUpdatedBy(updatedBy.getId());
             }
             System.out.println("Updated successfully! " + pettyCashDto);
         } else {
@@ -89,11 +89,11 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setFund(manageFund);
             User createdBy = userRepo.findByUsername(username);
             if (createdBy != null) {
-                pettyCash.setCreatedBy(Math.toIntExact(createdBy.getId()));
-                pettyCash.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+                pettyCash.setCreatedBy(createdBy.getId());
+                pettyCash.setUpdatedBy(createdBy.getId());
             } else {
-                pettyCash.setCreatedBy(1);
-                pettyCash.setUpdatedBy(1);
+                pettyCash.setCreatedBy(1L);
+                pettyCash.setUpdatedBy(1L);
             }
             System.out.println("Created successfully! " + pettyCashDto);
         }

@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.model;
+package com.jamersc.springboot.financialhub.model.contact;
 
 public enum RegistrationType {
     CORPORATION,

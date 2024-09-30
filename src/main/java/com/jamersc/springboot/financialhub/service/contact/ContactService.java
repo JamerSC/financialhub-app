@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
-import com.jamersc.springboot.financialhub.model.Contact;
+import com.jamersc.springboot.financialhub.model.contact.Contact;
 
 import java.util.List;
 

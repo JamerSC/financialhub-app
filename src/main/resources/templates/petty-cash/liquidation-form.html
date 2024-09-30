@@ -49,10 +49,10 @@
                             <td>
                                 <span th:if="${liquidation.chargeTo.individual != null}"
                                       th:text="${liquidation.chargeTo.individual.firstName} + ' ' + ${liquidation.chargeTo.individual.lastName} + ' ('
-                                      + ${liquidation.chargeTo.contactType} + '/' + ${liquidation.chargeTo.contactCategoryType} + ')'"></span>
+                                      + ${liquidation.chargeTo.contactType.convertContactType()} + '/' + ${liquidation.chargeTo.contactCategoryType.convertContactCategoryType()} + ')'"></span>
                                 <span th:if="${liquidation.chargeTo.company != null}"
                                       th:text="${liquidation.chargeTo.company.companyName} + ' ('
-                                      + ${liquidation.chargeTo.contactType} + '/' + ${liquidation.chargeTo.contactCategoryType} + ')'"></span>
+                                      + ${liquidation.chargeTo.contactType.convertContactType()} + '/' + ${liquidation.chargeTo.contactCategoryType.convertContactCategoryType()} + ')'"></span>
                             </td>
                             <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
                             <td><input type="checkbox" th:checked="${liquidation.billed}" disabled/></td>
@@ -151,8 +151,10 @@
                                                 <option th:each="contact : ${listOfChargeTo}"
                                                         th:value="${contact.contactId}"
                                                         th:text="${contact.contactType != null && contact.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(contact.individual?.firstName, ' ', contact.individual?.lastName, ' (', contact.contactType, '/', contact.contactCategoryType, ')'))
-                                                         : (#strings.concat(contact.company?.companyName, ' (', contact.contactType, '/', contact.contactCategoryType, ')'))}">
+                                                         (#strings.concat(contact.individual?.firstName, ' ', contact.individual?.lastName,
+                                                         ' (', contact.contactType.convertContactType(), '/', contact.contactCategoryType.convertContactCategoryType(), ')'))
+                                                         : (#strings.concat(contact.company?.companyName, ' (', contact.contactType.convertContactType(),
+                                                         '/', contact.contactCategoryType.convertContactCategoryType(), ')'))}">
                                                 </option>
                                             </select>
                                             <div class="invalid-feedback">Please select charge to.</div>

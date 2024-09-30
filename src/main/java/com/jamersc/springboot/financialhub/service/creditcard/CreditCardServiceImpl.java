@@ -47,19 +47,19 @@ public class CreditCardServiceImpl implements CreditCardService {
             creditCard = creditCardRepository.findById(creditCardDto.getId()).orElse(new CreditCard());
             User updatedBy = userService.findByUsername(username);
             if (updatedBy != null) {
-                creditCard.setUpdatedBy(Math.toIntExact(updatedBy.getId()));
+                creditCard.setUpdatedBy(updatedBy.getId());
             } else {
-                creditCard.setUpdatedBy(1);
+                creditCard.setUpdatedBy(1L);
             }
         } else {
             creditCard = new CreditCard();
             User createdBy = userService.findByUsername(username);
             if (createdBy != null) {
-                creditCard.setCreatedBy(Math.toIntExact(createdBy.getId()));
-                creditCard.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+                creditCard.setCreatedBy(createdBy.getId());
+                creditCard.setUpdatedBy(createdBy.getId());
             } else {
-                creditCard.setCreatedBy(1);
-                creditCard.setUpdatedBy(1);
+                creditCard.setCreatedBy(1L);
+                creditCard.setUpdatedBy(1L);
             }
         }
         BeanUtils.copyProperties(creditCardDto, creditCard);
