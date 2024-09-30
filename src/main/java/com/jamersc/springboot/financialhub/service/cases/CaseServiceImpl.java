@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.service.cases;
 
+import com.jamersc.springboot.financialhub.model.CaseType;
 import com.jamersc.springboot.financialhub.model.Cases;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CaseRepository;
@@ -36,6 +37,9 @@ public class CaseServiceImpl implements CaseService{
     public void save(Cases newCase, String username) {
         Cases tempCase;
         tempCase = newCase;
+        tempCase.setCaseType(newCase.getCaseType());
+        tempCase.setStatus(newCase.getStatus());
+        tempCase.setClient(newCase.getClient());
         User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
             tempCase.setCreatedBy(Math.toIntExact(createdBy.getId()));

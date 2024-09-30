@@ -188,6 +188,7 @@ LEFT JOIN contact_additional_details ad ON c.contact_id = ad.contact_id;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
 
+DROP TABLE `cases`;
 CREATE TABLE `cases` (
 	`case_id` int NOT NULL AUTO_INCREMENT,
     `contact_id` int NOT NULL,
@@ -206,7 +207,7 @@ CREATE TABLE `cases` (
     `opposing_counsel` varchar(255) NOT NULL,
     `counsel_email` varchar(255) NOT NULL,
     `start_date` date NOT NULL,
-    `end_date` date NOT NULL,
+    `end_date` date NULL,
 	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
     `stage`  varchar(255) NOT NULL,
     `created_by` int,

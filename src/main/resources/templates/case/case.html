@@ -38,7 +38,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-5">
                                             <label for="suffix" class="form-label">Case Type</label>
-                                            <select id="suffix" class="form-select" required>
+                                            <select id="suffix" class="form-select" th:field="*{caseType}" required>
                                                 <option value="" selected>Select case type...</option>
                                                 <option th:each="cases : ${caseType}"
                                                         th:value="${cases}"
