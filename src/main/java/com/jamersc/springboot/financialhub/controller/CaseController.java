@@ -32,7 +32,7 @@ public class CaseController {
 
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
-        //List<Contact> clients = contactService.getAllContacts();
+        model.addAttribute("cases", caseService.getAllCases());
         model.addAttribute("case", new Cases());
         model.addAttribute("caseType", CaseType.values());
         model.addAttribute("clients", contactService.getAllContacts());

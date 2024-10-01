@@ -42,8 +42,8 @@ public class CaseServiceImpl implements CaseService{
         tempCase.setClient(newCase.getClient());
         User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
-            tempCase.setCreatedBy(Math.toIntExact(createdBy.getId()));
-            tempCase.setUpdatedBy(Math.toIntExact(createdBy.getId()));
+            tempCase.setCreatedBy(createdBy.getId());
+            tempCase.setUpdatedBy(createdBy.getId());
         }
         caseRepository.save(tempCase);
     }

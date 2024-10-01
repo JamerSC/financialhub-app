@@ -165,25 +165,31 @@
                     <thead class="table-dark">
                     <tr>
                         <th>Case Title</th>
+                        <th>Client</th>
                         <th>Status</th>
                         <th>Stage</th>
-                        <th>Last Activity</th>
                         <th>Start Date</th>
-                        <th>End Date</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>People vs. People</td>
-                        <td>In progress</td>
-                        <td>Case Study</td>
-                        <td>Consultation</td>
-                        <td>September 1, 2024</td>
-                        <td>-</td>
+                    <tr th:each="tempCase : ${cases}">
+                        <td th:text="${tempCase.caseTitle}"></td>
                         <td>
-                            <a th:href="@{/cases/case-summary}" class="btn btn-secondary btn-sm">
+                            <span th:if="${tempCase.client.individual != null}"
+                                  th:text="${#strings.concat(tempCase.client.individual.firstName, ' ', tempCase.client.individual.lastName)}"></span>
+                            <span th:if="${tempCase.client.company != null}"
+                                  th:text="${tempCase.client.company.companyName}"></span>
+                        </td>
+                        <td th:text="${tempCase.status.convertStatus()}"></td>
+                        <td th:text="${tempCase.stage}"></td>
+                        <td th:text="${#dates.format(tempCase.startDate, 'dd MMMM yyyy')}"></td>
+                        <td>
+                            <a th:href="@{/cases/case-summary}" class="btn btn-secondary btn-sm" title="view">
                                 <i class="lni lni-eye"></i>
+                            </a>
+                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="edit">
+                                <i class="lni lni-pencil-alt"></i>
                             </a>
                         </td>
                     </tr>

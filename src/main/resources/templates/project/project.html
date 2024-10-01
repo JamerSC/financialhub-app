@@ -33,11 +33,11 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="propertiesBtn">Properties</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="propertiesBtn">Properties</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessBtn">Business</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="businessBtn">Business</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secBtn">Securities and Exchange (SEC)</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="secBtn">Securities and Exchange (SEC)</button>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -55,13 +55,13 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="transferOfTitleBtn">Transfer of Title</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="transferOfTitleBtn">Transfer of Title</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="settlementOfEstateBtn">Settlement of State</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="settlementOfEstateBtn">Settlement of State</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleAnnotationBtn">Annotation</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="titleAnnotationBtn">Annotation</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleOtherProcessBtn">Others</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="titleOtherProcessBtn">Others</button>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -279,13 +279,13 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRegBtn">Business Registration</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="businessRegBtn">Business Registration</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRenewalBtn">Business Renewal</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="businessRenewalBtn">Business Renewal</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessClosureBtn">Business Closure</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="businessClosureBtn">Business Closure</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessOtherProcessBtn">Others</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="businessOtherProcessBtn">Others</button>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -379,11 +379,11 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secRegistrationBtn">Securities and Exchange (SEC) Registration</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="secRegistrationBtn">Securities and Exchange (SEC) Registration</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secAmendmentBtn">Amendment of Articles of Incorporation</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="secAmendmentBtn">Amendment of Articles of Incorporation</button>
                                     <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secStockIncreaseBtn">Increase in Authorized Capital Stock</button>
+                                    <button class="btn btn-primary w-100 text-center mb-2" id="secStockIncreaseBtn">Increase in Authorized Capital Stock</button>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -465,8 +465,11 @@
                         <td>In progress</td>
                         <td>Case Study</td>
                         <td>
-                            <a th:href="@{/projects/project-summary}" class="btn btn-secondary btn-sm">
+                            <a th:href="@{/projects/project-summary}" class="btn btn-secondary btn-sm" title="view">
                                 <i class="lni lni-eye"></i>
+                            </a>
+                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="edit">
+                                <i class="lni lni-pencil-alt"></i>
                             </a>
                         </td>
                     </tr>
