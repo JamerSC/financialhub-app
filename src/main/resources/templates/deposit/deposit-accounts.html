@@ -29,7 +29,7 @@
                     </thead>
                     <tbody>
                     <tr th:each="bank : ${listOfBankAccounts}">
-                        <td th:text="${bank.id}"></td>
+                        <td th:text="${bank.bankId}"></td>
                         <td th:text="${bank.name} + ' (' + ${bank.abbreviation} + ')'"></td>
                         <td th:text="${bank.branch}"></td>
                         <td>
@@ -45,7 +45,7 @@
                                 </thead>
                                 <tbody>
                                 <tr th:each="account : ${bank.accounts}">
-                                    <td th:text="${account.bank.id}"></td>
+                                    <td th:text="${account.bank.bankId}"></td>
                                     <td th:text="${account.accountHolderName}"></td>
                                     <td th:text="${account.accountNumber}"></td>
                                     <td th:text="${account.accountBalance}"></td>

@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class BankAccount {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")
+    @JsonBackReference
     private Bank bank;
 
     @Column(name = "account_holder_name")

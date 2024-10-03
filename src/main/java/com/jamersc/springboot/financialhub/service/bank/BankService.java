@@ -11,7 +11,9 @@ public interface BankService {
     List<Bank> getAllBankAccounts();
     Bank findBankById(Long id);
 
-    void save(Bank bank);
+    void save(Bank bank, String username);
+
+    void update(Bank bank, String username);
 
     void deleteBankById(Long id);
 }

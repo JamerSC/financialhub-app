@@ -40,7 +40,7 @@
                             <td th:text="${tempAccount.accountHolderName}"></td>
                             <td th:text="${tempAccount.accountNumber}"></td>
                             <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                            <td th:text="${tempAccount.bank.id}"></td>
+                            <td th:text="${tempAccount.bank.bankId}"></td>
                         </tr>
                         </tbody>
                     </table>
@@ -65,16 +65,11 @@
                                             <input type="text" class="form-control" id="accountNumber" th:field="*{accountNumber}">
                                             <div class="invalid-feedback">Please provide an account number.</div>
                                         </div>
-                                        <!--<div class="mb-3">
-                                            <label for="accountBalance" class="form-label">Account Balance</label>
-                                            <input type="number" step="0.01" class="form-control" id="accountBalance" th:field="*{accountBalance}">
-                                            &lt;!&ndash;<div class="invalid-feedback">Please enter a valid amount.</div>&ndash;&gt;
-                                        </div>-->
                                         <div class="mb-3">
                                             <label for="bank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="bank" th:field="*{bank}">
                                                 <option value="" selected>Select a bank</option>
-                                                <option th:each="bank : ${listOfAllBanks}"  th:value="${bank.id}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                                <option th:each="bank : ${listOfAllBanks}"  th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                 </option>
                                             </select>
                                             <div class="invalid-feedback">Please select a bank.</div>
@@ -109,14 +104,24 @@
                                 <th>Bank Name</th>
                                 <th>Abbreviation</th>
                                 <th>Branch</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr th:each="tempBank : ${listOfAllBanks}">
-                                <td th:text="${tempBank.id}"></td>
+                                <td th:text="${tempBank.bankId}"></td>
                                 <td th:text="${tempBank.name}"></td>
                                 <td th:text="${tempBank.abbreviation}"></td>
                                 <td th:text="${tempBank.branch}"></td>
+                                <td>
+                                    <a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
+                                        <i class="lni lni-eye"></i>
+                                    </a>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankBtn"
+                                        th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
+                                        <i class="lni lni-pencil-alt"></i>
+                                    </a>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -129,7 +134,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addBankForm" action="#" th:action="@{/bank/add-bank}" th:object="${bank}" method="POST">
+                                    <form id="addBankForm" action="#" th:action="@{/bank/save-bank}" th:object="${bank}" method="POST">
                                         <div class="mb-3">
                                             <label for="bankName" class="form-label">Bank Name</label>
                                             <input type="text" class="form-control" id="bankName" th:field="*{name}">
@@ -148,6 +153,41 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Edit Bank Modal -->
+                    <div class="modal fade" id="editBankModal" tabindex="-1" aria-labelledby="editBankModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editBankModalLabel">Update Bank</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editBankForm" action="#" th:action="@{/bank/update-bank}" th:object="${updateBank}" method="POST">
+                                        <div><input type="hidden" class="form-control" id="id" th:field="*{bankId}" /></div>
+                                        <div class="mb-3">
+                                            <label for="editBankName" class="form-label">Bank Name</label>
+                                            <input type="text" class="form-control" id="editBankName" th:field="*{name}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editBankAbbreviation" class="form-label">Abbreviation</label>
+                                            <input type="text" class="form-control" id="editBankAbbreviation" th:field="*{abbreviation}">
+                                            <div class="invalid-feedback">Please provide an account number.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editBranch" class="form-label">Bank Branch</label>
+                                            <input type="text" class="form-control" id="editBranch" th:field="*{branch}">
+                                            <div class="invalid-feedback">Please provide an account name.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save/Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -217,6 +257,54 @@
                                     isValid = false;
                                 } else {
                                     $('#branch').removeClass('is-invalid');
+                                }
+
+                                // Prevent form submission if invalid
+                                if (!isValid) {
+                                    event.preventDefault();
+                                }
+                            });
+
+                                // Handle the edit bank button click
+                            $('.table .editBankBtn').on('click', function(event) {
+                                event.preventDefault();
+                                var href = $(this).attr('href');
+
+                                $.get(href, function(tempBank, status) {
+                                    $('#editBankForm #id').val(tempBank.bankId);
+                                    $('#editBankForm #editBankName').val(tempBank.name);
+                                    $('#editBankForm #editBankAbbreviation').val(tempBank.abbreviation);
+                                    $('#editBankForm #editBranch').val(tempBank.branch);
+                                    $('#editBankModal').modal('show');
+                                });
+                            });
+
+                            // Validate Edit Bank Form before submission
+                            $('#editBankForm').on('submit', function (event) {
+                                var isValid = true;
+
+                                // Validate Bank Name
+                                if ($('#editBankName').val().trim() === '') {
+                                    $('#editBankName').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#editBankName').removeClass('is-invalid');
+                                }
+
+                                // Validate Abbreviation
+                                if ($('#editBankAbbreviation').val().trim() === '') {
+                                    $('#editBankAbbreviation').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#editBankAbbreviation').removeClass('is-invalid');
+                                }
+
+                                // Validate Bank Branch
+                                if ($('#editBranch').val().trim() === '') {
+                                    $('#editBranch').addClass('is-invalid');
+                                    isValid = false;
+                                } else {
+                                    $('#editBranch').removeClass('is-invalid');
                                 }
 
                                 // Prevent form submission if invalid

@@ -8,6 +8,8 @@ import com.jamersc.springboot.financialhub.service.bank.BankService;
 import com.jamersc.springboot.financialhub.service.bank.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,11 +35,11 @@ public class BankAccountController {
         List<Bank> listOfAllBanks = bankService.getAllBanks();
         List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
         BankAccount account = new BankAccount();
-        Bank bank = new Bank();
         model.addAttribute("listOfAllBanks", listOfAllBanks);
         model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
         model.addAttribute("account", account);
-        model.addAttribute("bank", bank);
+        model.addAttribute("bank", new Bank());
+        model.addAttribute("updateBank", new Bank());
         return "bank/bank";
     }
 
@@ -47,11 +49,26 @@ public class BankAccountController {
         return "redirect:/bank/banks";
     }
 
-    @PostMapping("/add-bank")
+    @PostMapping("/save-bank")
     public String addBankAccount(@ModelAttribute("bank") Bank bank) {
-        bankService.save(bank);
+        String createdBy = getSessionUsername();
+        bankService.save(bank, createdBy);
         return "redirect:/bank/banks";
     }
+
+    @GetMapping("/edit-bank")
+    @ResponseBody
+    public Bank editBank(Long id) {
+        return bankService.findBankById(id);
+    }
+
+    @PostMapping("/update-bank")
+    public String updateBank(@ModelAttribute("updateBank") Bank bank) {
+        String updatedBy = getSessionUsername();
+        bankService.update(bank, updatedBy);
+        return "redirect:/bank/banks";
+    }
+
 
     @GetMapping("/bank-statements")
     public String bankStatements(Model model) {
@@ -67,5 +84,10 @@ public class BankAccountController {
         model.addAttribute("account", account); // bank account by id
         model.addAttribute("transactions", transactions);
         return "bank/bank-account-journal";
+    }
+
+    public String getSessionUsername() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication.getName();
     }
 }
