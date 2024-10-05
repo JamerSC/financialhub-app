@@ -1,7 +1,11 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
+import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.model.bank.Bank;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
+import com.jamersc.springboot.financialhub.repository.BankRepository;
+import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +21,12 @@ public class BankAccountServiceImpl implements BankAccountService{
     @Autowired
     private BankAccountRepository bankAccountRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private BankRepository bankRepository;
+
     @Override
     public List<BankAccount> getAllBankAccounts() {
         return bankAccountRepository.findAll();
@@ -28,7 +38,21 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public void save(BankAccount bankAccount) {
-        bankAccountRepository.save(bankAccount);
+    public void save(BankAccount bankAccount, String username) {
+        BankAccount tempBankAccount = new BankAccount();
+        User createdBy = userRepository.findByUsername(username);
+        if (createdBy != null) {
+            tempBankAccount.setCreatedBy(createdBy.getId());
+            tempBankAccount.setUpdatedBy(createdBy.getId());
+        }
+        if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
+            Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
+            tempBankAccount.setBank(bankId);
+        }
+        tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
+        tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
+        Double defaultBankAccountBalance = 0.00;
+        tempBankAccount.setAccountBalance(defaultBankAccountBalance);
+        bankAccountRepository.save(tempBankAccount);
     }
 }

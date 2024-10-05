@@ -475,6 +475,12 @@ CREATE TABLE `bank_accounts` (
     PRIMARY KEY(`id`)
 );
 
+ALTER TABLE `bank_accounts`
+MODIFY `account_balance` decimal(10,2) NULL DEFAULT 0.00;
+
+INSERT INTO `bank_accounts` (`bank_id`, `account_holder_name`, `account_number`)
+VALUES (10, 'John Doe', '1234567890');
+
 INSERT INTO `bank_accounts`
 (`bank_id`, `account_holder_name`, `account_number`, `account_balance`, `created_by`, `updated_by`)
 VALUES 

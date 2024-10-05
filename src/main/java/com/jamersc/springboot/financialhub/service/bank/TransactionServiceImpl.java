@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
+import com.jamersc.springboot.financialhub.config.InsufficientFundsException;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import com.jamersc.springboot.financialhub.model.bank.Transaction;
 import com.jamersc.springboot.financialhub.model.bank.TransactionType;
@@ -54,11 +55,15 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void deposit(Transaction deposit) {
+    public void processDeposit(Transaction deposit) {
         BankAccount account = bankAccountRepository.findById(deposit.getBankAccount().getId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
+        Double currentBalance = account.getAccountBalance();
+        if (currentBalance == null) {
+            currentBalance = 0.00;
+        }
         // Total account balance = account balance + deposit amount
-        account.setAccountBalance(account.getAccountBalance() + deposit.getTransactionAmount());
+        account.setAccountBalance(currentBalance + deposit.getTransactionAmount());
         bankAccountRepository.save(account); // save deposit to bank account based on id
 
         Transaction transaction = new Transaction();
@@ -71,11 +76,14 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public void withdraw(Transaction withdraw) {
+    public void processWithdrawal(Transaction withdraw) {
         BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount().getId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
-        if (account.getAccountBalance() < withdraw.getTransactionAmount()) {
-            throw new RuntimeException("Insufficient funds.!");
+
+        Double currentBalance = account.getAccountBalance();
+
+        if (currentBalance < withdraw.getTransactionAmount()) {
+            throw new InsufficientFundsException("Insufficient funds to complete the transactions.");
         }
         // total account balance = account balance - withdraw amount
         account.setAccountBalance(account.getAccountBalance() - withdraw.getTransactionAmount());

@@ -19,9 +19,9 @@ public interface TransactionService {
 
     void save(Transaction transaction);
 
-    void deposit(Transaction deposit);
+    void processDeposit(Transaction deposit);
 
-    void withdraw(Transaction withdraw);
+    void processWithdrawal(Transaction withdraw);
 
     void deleteTransactionById(Long transactionId);
 }

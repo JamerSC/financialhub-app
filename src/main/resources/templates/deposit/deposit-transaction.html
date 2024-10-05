@@ -33,7 +33,8 @@
                             <p class="card-text">
                                 <span th:text="'Account Holder: ' + ${bankAccount.accountHolderName}"></span><br/>
                                 <span th:text="'Account Number: ' + ${bankAccount.accountNumber}"></span><br/>
-                                <span th:text="'Balance: ' + ${#numbers.formatDecimal(bankAccount.accountBalance, 1, 'COMMA', 2, 'POINT')}"></span>
+                                <span th:text="'Balance: ' + ${bankAccount.accountBalance != null ?
+                                #numbers.formatDecimal(bankAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span>
                             </p>
                         </div>
                     </div>

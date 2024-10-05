@@ -45,7 +45,8 @@ public class BankAccountController {
 
     @PostMapping("/add-account")
     public String addBankAccount(@ModelAttribute("account") BankAccount account) {
-        bankAccountService.save(account);
+        String createdBy = getSessionUsername();
+        bankAccountService.save(account, createdBy);
         return "redirect:/bank/banks";
     }
 

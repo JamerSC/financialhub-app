@@ -51,7 +51,7 @@ public class BankTransactionController {
 
     @PostMapping("/save-account-deposit")
     public String addAccountDeposit(@ModelAttribute("deposit") Transaction deposit) {
-        transactionService.deposit(deposit);
+        transactionService.processDeposit(deposit);
         return "redirect:/transactions/deposit-transaction/" + deposit.getBankAccount().getId();
     }
 
@@ -84,7 +84,7 @@ public class BankTransactionController {
 
     @PostMapping("/save-account-withdrawal")
     public String addWithdrawal(@ModelAttribute("withdraw") Transaction withdraw) {
-        transactionService.withdraw(withdraw);
+        transactionService.processWithdrawal(withdraw);
         return "redirect:/transactions/withdrawal-transaction/" + withdraw.getBankAccount().getId();
     }
 }

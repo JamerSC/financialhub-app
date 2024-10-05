@@ -20,7 +20,8 @@
                             <h5 class="card-title fw-bold fs-4">Fund Details</h5>
                             <p class="card-text">
                                 <span th:text="'ID: ' + ${fund.id}"></span><br/>
-                                <span th:text="'Fund Balance: ' + ${fund.fundBalance}"></span><br/>
+                                <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
+                                #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
                             </p>
                         </div>
                     </div>
@@ -28,7 +29,8 @@
                         <div class="card-body">
                             <p class="card-text">
                                 <span th:text="'ID: ' + ${fund.id}"></span><br/>
-                                <span th:text="'Fund Balance: ' + ${fund.fundBalance}"></span><br/>
+                                <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
+                                #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
                             </p>
                         </div>
                     </div>
