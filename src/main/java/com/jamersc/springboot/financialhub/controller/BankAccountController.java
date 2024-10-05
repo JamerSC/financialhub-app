@@ -32,21 +32,34 @@ public class BankAccountController {
 
     @GetMapping("/banks")
     public String showBankPage(Model model) {
-        List<Bank> listOfAllBanks = bankService.getAllBanks();
+        List<Bank> listOfAllBanks = bankService.getAllBankAccounts();
         List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
-        BankAccount account = new BankAccount();
         model.addAttribute("listOfAllBanks", listOfAllBanks);
         model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
-        model.addAttribute("account", account);
+        model.addAttribute("account", new BankAccount());
         model.addAttribute("bank", new Bank());
         model.addAttribute("updateBank", new Bank());
+        model.addAttribute("updateAccount", new BankAccount());
         return "bank/bank";
     }
 
-    @PostMapping("/add-account")
+    @PostMapping("/save-account")
     public String addBankAccount(@ModelAttribute("account") BankAccount account) {
         String createdBy = getSessionUsername();
-        bankAccountService.save(account, createdBy);
+        bankAccountService.saveBankAccount(account, createdBy);
+        return "redirect:/bank/banks";
+    }
+
+    @GetMapping("/edit-account")
+    @ResponseBody
+    public BankAccount editBankAccount(Long id) {
+        return bankAccountService.getBankAccountById(id);
+    }
+
+    @PostMapping("/update-account")
+    public String updateBankAccount(@ModelAttribute("updateAccount") BankAccount account) {
+        String updatedBy = getSessionUsername();
+        bankAccountService.saveBankAccount(account, updatedBy);
         return "redirect:/bank/banks";
     }
 
@@ -81,7 +94,7 @@ public class BankAccountController {
     @GetMapping("/bank-account-journal/{id}")
     public String bankAccountJournal(@PathVariable(value = "id") Long accountId, Model model) {
         BankAccount account = bankAccountService.getBankAccountById(accountId);
-        List<Transaction> transactions = transactionService.findBankAccountById(account.getId());
+        List<Transaction> transactions = transactionService.findBankAccountById(account.getBankAccountId());
         model.addAttribute("account", account); // bank account by id
         model.addAttribute("transactions", transactions);
         return "bank/bank-account-journal";

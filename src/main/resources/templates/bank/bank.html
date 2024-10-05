@@ -26,30 +26,30 @@
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
-                        <tr>
-                            <th>Acc. ID</th>
-                            <th>Account Name</th>
-                            <th>Account Number</th>
-                            <th>Bank Name</th>
-                            <th>Actions</th>
-                        </tr>
+                            <tr>
+                                <th>Acc. ID</th>
+                                <th>Account Name</th>
+                                <th>Account Number</th>
+                                <th>Bank Name</th>
+                                <th>Actions</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                            <td th:text="${tempAccount.id}"></td>
-                            <td th:text="${tempAccount.accountHolderName}"></td>
-                            <td th:text="${tempAccount.accountNumber}"></td>
-                            <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                            <td>
-                                <a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
-                                    <i class="lni lni-eye"></i>
-                                </a>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankBtn"
-                                   href="#" title="edit">
-                                    <i class="lni lni-pencil-alt"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr th:each="tempAccount : ${listOfAllBankAccounts}">
+                                <td th:text="${tempAccount.bankAccountId}"></td>
+                                <td th:text="${tempAccount.accountHolderName}"></td>
+                                <td th:text="${tempAccount.accountNumber}"></td>
+                                <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
+                                <td>
+                                    <a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
+                                        <i class="lni lni-eye"></i>
+                                    </a>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankAccountBtn"
+                                       th:href="@{/bank/edit-account(id=${tempAccount.bankAccountId})}" title="edit">
+                                        <i class="lni lni-pencil-alt"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- Add Account Modal -->
@@ -61,7 +61,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addAccountForm" action="#" th:action="@{/bank/add-account}" th:object="${account}" method="POST">
+                                    <form id="addAccountForm" action="#" th:action="@{/bank/save-account}" th:object="${account}" method="POST">
                                         <div class="mb-3">
                                             <label for="bank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="bank" th:field="*{bank}">
@@ -91,6 +91,46 @@
                         </div>
                     </div>
                 </div>
+                <!-- Edit Account Modal -->
+                <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="editAccountModalLabel">Update Bank Account</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="editAccountForm" action="#" th:action="@{/bank/update-account}" th:object="${updateAccount}" method="POST">
+                                    <div><input type="hidden" class="form-control" id="bankAccountId" th:field="*{bankAccountId}" /></div>
+                                    <div class="mb-3">
+                                        <label for="editBank" class="form-label">Select Bank</label>
+                                        <select class="form-select" id="editBank" th:field="*{bank}">
+                                            <option value="" selected>Choose a bank</option>
+                                            <option th:each="bank : ${listOfAllBanks}"
+                                                    th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                            </option>
+                                        </select>
+                                        <div class="invalid-feedback">Please select a bank.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editAccountHolderName" class="form-label">Account Holder Name</label>
+                                        <input type="text" class="form-control" id="editAccountHolderName" th:field="*{accountHolderName}">
+                                        <div class="invalid-feedback">Please provide an account holder name.</div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="editAccountNumber" class="form-label">Account Number</label>
+                                        <input type="text" class="form-control" id="editAccountNumber" th:field="*{accountNumber}">
+                                        <div class="invalid-feedback">Please provide an account number.</div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Save</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -104,6 +144,7 @@
                             </button>
                         </div>
                     </div>
+                    <!-- Bank Table -->
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                             <tr>
@@ -201,128 +242,185 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Validation Script -->
-                    <script>
-                        $(document).ready(function () {
-                            // Validate Add Account Form
-                            $('#addAccountForm').on('submit', function (event) {
-                                var isValid = true;
-
-                                // Validate Account Name
-                                if ($('#accountHolderName').val().trim() === '') {
-                                    $('#accountHolderName').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#accountHolderName').removeClass('is-invalid');
-                                }
-
-                                // Validate Account Number
-                                if ($('#accountNumber').val().trim() === '') {
-                                    $('#accountNumber').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#accountNumber').removeClass('is-invalid');
-                                }
-
-                                // Validate Bank Selection
-                                if ($('#bank').val() === '') {
-                                    $('#bank').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#bank').removeClass('is-invalid');
-                                }
-
-                                // Prevent form submission if invalid
-                                if (!isValid) {
-                                    event.preventDefault();
-                                }
-                            });
-
-                            // Validate Add Bank Form
-                            $('#addBankForm').on('submit', function (event) {
-                                var isValid = true;
-
-                                // Validate Bank Name
-                                if ($('#bankName').val().trim() === '') {
-                                    $('#bankName').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#bankName').removeClass('is-invalid');
-                                }
-
-                                // Validate Abbreviation
-                                if ($('#bankAbbreviation').val().trim() === '') {
-                                    $('#bankAbbreviation').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#bankAbbreviation').removeClass('is-invalid');
-                                }
-
-                                // Validate Bank Branch
-                                if ($('#branch').val().trim() === '') {
-                                    $('#branch').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#branch').removeClass('is-invalid');
-                                }
-
-                                // Prevent form submission if invalid
-                                if (!isValid) {
-                                    event.preventDefault();
-                                }
-                            });
-
-                                // Handle the edit bank button click
-                            $('.table .editBankBtn').on('click', function(event) {
-                                event.preventDefault();
-                                var href = $(this).attr('href');
-
-                                $.get(href, function(tempBank, status) {
-                                    $('#editBankForm #id').val(tempBank.bankId);
-                                    $('#editBankForm #editBankName').val(tempBank.name);
-                                    $('#editBankForm #editBankAbbreviation').val(tempBank.abbreviation);
-                                    $('#editBankForm #editBranch').val(tempBank.branch);
-                                    $('#editBankModal').modal('show');
-                                });
-                            });
-
-                            // Validate Edit Bank Form before submission
-                            $('#editBankForm').on('submit', function (event) {
-                                var isValid = true;
-
-                                // Validate Bank Name
-                                if ($('#editBankName').val().trim() === '') {
-                                    $('#editBankName').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#editBankName').removeClass('is-invalid');
-                                }
-
-                                // Validate Abbreviation
-                                if ($('#editBankAbbreviation').val().trim() === '') {
-                                    $('#editBankAbbreviation').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#editBankAbbreviation').removeClass('is-invalid');
-                                }
-
-                                // Validate Bank Branch
-                                if ($('#editBranch').val().trim() === '') {
-                                    $('#editBranch').addClass('is-invalid');
-                                    isValid = false;
-                                } else {
-                                    $('#editBranch').removeClass('is-invalid');
-                                }
-
-                                // Prevent form submission if invalid
-                                if (!isValid) {
-                                    event.preventDefault();
-                                }
-                            });
-                        });
-                    </script>
                 </div>
             </div>
+            <!-- Validation Script -->
+            <script>
+                $(document).ready(function () {
+                    // Validate Add Account Form
+                    $('#addAccountForm').on('submit', function (event) {
+                        var isValid = true;
+
+                        // Validate Account Name
+                        if ($('#accountHolderName').val().trim() === '') {
+                            $('#accountHolderName').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#accountHolderName').removeClass('is-invalid');
+                        }
+
+                        // Validate Account Number
+                        if ($('#accountNumber').val().trim() === '') {
+                            $('#accountNumber').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#accountNumber').removeClass('is-invalid');
+                        }
+
+                        // Validate Bank Selection
+                        if ($('#bank').val() === '') {
+                            $('#bank').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#bank').removeClass('is-invalid');
+                        }
+
+                        // Prevent form submission if invalid
+                        if (!isValid) {
+                            event.preventDefault();
+                        }
+                    });
+
+                    // EDIT BANK ACCOUNT
+                    // EDIT BANK ACCOUNT
+                    $('.table .editBankAccountBtn').on('click', function(event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+
+                        $.get(href, function(tempAccount, status) {
+                            $('#editAccountForm #bankAccountId').val(tempAccount.bankAccountId);
+                            $('#editAccountForm #editAccountHolderName').val(tempAccount.accountHolderName);
+                            $('#editAccountForm #editAccountNumber').val(tempAccount.accountNumber);
+                            // Ensure to access bank details correctly
+                            if (tempAccount.bank) {
+                                $('#editAccountForm #editBank').val(tempAccount.bank.bankId); // assuming bankId is the property
+                            }
+                            $('#editAccountModal').modal('show');
+                        });
+                    });
+
+                    // VALIDATE BANK ACCOUNT
+                    // VALIDATE BANK ACCOUNT
+                    $('#editAccountForm').on('submit', function (event) {
+                        var isValid = true;
+
+                        // Validate Bank Name
+                        if ($('#editBank').val() === '') {
+                            $('#editBank').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editBank').removeClass('is-invalid');
+                        }
+
+                        // Validate Account Holder Name
+                        if ($('#editAccountHolderName').val().trim() === '') {
+                            $('#editAccountHolderName').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editAccountHolderName').removeClass('is-invalid');
+                        }
+
+                        // Validate Bank Account Number
+                        if ($('#editAccountNumber').val().trim() === '') {
+                            $('#editAccountNumber').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editAccountNumber').removeClass('is-invalid');
+                        }
+
+                        // Prevent form submission if invalid
+                        if (!isValid) {
+                            event.preventDefault();
+                        }
+                    });
+
+                    // CREATE BANK
+                    // CREATE BANK
+                    $('#addBankForm').on('submit', function (event) {
+                        var isValid = true;
+
+                        // Validate Bank Name
+                        if ($('#bankName').val().trim() === '') {
+                            $('#bankName').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#bankName').removeClass('is-invalid');
+                        }
+
+                        // Validate Abbreviation
+                        if ($('#bankAbbreviation').val().trim() === '') {
+                            $('#bankAbbreviation').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#bankAbbreviation').removeClass('is-invalid');
+                        }
+
+                        // Validate Bank Branch
+                        if ($('#branch').val().trim() === '') {
+                            $('#branch').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#branch').removeClass('is-invalid');
+                        }
+
+                        // Prevent form submission if invalid
+                        if (!isValid) {
+                            event.preventDefault();
+                        }
+                    });
+
+
+                    // EDIT BANK
+                    // EDIT BANK
+                    $('.table .editBankBtn').on('click', function(event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+
+                        $.get(href, function(tempBank, status) {
+                            $('#editBankForm #id').val(tempBank.bankId);
+                            $('#editBankForm #editBankName').val(tempBank.name);
+                            $('#editBankForm #editBankAbbreviation').val(tempBank.abbreviation);
+                            $('#editBankForm #editBranch').val(tempBank.branch);
+                            $('#editBankModal').modal('show');
+                        });
+                    });
+
+                    // Validate EDIT BANK
+                    // Validate EDIT BANK
+                    $('#editBankForm').on('submit', function (event) {
+                        var isValid = true;
+
+                        // Validate Bank Name
+                        if ($('#editBankName').val().trim() === '') {
+                            $('#editBankName').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editBankName').removeClass('is-invalid');
+                        }
+
+                        // Validate Abbreviation
+                        if ($('#editBankAbbreviation').val().trim() === '') {
+                            $('#editBankAbbreviation').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editBankAbbreviation').removeClass('is-invalid');
+                        }
+
+                        // Validate Bank Branch
+                        if ($('#editBranch').val().trim() === '') {
+                            $('#editBranch').addClass('is-invalid');
+                            isValid = false;
+                        } else {
+                            $('#editBranch').removeClass('is-invalid');
+                        }
+
+                        // Prevent form submission if invalid
+                        if (!isValid) {
+                            event.preventDefault();
+                        }
+                    });
+                });
+            </script>
         </div>
     </main>
 

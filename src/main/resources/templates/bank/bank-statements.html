@@ -32,7 +32,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                            <td th:text="${tempAccount.id}"></td>
+                            <td th:text="${tempAccount.bankAccountId}"></td>
                             <td th:text="${tempAccount.accountHolderName}"></td>
                             <td th:text="${tempAccount.accountNumber}"></td>
                             <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
@@ -40,7 +40,7 @@
                             <td th:text="${tempAccount.bank.bankId}"></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
-                                   th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.id})}" title="Account Journal">
+                                   th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="Account Journal">
                                     <i class="lni lni-library"></i> Journal
                                 </a>
                             </td>

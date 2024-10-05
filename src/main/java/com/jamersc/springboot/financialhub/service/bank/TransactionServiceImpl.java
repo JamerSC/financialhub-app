@@ -36,7 +36,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findBankAccountById(Long bankAccountId) {
-        return transactionRepository.findByBankAccount_Id(bankAccountId);
+        return transactionRepository.findByBankAccount_BankAccountId(bankAccountId);
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<Transaction> findTransactionsByBankAccountAndType(Long bankAccountId, TransactionType transactionType) {
-        return transactionRepository.findByBankAccount_IdAndTransactionType(bankAccountId, transactionType);
+        return transactionRepository.findByBankAccount_BankAccountIdAndTransactionType(bankAccountId, transactionType);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void processDeposit(Transaction deposit) {
-        BankAccount account = bankAccountRepository.findById(deposit.getBankAccount().getId())
+        BankAccount account = bankAccountRepository.findById(deposit.getBankAccount().getBankAccountId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
         Double currentBalance = account.getAccountBalance();
         if (currentBalance == null) {
@@ -77,7 +77,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public void processWithdrawal(Transaction withdraw) {
-        BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount().getId())
+        BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount().getBankAccountId())
                 .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
 
         Double currentBalance = account.getAccountBalance();

@@ -52,7 +52,7 @@
                                         #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                                     <td>
                                         <a title="Deposit" href="#" class="btn btn-primary btn-sm"
-                                           th:href="@{/transactions/deposit-transaction/{id}(id=${account.id})}"    >
+                                           th:href="@{/transactions/deposit-transaction/{id}(id=${account.bankAccountId})}"    >
                                             <i class="lni lni-write"></i> Deposit
                                         </a>
                                     </td>

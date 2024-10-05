@@ -1,6 +1,7 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,17 +15,17 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "bank")
+@ToString(exclude = {"bank", "transactions"})
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankAccountId")
 public class BankAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long bankAccountId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_id")
-    @JsonBackReference
     private Bank bank;
 
     @Column(name = "account_holder_name")
@@ -36,10 +37,11 @@ public class BankAccount {
     @Column(name = "account_balance")
     private Double accountBalance;
 
-    @OneToMany(mappedBy = "bankAccount", orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
+    @JsonIgnore
     private List<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "created_by")

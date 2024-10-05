@@ -38,21 +38,36 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public void save(BankAccount bankAccount, String username) {
-        BankAccount tempBankAccount = new BankAccount();
-        User createdBy = userRepository.findByUsername(username);
-        if (createdBy != null) {
-            tempBankAccount.setCreatedBy(createdBy.getId());
-            tempBankAccount.setUpdatedBy(createdBy.getId());
+    public void saveBankAccount(BankAccount bankAccount, String username) {
+        BankAccount tempBankAccount;
+        if (bankAccount.getBankAccountId() != null) {
+            tempBankAccount = bankAccountRepository.findById(bankAccount.getBankAccountId()).orElse(new BankAccount());
+            tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
+            tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
+            if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
+                Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
+                tempBankAccount.setBank(bankId);
+            }
+            User updatedBy = userRepository.findByUsername(username);
+            if (updatedBy != null) {
+                tempBankAccount.setUpdatedBy(updatedBy.getId());
+            }
+        } else {
+            tempBankAccount = new BankAccount();
+            User createdBy = userRepository.findByUsername(username);
+            if (createdBy != null) {
+                tempBankAccount.setCreatedBy(createdBy.getId());
+                tempBankAccount.setUpdatedBy(createdBy.getId());
+            }
+            if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
+                Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
+                tempBankAccount.setBank(bankId);
+            }
+            tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
+            tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
+            Double defaultBankAccountBalance = 0.00;
+            tempBankAccount.setAccountBalance(defaultBankAccountBalance);
         }
-        if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
-            Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
-            tempBankAccount.setBank(bankId);
-        }
-        tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
-        tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
-        Double defaultBankAccountBalance = 0.00;
-        tempBankAccount.setAccountBalance(defaultBankAccountBalance);
         bankAccountRepository.save(tempBankAccount);
     }
 }

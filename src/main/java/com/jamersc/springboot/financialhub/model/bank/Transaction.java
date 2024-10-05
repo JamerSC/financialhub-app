@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -22,6 +23,7 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_account_id")
+    @JsonBackReference
     private BankAccount bankAccount;
 
     @Enumerated(EnumType.STRING)
