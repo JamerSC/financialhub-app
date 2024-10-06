@@ -43,8 +43,13 @@ public class BankAccountController {
         model.addAttribute("totalAccountPages", bankAccountPage.getTotalPages());
         model.addAttribute("currentAccountPage", accountPage);
         model.addAttribute("accountPageSize", accountSize);
+
+        // create/update bank account
+        List<Bank> allBanks = bankService.getAllBanks();
+        model.addAttribute("allBanks", allBanks);
         model.addAttribute("account", new BankAccount());
         model.addAttribute("updateAccount", new BankAccount());
+
         // Banks
         Page<Bank> bankListPage = bankService.findAll(PageRequest.of(bankPage, bankSize));
         List<Bank> listOfAllBanks = bankListPage.getContent();
@@ -52,6 +57,8 @@ public class BankAccountController {
         model.addAttribute("currentBankPage", bankPage);
         model.addAttribute("bankPageSize", bankSize);
         model.addAttribute("listOfAllBanks", listOfAllBanks);
+
+        // create/update bank
         model.addAttribute("bank", new Bank());
         model.addAttribute("updateBank", new Bank());
         return "bank/bank";

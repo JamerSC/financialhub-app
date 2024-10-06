@@ -110,7 +110,7 @@
                                             <label for="bank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="bank" th:field="*{bank}">
                                                 <option value="" selected>Select a bank</option>
-                                                <option th:each="bank : ${listOfAllBanks}"  th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                                <option th:each="bank : ${allBanks}"  th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                 </option>
                                             </select>
                                             <div class="invalid-feedback">Please select a bank.</div>
@@ -150,7 +150,7 @@
                                             <label for="editBank" class="form-label">Select Bank</label>
                                             <select class="form-select" id="editBank" th:field="*{bank}">
                                                 <option value="" selected>Choose a bank</option>
-                                                <option th:each="bank : ${listOfAllBanks}"
+                                                <option th:each="bank : ${allBanks}"
                                                         th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                 </option>
                                             </select>
