@@ -7,6 +7,8 @@ import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,6 +27,11 @@ public class BankServiceImpl implements BankService{
     @Override
     public List<Bank> getAllBanks() {
         return bankRepository.findAll();
+    }
+
+    @Override
+    public Page<Bank> findAll(Pageable pageable) {
+        return bankRepository.findAll(pageable);
     }
 
     @Override

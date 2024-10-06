@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(exclude = {"bank", "transactions"})
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankAccountId")
 public class BankAccount {
 
     @Id
@@ -37,7 +35,7 @@ public class BankAccount {
     @Column(name = "account_balance")
     private Double accountBalance;
 
-    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
@@ -69,3 +67,5 @@ public class BankAccount {
         updatedAt = new Date();
     }
 }
+
+////@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankAccountId")

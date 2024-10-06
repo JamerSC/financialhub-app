@@ -18,7 +18,6 @@ import java.util.List;
 @Getter
 @Setter
 @ToString(exclude = "accounts")
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankId")
 public class Bank {
 
     @Id
@@ -35,7 +34,7 @@ public class Bank {
     @Column(name = "branch")
     private String branch;
 
-    @OneToMany(mappedBy = "bank", fetch = FetchType.EAGER , orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY , orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JsonIgnore
@@ -66,3 +65,6 @@ public class Bank {
         updatedAt = new Date();
     }
 }
+
+
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankId")

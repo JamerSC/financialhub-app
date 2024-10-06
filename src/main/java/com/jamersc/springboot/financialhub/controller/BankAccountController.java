@@ -8,6 +8,8 @@ import com.jamersc.springboot.financialhub.service.bank.BankService;
 import com.jamersc.springboot.financialhub.service.bank.TransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -23,23 +25,35 @@ public class BankAccountController {
 
     @Autowired
     private BankAccountService bankAccountService;
-
     @Autowired
     private BankService bankService;
-
     @Autowired
     private TransactionService transactionService;
 
     @GetMapping("/banks")
-    public String showBankPage(Model model) {
-        List<Bank> listOfAllBanks = bankService.getAllBankAccounts();
-        List<BankAccount> listOfAllBankAccounts = bankAccountService.getAllBankAccounts();
-        model.addAttribute("listOfAllBanks", listOfAllBanks);
+    public String showBankPage(Model model,
+                               @RequestParam(defaultValue = "0") int accountPage,
+                               @RequestParam(defaultValue = "5") int accountSize,
+                               @RequestParam(defaultValue = "0") int bankPage,
+                               @RequestParam(defaultValue = "5") int bankSize) {
+        // Bank Account
+        Page<BankAccount> bankAccountPage = bankAccountService.findAll(PageRequest.of(accountPage,accountSize));
+        List<BankAccount> listOfAllBankAccounts = bankAccountPage.getContent();
         model.addAttribute("listOfAllBankAccounts", listOfAllBankAccounts);
+        model.addAttribute("totalAccountPages", bankAccountPage.getTotalPages());
+        model.addAttribute("currentAccountPage", accountPage);
+        model.addAttribute("accountPageSize", accountSize);
         model.addAttribute("account", new BankAccount());
+        model.addAttribute("updateAccount", new BankAccount());
+        // Banks
+        Page<Bank> bankListPage = bankService.findAll(PageRequest.of(bankPage, bankSize));
+        List<Bank> listOfAllBanks = bankListPage.getContent();
+        model.addAttribute("totalBankPages", bankListPage.getTotalPages());
+        model.addAttribute("currentBankPage", bankPage);
+        model.addAttribute("bankPageSize", bankSize);
+        model.addAttribute("listOfAllBanks", listOfAllBanks);
         model.addAttribute("bank", new Bank());
         model.addAttribute("updateBank", new Bank());
-        model.addAttribute("updateAccount", new BankAccount());
         return "bank/bank";
     }
 

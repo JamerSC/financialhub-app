@@ -12,18 +12,36 @@
     <main class="content px-3 py-4" layout:fragment="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-12">
-                    <div class="d-flex">
-                        <div class="p-1">
-                            <h4 class="fw-bold fs-4">Bank Accounts</h4>
-                        </div>
-                        <!-- Create Accounts Modal Button -->
-                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
-                                <i class="lni lni-notepad"></i> Add Account
-                            </button>
-                        </div>
+                <div class="col-6">
+                    <h4 class="fw-bold fs-4">Bank Accounts</h4>
+                </div>
+            </div>
+            <!-- Header and Entries -->
+            <div class="row align-items-center mb-2">
+                <div class="col-6 d-flex">
+                    <label class="d-flex align-items-center">
+                        Show
+                        <select id="entriesAccountSelect" name="entries" class="form-select form-select-sm w-auto mx-2"
+                                onchange="window.location.href = '?accountPage=0&accountSize=' + this.value;">
+                            <option th:value="5" th:selected="${accountPageSize == 5}">5</option>
+                            <option th:value="10" th:selected="${accountPageSize == 10}">10</option>
+                            <option th:value="25" th:selected="${accountPageSize == 25}">25</option>
+                            <option th:value="50" th:selected="${accountPageSize == 50}">50</option>
+                        </select>
+                        entries
+                    </label>
+                </div>
+                <!-- Create Accounts Modal Button -->
+                <div class="col-6 text-end">
+                    <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
+                            <i class="lni lni-notepad"></i> Add Account
+                        </button>
                     </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                             <tr>
@@ -52,6 +70,32 @@
                             </tr>
                         </tbody>
                     </table>
+                    <!-- Bank Account Pagination Controls -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item" th:classappend="${currentAccountPage == 0} ? 'disabled'">
+                                    <a class="page-link btn btn-primary"
+                                       th:href="@{/bank/banks(accountPage=${currentAccountPage - 1}, size=${accountPageSize})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled">
+                                        <span class="page-link">
+                                            Page <span th:text="${currentAccountPage + 1}"></span> of <span th:text="${totalAccountPages}"></span>
+                                        </span>
+                                </li>
+                                <li class="page-item" th:classappend="${currentAccountPage + 1 >= totalAccountPages} ? 'disabled'">
+                                    <a class="page-link btn btn-primary"
+                                       th:href="@{/bank/banks(accountPage=${currentAccountPage + 1}, size=${accountPageSize})}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">Next &raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                     <!-- Add Account Modal -->
                     <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -90,60 +134,80 @@
                             </div>
                         </div>
                     </div>
-                </div>
-                <!-- Edit Account Modal -->
-                <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="editAccountModalLabel">Update Bank Account</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form id="editAccountForm" action="#" th:action="@{/bank/update-account}" th:object="${updateAccount}" method="POST">
-                                    <div><input type="hidden" class="form-control" id="bankAccountId" th:field="*{bankAccountId}" /></div>
-                                    <div class="mb-3">
-                                        <label for="editBank" class="form-label">Select Bank</label>
-                                        <select class="form-select" id="editBank" th:field="*{bank}">
-                                            <option value="" selected>Choose a bank</option>
-                                            <option th:each="bank : ${listOfAllBanks}"
-                                                    th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
-                                            </option>
-                                        </select>
-                                        <div class="invalid-feedback">Please select a bank.</div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editAccountHolderName" class="form-label">Account Holder Name</label>
-                                        <input type="text" class="form-control" id="editAccountHolderName" th:field="*{accountHolderName}">
-                                        <div class="invalid-feedback">Please provide an account holder name.</div>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="editAccountNumber" class="form-label">Account Number</label>
-                                        <input type="text" class="form-control" id="editAccountNumber" th:field="*{accountNumber}">
-                                        <div class="invalid-feedback">Please provide an account number.</div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save</button>
-                                    </div>
-                                </form>
+
+                    <!-- Edit Account Modal -->
+                    <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editAccountModalLabel">Update Bank Account</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="editAccountForm" action="#" th:action="@{/bank/update-account}" th:object="${updateAccount}" method="POST">
+                                        <div><input type="hidden" class="form-control" id="bankAccountId" th:field="*{bankAccountId}" /></div>
+                                        <div class="mb-3">
+                                            <label for="editBank" class="form-label">Select Bank</label>
+                                            <select class="form-select" id="editBank" th:field="*{bank}">
+                                                <option value="" selected>Choose a bank</option>
+                                                <option th:each="bank : ${listOfAllBanks}"
+                                                        th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                                </option>
+                                            </select>
+                                            <div class="invalid-feedback">Please select a bank.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editAccountHolderName" class="form-label">Account Holder Name</label>
+                                            <input type="text" class="form-control" id="editAccountHolderName" th:field="*{accountHolderName}">
+                                            <div class="invalid-feedback">Please provide an account holder name.</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editAccountNumber" class="form-label">Account Number</label>
+                                            <input type="text" class="form-control" id="editAccountNumber" th:field="*{accountNumber}">
+                                            <div class="invalid-feedback">Please provide an account number.</div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div> <!-- Col 12 -->
+            </div> <!-- Row 3-->
+            <div class="row">
+                <div class="col-6">
+                    <h4 class="fw-bold fs-4">List of Banks</h4>
+                </div>
+            </div>
+            <!-- Header and Entries -->
+            <div class="row align-items-center mb-2">
+                <div class="col-6 d-flex">
+                    <label class="d-flex align-items-center">
+                        Show
+                        <select id="entriesBankSelect" name="entries" class="form-select form-select-sm w-auto mx-2"
+                                onchange="window.location.href = '?bankPage=0&bankSize=' + this.value;">
+                            <option th:value="5" th:selected="${bankPageSize == 5}">5</option>
+                            <option th:value="10" th:selected="${bankPageSize == 10}">10</option>
+                            <option th:value="25" th:selected="${bankPageSize == 25}">25</option>
+                            <option th:value="50" th:selected="${bankPageSize == 50}">50</option>
+                        </select>
+                        entries
+                    </label>
+                </div>
+                <!-- Create Accounts Modal Button -->
+                <div class="col-6 text-end">
+                    <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
+                            <i class="lni lni-notepad"></i> Add Bank
+                        </button>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <div class="d-flex">
-                        <div class="p-1">
-                            <h4 class="fw-bold fs-4">List of Banks</h4>
-                        </div>
-                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
-                                <i class="lni lni-notepad"></i> Add Bank
-                            </button>
-                        </div>
-                    </div>
                     <!-- Bank Table -->
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
@@ -173,6 +237,32 @@
                             </tr>
                         </tbody>
                     </table>
+                    <!-- Bank Pagination Controls -->
+                    <div class="d-flex justify-content-end mt-3">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li class="page-item" th:classappend="${currentBankPage == 0} ? 'disabled'">
+                                    <a class="page-link btn btn-primary"
+                                       th:href="@{/bank/banks(bankPage=${currentBankPage - 1}, size=${bankPageSize})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item disabled">
+                                        <span class="page-link">
+                                            Page <span th:text="${currentBankPage + 1}"></span> of <span th:text="${totalBankPages}"></span>
+                                        </span>
+                                </li>
+                                <li class="page-item" th:classappend="${currentBankPage + 1 >= totalBankPages} ? 'disabled'">
+                                    <a class="page-link btn btn-primary"
+                                       th:href="@{/bank/banks(bankPage=${currentBankPage + 1}, size=${bankPageSize})}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">Next &raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
                     <!-- Add Bank Modal -->
                     <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
