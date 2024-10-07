@@ -1,7 +1,6 @@
-package com.jamersc.springboot.financialhub.service.cases;
+package com.jamersc.springboot.financialhub.service.client_accounts;
 
-import com.jamersc.springboot.financialhub.model.CaseType;
-import com.jamersc.springboot.financialhub.model.Cases;
+import com.jamersc.springboot.financialhub.model.CaseAccount;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CaseRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
@@ -24,22 +23,23 @@ public class CaseServiceImpl implements CaseService{
     private UserRepository userRepository;
 
     @Override
-    public List<Cases> getAllCases() {
+    public List<CaseAccount> getAllCases() {
         return caseRepository.findAll();
     }
 
     @Override
-    public Cases findCaseById(Long id) {
+    public CaseAccount findCaseById(Long id) {
         return caseRepository.findById(id).orElseThrow(() -> new RuntimeException("Case ID not found."));
     }
 
     @Override
-    public void save(Cases newCase, String username) {
-        Cases tempCase;
+    public void save(CaseAccount newCase, String username) {
+        CaseAccount tempCase;
         tempCase = newCase;
         tempCase.setCaseType(newCase.getCaseType());
         tempCase.setStatus(newCase.getStatus());
-        tempCase.setClient(newCase.getClient());
+        //tempCase.setClient(newCase.getClient());
+        tempCase.setClientAccount(newCase.getClientAccount());
         User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
             tempCase.setCreatedBy(createdBy.getId());

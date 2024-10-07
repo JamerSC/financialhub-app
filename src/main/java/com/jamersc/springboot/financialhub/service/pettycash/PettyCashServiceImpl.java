@@ -102,7 +102,6 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    @Transactional
     public void save(PettyCash pettyCash) {
         logger.info("Saving... " + pettyCash);
         pettyCashRepository.save(pettyCash);

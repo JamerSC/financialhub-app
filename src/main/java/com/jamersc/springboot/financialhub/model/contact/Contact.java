@@ -36,14 +36,20 @@ public class Contact {
     @Column(name = "best_channel_to_contact")
     private String bestChannelToContact;
 
-    // Bi-directional relationships
-    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    // Bidirectional relationships
+    @OneToOne(mappedBy = "contact",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     private ContactIndividual individual;
 
-    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "contact",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     private ContactCompany company;
 
-    @OneToOne(mappedBy = "contact", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "contact",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
     private ContactAdditionalDetails additionalDetails;
 
     @Column(name = "created_by")

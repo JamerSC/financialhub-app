@@ -1,10 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.model.Cases;
-import com.jamersc.springboot.financialhub.model.CaseType;
-import com.jamersc.springboot.financialhub.model.Status;
-import com.jamersc.springboot.financialhub.model.contact.Contact;
-import com.jamersc.springboot.financialhub.service.cases.CaseService;
+import com.jamersc.springboot.financialhub.model.CaseAccount;
+import com.jamersc.springboot.financialhub.service.client_accounts.CaseService;
+import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.List;
-
 @Controller
 @AllArgsConstructor
-@RequestMapping("/cases")
-public class CaseController {
+@RequestMapping("/client-account")
+public class ClientAccountController {
+
+    @Autowired
+    private ClientAccountService clientAccountService;
 
     @Autowired
     private CaseService caseService;
@@ -32,19 +31,19 @@ public class CaseController {
 
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
-        model.addAttribute("cases", caseService.getAllCases());
-        model.addAttribute("case", new Cases());
+        model.addAttribute("cases", clientAccountService.getAllClientAccounts());
+        /*model.addAttribute("case", new CaseAccount());
         model.addAttribute("caseType", CaseType.values());
         model.addAttribute("clients", contactService.getAllContacts());
-        model.addAttribute("status", Status.values());
+        model.addAttribute("status", Status.values());*/
         return "case/case";
     }
 
     @PostMapping("/add-new-case")
-    public String addNewCase(@ModelAttribute("case") Cases tempCase, Model model) {
+    public String addNewCase(@ModelAttribute("case") CaseAccount tempCase, Model model) {
         String username = getSessionUserName();
         caseService.save(tempCase, username);
-        return "redirect:/cases/list-of-cases";
+        return "redirect:/client-account/list-of-cases";
     }
 
     @GetMapping("/case-summary")

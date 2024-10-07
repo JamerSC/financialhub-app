@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.model;
 
-import com.jamersc.springboot.financialhub.model.contact.Contact;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -14,16 +13,20 @@ import java.util.Date;
 @Getter
 @Setter
 @ToString
-public class Cases {
+public class CaseAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "case_id")
     private Long caseId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @OneToOne
+    @JoinColumn(name = "client_account_id")
+    private ClientAccount clientAccount;
+
+    /*@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
-    private Contact client;
+    private Contact client;*/
 
     @Enumerated(EnumType.STRING)
     @Column(name = "case_type")

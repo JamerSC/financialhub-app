@@ -77,15 +77,16 @@ JOIN roles r ON ur.role_id = r.id;
 -- Table to store all contact types (Individual/Company)
 DROP TABLE `contacts`;
 CREATE TABLE `contacts` (
-    `contact_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `contact_id` INT AUTO_INCREMENT,
     `contact_type` enum('INDIVIDUAL', 'COMPANY') NOT NULL,
     `category_type` enum('CLIENT', 'VENDOR', 'INTERNAL') NOT NULL,
-    `engagement_date` DATE,
-    `best_channel_to_contact` VARCHAR(255),
+    `engagement_date` date,
+    `best_channel_to_contact` varchar(255),
     `created_by` int,
     `created_at` timestamp default current_timestamp,
 	`updated_by` int,
-    `updated_at` timestamp default current_timestamp on update current_timestamp
+    `updated_at` timestamp default current_timestamp on update current_timestamp,
+    PRIMARY KEY(`contact_id`)
 );
 
 -- Insert into Contact table for individual
@@ -99,17 +100,18 @@ VALUES ('COMPANY', 'VENDOR', '2024-09-20', 'Phone', 1, 1);
 -- Table for individuals
 DROP TABLE `contact_individual`;
 CREATE TABLE `contact_individual` (
-    `individual_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `contact_id` INT NOT NULL,
-    `title` VARCHAR(10),
-    `last_name` VARCHAR(255) NOT NULL,
-    `first_name` VARCHAR(255) NOT NULL,
-    `middle_name` VARCHAR(255),
-    `suffix` VARCHAR(10),
-    `mobile_number` VARCHAR(20),
-    `email_address` VARCHAR(255),	
-    `address` TEXT,
-    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`)
+    `individual_id` int AUTO_INCREMENT,
+    `contact_id` int NOT NULL,
+    `title` varchar(10),
+    `last_name` varchar(255) NOT NULL,
+    `first_name` varchar(255) NOT NULL,
+    `middle_name` varchar(255),
+    `suffix` varchar(10),
+    `mobile_number` varchar(20),
+    `email_address` varchar(255),	
+    `address` text,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`),
+    PRIMARY KEY(`individual_id`)
 );
 
 -- Insert into Individual table
@@ -119,16 +121,18 @@ VALUES (1, 'Mr.', 'Doe', 'John', 'A.', 'Jr.', '1234567890', 'john.doe@example.co
 -- Table for companies
 DROP TABLE `contact_company`;
 CREATE TABLE `contact_company` (
-    `company_id` INT AUTO_INCREMENT PRIMARY KEY,
+    `company_id` INT NOT NULL AUTO_INCREMENT,
     `contact_id` INT NOT NULL,
     `company_name` VARCHAR(255) NOT NULL,
-	`registration_type` ENUM('CORPORATION', 'PARTNERSHIP', 'SINGLE_PROPRIETORSHIP', 'FOUNDATION', 'ASSOCIATION', 'OTHERS') NOT NULL,
+    `registration_type` ENUM('CORPORATION', 'PARTNERSHIP', 'SINGLE_PROPRIETORSHIP', 'FOUNDATION', 'ASSOCIATION', 'OTHERS') NOT NULL,
     `representative_name` VARCHAR(255),
     `representative_designation` VARCHAR(255),
     `mobile_number` VARCHAR(20),
     `email_address` VARCHAR(255),
     `address` TEXT,
-    FOREIGN KEY (`contact_id`) REFERENCES contacts(`contact_id`)
+    FOREIGN KEY (`contact_id`)
+        REFERENCES contacts (`contact_id`),
+    PRIMARY KEY (`company_id`)
 );
 
 -- Insert into Company table
@@ -138,11 +142,11 @@ VALUES (2, 'Tech Solutions', 'CORPORATION', 'Jane Smith', 'CEO', '9876543210', '
 -- Table for additional details (Vendor/Internal)
 DROP TABLE `contact_additional_details`; 
 CREATE TABLE `contact_additional_details` (
-    `detail_id` INT AUTO_INCREMENT PRIMARY KEY,
-    `contact_id` INT NOT NULL,
+    `detail_id` int AUTO_INCREMENT PRIMARY KEY,
+    `contact_id` int NOT NULL,
     `designation_for` VARCHAR(255),
-    `bank_name` VARCHAR(255),
-    `account_no` VARCHAR(50),
+    `bank_name` varchar(255),
+    `account_no` varchar(50),
     FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`)
 );
 
@@ -151,13 +155,11 @@ INSERT INTO `contact_additional_details` (`contact_id`, `designation_for`, `bank
 VALUES (2, 'IT Solutions Provider', 'Tech Bank', '1234567890');
 
 SELECT 
-    c.contact_id, 
-    c.contact_type, 
+    c.contact_id,
+    c.contact_type,
     c.category_type,
     c.engagement_date,
     c.best_channel_to_contact,
-    
-    -- Individual details
     i.title,
     i.last_name,
     i.first_name,
@@ -166,8 +168,6 @@ SELECT
     i.mobile_number AS individual_mobile,
     i.email_address AS individual_email,
     i.address AS individual_address,
-    
-    -- Company details
     co.company_name,
     co.registration_type,
     co.representative_name,
@@ -175,23 +175,44 @@ SELECT
     co.mobile_number AS company_mobile,
     co.email_address AS company_email,
     co.address AS company_address,
-    
-    -- Additional details for Vendor/Internal
     ad.designation_for,
     ad.bank_name,
     ad.account_no
-
-FROM contacts c
-LEFT JOIN contact_individual i ON c.contact_id = i.contact_id
-LEFT JOIN contact_company co ON c.contact_id = co.contact_id
-LEFT JOIN contact_additional_details ad ON c.contact_id = ad.contact_id;
+FROM
+    contacts c
+        LEFT JOIN
+    contact_individual i ON c.contact_id = i.contact_id
+        LEFT JOIN
+    contact_company co ON c.contact_id = co.contact_id
+        LEFT JOIN
+    contact_additional_details ad ON c.contact_id = ad.contact_id;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
+DROP TABLE `client_accounts`;
+CREATE TABLE `client_accounts` (
+    `client_account_id` INT NOT NULL AUTO_INCREMENT,
+    `contact_id` INT NOT NULL,
+    `account_title` VARCHAR(255),
+    `account_type` ENUM('PROJECT', 'CASE', 'RETAINER') NOT NULL,
+	`created_by` int,
+    `created_at` timestamp default current_timestamp,
+	`updated_by` int,
+    `updated_at` timestamp default current_timestamp on update current_timestamp,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`),
+    PRIMARY KEY (`client_account_id`)
+);
 
-DROP TABLE `cases`;
+INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
+VALUE (1, 'Case Title 1', 'CASE', 1, 1);
+
+INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
+VALUES (2, 'Case Title 2', 'CASE', 1, 1), (9, 'Case Title 3', 'CASE', 1, 1), 
+(10, 'Case Title 4', 'CASE', 1, 1), (11, 'Case Title 5', 'CASE', 1, 1);
+
+DROP TABLE `case`;
 CREATE TABLE `cases` (
 	`case_id` int NOT NULL AUTO_INCREMENT,
-    `contact_id` int NOT NULL,
+    `client_account_id` int NOT NULL,
     `case_type` enum('CIVIL', 'CRIMINAL', 'LABOR', 'ADMINISTRATIVE', 'ELECTION', 'SPECIAL_PROCEEDINGS', 'OTHERS') NOT NULL,
     `case_title` varchar(255) NOT NULL,
     `docket_no` varchar(255) NOT NULL,
@@ -214,12 +235,12 @@ CREATE TABLE `cases` (
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`),
+    FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`case_id`)
 );
 
 INSERT INTO `cases` (
-  `contact_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
+  `client_account_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
   `court`, `branch`, `judge`, `court_email`, `prosecutor`, 
   `prosecutor_office`, `prosecutor_email`, `opposing_party`, `opposing_counsel`, 
   `counsel_email`, `start_date`, `end_date`, `status`, `stage`, `created_by`, `updated_by`
@@ -228,60 +249,71 @@ VALUES
   (1, 'CIVIL', 'Case Title 1', 'DCK12345', 'Breach of Contract', 
    'Supreme Court', 'Branch 1', 'Judge John Doe', 'court1@example.com', 'Jane Smith', 
    'Office of Prosecutor A', 'prosecutor1@example.com', 'Opposing Party A', 'Opposing Counsel A', 
-   'counsel1@example.com', '2024-01-01', '2024-06-01', 'OPEN', 'Stage 1', 1, 1),
+   'counsel1@example.com', '2024-01-01', '2024-06-01', 'OPEN', 'Stage 1', 1, 1);
 
+INSERT INTO `cases` (
+  `client_account_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
+  `court`, `branch`, `judge`, `court_email`, `prosecutor`, 
+  `prosecutor_office`, `prosecutor_email`, `opposing_party`, `opposing_counsel`, 
+  `counsel_email`, `start_date`, `end_date`, `status`, `stage`, `created_by`, `updated_by`
+) 
+VALUES
   (2, 'CRIMINAL', 'Case Title 2', 'DCK54321', 'Fraud', 
    'Regional Trial Court', 'Branch 2', 'Judge Jane Roe', 'court2@example.com', 'John Doe', 
    'Office of Prosecutor B', 'prosecutor2@example.com', 'Opposing Party B', 'Opposing Counsel B', 
    'counsel2@example.com', '2023-10-15', '2024-05-15', 'IN_PROGRESS', 'Stage 2', 2, 1),
 
-  (9, 'LABOR', 'Case Title 3', 'DCK67890', 'Unfair Labor Practices', 
+  (3, 'LABOR', 'Case Title 3', 'DCK67890', 'Unfair Labor Practices', 
    'Labor Court', 'Branch 3', 'Judge Emily White', 'court3@example.com', 'Sarah Green', 
    'Office of Prosecutor C', 'prosecutor3@example.com', 'Opposing Party C', 'Opposing Counsel C', 
    'counsel3@example.com', '2023-12-01', '2024-07-01', 'PENDING', 'Stage 3', 3, 1),
 
-  (10, 'ADMINISTRATIVE', 'Case Title 4', 'DCK09876', 'Misconduct', 
+  (4, 'ADMINISTRATIVE', 'Case Title 4', 'DCK09876', 'Misconduct', 
    'Administrative Court', 'Branch 4', 'Judge William Black', 'court4@example.com', 'Paul Blue', 
    'Office of Prosecutor D', 'prosecutor4@example.com', 'Opposing Party D', 'Opposing Counsel D', 
    'counsel4@example.com', '2023-09-01', '2024-02-01', 'COMPLETED', 'Stage 4', 4, 1),
 
-  (11, 'ELECTION', 'Case Title 5', 'DCK34567', 'Election Violation', 
+  (5, 'ELECTION', 'Case Title 5', 'DCK34567', 'Election Violation', 
    'Election Court', 'Branch 5', 'Judge Michael Brown', 'court5@example.com', 'Alice Red', 
    'Office of Prosecutor E', 'prosecutor5@example.com', 'Opposing Party E', 'Opposing Counsel E', 
    'counsel5@example.com', '2023-11-10', '2024-08-10', 'CLOSED', 'Stage 5', 5, 1);
 
 SELECT 
-    c.case_id,
-    c.case_type,
-    c.case_title,
-    c.docket_no,
-    c.nature,
-    ci.contact_id,
-    ct.contact_type,
-    -- For individual contacts
-    ci.title AS individual_title,
-    ci.first_name AS individual_first_name,
-    ci.last_name AS individual_last_name,
-    ci.mobile_number AS individual_mobile,
-    ci.email_address AS individual_email,
-    -- For company contacts
-    cc.company_name AS company_name,
-    cc.representative_name AS company_representative,
-    cc.mobile_number AS company_mobile,
-    cc.email_address AS company_email,
-    -- Common fields
-    ct.best_channel_to_contact,
-    c.start_date,
-    c.end_date,
-    c.status,
-    c.stage
-FROM 
-    `cases` c
-    -- Join with contacts table
-    JOIN `contacts` ct ON c.contact_id = ct.contact_id
-    -- Conditionally join with contact_individual and contact_company
-    LEFT JOIN `contact_individual` ci ON ct.contact_id = ci.contact_id AND ct.contact_type = 'INDIVIDUAL'
-    LEFT JOIN `contact_company` cc ON ct.contact_id = cc.contact_id AND ct.contact_type = 'COMPANY';
+    `a`.`client_account_id`,
+    `a`.`account_title`,
+    `c`.`case_id`,
+    `c`.`case_type`,
+    `c`.`case_title`,
+    `c`.`docket_no`,
+    `c`.`nature`,
+    `ct`.`contact_id` AS contacts_id,
+    `ct`.`contact_type`,
+    `ci`.`title` AS individual_title,
+    `ci`.`first_name` AS individual_first_name,
+    `ci`.`last_name` AS individual_last_name,
+    `ci`.`mobile_number` AS individual_mobile,
+    `ci`.`email_address` AS individual_email,
+    `cc`.`company_name` AS company_name,
+    `cc`.`representative_name` AS company_representative,
+    `cc`.`mobile_number` AS company_mobile,
+    `cc`.`email_address` AS company_email,
+    `ct`.`best_channel_to_contact`,
+    `c`.`start_date`,
+    `c`.`end_date`,
+    `c`.`status`,
+    `c`.`stage`
+FROM
+    `client_accounts` a
+        LEFT JOIN
+    `cases` c ON a.client_account_id = c.client_account_id
+        JOIN
+    `contacts` ct ON a.contact_id = ct.contact_id
+        LEFT JOIN
+    `contact_individual` ci ON ct.contact_id = ci.contact_id
+        AND ct.contact_type = 'INDIVIDUAL'
+        LEFT JOIN
+    `contact_company` cc ON ct.contact_id = cc.contact_id
+        AND ct.contact_type = 'COMPANY';
 
 
 DROP TABLE `fund`;
