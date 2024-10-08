@@ -2,7 +2,7 @@ package com.jamersc.springboot.financialhub.service.client_accounts;
 
 import com.jamersc.springboot.financialhub.model.CaseAccount;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.repository.CaseRepository;
+import com.jamersc.springboot.financialhub.repository.CaseAccountRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -17,19 +17,19 @@ import java.util.List;
 public class CaseServiceImpl implements CaseService{
 
     @Autowired
-    private CaseRepository caseRepository;
+    private CaseAccountRepository caseAccountRepository;
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
     public List<CaseAccount> getAllCases() {
-        return caseRepository.findAll();
+        return caseAccountRepository.findAll();
     }
 
     @Override
     public CaseAccount findCaseById(Long id) {
-        return caseRepository.findById(id).orElseThrow(() -> new RuntimeException("Case ID not found."));
+        return caseAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Case ID not found."));
     }
 
     @Override
@@ -45,11 +45,11 @@ public class CaseServiceImpl implements CaseService{
             tempCase.setCreatedBy(createdBy.getId());
             tempCase.setUpdatedBy(createdBy.getId());
         }
-        caseRepository.save(tempCase);
+        caseAccountRepository.save(tempCase);
     }
 
     @Override
     public void deleteCaseById(Long id) {
-        caseRepository.deleteById(id);
+        caseAccountRepository.deleteById(id);
     }
 }

@@ -1,6 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.CaseAccount;
+import com.jamersc.springboot.financialhub.model.CaseType;
+import com.jamersc.springboot.financialhub.model.ClientAccount;
+import com.jamersc.springboot.financialhub.model.Status;
 import com.jamersc.springboot.financialhub.service.client_accounts.CaseService;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
@@ -31,18 +34,18 @@ public class ClientAccountController {
 
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
-        model.addAttribute("cases", clientAccountService.getAllClientAccounts());
-        /*model.addAttribute("case", new CaseAccount());
-        model.addAttribute("caseType", CaseType.values());
+        model.addAttribute("accountCases", clientAccountService.getAllClientAccounts());
+        model.addAttribute("account", new ClientAccount());
         model.addAttribute("clients", contactService.getAllContacts());
-        model.addAttribute("status", Status.values());*/
+        model.addAttribute("caseType", CaseType.values());
+        model.addAttribute("status", Status.values());
         return "case/case";
     }
 
-    @PostMapping("/add-new-case")
-    public String addNewCase(@ModelAttribute("case") CaseAccount tempCase, Model model) {
+    @PostMapping("/add-case-account")
+    public String addNewCase(@ModelAttribute("account") ClientAccount caseAccount, Model model) {
         String username = getSessionUserName();
-        caseService.save(tempCase, username);
+        clientAccountService.saveClientAccount(caseAccount, username);
         return "redirect:/client-account/list-of-cases";
     }
 
