@@ -1,10 +1,14 @@
 package com.jamersc.springboot.financialhub.model.contact;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jamersc.springboot.financialhub.model.ClientAccount;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "contacts")
@@ -12,7 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"individual", "company", "additionalDetails"})
+@ToString(exclude = {"individual", "company", "additionalDetails", "clientAccounts"})
 public class Contact {
 
 
@@ -51,6 +55,13 @@ public class Contact {
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
     private ContactAdditionalDetails additionalDetails;
+
+    // Bidirectional relationships
+    @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    //@JsonIgnore
+    private List<ClientAccount> clientAccounts = new ArrayList<>();
 
     @Column(name = "created_by")
     private Long createdBy;

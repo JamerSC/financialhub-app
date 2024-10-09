@@ -34,7 +34,7 @@ public class Bank {
     @Column(name = "branch")
     private String branch;
 
-    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY , orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JsonIgnore

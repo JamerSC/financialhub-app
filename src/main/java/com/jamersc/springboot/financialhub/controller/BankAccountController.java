@@ -71,13 +71,13 @@ public class BankAccountController {
         return "redirect:/bank/banks";
     }
 
-    @GetMapping("/edit-account")
+    @GetMapping("/edit-bank-account")
     @ResponseBody
     public BankAccount editBankAccount(Long id) {
         return bankAccountService.getBankAccountById(id);
     }
 
-    @PostMapping("/update-account")
+    @PostMapping("/update-bank-account")
     public String updateBankAccount(@ModelAttribute("updateAccount") BankAccount account) {
         String updatedBy = getSessionUsername();
         bankAccountService.saveBankAccount(account, updatedBy);

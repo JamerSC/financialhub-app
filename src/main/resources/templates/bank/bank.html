@@ -63,7 +63,7 @@
                                         <i class="lni lni-eye"></i>
                                     </a>
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankAccountBtn"
-                                       th:href="@{/bank/edit-account(id=${tempAccount.bankAccountId})}" title="edit">
+                                       th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="edit">
                                         <i class="lni lni-pencil-alt"></i>
                                     </a>
                                 </td>
@@ -144,7 +144,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="editAccountForm" action="#" th:action="@{/bank/update-account}" th:object="${updateAccount}" method="POST">
+                                    <form id="editAccountForm" action="#" th:action="@{/bank/update-bank-account}" th:object="${updateAccount}" method="POST">
                                         <div><input type="hidden" class="form-control" id="bankAccountId" th:field="*{bankAccountId}" /></div>
                                         <div class="mb-3">
                                             <label for="editBank" class="form-label">Select Bank</label>

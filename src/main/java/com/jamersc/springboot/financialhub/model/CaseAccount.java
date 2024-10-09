@@ -1,5 +1,7 @@
 package com.jamersc.springboot.financialhub.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,7 +14,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"clientAccount"})
 public class CaseAccount {
 
     @Id
@@ -20,13 +22,10 @@ public class CaseAccount {
     @Column(name = "case_id")
     private Long caseId;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_account_id")
+    @JsonIgnore
     private ClientAccount clientAccount;
-
-    /*@ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_id")
-    private Contact client;*/
 
     @Enumerated(EnumType.STRING)
     @Column(name = "case_type")

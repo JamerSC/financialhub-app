@@ -13,10 +13,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @AllArgsConstructor
@@ -36,6 +33,7 @@ public class ClientAccountController {
     public String listOfCases(Model model) {
         model.addAttribute("accountCases", clientAccountService.getAllClientAccounts());
         model.addAttribute("account", new ClientAccount());
+        model.addAttribute("updateAccount", new ClientAccount());
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("caseType", CaseType.values());
         model.addAttribute("status", Status.values());
@@ -47,6 +45,12 @@ public class ClientAccountController {
         String username = getSessionUserName();
         clientAccountService.saveClientAccount(caseAccount, username);
         return "redirect:/client-account/list-of-cases";
+    }
+
+    @GetMapping("/edit-case-account")
+    @ResponseBody
+    public ClientAccount editCaseAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     @GetMapping("/case-summary")
