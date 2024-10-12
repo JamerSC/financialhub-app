@@ -1,11 +1,17 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
+import com.jamersc.springboot.financialhub.dto.BankDto;
+import com.jamersc.springboot.financialhub.mapper.BankMapper;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.model.bank.Bank;
 import com.jamersc.springboot.financialhub.repository.BankRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,11 +24,13 @@ import java.util.List;
 @Service
 public class BankServiceImpl implements BankService{
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private BankRepository bankRepository;
-
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BankMapper bankMapper;
 
     @Override
     public List<Bank> getAllBanks() {
@@ -40,45 +48,43 @@ public class BankServiceImpl implements BankService{
     }
 
     @Override
-    public Bank findBankById(Long id) {
-        return bankRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Not Found"));
+    public BankDto findBankById(Long id) {
+        Bank bank = bankRepository.findById(id).orElse(null);
+        if (bank != null) {
+            BankDto bankDto = bankMapper.toBankDto(bank);
+            logger.info("Bank Details: " + bankDto);
+            return bankDto;
+        }
+       throw new RuntimeException("Bank ID not found!");
     }
 
     @Override
-    public void save(Bank bank, String username) {
-        Bank tempBank = new Bank();
-        User createdBy = userRepository.findByUsername(username);
-        if (createdBy != null) {
-            tempBank.setCreatedBy(createdBy.getId());
-            tempBank.setUpdatedBy(createdBy.getId());
+    public void save(BankDto bankDto, String username) {
+        Bank bank;
+        if (bankDto.getBankId() != null) {
+            // Update Bank Details
+            bank = bankRepository.findById(bankDto.getBankId()).orElse(new Bank());
+            bank.setName(bankDto.getName());
+            bank.setAbbreviation(bankDto.getAbbreviation());
+            bank.setBranch(bankDto.getBranch());
+            User updatedBy = userRepository.findByUsername(username);
+            if (updatedBy != null) {
+                bank.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updated Bank ID No. " + bank.getBankId());
+        } else {
+            bank = new Bank();
+            bank.setName(bankDto.getName());
+            bank.setAbbreviation(bankDto.getAbbreviation());
+            bank.setBranch(bankDto.getBranch());
+            User createdBy = userRepository.findByUsername(username);
+            if (createdBy != null) {
+                bank.setCreatedBy(createdBy.getId());
+                bank.setUpdatedBy(createdBy.getId());
+            }
+            logger.info("New bank created successfully!");
         }
-        tempBank.setName(bank.getName());
-        tempBank.setAbbreviation(bank.getAbbreviation());
-        tempBank.setBranch(bank.getBranch());
-        bankRepository.save(tempBank);
-    }
-
-    @Override
-    public void update(Bank bank, String username) {
-        // Debugging: Print the bankId to see if it is null
-        System.out.println("Updating bank with ID: " + bank.getBankId());
-
-        // Ensure bankId is not null
-        if (bank.getBankId() == null) {
-            throw new IllegalArgumentException("Bank ID must not be null.");
-        }
-
-        Bank tempBank = bankRepository.findById(bank.getBankId())
-                .orElseThrow(() -> new RuntimeException("Bank ID not found."));
-        User updatedBy = userRepository.findByUsername(username);
-        if (tempBank != null) {
-            tempBank.setUpdatedBy(updatedBy.getId());
-            tempBank.setBankId(bank.getBankId());
-            tempBank.setName(bank.getName());
-            tempBank.setAbbreviation(bank.getAbbreviation());
-            tempBank.setBranch(bank.getBranch());
-            bankRepository.save(tempBank);
-        }
+        bankRepository.save(bank);
     }
 
     @Override

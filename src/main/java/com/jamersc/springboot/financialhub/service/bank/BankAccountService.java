@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
+import com.jamersc.springboot.financialhub.dto.BankAccountDto;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +13,7 @@ public interface BankAccountService {
 
     Page<BankAccount> findAll(Pageable pageable);
 
-    BankAccount getBankAccountById(Long id);
+    BankAccountDto getBankAccountById(Long id);
 
-    void saveBankAccount(BankAccount bankAccount, String username);
+    void saveBankAccount(BankAccountDto bankAccountDto, String username);
 }

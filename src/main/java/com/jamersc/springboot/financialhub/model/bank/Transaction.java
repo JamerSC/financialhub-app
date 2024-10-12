@@ -23,7 +23,6 @@ public class Transaction {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "bank_account_id")
-    @JsonBackReference
     private BankAccount bankAccount;
 
     @Enumerated(EnumType.STRING)

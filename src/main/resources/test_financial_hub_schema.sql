@@ -507,6 +507,14 @@ CREATE TABLE `bank_accounts` (
     PRIMARY KEY(`id`)
 );
 
+ALTER TABLE `bank_accounts` 
+DROP INDEX `account_number`, 
+MODIFY `account_number` varchar(255) NOT NULL;
+
+ALTER TABLE `bank_accounts` 
+MODIFY `account_number` varchar(100) UNIQUE NOT NULL;
+
+
 ALTER TABLE `bank_accounts`
 MODIFY `account_balance` decimal(10,2) NULL DEFAULT 0.00;
 

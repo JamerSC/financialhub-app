@@ -37,7 +37,6 @@ public class Bank {
     @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonIgnore
     private List<BankAccount> accounts = new ArrayList<>();
 
     @Column(name = "created_by")
@@ -66,5 +65,3 @@ public class Bank {
     }
 }
 
-
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankId")

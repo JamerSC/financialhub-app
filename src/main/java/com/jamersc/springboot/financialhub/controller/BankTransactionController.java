@@ -39,13 +39,13 @@ public class BankTransactionController {
 
     @GetMapping("/deposit-transaction/{id}")
     public String depositTransaction(@PathVariable(value = "id") Long id, Model model) {
-        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+        /*BankAccount bankAccount = bankAccountService.getBankAccountById(id);
         List<Transaction> accountDeposits = transactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), TransactionType.DEPOSIT);
         Transaction deposit = new Transaction();
         deposit.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("accountDeposits", accountDeposits);
-        model.addAttribute("deposit", deposit);
+        model.addAttribute("deposit", deposit);*/
         return "deposit/deposit-transaction";
     }
 
@@ -72,13 +72,13 @@ public class BankTransactionController {
 
     @GetMapping("/withdrawal-transaction/{id}")
     public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
-        BankAccount bankAccount = bankAccountService.getBankAccountById(id);
+        /*BankAccount bankAccount = bankAccountService.getBankAccountById(id);
         List<Transaction> accountWithdrawals = transactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), TransactionType.WITHDRAWAL);
         Transaction withdraw = new Transaction();
         withdraw.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("accountWithdrawals", accountWithdrawals);
-        model.addAttribute("withdraw", withdraw);
+        model.addAttribute("withdraw", withdraw);*/
         return "withdrawal/withdrawal-transaction";
     }
 

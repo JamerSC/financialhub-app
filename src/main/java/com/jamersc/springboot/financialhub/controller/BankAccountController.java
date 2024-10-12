@@ -1,5 +1,7 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.BankAccountDto;
+import com.jamersc.springboot.financialhub.dto.BankDto;
 import com.jamersc.springboot.financialhub.model.bank.Bank;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import com.jamersc.springboot.financialhub.model.bank.Transaction;
@@ -59,51 +61,50 @@ public class BankAccountController {
         model.addAttribute("listOfAllBanks", listOfAllBanks);
 
         // create/update bank
-        model.addAttribute("bank", new Bank());
-        model.addAttribute("updateBank", new Bank());
+        model.addAttribute("bank", new BankDto());
+        model.addAttribute("updateBank", new BankDto());
         return "bank/bank";
     }
 
     @PostMapping("/save-account")
-    public String addBankAccount(@ModelAttribute("account") BankAccount account) {
+    public String addBankAccount(@ModelAttribute("account") BankAccountDto accountDto) {
         String createdBy = getSessionUsername();
-        bankAccountService.saveBankAccount(account, createdBy);
+        bankAccountService.saveBankAccount(accountDto, createdBy);
         return "redirect:/bank/banks";
     }
 
     @GetMapping("/edit-bank-account")
     @ResponseBody
-    public BankAccount editBankAccount(Long id) {
+    public BankAccountDto editBankAccount(Long id) {
         return bankAccountService.getBankAccountById(id);
     }
 
     @PostMapping("/update-bank-account")
-    public String updateBankAccount(@ModelAttribute("updateAccount") BankAccount account) {
+    public String updateBankAccount(@ModelAttribute("updateAccount") BankAccountDto accountDto) {
         String updatedBy = getSessionUsername();
-        bankAccountService.saveBankAccount(account, updatedBy);
+        bankAccountService.saveBankAccount(accountDto, updatedBy);
         return "redirect:/bank/banks";
     }
 
     @PostMapping("/save-bank")
-    public String addBankAccount(@ModelAttribute("bank") Bank bank) {
+    public String addBankAccount(@ModelAttribute("bank") BankDto bankDto) {
         String createdBy = getSessionUsername();
-        bankService.save(bank, createdBy);
+        bankService.save(bankDto, createdBy);
         return "redirect:/bank/banks";
     }
 
     @GetMapping("/edit-bank")
     @ResponseBody
-    public Bank editBank(Long id) {
+    public BankDto editBank(Long id) {
         return bankService.findBankById(id);
     }
 
     @PostMapping("/update-bank")
-    public String updateBank(@ModelAttribute("updateBank") Bank bank) {
+    public String updateBank(@ModelAttribute("updateBank") BankDto bankDto) {
         String updatedBy = getSessionUsername();
-        bankService.update(bank, updatedBy);
+        bankService.save(bankDto, updatedBy);
         return "redirect:/bank/banks";
     }
-
 
     @GetMapping("/bank-statements")
     public String bankStatements(Model model) {
@@ -114,7 +115,7 @@ public class BankAccountController {
 
     @GetMapping("/bank-account-journal/{id}")
     public String bankAccountJournal(@PathVariable(value = "id") Long accountId, Model model) {
-        BankAccount account = bankAccountService.getBankAccountById(accountId);
+        BankAccountDto account = bankAccountService.getBankAccountById(accountId);
         List<Transaction> transactions = transactionService.findBankAccountById(account.getBankAccountId());
         model.addAttribute("account", account); // bank account by id
         model.addAttribute("transactions", transactions);

@@ -39,7 +39,6 @@ public class BankAccount {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
-    @JsonIgnore
     private List<Transaction> transactions = new ArrayList<>();
 
     @Column(name = "created_by")
@@ -67,5 +66,3 @@ public class BankAccount {
         updatedAt = new Date();
     }
 }
-
-////@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "bankAccountId")

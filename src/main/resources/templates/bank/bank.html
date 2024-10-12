@@ -101,7 +101,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addAccountModalLabel">New Bank Account</h5>
+                                    <h5 class="modal-title" id="addAccountModalLabel">Bank Account (New)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -140,7 +140,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="editAccountModalLabel">Update Bank Account</h5>
+                                    <h5 class="modal-title" id="editAccountModalLabel">Bank Account (Update)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -168,7 +168,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
+                                            <button type="submit" class="btn btn-primary">Save/Update</button>
                                         </div>
                                     </form>
                                 </div>
@@ -268,7 +268,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="addBankModalLabel">New Bank</h5>
+                                    <h5 class="modal-title" id="addBankModalLabel">Bank (New)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -302,7 +302,7 @@
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="editBankModalLabel">Update Bank</h5>
+                                    <h5 class="modal-title" id="editBankModalLabel">Bank (Update)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
@@ -381,6 +381,7 @@
                             $('#editAccountForm #bankAccountId').val(tempAccount.bankAccountId);
                             $('#editAccountForm #editAccountHolderName').val(tempAccount.accountHolderName);
                             $('#editAccountForm #editAccountNumber').val(tempAccount.accountNumber);
+                            //$('#editAccountForm #editBank').val(tempAccount.bank.bankId);
                             // Ensure to access bank details correctly
                             if (tempAccount.bank) {
                                 $('#editAccountForm #editBank').val(tempAccount.bank.bankId); // assuming bankId is the property

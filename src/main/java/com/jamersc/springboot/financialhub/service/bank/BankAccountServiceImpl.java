@@ -1,13 +1,21 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
+import com.jamersc.springboot.financialhub.dto.BankAccountDto;
+import com.jamersc.springboot.financialhub.dto.BankDto;
+import com.jamersc.springboot.financialhub.mapper.BankAccountMapper;
+import com.jamersc.springboot.financialhub.mapper.BankMapper;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.model.bank.Bank;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
 import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import com.jamersc.springboot.financialhub.repository.BankRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,14 +28,17 @@ import java.util.List;
 @Service
 public class BankAccountServiceImpl implements BankAccountService{
 
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private BankAccountRepository bankAccountRepository;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private BankRepository bankRepository;
+    @Autowired
+    private BankMapper bankMapper;
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
 
     @Override
     public List<BankAccount> getAllBankAccounts() {
@@ -40,41 +51,51 @@ public class BankAccountServiceImpl implements BankAccountService{
     }
 
     @Override
-    public BankAccount getBankAccountById(Long id) {
-        return bankAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Bank Account not found."));
+    public BankAccountDto getBankAccountById(Long id) {
+        BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
+        if (bankAccount != null) {
+            BankAccountDto bankAccountDto = bankAccountMapper.toBankAccountDto(bankAccount);
+            logger.info("Bank account details: " + bankAccountDto);
+            return bankAccountDto;
+        }
+        throw new RuntimeException("Bank Account ID not found!");
     }
 
     @Override
-    public void saveBankAccount(BankAccount bankAccount, String username) {
-        BankAccount tempBankAccount;
-        if (bankAccount.getBankAccountId() != null) {
-            tempBankAccount = bankAccountRepository.findById(bankAccount.getBankAccountId()).orElse(new BankAccount());
-            tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
-            tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
-            if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
-                Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
-                tempBankAccount.setBank(bankId);
+    public void saveBankAccount(BankAccountDto bankAccountDto, String username) {
+        BankAccount bankAccount;
+        if (bankAccountDto.getBankAccountId() != null) {
+            bankAccount = bankAccountRepository.findById(bankAccountDto.getBankAccountId()).orElse(new BankAccount());
+            bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
+            bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
+            /*Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
+            Bank bankId = bankRepository.getReferenceById(bank.getBankId());
+            bankAccount.setBank(bankId);*/
+            if (bankAccountDto.getBank() != null) {
+                Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
+                Bank bankId = bankRepository.findById(bank.getBankId()).orElse(null);
+                bankAccount.setBank(bankId);
             }
             User updatedBy = userRepository.findByUsername(username);
             if (updatedBy != null) {
-                tempBankAccount.setUpdatedBy(updatedBy.getId());
+                bankAccount.setUpdatedBy(updatedBy.getId());
             }
+            logger.info("Updated Bank ID No. " + bankAccountDto.getBankAccountId());
         } else {
-            tempBankAccount = new BankAccount();
+            bankAccount = new BankAccount();
             User createdBy = userRepository.findByUsername(username);
             if (createdBy != null) {
-                tempBankAccount.setCreatedBy(createdBy.getId());
-                tempBankAccount.setUpdatedBy(createdBy.getId());
+                bankAccount.setCreatedBy(createdBy.getId());
+                bankAccount.setUpdatedBy(createdBy.getId());
             }
-            if (bankAccount.getBank() != null && bankAccount.getBank().getBankId() != null) {
-                Bank bankId = bankRepository.getReferenceById(bankAccount.getBank().getBankId());
-                tempBankAccount.setBank(bankId);
-            }
-            tempBankAccount.setAccountHolderName(bankAccount.getAccountHolderName());
-            tempBankAccount.setAccountNumber(bankAccount.getAccountNumber());
+            Bank bankId = bankMapper.toBankEntity(bankAccountDto.getBank());
+            bankAccount.setBank(bankId);
+            bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
+            bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
             Double defaultBankAccountBalance = 0.00;
-            tempBankAccount.setAccountBalance(defaultBankAccountBalance);
+            bankAccount.setAccountBalance(defaultBankAccountBalance);
+            logger.info("New bank account created successfully!!");
         }
-        bankAccountRepository.save(tempBankAccount);
+        bankAccountRepository.save(bankAccount);
     }
 }
