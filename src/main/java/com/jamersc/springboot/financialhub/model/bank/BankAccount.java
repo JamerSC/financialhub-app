@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"bank", "transactions"})
+@ToString(exclude = {"bank", "bankTransactions"})
 public class BankAccount {
 
     @Id
@@ -39,7 +38,7 @@ public class BankAccount {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<BankTransaction> bankTransactions = new ArrayList<>();
 
     @Column(name = "created_by")
     private Long createdBy;

@@ -50,7 +50,7 @@
                     <!-- Create Item Modal Button -->
                     <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addWithdrawModal">
-                            <i class="lni lni-notepad"></i> Create Withdrawal
+                            <i class="lni lni-notepad"></i> Withdraw
                         </button>
                     </div>
                 </div>
@@ -65,19 +65,18 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="tempWithdrawal: ${accountWithdrawals}">
+                    <tr th:each="tempWithdrawal: ${listOfWithdrawals}">
                         <td th:text="${#dates.format(tempWithdrawal.transactionDate, 'dd MMMM yyyy')}"></td>
                         <td th:text="${tempWithdrawal.transactionType.convertTransactionType()}"></td>
                         <td th:text="${tempWithdrawal.transactionAmount != null ? #numbers.formatDecimal(tempWithdrawal.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                         <!--<td th:text="${#numbers.formatDecimal(tempWithdrawal.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>-->
                         <td th:text="${tempWithdrawal.transactionNote}"></td>
                         <td>
-                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                               th:href="@{/transactions/update-transaction/{id}(id=${tempWithdrawal.id})}">
+                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="Edit">
                                 <i class="lni lni-pencil-alt"></i>
                             </a>
                             <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                               th:href="@{/transactions/delete-transaction/{id}(id=${tempWithdrawal.id})}">
+                               th:href="@{/bank-transactions/delete-transaction/{id}(id=${tempWithdrawal.id})}">
                                 <i class="lni lni-trash-can"></i>
                             </a>
                         </td>
@@ -93,7 +92,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form id="addWithdrawForm" action="#" th:action="@{/transactions/save-account-withdrawal}" th:object="${withdraw}" method="POST">
+                                <form id="addWithdrawForm" action="#" th:action="@{/bank-transactions/save-account-withdrawal}" th:object="${withdraw}" method="POST">
                                     <input type="hidden" th:value="${bankAccount.bankAccountId}" th:field="*{bankAccount.bankAccountId}"/>
                                     <div class="mb-3">
                                         <label for="withdrawDate" class="form-label">Date of Withdrawal</label>
@@ -170,26 +169,28 @@
                             // Prevent form submission if any field is invalid
                             if (!isValid) {
                                 event.preventDefault();
-                            }
-                        });
+                            } else {
+                                event.preventDefault(); // Prevent default form submission
 
-                        $('#addWithdrawForm').on('submit', function (event) {
-                            event.preventDefault(); // Prevent default form submission
+                                $.ajax({
+                                    url: $(this).attr('action'),
+                                    type: 'POST',
+                                    data: $(this).serialize(),
+                                    success: function (response) {
+                                        // Show success message or redirect
+                                        $('#addWithdrawModal').modal('hide'); // Close modal after successful submission
 
-                            $.ajax({
-                                url: $(this).attr('action'),
-                                type: 'POST',
-                                data: $(this).serialize(),
-                                success: function(response) {
-                                    // Show success message or redirect
-                                },
-                                error: function(xhr) {
-                                    // Show error message if there are insufficient funds
-                                    if (xhr.status === 400) {
-                                        alert(xhr.responseText); // Show the custom error message
+                                        // Refresh the page to reflect new data
+                                        window.location.reload();
+                                    },
+                                    error: function (xhr) {
+                                        // Show error message if there are insufficient funds
+                                        if (xhr.status === 400) {
+                                            alert(xhr.responseText); // Show the custom error message
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
                         });
                     });
                 </script>

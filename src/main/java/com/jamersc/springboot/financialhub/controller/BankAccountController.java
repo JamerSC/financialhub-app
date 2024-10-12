@@ -4,10 +4,10 @@ import com.jamersc.springboot.financialhub.dto.BankAccountDto;
 import com.jamersc.springboot.financialhub.dto.BankDto;
 import com.jamersc.springboot.financialhub.model.bank.Bank;
 import com.jamersc.springboot.financialhub.model.bank.BankAccount;
-import com.jamersc.springboot.financialhub.model.bank.Transaction;
+import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
-import com.jamersc.springboot.financialhub.service.bank.TransactionService;
+import com.jamersc.springboot.financialhub.service.bank.BankTransactionService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -30,7 +30,7 @@ public class BankAccountController {
     @Autowired
     private BankService bankService;
     @Autowired
-    private TransactionService transactionService;
+    private BankTransactionService bankTransactionService;
 
     @GetMapping("/banks")
     public String showBankPage(Model model,
@@ -116,9 +116,9 @@ public class BankAccountController {
     @GetMapping("/bank-account-journal/{id}")
     public String bankAccountJournal(@PathVariable(value = "id") Long accountId, Model model) {
         BankAccountDto account = bankAccountService.getBankAccountById(accountId);
-        List<Transaction> transactions = transactionService.findBankAccountById(account.getBankAccountId());
+        List<BankTransaction> bankTransactions = bankTransactionService.findBankAccountById(account.getBankAccountId());
         model.addAttribute("account", account); // bank account by id
-        model.addAttribute("transactions", transactions);
+        model.addAttribute("transactions", bankTransactions);
         return "bank/bank-account-journal";
     }
 

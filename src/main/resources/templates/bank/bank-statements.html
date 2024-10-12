@@ -26,7 +26,6 @@
                             <th>Account Number</th>
                             <th>Balance</th>
                             <th>Bank Name</th>
-                            <th>Bank ID</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -37,11 +36,10 @@
                             <td th:text="${tempAccount.accountNumber}"></td>
                             <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                            <td th:text="${tempAccount.bank.bankId}"></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
-                                   th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="Account Journal">
-                                    <i class="lni lni-library"></i> Journal
+                                   th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="View Journal">
+                                    <i class="lni lni-library"></i>
                                 </a>
                             </td>
                         </tr>

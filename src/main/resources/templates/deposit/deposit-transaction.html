@@ -50,7 +50,7 @@
                         <!-- Create Item Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDepositModal">
-                                <i class="lni lni-notepad"></i> Add Deposit
+                                <i class="lni lni-notepad"></i> Deposit
                             </button>
                         </div>
                     </div>
@@ -65,19 +65,18 @@
                         </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="tempDeposit : ${accountDeposits}">
+                            <tr th:each="tempDeposit : ${listOfDeposits}">
                             <td th:text="${#dates.format(tempDeposit.transactionDate, 'dd MMMM yyyy')}"></td>
                             <td th:text="${tempDeposit.transactionType.convertTransactionType()}"></td>
                             <td th:text="${tempDeposit.transactionAmount != null ? #numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <!--<td th:text="${#numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT')}"></td>-->
                             <td th:text="${tempDeposit.transactionNote}"></td>
                             <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                                   th:href="@{/transactions/update-transaction/{id}(id=${tempDeposit.id})}">
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="Edit">
                                     <i class="lni lni-pencil-alt"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/transactions/delete-deposit-transaction/{id}(id=${tempDeposit.id})}">
+                                   th:href="@{/bank-transactions/delete-deposit-transaction/{id}(id=${tempDeposit.id})}">
                                     <i class="lni lni-trash-can"></i>
                                 </a>
                             </td>
@@ -93,7 +92,7 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form id="addDepositForm" action="#" th:action="@{/transactions/save-account-deposit}" th:object="${deposit}" method="POST">
+                                    <form id="addDepositForm" action="#" th:action="@{/bank-transactions/save-account-deposit}" th:object="${deposit}" method="POST">
                                         <input type="hidden" th:value="${bankAccount.bankAccountId}" th:field="*{bankAccount.bankAccountId}"/>
                                         <div class="mb-3">
                                             <label for="depositDate" class="f  orm-label">Date of Deposit</label>

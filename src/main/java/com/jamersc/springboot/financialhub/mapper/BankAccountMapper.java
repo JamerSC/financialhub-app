@@ -13,6 +13,9 @@ public class BankAccountMapper {
     @Autowired
     private BankMapper bankMapper;
 
+    //@Autowired
+    //private BankTransactionMapper bankTransactionMapper;
+
     public BankAccount toBankEntity(BankAccountDto bankAccountDto) {
 
         if (bankAccountDto == null) {
@@ -25,7 +28,8 @@ public class BankAccountMapper {
         bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
         bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
         bankAccount.setAccountBalance(bankAccountDto.getAccountBalance());
-        //bankAccount.setTransactions(bankAccountDto.getTransactions());
+        /*bankAccount.setBankTransactions(bankTransactionMapper
+                .toBankTransactionEntityList(bankAccountDto.getTransactions()));*/
         bankAccount.setCreatedBy(bankAccountDto.getCreatedBy());
         bankAccount.setCreatedAt(bankAccountDto.getCreatedAt());
         bankAccount.setUpdatedBy(bankAccountDto.getUpdatedBy());
@@ -46,7 +50,8 @@ public class BankAccountMapper {
         bankAccountDto.setAccountHolderName(bankAccount.getAccountHolderName());
         bankAccountDto.setAccountNumber(bankAccount.getAccountNumber());
         bankAccountDto.setAccountBalance(bankAccount.getAccountBalance());
-        //bankAccountDto.setTransactions(bankAccount.getTransactions());
+        /*bankAccountDto.setTransactions(bankTransactionMapper
+                .toBankTransactionDtoList(bankAccount.getBankTransactions()));*/
         bankAccountDto.setCreatedBy(bankAccount.getCreatedBy());
         bankAccountDto.setCreatedAt(bankAccount.getCreatedAt());
         bankAccountDto.setUpdatedBy(bankAccount.getUpdatedBy());

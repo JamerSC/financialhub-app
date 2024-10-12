@@ -1,9 +1,7 @@
 package com.jamersc.springboot.financialhub.model.bank;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -13,8 +11,8 @@ import java.util.Date;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
-public class Transaction {
+@ToString(exclude = {"bankAccount"})
+public class BankTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,12 +23,12 @@ public class Transaction {
     @JoinColumn(name = "bank_account_id")
     private BankAccount bankAccount;
 
-    @Enumerated(EnumType.STRING)
-    private TransactionType transactionType;
-
     @Column(name = "transaction_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "transaction_type")
+    private TransactionType transactionType;
 
     @Column(name = "transaction_amount")
     private Double transactionAmount;

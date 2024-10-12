@@ -68,9 +68,6 @@ public class BankAccountServiceImpl implements BankAccountService{
             bankAccount = bankAccountRepository.findById(bankAccountDto.getBankAccountId()).orElse(new BankAccount());
             bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
-            /*Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
-            Bank bankId = bankRepository.getReferenceById(bank.getBankId());
-            bankAccount.setBank(bankId);*/
             if (bankAccountDto.getBank() != null) {
                 Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
                 Bank bankId = bankRepository.findById(bank.getBankId()).orElse(null);
