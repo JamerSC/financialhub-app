@@ -77,11 +77,11 @@ public class CaseAccount {
     @Column(name = "stage")
     private String stage;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date")
     private Date startDate;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     private Date endDate;
 

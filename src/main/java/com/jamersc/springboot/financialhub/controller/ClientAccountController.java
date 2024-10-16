@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.model.CaseAccount;
 import com.jamersc.springboot.financialhub.model.CaseType;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Status;

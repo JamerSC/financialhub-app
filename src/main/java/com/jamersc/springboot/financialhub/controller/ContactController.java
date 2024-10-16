@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.model.contact.Contact;
 import com.jamersc.springboot.financialhub.model.contact.ContactCategoryType;
 import com.jamersc.springboot.financialhub.model.contact.RegistrationType;
@@ -25,8 +26,8 @@ public class ContactController {
     @GetMapping("/contact-list")
     public String payeeList(Model model) {
         List<Contact> contacts = contactService.getAllContacts();
-        model.addAttribute("contactIndividual", new Contact());
-        model.addAttribute("contactCompany", new Contact());
+        model.addAttribute("contactIndividual", new ContactDto());
+        model.addAttribute("contactCompany", new ContactDto());
         model.addAttribute("contactCategoryType", ContactCategoryType.values());
         model.addAttribute("registrationType", RegistrationType.values());
         model.addAttribute("contacts", contacts);
@@ -34,7 +35,7 @@ public class ContactController {
     }
 
     @PostMapping("/save-contact-individual")
-    public String addContactIndividual(@ModelAttribute("contactIndividual") Contact contactIndividual) {
+    public String addContactIndividual(@ModelAttribute("contactIndividual") ContactDto contactIndividual) {
         String createdBy = getSessionUsername();
         contactService.saveContactIndividual(contactIndividual, createdBy);
         return "redirect:/contacts/contact-list";
@@ -42,12 +43,12 @@ public class ContactController {
 
     @GetMapping("/edit-contact-individual")
     @ResponseBody
-    public Contact updateContactIndividual(Long id) {
+    public ContactDto updateContactIndividual(Long id) {
         return contactService.getContactById(id);
     }
 
     @PostMapping("/save-contact-company")
-    public String addContactCompany(@ModelAttribute("contactCompany") Contact contactCompany) {
+    public String addContactCompany(@ModelAttribute("contactCompany") ContactDto contactCompany) {
         String createdBy = getSessionUsername();
         contactService.saveContactCompany(contactCompany, createdBy);
         return "redirect:/contacts/contact-list";

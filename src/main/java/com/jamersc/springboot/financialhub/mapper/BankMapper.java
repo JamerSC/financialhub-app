@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class BankMapper {
 
-    public Bank toBankEntity(BankDto bankDto) {
+    public static Bank toBankEntity(BankDto bankDto) {
         if (bankDto == null) {
             return null;
         }
@@ -29,7 +29,7 @@ public class BankMapper {
         return bank;
     }
 
-    public BankDto toBankDto(Bank bank) {
+    public static BankDto toBankDto(Bank bank) {
         if (bank == null) {
             return null;
         }

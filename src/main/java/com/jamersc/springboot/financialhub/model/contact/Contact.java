@@ -1,10 +1,8 @@
 package com.jamersc.springboot.financialhub.model.contact;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -34,7 +32,7 @@ public class Contact {
     private ContactCategoryType contactCategoryType;
 
     @Column(name = "engagement_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date engagementDate;
 
     @Column(name = "best_channel_to_contact")
@@ -54,7 +52,7 @@ public class Contact {
     @OneToOne(mappedBy = "contact",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH})
-    private ContactAdditionalDetails additionalDetails;
+    private ContactDetails additionalDetails;
 
     // Bidirectional relationships
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {

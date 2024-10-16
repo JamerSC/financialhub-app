@@ -28,17 +28,13 @@ import java.util.List;
 @Service
 public class BankAccountServiceImpl implements BankAccountService{
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BankAccountServiceImpl.class);
     @Autowired
     private BankAccountRepository bankAccountRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private BankRepository bankRepository;
-    @Autowired
-    private BankMapper bankMapper;
-    @Autowired
-    private BankAccountMapper bankAccountMapper;
 
     @Override
     public List<BankAccount> getAllBankAccounts() {
@@ -54,7 +50,8 @@ public class BankAccountServiceImpl implements BankAccountService{
     public BankAccountDto getBankAccountById(Long id) {
         BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
         if (bankAccount != null) {
-            BankAccountDto bankAccountDto = bankAccountMapper.toBankAccountDto(bankAccount);
+            // Mapper static method no need for autowired
+            BankAccountDto bankAccountDto = BankAccountMapper.toBankAccountDto(bankAccount);
             logger.info("Bank account details: " + bankAccountDto);
             return bankAccountDto;
         }
@@ -69,7 +66,8 @@ public class BankAccountServiceImpl implements BankAccountService{
             bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
             if (bankAccountDto.getBank() != null) {
-                Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
+                // Mapper static method no need for autowired
+                Bank bank = BankMapper.toBankEntity(bankAccountDto.getBank());
                 Bank bankId = bankRepository.findById(bank.getBankId()).orElse(null);
                 bankAccount.setBank(bankId);
             }
@@ -85,7 +83,8 @@ public class BankAccountServiceImpl implements BankAccountService{
                 bankAccount.setCreatedBy(createdBy.getId());
                 bankAccount.setUpdatedBy(createdBy.getId());
             }
-            Bank bankId = bankMapper.toBankEntity(bankAccountDto.getBank());
+            // Mapper static method no need for autowired
+            Bank bankId = BankMapper.toBankEntity(bankAccountDto.getBank());
             bankAccount.setBank(bankId);
             bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());

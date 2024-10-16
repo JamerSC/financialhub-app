@@ -7,16 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-@AllArgsConstructor
 public class BankAccountMapper {
 
-    @Autowired
-    private BankMapper bankMapper;
-
-    //@Autowired
-    //private BankTransactionMapper bankTransactionMapper;
-
-    public BankAccount toBankEntity(BankAccountDto bankAccountDto) {
+    public static BankAccount toBankEntity(BankAccountDto bankAccountDto) {
 
         if (bankAccountDto == null) {
             return null;
@@ -24,7 +17,8 @@ public class BankAccountMapper {
 
         BankAccount bankAccount = new BankAccount();
         bankAccount.setBankAccountId(bankAccountDto.getBankAccountId());
-        bankAccount.setBank(bankMapper.toBankEntity(bankAccountDto.getBank())); // change DTO to Entity
+        // static method no need for @Autowired or new bean avoid circular dependency resolution
+        bankAccount.setBank(BankMapper.toBankEntity(bankAccountDto.getBank())); // change DTO to Entity
         bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
         bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
         bankAccount.setAccountBalance(bankAccountDto.getAccountBalance());
@@ -38,7 +32,7 @@ public class BankAccountMapper {
         return bankAccount;
     }
 
-    public BankAccountDto toBankAccountDto(BankAccount bankAccount) {
+    public static BankAccountDto toBankAccountDto(BankAccount bankAccount) {
 
         if (bankAccount == null) {
             return null;
@@ -46,7 +40,8 @@ public class BankAccountMapper {
 
         BankAccountDto bankAccountDto = new BankAccountDto();
         bankAccountDto.setBankAccountId(bankAccount.getBankAccountId());
-        bankAccountDto.setBank(bankMapper.toBankDto(bankAccount.getBank())); // change DTO to Entity
+        // static method no need for @Autowired or new bean avoid circular dependency resolution
+        bankAccountDto.setBank(BankMapper.toBankDto(bankAccount.getBank())); // change DTO to Entity
         bankAccountDto.setAccountHolderName(bankAccount.getAccountHolderName());
         bankAccountDto.setAccountNumber(bankAccount.getAccountNumber());
         bankAccountDto.setAccountBalance(bankAccount.getAccountBalance());

@@ -10,7 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 @ToString
-public class ContactAdditionalDetails {
+public class ContactDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

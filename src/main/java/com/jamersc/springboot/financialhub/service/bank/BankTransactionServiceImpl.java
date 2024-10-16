@@ -26,7 +26,7 @@ import java.util.List;
 @Service
 public class BankTransactionServiceImpl implements BankTransactionService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BankTransactionServiceImpl.class);
     @Autowired
     private BankTransactionRepository bankTransactionRepository;
     @Autowired
