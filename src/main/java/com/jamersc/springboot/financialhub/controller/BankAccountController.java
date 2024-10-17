@@ -2,9 +2,9 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.BankAccountDto;
 import com.jamersc.springboot.financialhub.dto.BankDto;
-import com.jamersc.springboot.financialhub.model.bank.Bank;
-import com.jamersc.springboot.financialhub.model.bank.BankAccount;
-import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
+import com.jamersc.springboot.financialhub.model.Bank;
+import com.jamersc.springboot.financialhub.model.BankAccount;
+import com.jamersc.springboot.financialhub.model.BankTransaction;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
 import com.jamersc.springboot.financialhub.service.bank.BankTransactionService;

@@ -1,21 +1,18 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.dto.BankAccountDto;
-import com.jamersc.springboot.financialhub.dto.BankDto;
 import com.jamersc.springboot.financialhub.mapper.BankAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.BankMapper;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.model.bank.Bank;
-import com.jamersc.springboot.financialhub.model.bank.BankAccount;
+import com.jamersc.springboot.financialhub.model.Bank;
+import com.jamersc.springboot.financialhub.model.BankAccount;
 import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import com.jamersc.springboot.financialhub.repository.BankRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
-import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +49,7 @@ public class BankAccountServiceImpl implements BankAccountService{
         if (bankAccount != null) {
             // Mapper static method no need for autowired
             BankAccountDto bankAccountDto = BankAccountMapper.toBankAccountDto(bankAccount);
-            logger.info("Bank account details: " + bankAccountDto);
+            logger.info("Find Bank account details: " + bankAccountDto);
             return bankAccountDto;
         }
         throw new RuntimeException("Bank Account ID not found!");

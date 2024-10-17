@@ -1,5 +1,8 @@
 package com.jamersc.springboot.financialhub.service.client_accounts;
 
+import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
+import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
+import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.model.CaseAccount;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.ClientAccountType;
@@ -7,8 +10,11 @@ import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CaseAccountRepository;
 import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.service.bank.BankAccountServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +25,11 @@ import java.util.List;
 @AllArgsConstructor
 public class ClientAccountServiceImpl implements ClientAccountService{
 
+    private static final Logger logger = LoggerFactory.getLogger(BankAccountServiceImpl.class);
     @Autowired
     private ClientAccountRepository clientAccountRepository;
-
     @Autowired
     private CaseAccountRepository caseAccountRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -34,48 +39,59 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     }
 
     @Override
-    public ClientAccount getClientAccountById(Long id) {
-        return clientAccountRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Client Account ID not found."));
+    public ClientAccountDto getClientAccountById(Long id) {
+        ClientAccount clientAccount = clientAccountRepository.findById(id).orElse(null);
+        if (clientAccount != null) {
+            ClientAccountDto clientAccountDto = ClientAccountMapper.toClientAccountDto(clientAccount);
+            logger.info("Finding Client Account ID: " + clientAccountDto);
+            return clientAccountDto;
+        }
+        throw new RuntimeException("Client Account ID not found!");
     }
 
     @Override
-    public void saveClientAccount(ClientAccount clientAccount, String username) {
+    public void saveClientAccount(ClientAccountDto clientAccountDto, String username) {
         CaseAccount caseAccount;
-        ClientAccount account = new ClientAccount();
-        account.setClient(clientAccount.getClient());
-        account.setAccountTitle(clientAccount.getAccountTitle());
+        ClientAccount account;
+
+
+        account= new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
+        account.setAccountTitle(clientAccountDto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
         User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
         }
+        logger.info("Saving new client account: " + account);
         clientAccountRepository.save(account);
 
-        if (clientAccount.getCaseAccount() != null) {
+        // Update
+        if (clientAccountDto.getCaseAccount() != null) {
             caseAccount = new CaseAccount();
             caseAccount.setClientAccount(account);
-            caseAccount.setCaseType(clientAccount.getCaseAccount().getCaseType());
-            caseAccount.setCaseTitle(clientAccount.getAccountTitle());
-            caseAccount.setDocketNo(clientAccount.getCaseAccount().getDocketNo());
-            caseAccount.setNature(clientAccount.getCaseAccount().getNature());
-            caseAccount.setCourt(clientAccount.getCaseAccount().getCourt());
-            caseAccount.setBranch(clientAccount.getCaseAccount().getBranch());
-            caseAccount.setJudge(clientAccount.getCaseAccount().getJudge());
-            caseAccount.setCourtEmail(clientAccount.getCaseAccount().getCourtEmail());
-            caseAccount.setProsecutor(clientAccount.getCaseAccount().getProsecutor());
-            caseAccount.setProsecutorEmail(clientAccount.getCaseAccount().getProsecutorEmail());
-            caseAccount.setProsecutorOffice(clientAccount.getCaseAccount().getProsecutorOffice());
-            caseAccount.setOpposingParty(clientAccount.getCaseAccount().getOpposingParty());
-            caseAccount.setOpposingCounsel(clientAccount.getCaseAccount().getOpposingCounsel());
-            caseAccount.setCounselEmail(clientAccount.getCaseAccount().getCounselEmail());
-            caseAccount.setStatus(clientAccount.getCaseAccount().getStatus());
-            caseAccount.setStage(clientAccount.getCaseAccount().getStage());
-            caseAccount.setStartDate(clientAccount.getCaseAccount().getStartDate());
-            caseAccount.setEndDate(clientAccount.getCaseAccount().getEndDate());
+            caseAccount.setCaseType(clientAccountDto.getCaseAccount().getCaseType());
+            caseAccount.setCaseTitle(clientAccountDto.getAccountTitle());
+            caseAccount.setDocketNo(clientAccountDto.getCaseAccount().getDocketNo());
+            caseAccount.setNature(clientAccountDto.getCaseAccount().getNature());
+            caseAccount.setCourt(clientAccountDto.getCaseAccount().getCourt());
+            caseAccount.setBranch(clientAccountDto.getCaseAccount().getBranch());
+            caseAccount.setJudge(clientAccountDto.getCaseAccount().getJudge());
+            caseAccount.setCourtEmail(clientAccountDto.getCaseAccount().getCourtEmail());
+            caseAccount.setProsecutor(clientAccountDto.getCaseAccount().getProsecutor());
+            caseAccount.setProsecutorEmail(clientAccountDto.getCaseAccount().getProsecutorEmail());
+            caseAccount.setProsecutorOffice(clientAccountDto.getCaseAccount().getProsecutorOffice());
+            caseAccount.setOpposingParty(clientAccountDto.getCaseAccount().getOpposingParty());
+            caseAccount.setOpposingCounsel(clientAccountDto.getCaseAccount().getOpposingCounsel());
+            caseAccount.setCounselEmail(clientAccountDto.getCaseAccount().getCounselEmail());
+            caseAccount.setStatus(clientAccountDto.getCaseAccount().getStatus());
+            caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
+            caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
+            caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
             caseAccount.setCreatedBy(account.getCreatedBy());
             caseAccount.setUpdatedBy(account.getCreatedBy());
+            logger.info("Saving case account details: " + caseAccount);
             caseAccountRepository.save(caseAccount);
         }
     }

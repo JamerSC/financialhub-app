@@ -1,8 +1,7 @@
 package com.jamersc.springboot.financialhub.dto;
 
-import com.jamersc.springboot.financialhub.model.ClientAccount;
-import com.jamersc.springboot.financialhub.model.contact.*;
-import jakarta.persistence.*;
+import com.jamersc.springboot.financialhub.model.ContactCategoryType;
+import com.jamersc.springboot.financialhub.model.ContactType;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 

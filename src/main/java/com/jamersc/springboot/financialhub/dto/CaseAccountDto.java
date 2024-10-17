@@ -18,7 +18,7 @@ import java.util.Date;
 public class CaseAccountDto {
 
     private Long caseId;
-    private ClientAccount clientAccount; // one to one ClientAccount
+    private ClientAccountDto clientAccount; // one to one ClientAccount
     private CaseType caseType;
     private String caseTitle;
     private String docketNo;

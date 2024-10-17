@@ -1,11 +1,18 @@
 package com.jamersc.springboot.financialhub.service.client_accounts;
 
+import com.jamersc.springboot.financialhub.dto.CaseAccountDto;
+import com.jamersc.springboot.financialhub.mapper.CaseAccountMapper;
+import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
+import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.model.CaseAccount;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.CaseAccountRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.service.bank.BankAccountServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +23,9 @@ import java.util.List;
 @AllArgsConstructor
 public class CaseServiceImpl implements CaseService{
 
+    private static final Logger logger = LoggerFactory.getLogger(CaseServiceImpl.class);
     @Autowired
     private CaseAccountRepository caseAccountRepository;
-
     @Autowired
     private UserRepository userRepository;
 
@@ -28,24 +35,30 @@ public class CaseServiceImpl implements CaseService{
     }
 
     @Override
-    public CaseAccount findCaseById(Long id) {
-        return caseAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Case ID not found."));
+    public CaseAccountDto findCaseById(Long id) {
+        CaseAccount caseAccount = caseAccountRepository.findById(id).orElse(null);
+        if (caseAccount != null) {
+            CaseAccountDto caseAccountDto = CaseAccountMapper.toCaseAccountDto(caseAccount);
+            logger.info("Find case account details" + caseAccountDto);
+            return caseAccountDto;
+        }
+        throw new RuntimeException("Case Account ID not found!");
+        //return caseAccountRepository.findById(id).orElseThrow(() -> new RuntimeException("Case ID not found."));
     }
 
     @Override
-    public void save(CaseAccount newCase, String username) {
-        CaseAccount tempCase;
-        tempCase = newCase;
-        tempCase.setCaseType(newCase.getCaseType());
-        tempCase.setStatus(newCase.getStatus());
-        //tempCase.setClient(newCase.getClient());
-        tempCase.setClientAccount(newCase.getClientAccount());
+    public void save(CaseAccountDto caseAccountDto, String username) {
+        CaseAccount caseAccount;
+        caseAccount = new CaseAccount();
+        caseAccount.setCaseType(caseAccountDto.getCaseType());
+        caseAccount.setStatus(caseAccountDto.getStatus());
+        caseAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(caseAccountDto.getClientAccount()));
         User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
-            tempCase.setCreatedBy(createdBy.getId());
-            tempCase.setUpdatedBy(createdBy.getId());
+            caseAccount.setCreatedBy(createdBy.getId());
+            caseAccount.setUpdatedBy(createdBy.getId());
         }
-        caseAccountRepository.save(tempCase);
+        caseAccountRepository.save(caseAccount);
     }
 
     @Override

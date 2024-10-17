@@ -2,9 +2,9 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.BankAccountDto;
 import com.jamersc.springboot.financialhub.dto.BankTransactionDto;
-import com.jamersc.springboot.financialhub.model.bank.Bank;
-import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
-import com.jamersc.springboot.financialhub.model.bank.TransactionType;
+import com.jamersc.springboot.financialhub.model.Bank;
+import com.jamersc.springboot.financialhub.model.BankTransaction;
+import com.jamersc.springboot.financialhub.model.BankTransactionType;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountService;
 import com.jamersc.springboot.financialhub.service.bank.BankService;
 import com.jamersc.springboot.financialhub.service.bank.BankTransactionService;
@@ -48,7 +48,7 @@ public class BankTransactionController {
     @GetMapping("/deposit-transaction/{id}")
     public String depositTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
-        List<BankTransaction> listOfDeposits = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), TransactionType.DEPOSIT);
+        List<BankTransaction> listOfDeposits = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.DEPOSIT);
         BankTransactionDto deposit = new BankTransactionDto();
         deposit.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);
@@ -82,7 +82,7 @@ public class BankTransactionController {
     @GetMapping("/withdrawal-transaction/{id}")
     public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
-        List<BankTransaction> listOfWithdrawals = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), TransactionType.WITHDRAWAL);
+        List<BankTransaction> listOfWithdrawals = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.WITHDRAWAL);
         BankTransactionDto withdraw = new BankTransactionDto();
         withdraw.setBankAccount(bankAccount);
         model.addAttribute("bankAccount", bankAccount);

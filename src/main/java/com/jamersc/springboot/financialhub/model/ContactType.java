@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.model.contact;
+package com.jamersc.springboot.financialhub.model;
 
 public enum ContactType {
     INDIVIDUAL,

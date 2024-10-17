@@ -1,8 +1,6 @@
 package com.jamersc.springboot.financialhub.dto;
 
-import com.jamersc.springboot.financialhub.model.contact.Contact;
-import com.jamersc.springboot.financialhub.model.contact.RegistrationType;
-import jakarta.persistence.*;
+import com.jamersc.springboot.financialhub.model.RegistrationType;
 import lombok.*;
 
 @Getter

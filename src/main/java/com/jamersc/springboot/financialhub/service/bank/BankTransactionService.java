@@ -1,8 +1,8 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.dto.BankTransactionDto;
-import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
-import com.jamersc.springboot.financialhub.model.bank.TransactionType;
+import com.jamersc.springboot.financialhub.model.BankTransaction;
+import com.jamersc.springboot.financialhub.model.BankTransactionType;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface BankTransactionService {
 
     List<BankTransaction> getTransactionType(String transactionType);
 
-    List<BankTransaction> findTransactionsByBankAccountAndType(Long bankAccountId, TransactionType transactionType);  // New method
+    List<BankTransaction> findTransactionsByBankAccountAndType(Long bankAccountId, BankTransactionType transactionType);  // New method
 
     void save(BankTransactionDto bankTransactionDto, String username);
 

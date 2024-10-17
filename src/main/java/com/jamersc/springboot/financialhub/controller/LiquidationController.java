@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.model.contact.Contact;
+import com.jamersc.springboot.financialhub.model.Contact;
 import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;

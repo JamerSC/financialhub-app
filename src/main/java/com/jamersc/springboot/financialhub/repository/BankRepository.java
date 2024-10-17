@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.repository;
 
-import com.jamersc.springboot.financialhub.model.bank.Bank;
+import com.jamersc.springboot.financialhub.model.Bank;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

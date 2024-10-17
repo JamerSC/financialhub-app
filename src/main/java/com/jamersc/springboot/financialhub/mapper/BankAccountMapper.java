@@ -1,9 +1,7 @@
 package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.BankAccountDto;
-import com.jamersc.springboot.financialhub.model.bank.BankAccount;
-import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.jamersc.springboot.financialhub.model.BankAccount;
 import org.springframework.stereotype.Component;
 
 @Component

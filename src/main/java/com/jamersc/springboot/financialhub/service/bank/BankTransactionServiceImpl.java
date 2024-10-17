@@ -4,13 +4,12 @@ import com.jamersc.springboot.financialhub.config.InsufficientFundsException;
 import com.jamersc.springboot.financialhub.dto.BankTransactionDto;
 import com.jamersc.springboot.financialhub.mapper.BankTransactionMapper;
 import com.jamersc.springboot.financialhub.model.User;
-import com.jamersc.springboot.financialhub.model.bank.BankAccount;
-import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
-import com.jamersc.springboot.financialhub.model.bank.TransactionType;
+import com.jamersc.springboot.financialhub.model.BankAccount;
+import com.jamersc.springboot.financialhub.model.BankTransaction;
+import com.jamersc.springboot.financialhub.model.BankTransactionType;
 import com.jamersc.springboot.financialhub.repository.BankAccountRepository;
 import com.jamersc.springboot.financialhub.repository.BankTransactionRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
-import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -64,7 +63,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     }
 
     @Override
-    public List<BankTransaction> findTransactionsByBankAccountAndType(Long bankAccountId, TransactionType transactionType) {
+    public List<BankTransaction> findTransactionsByBankAccountAndType(Long bankAccountId, BankTransactionType transactionType) {
         return bankTransactionRepository.findByBankAccount_BankAccountIdAndTransactionType(bankAccountId, transactionType);
     }
 
@@ -97,7 +96,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
 
         depositTransaction = new BankTransaction();
         depositTransaction.setBankAccount(account);
-        depositTransaction.setTransactionType(TransactionType.DEPOSIT);
+        depositTransaction.setTransactionType(BankTransactionType.DEPOSIT);
         depositTransaction.setTransactionDate(deposit.getTransactionDate());
         depositTransaction.setTransactionAmount(deposit.getTransactionAmount());
         depositTransaction.setTransactionNote(deposit.getTransactionNote());
@@ -131,7 +130,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         withdrawTransaction = new BankTransaction();
         withdrawTransaction.setBankAccount(account);
         withdrawTransaction.setTransactionDate(withdraw.getTransactionDate());
-        withdrawTransaction.setTransactionType(TransactionType.WITHDRAWAL);
+        withdrawTransaction.setTransactionType(BankTransactionType.WITHDRAWAL);
         withdrawTransaction.setTransactionAmount(withdraw.getTransactionAmount());
         withdrawTransaction.setTransactionNote(withdraw.getTransactionNote());
         if (user != null) {

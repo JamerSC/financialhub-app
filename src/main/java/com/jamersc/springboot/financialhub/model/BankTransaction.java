@@ -1,41 +1,40 @@
 package com.jamersc.springboot.financialhub.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
 @Entity
-@Table(name = "client_accounts")
-@AllArgsConstructor
+@Table(name = "bank_transactions")
 @NoArgsConstructor
+@AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"client", "caseAccount"})
-public class ClientAccount {
+@ToString(exclude = {"bankAccount"})
+public class BankTransaction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "client_account_id")
-    private Long clientAccountId;
+    @Column(name = "id")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_id")
-    @JsonIgnore
-    private Contact client;
+    @JoinColumn(name = "bank_account_id")
+    private BankAccount bankAccount;
 
-    @Column(name = "account_title")
-    private String accountTitle;
+    @Column(name = "transaction_date")
+    private Date transactionDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "account_type")
-    private ClientAccountType clientAccountType;
+    @Column(name = "transaction_type")
+    private BankTransactionType transactionType;
 
-    @OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
-            CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.DETACH, CascadeType.REFRESH})
-    private CaseAccount caseAccount;
+    @Column(name = "transaction_amount")
+    private Double transactionAmount;
+
+    @Column(name = "transaction_note")
+    private String transactionNote;
 
     @Column(name = "created_by")
     private Long createdBy;
@@ -47,7 +46,7 @@ public class ClientAccount {
     @Column(name = "updated_by")
     private Long updatedBy;
 
-    //@Column(name = "updated_at")
+    @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
@@ -62,3 +61,4 @@ public class ClientAccount {
         updatedAt = new Date();
     }
 }
+

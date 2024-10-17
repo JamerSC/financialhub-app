@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.dto;
 
-import com.jamersc.springboot.financialhub.model.contact.Contact;
 import lombok.*;
 
 @Getter

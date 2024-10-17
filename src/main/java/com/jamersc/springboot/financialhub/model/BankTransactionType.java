@@ -1,6 +1,6 @@
-package com.jamersc.springboot.financialhub.model.bank;
+package com.jamersc.springboot.financialhub.model;
 
-public enum TransactionType {
+public enum BankTransactionType {
     DEPOSIT,
     WITHDRAWAL;
 

@@ -1,8 +1,7 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
-import com.jamersc.springboot.financialhub.dto.ContactCompanyDto;
 import com.jamersc.springboot.financialhub.dto.ContactDto;
-import com.jamersc.springboot.financialhub.model.contact.Contact;
+import com.jamersc.springboot.financialhub.model.Contact;
 
 import java.util.List;
 

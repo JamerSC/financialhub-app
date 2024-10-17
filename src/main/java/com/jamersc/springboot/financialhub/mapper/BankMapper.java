@@ -1,12 +1,8 @@
 package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.BankDto;
-import com.jamersc.springboot.financialhub.model.bank.Bank;
+import com.jamersc.springboot.financialhub.model.Bank;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Component

@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.ContactCompanyDto;
-import com.jamersc.springboot.financialhub.model.contact.ContactCompany;
+import com.jamersc.springboot.financialhub.model.ContactCompany;
 import org.springframework.stereotype.Component;
 
 @Component

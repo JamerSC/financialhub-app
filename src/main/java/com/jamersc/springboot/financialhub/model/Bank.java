@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.model.bank;
+package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,37 +8,32 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "bank_accounts")
+@Table(name = "banks")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"bank", "bankTransactions"})
-public class BankAccount {
+@ToString(exclude = "accounts")
+public class Bank {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long bankAccountId;
+    private Long bankId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "bank_id")
-    private Bank bank;
+    @Column(name = "name", nullable = false)
+    private String name;
 
-    @Column(name = "account_holder_name")
-    private String accountHolderName;
+    @Column(name = "abbreviation")
+    private String abbreviation;
 
-    @Column(name = "account_number")
-    private String accountNumber;
+    @Column(name = "branch")
+    private String branch;
 
-    @Column(name = "account_balance")
-    private Double accountBalance;
-
-    @OneToMany(mappedBy = "bankAccount", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
-            CascadeType.REFRESH, CascadeType.DETACH
-    })
-    private List<BankTransaction> bankTransactions = new ArrayList<>();
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<BankAccount> accounts = new ArrayList<>();
 
     @Column(name = "created_by")
     private Long createdBy;
@@ -65,3 +60,4 @@ public class BankAccount {
         updatedAt = new Date();
     }
 }
+

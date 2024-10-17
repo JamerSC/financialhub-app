@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.service.bank;
 
 import com.jamersc.springboot.financialhub.dto.BankDto;
-import com.jamersc.springboot.financialhub.model.bank.Bank;
+import com.jamersc.springboot.financialhub.model.Bank;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

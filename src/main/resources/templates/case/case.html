@@ -273,7 +273,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-5">
                                             <label for="editClient" class="form-label">Client</label>
-                                            <select id="editClient" class="form-select" th:field="*{client}" required>
+                                            <select id="editClient" class="form-select" th:field="*{client}" disabled>
                                                 <option value="" selected>Select client...</option>
                                                 <option th:each="tempClient : ${clients}"
                                                         th:value="${tempClient.contactId}"

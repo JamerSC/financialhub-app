@@ -1,6 +1,5 @@
-package com.jamersc.springboot.financialhub.model.contact;
+package com.jamersc.springboot.financialhub.model;
 
-import com.jamersc.springboot.financialhub.model.ClientAccount;
 import jakarta.persistence.*;
 import lombok.*;
 

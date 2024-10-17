@@ -1,9 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ContactDto;
-import com.jamersc.springboot.financialhub.model.contact.Contact;
-import com.jamersc.springboot.financialhub.model.contact.ContactCategoryType;
-import com.jamersc.springboot.financialhub.model.contact.RegistrationType;
+import com.jamersc.springboot.financialhub.model.Contact;
+import com.jamersc.springboot.financialhub.model.ContactCategoryType;
+import com.jamersc.springboot.financialhub.model.RegistrationType;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

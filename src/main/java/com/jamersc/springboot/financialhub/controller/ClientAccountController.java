@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.model.CaseType;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Status;
@@ -21,18 +22,14 @@ public class ClientAccountController {
 
     @Autowired
     private ClientAccountService clientAccountService;
-
-    @Autowired
-    private CaseService caseService;
-
     @Autowired
     private ContactService contactService;
 
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
         model.addAttribute("accountCases", clientAccountService.getAllClientAccounts());
-        model.addAttribute("account", new ClientAccount());
-        model.addAttribute("updateAccount", new ClientAccount());
+        model.addAttribute("account", new ClientAccountDto());
+        model.addAttribute("updateAccount", new ClientAccountDto());
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("caseType", CaseType.values());
         model.addAttribute("status", Status.values());
@@ -40,7 +37,7 @@ public class ClientAccountController {
     }
 
     @PostMapping("/add-case-account")
-    public String addNewCase(@ModelAttribute("account") ClientAccount caseAccount, Model model) {
+    public String addNewCase(@ModelAttribute("account") ClientAccountDto caseAccount, Model model) {
         String username = getSessionUserName();
         clientAccountService.saveClientAccount(caseAccount, username);
         return "redirect:/client-account/list-of-cases";
@@ -48,7 +45,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-case-account")
     @ResponseBody
-    public ClientAccount editCaseAccount(Long id) {
+    public ClientAccountDto editCaseAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 

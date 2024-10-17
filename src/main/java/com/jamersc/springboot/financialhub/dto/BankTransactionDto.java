@@ -1,6 +1,6 @@
 package com.jamersc.springboot.financialhub.dto;
 
-import com.jamersc.springboot.financialhub.model.bank.TransactionType;
+import com.jamersc.springboot.financialhub.model.BankTransactionType;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -17,7 +17,7 @@ public class BankTransactionDto {
     private BankAccountDto bankAccount;  // @ManyToOne - Nested BankAccountDto
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
-    private TransactionType transactionType;
+    private BankTransactionType transactionType;
     private Double transactionAmount;
     private String transactionNote;
     private Long createdBy;

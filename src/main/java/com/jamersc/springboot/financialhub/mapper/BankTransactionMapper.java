@@ -1,7 +1,7 @@
 package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.BankTransactionDto;
-import com.jamersc.springboot.financialhub.model.bank.BankTransaction;
+import com.jamersc.springboot.financialhub.model.BankTransaction;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

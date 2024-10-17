@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.model;
 
-import com.jamersc.springboot.financialhub.model.contact.Contact;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
