@@ -22,7 +22,6 @@ public class ClientAccount {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
-    @JsonIgnore
     private Contact client;
 
     @Column(name = "account_title")

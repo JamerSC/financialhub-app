@@ -1,4 +1,4 @@
-package com.jamersc.springboot.financialhub.config;
+package com.jamersc.springboot.financialhub.converter;
 
 import com.jamersc.springboot.financialhub.dto.BankDto;
 import com.jamersc.springboot.financialhub.service.bank.BankService;

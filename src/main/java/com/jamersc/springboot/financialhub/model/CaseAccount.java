@@ -24,7 +24,6 @@ public class CaseAccount {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "client_account_id")
-    @JsonIgnore
     private ClientAccount clientAccount;
 
     @Enumerated(EnumType.STRING)
