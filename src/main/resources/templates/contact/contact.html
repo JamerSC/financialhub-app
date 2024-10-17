@@ -39,10 +39,12 @@
                     <tbody>
                     <tr th:each="tempContact : ${contacts}">
                         <td>
+                            <a th:href="@{/contacts/{id}/contact-info(id=${tempContact.contactId})}" class="text-dark">
                             <span th:if="${tempContact.individual != null}"
                                   th:text="${#strings.concat(tempContact.individual.firstName, ' ', tempContact.individual.lastName)}"></span>
                             <span th:if="${tempContact.company != null}"
                                   th:text="${tempContact.company.companyName}"></span>
+                            </a>
                         </td>
                         <td th:text="${tempContact.contactType.convertContactType()}"></td>
                         <td th:text="${tempContact.contactCategoryType.convertContactCategoryType()}"></td>

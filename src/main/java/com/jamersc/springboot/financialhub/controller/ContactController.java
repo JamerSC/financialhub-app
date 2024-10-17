@@ -54,6 +54,13 @@ public class ContactController {
         return "redirect:/contacts/contact-list";
     }
 
+    @GetMapping("/{id}/contact-info")
+    public String getContactInformation(@PathVariable(value = "id") Long id, Model model) {
+        ContactDto contactDto = contactService.getContactById(id);
+        model.addAttribute("contact", contactDto);
+        return "contact/contact-info";
+    }
+
     private String getSessionUsername() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.getName();

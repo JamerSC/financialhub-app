@@ -1,8 +1,13 @@
 package com.jamersc.springboot.financialhub.mapper;
 
+import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.ContactDto;
+import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Contact;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class ContactMapper {
@@ -19,10 +24,10 @@ public class ContactMapper {
         contact.setContactCategoryType(contactDto.getContactCategoryType());
         contact.setEngagementDate(contactDto.getEngagementDate());
         contact.setBestChannelToContact(contactDto.getBestChannelToContact());
-        //contact.setIndividual(ContactIndividualMapper.toContactIndividualEntity(contactDto.getIndividual()));
-        //contact.setCompany(ContactCompanyMapper.toContactCompanyEntity(contactDto.getCompany()));
-        //contact.setAdditionalDetails(ContactDetailsMapper.toContactDetailsEntity(contactDto.getAdditionalDetails()));
-        //contact.setClientAccounts(contactDto.getClientAccounts()); // Assuming ClientAccount is mapped as it is.
+        contact.setIndividual(ContactIndividualMapper.toContactIndividualEntity(contactDto.getIndividual()));
+        contact.setCompany(ContactCompanyMapper.toContactCompanyEntity(contactDto.getCompany()));
+        contact.setAdditionalDetails(ContactDetailsMapper.toContactDetailsEntity(contactDto.getAdditionalDetails()));
+        //contact.setClientAccounts(ClientAccountMapper.toClientAccountEntities(contactDto.getClientAccounts())); // Assuming ClientAccount is mapped as it is.
         contact.setCreatedBy(contactDto.getCreatedBy());
         contact.setCreatedAt(contactDto.getCreatedAt());
         contact.setUpdatedBy(contactDto.getUpdatedBy());
@@ -45,8 +50,8 @@ public class ContactMapper {
         contactDto.setBestChannelToContact(contact.getBestChannelToContact());
         contactDto.setIndividual(ContactIndividualMapper.toContactIndividualDto(contact.getIndividual()));
         contactDto.setCompany(ContactCompanyMapper.toContactCompanyDto(contact.getCompany()));
+        //contactDto.setClientAccounts(ClientAccountMapper.toClientAccountDtos(contact.getClientAccounts()));
         contactDto.setAdditionalDetails(ContactDetailsMapper.toContactDetailsDto(contact.getAdditionalDetails()));
-        //contactDto.setClientAccounts(contact.getClientAccounts()); // Assuming ClientAccount is already mapped.
         contactDto.setCreatedBy(contact.getCreatedBy());
         contactDto.setCreatedAt(contact.getCreatedAt());
         contactDto.setUpdatedBy(contact.getUpdatedBy());
@@ -54,7 +59,4 @@ public class ContactMapper {
 
         return contactDto;
     }
-
-
-
 }

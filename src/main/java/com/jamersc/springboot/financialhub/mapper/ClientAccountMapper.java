@@ -4,6 +4,9 @@ import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Component
 public class ClientAccountMapper {
 
@@ -41,5 +44,18 @@ public class ClientAccountMapper {
         clientAccountDto.setUpdatedBy(clientAccount.getUpdatedBy());
         clientAccountDto.setUpdatedAt(clientAccount.getUpdatedAt());
         return  clientAccountDto;
+    }
+
+    // List conversion methods
+    public static List<ClientAccount> toClientAccountEntities(List<ClientAccountDto> clientAccountDtos) {
+        return clientAccountDtos.stream()
+                .map(ClientAccountMapper::toClientAccountEntity)
+                .collect(Collectors.toList());
+    }
+
+    public static List<ClientAccountDto> toClientAccountDtos(List<ClientAccount> clientAccounts) {
+        return clientAccounts.stream()
+                .map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toList());
     }
 }
