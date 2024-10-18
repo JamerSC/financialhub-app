@@ -227,7 +227,213 @@
                 </div>
             </div>
         </div>
+
+        <!-- Individual Update Contact Form Modal -->
+        <div class="modal fade" id="editIndividualModal" tabindex="-1" aria-labelledby="editIndividualModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editIndividualModalLabel">Individual (Update Contact) </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editIndividualContactForm" action="#" th:action="@{/contacts/update-contact-individual}"
+                              th:object="${updateContactIndividual}" method="POST">
+                            <div><input type="hidden" class="form-control" id="individualContactId" th:field="*{contactId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <label for="editIndividualCategoryType">Individual Category</label>
+                                    <select class="form-control" id="editIndividualCategoryType" th:field="*{contactCategoryType}" required>
+                                        <option value="" selected>Choose individual category ...</option>
+                                        <option th:each="category : ${contactCategoryType}"
+                                                th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- First row with 5 columns for Title, First Name, Middle Name, Last Name, Suffix -->
+                            <div class="row mb-3">
+                                <div class="col-md-2">
+                                    <label for="editIndividualTitle" class="form-label">Title</label>
+                                    <select id="editIndividualTitle" class="form-select" th:field="*{individual.title}">
+                                        <option value="" selected>Choose...</option>  <!-- Ensuring a value is present -->
+                                        <option th:value="Mr.">Mr.</option>
+                                        <option th:value="Ms.">Ms.</option>
+                                        <option th:value="Mrs.">Mrs.</option>
+                                        <option th:value="Dr.">Dr.</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editIndividualFirstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="editIndividualFirstName" placeholder="First name ..." th:field="*{individual.firstName}" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="editIndividualMiddleName" class="form-label">Middle Name</label>
+                                    <input type="text" class="form-control" id="editIndividualMiddleName" placeholder="Middle name if applicable ..." th:field="*{individual.middleName}">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editIndividualLastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="editIndividualLastName" placeholder="Last name ..." th:field="*{individual.lastName}" required>
+                                </div>
+                                <div class="col-md-2">
+                                    <label for="editIndividualSuffix" class="form-label">Suffix</label>
+                                    <select id="editIndividualSuffix" class="form-select" th:field="*{individual.suffix}">
+                                        <option value="" selected>Choose...</option>
+                                        <option th:value="Jr.">Jr.</option>
+                                        <option th:value="Sr.">Sr.</option>
+                                        <option th:value="III">III</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- Other fields -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editIndividualMobileNumber" class="form-label">Mobile Number</label>
+                                    <input type="text" class="form-control" id="editIndividualMobileNumber" placeholder="Mobile number" th:field="*{individual.mobileNumber}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editIndividualTitle" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editIndividualEmail" placeholder="Email add ..." th:field="*{individual.emailAddress}" required>
+                                </div>
+                            </div>
+                            <div class="col-12 mb-3">
+                                <label for="editIndividualAddress" class="form-label">Address</label>
+                                <input type="text" class="form-control" id="editIndividualAddress" placeholder="Home/Office Address" th:field="*{individual.address}" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editIndividualChannel" class="form-label">Best Channel to Contact</label>
+                                    <input type="text" class="form-control" id="editIndividualChannel" placeholder="Channel to contact" th:field="*{bestChannelToContact}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editIndividualEngagementDate" class="form-label">Engagement Date</label>
+                                    <input type="date" class="form-control" id="editIndividualEngagementDate" th:field="*{engagementDate}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <label for="editIndividualDesignationFor" class="form-label">Designation/For</label>
+                                    <input type="text" class="form-control" id="editIndividualDesignationFor" placeholder="Designation/For" th:field="*{additionalDetails.designationFor}">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="editIndividualBankName" class="form-label">Bank name</label>
+                                    <input type="text" class="form-control" id="editIndividualBankName" placeholder="Bank name" th:field="*{additionalDetails.bankName}">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="editIndividualAccountNo" class="form-label">Account no.</label>
+                                    <input type="text" class="form-control" id="editIndividualAccountNo" placeholder="Account number" th:field="*{additionalDetails.accountNo}">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Company Contact Update Form Modal -->
+        <div class="modal fade" id="editCompanyModal" tabindex="-1" aria-labelledby="editCompanyModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editCompanyModalLabel">Company (Update Contact)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editContactCompanyForm" action="#" th:action="@{/contacts/update-contact-company}"
+                              th:object="${updateContactCompany}" method="POST">
+                            <div><input type="hidden" class="form-control" id="companyContactId" th:field="*{contactId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-5">
+                                    <label for="editCompanyCategoryType">Company Category</label>
+                                    <select class="form-control" id="editCompanyCategoryType" th:field="*{contactCategoryType}" required>
+                                        <option value="" selected>Choose company category ...</option>
+                                        <option th:each="category : ${contactCategoryType}" th:value="${category}" th:text="${category.convertContactCategoryType()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- First row with 5 columns for Title, First Name, Middle Name, Last Name, Suffix -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editCompanyName" class="form-label">Company Name</label>
+                                    <input type="text" class="form-control" id="editCompanyName" th:field="*{company.companyName}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editRegistrationType">Registration type</label>
+                                    <select class="form-control" id="editRegistrationType" th:field="*{company.registrationType}" required>
+                                        <option value="" selected>Choose registration type ...</option>
+                                        <option th:each="registration : ${registrationType}" th:value="${registration}" th:text="${registration.convertRegistrationType()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!--  -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editRepresentativeName" class="form-label">Representative Name</label>
+                                    <input type="text" class="form-control" id="editRepresentativeName" placeholder="Representative Name ..." th:field="*{company.representativeName}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editRepresentativeDesignation" class="form-label">Representative Designation</label>
+                                    <input type="text" class="form-control" id="editRepresentativeDesignation" placeholder="Representative Designation ..." th:field="*{company.representativeDesignation}" required>
+                                </div>
+                            </div>
+                            <!-- Other fields -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editCompanyMobileNumber" class="form-label">Mobile Number</label>
+                                    <input type="text" class="form-control" id="editCompanyMobileNumber" th:field="*{company.mobileNumber}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editCompanyEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editCompanyEmail" th:field="*{company.emailAddress}" required>
+                                </div>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label for="editCompanyAddress" class="form-label">Company Address</label>
+                                <input type="text" class="form-control" id="editCompanyAddress" placeholder="1234 Main St" th:field="*{company.address}" required>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editCompanyChannel" class="form-label">Best Channel to Contact</label>
+                                    <input type="text" class="form-control" id="editCompanyChannel" placeholder="Channel to contact" th:field="*{bestChannelToContact}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editCompanyEngagementDate" class="form-label">Engagement Date</label>
+                                    <input type="date" class="form-control" id="editCompanyEngagementDate" th:field="*{engagementDate}">
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-sm-3">
+                                    <label for="editCompanyDesignationFor" class="form-label">Designation/For</label>
+                                    <input type="text" class="form-control" id="editCompanyDesignationFor" placeholder="Designation/For" th:field="*{additionalDetails.designationFor}">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="editCompanyBankName" class="form-label">Bank name</label>
+                                    <input type="text" class="form-control" id="editCompanyBankName" placeholder="Bank name" th:field="*{additionalDetails.bankName}">
+                                </div>
+                                <div class="col-sm-3">
+                                    <label for="editCompanyAccountNo" class="form-label">Account no.</label>
+                                    <input type="text" class="form-control" id="editCompanyAccountNo" placeholder="Account number" th:field="*{additionalDetails.accountNo}">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
+
+
 
 </body>
 </html>

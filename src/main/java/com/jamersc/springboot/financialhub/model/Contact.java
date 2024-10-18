@@ -57,7 +57,6 @@ public class Contact {
     @OneToMany(mappedBy = "client", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    //@JsonIgnore
     private List<ClientAccount> clientAccounts = new ArrayList<>();
 
     @Column(name = "created_by")

@@ -27,7 +27,9 @@ public class ContactController {
     public String payeeList(Model model) {
         List<Contact> contacts = contactService.getAllContacts();
         model.addAttribute("contactIndividual", new ContactDto());
+        model.addAttribute("updateContactIndividual", new ContactDto());
         model.addAttribute("contactCompany", new ContactDto());
+        model.addAttribute("updateContactCompany", new ContactDto());
         model.addAttribute("contactCategoryType", ContactCategoryType.values());
         model.addAttribute("registrationType", RegistrationType.values());
         model.addAttribute("contacts", contacts);
@@ -41,14 +43,36 @@ public class ContactController {
         return "redirect:/contacts/contact-list";
     }
 
-    @GetMapping("/edit-contact-individual")
+    // edit individual contact
+    @GetMapping("/{id}/edit-individual-contact")
     @ResponseBody
-    public ContactDto updateContactIndividual(Long id) {
+    public ContactDto findIndividualContact(@PathVariable(value = "id") Long id) {
         return contactService.getContactById(id);
+    }
+
+    @PostMapping("/update-contact-individual")
+    public String updateContactIndividual(@ModelAttribute("updateContactIndividual") ContactDto contactIndividual) {
+        String createdBy = getSessionUsername();
+        contactService.saveContactIndividual(contactIndividual, createdBy);
+        return "redirect:/contacts/contact-list";
     }
 
     @PostMapping("/save-contact-company")
     public String addContactCompany(@ModelAttribute("contactCompany") ContactDto contactCompany) {
+        String createdBy = getSessionUsername();
+        contactService.saveContactCompany(contactCompany, createdBy);
+        return "redirect:/contacts/contact-list";
+    }
+
+    // edit individual contact
+    @GetMapping("/{id}/edit-company-contact")
+    @ResponseBody
+    public ContactDto findCompanyContact(@PathVariable(value = "id") Long id) {
+        return contactService.getContactById(id);
+    }
+
+    @PostMapping("/update-contact-company")
+    public String updateContactCompany(@ModelAttribute("updateContactCompany") ContactDto contactCompany) {
         String createdBy = getSessionUsername();
         contactService.saveContactCompany(contactCompany, createdBy);
         return "redirect:/contacts/contact-list";
