@@ -13,7 +13,11 @@ public interface ContactService {
 
     void saveContactIndividual(ContactDto contactIndividual, String username);
 
+    void updateContactIndividual(ContactDto contactIndividual, String username);
+
     void saveContactCompany(ContactDto contactCompany, String username);
+
+    void updateContactCompany(ContactDto contactIndividual, String username);
 
     void deleteContactById(Long contactId);
 

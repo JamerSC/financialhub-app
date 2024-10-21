@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @AllArgsConstructor
@@ -83,6 +85,71 @@ public class ContactServiceImpl implements ContactService {
     }
 
     @Override
+    public void updateContactIndividual(ContactDto contactIndividual, String username) {
+        Contact contact;
+        ContactIndividual individual;
+        ContactDetails details;
+        User updatedBy = userRepo.findByUsername(username);
+
+        // Update Contact
+        if (contactIndividual.getContactId() != null) {
+            contact = contactRepository.findById(contactIndividual.getContactId()).orElse(new Contact());
+            contact.setContactCategoryType(contactIndividual.getContactCategoryType());
+            contact.setEngagementDate(contactIndividual.getEngagementDate());
+            contact.setBestChannelToContact(contactIndividual.getBestChannelToContact());
+
+            if (username != null) {
+                contact.setUpdatedBy(updatedBy.getId());
+            }
+
+            logger.info("Updating contact: " + contact);
+            contactRepository.save(contact);
+
+            // Track if any updates are made to the individual or details
+            boolean individualUpdated = false;
+            boolean detailsUpdated = false;
+
+            // Update or create individual
+            if (contactIndividual.getIndividual() != null) {
+                individual = contactIndividualRepository.findById(contactIndividual.getIndividual().getIndividualId())
+                        .orElse(new ContactIndividual()); // Create new if not found
+                System.out.println(individual);
+                individual.setTitle(contactIndividual.getIndividual().getTitle());
+                individual.setLastName(contactIndividual.getIndividual().getLastName());
+                individual.setFirstName(contactIndividual.getIndividual().getFirstName());
+                individual.setMiddleName(contactIndividual.getIndividual().getMiddleName());
+                individual.setSuffix(contactIndividual.getIndividual().getSuffix());
+                individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
+                individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
+                individual.setAddress(contactIndividual.getIndividual().getAddress());
+                logger.info("Saving individual: " + individual);
+                contactIndividualRepository.save(individual);
+
+                individualUpdated = true; // Track that an update was made
+            }
+            // Update or create additional details
+            if (contactIndividual.getAdditionalDetails() != null) {
+                details = contactDetailsRepository.findById(contactIndividual.getAdditionalDetails().getDetailId())
+                        .orElse(new ContactDetails()); // Create new if not found
+                System.out.println(details);
+                details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
+                details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
+                details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
+                logger.info("Updating details: " + details);
+                contactDetailsRepository.save(details);
+
+                detailsUpdated = true; // Track that an update was made
+            }
+            // If individual or details were updated, update the contact's updated date
+            if (individualUpdated || detailsUpdated) {
+                contact.setUpdatedBy(updatedBy.getId());
+                contactRepository.save(contact);
+                logger.info("Updated contact updatedDate: " + contact.getUpdatedAt());
+            }
+        }
+    }
+
+    @Override
     public void saveContactCompany(ContactDto contactCompany, String username) {
         Contact contact;
         ContactCompany company;
@@ -112,6 +179,11 @@ public class ContactServiceImpl implements ContactService {
             logger.info("Saving company other details: " + details);
             contactDetailsRepository.save(details);
         }
+    }
+
+    @Override
+    public void updateContactCompany(ContactDto contactIndividual, String username) {
+
     }
 
     @Override

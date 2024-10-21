@@ -94,6 +94,7 @@
                                 $('#editIndividualContactForm #editIndividualEngagementDate').val(formatDate(tempContact.engagementDate));
 
                                 if (tempContact.individual) {
+                                    $('#editIndividualContactForm #editIndividualId').val(tempContact.individual.individualId);
                                     $('#editIndividualContactForm #editIndividualTitle').val(tempContact.individual.title);
                                     $('#editIndividualContactForm #editIndividualFirstName').val(tempContact.individual.firstName);
                                     $('#editIndividualContactForm #editIndividualMiddleName').val(tempContact.individual.middleName);
@@ -105,6 +106,7 @@
                                 }
 
                                 if (tempContact.additionalDetails) {
+                                    $('#editIndividualContactForm #editDetailId').val(tempContact.additionalDetails.detailId);
                                     $('#editIndividualContactForm #editIndividualDesignationFor').val(tempContact.additionalDetails.designationFor);
                                     $('#editIndividualContactForm #editIndividualBankName').val(tempContact.additionalDetails.bankName);
                                     $('#editIndividualContactForm #editIndividualAccountNo').val(tempContact.additionalDetails.accountNo);

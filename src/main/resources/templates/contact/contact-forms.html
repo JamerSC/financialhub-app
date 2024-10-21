@@ -240,6 +240,8 @@
                         <form class="row g-3 mb-3" id="editIndividualContactForm" action="#" th:action="@{/contacts/update-contact-individual}"
                               th:object="${updateContactIndividual}" method="POST">
                             <div><input type="hidden" class="form-control" id="individualContactId" th:field="*{contactId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editIndividualId" th:field="*{individual.individualId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editDetailId" th:field="*{additionalDetails.detailId}"/></div>
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-5">

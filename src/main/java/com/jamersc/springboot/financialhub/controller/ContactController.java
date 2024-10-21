@@ -52,8 +52,8 @@ public class ContactController {
 
     @PostMapping("/update-contact-individual")
     public String updateContactIndividual(@ModelAttribute("updateContactIndividual") ContactDto contactIndividual) {
-        String createdBy = getSessionUsername();
-        contactService.saveContactIndividual(contactIndividual, createdBy);
+        String updatedBy = getSessionUsername();
+        contactService.updateContactIndividual(contactIndividual, updatedBy);
         return "redirect:/contacts/contact-list";
     }
 
