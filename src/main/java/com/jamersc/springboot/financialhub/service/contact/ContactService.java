@@ -17,7 +17,7 @@ public interface ContactService {
 
     void saveContactCompany(ContactDto contactCompany, String username);
 
-    void updateContactCompany(ContactDto contactIndividual, String username);
+    void updateContactCompany(ContactDto contactCompany, String username);
 
     void deleteContactById(Long contactId);
 

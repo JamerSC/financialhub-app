@@ -131,6 +131,7 @@
                                 $('#editContactCompanyForm #editCompanyEngagementDate').val(formatDate(tempContact.engagementDate));
 
                                 if (tempContact.company) {
+                                    $('#editContactCompanyForm #editCompanyId').val(tempContact.company.companyId);
                                     $('#editContactCompanyForm #editCompanyName').val(tempContact.company.companyName);
                                     $('#editContactCompanyForm #editRegistrationType').val(tempContact.company.registrationType);
                                     $('#editContactCompanyForm #editRepresentativeName').val(tempContact.company.representativeName);
@@ -141,6 +142,7 @@
                                 }
 
                                 if (tempContact.additionalDetails) {
+                                    $('#editContactCompanyForm #editCompanyDetailId').val(tempContact.additionalDetails.detailId);
                                     $('#editContactCompanyForm #editCompanyDesignationFor').val(tempContact.additionalDetails.designationFor);
                                     $('#editContactCompanyForm #editCompanyBankName').val(tempContact.additionalDetails.bankName);
                                     $('#editContactCompanyForm #editCompanyAccountNo').val(tempContact.additionalDetails.accountNo);

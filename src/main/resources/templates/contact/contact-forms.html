@@ -348,6 +348,8 @@
                         <form class="row g-3 mb-3" id="editContactCompanyForm" action="#" th:action="@{/contacts/update-contact-company}"
                               th:object="${updateContactCompany}" method="POST">
                             <div><input type="hidden" class="form-control" id="companyContactId" th:field="*{contactId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editCompanyId" th:field="*{company.companyId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editCompanyDetailId" th:field="*{additionalDetails.detailId}"/></div>
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-5">

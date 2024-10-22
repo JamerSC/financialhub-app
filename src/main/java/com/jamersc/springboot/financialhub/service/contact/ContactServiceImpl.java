@@ -14,8 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
@@ -25,7 +24,7 @@ public class ContactServiceImpl implements ContactService {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     @Autowired
-    private UserRepository userRepo;
+    private UserRepository userRepository;
     @Autowired
     private ContactRepository contactRepository;
     @Autowired
@@ -57,9 +56,13 @@ public class ContactServiceImpl implements ContactService {
         ContactIndividual individual;
         ContactDetails details;
 
-        contact = ContactMapper.toContactEntity(contactIndividual);
+        User createdBy = userRepository.findByUsername(username);
+
+        contact = new Contact();
         contact.setContactType(ContactType.INDIVIDUAL);
-        User createdBy = userRepo.findByUsername(username);
+        contact.setContactCategoryType(contactIndividual.getContactCategoryType());
+        contact.setBestChannelToContact(contactIndividual.getBestChannelToContact());
+        contact.setEngagementDate(contactIndividual.getEngagementDate());
 
         if (username != null) {
             contact.setCreatedBy(createdBy.getId());
@@ -70,15 +73,26 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.save(contact);
 
         if (contactIndividual.getIndividual() != null){
-            individual = ContactIndividualMapper.toContactIndividualEntity(contactIndividual.getIndividual());
+            individual = new ContactIndividual();
             individual.setContact(contact);
+            individual.setTitle(contactIndividual.getIndividual().getTitle());
+            individual.setLastName(contactIndividual.getIndividual().getLastName());
+            individual.setFirstName(contactIndividual.getIndividual().getFirstName());
+            individual.setMiddleName(contactIndividual.getIndividual().getMiddleName());
+            individual.setSuffix(contactIndividual.getIndividual().getSuffix());
+            individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
+            individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
+            individual.setAddress(contactIndividual.getIndividual().getAddress());
             logger.info("Saving contact individual: " + individual);
             contactIndividualRepository.save(individual);
         }
 
         if (contactIndividual.getAdditionalDetails() != null) {
-            details = ContactDetailsMapper.toContactDetailsEntity(contactIndividual.getAdditionalDetails());
+            details = new ContactDetails();
             details.setContact(contact);
+            details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
+            details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
+            details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
             logger.info("Saving individual other details: " + details);
             contactDetailsRepository.save(details);
         }
@@ -87,9 +101,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public void updateContactIndividual(ContactDto contactIndividual, String username) {
         Contact contact;
-        ContactIndividual individual;
-        ContactDetails details;
-        User updatedBy = userRepo.findByUsername(username);
+        User updatedBy = userRepository.findByUsername(username);
 
         // Update Contact
         if (contactIndividual.getContactId() != null) {
@@ -111,9 +123,9 @@ public class ContactServiceImpl implements ContactService {
 
             // Update or create individual
             if (contactIndividual.getIndividual() != null) {
-                individual = contactIndividualRepository.findById(contactIndividual.getIndividual().getIndividualId())
+                ContactIndividual individual = contactIndividualRepository.findById(contactIndividual.getIndividual().getIndividualId())
                         .orElse(new ContactIndividual()); // Create new if not found
-                System.out.println(individual);
+                individual.setContact(contact);
                 individual.setTitle(contactIndividual.getIndividual().getTitle());
                 individual.setLastName(contactIndividual.getIndividual().getLastName());
                 individual.setFirstName(contactIndividual.getIndividual().getFirstName());
@@ -122,29 +134,28 @@ public class ContactServiceImpl implements ContactService {
                 individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
                 individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
                 individual.setAddress(contactIndividual.getIndividual().getAddress());
-                logger.info("Saving individual: " + individual);
+                logger.info("Updating contact individual: " + individual);
                 contactIndividualRepository.save(individual);
 
                 individualUpdated = true; // Track that an update was made
             }
             // Update or create additional details
             if (contactIndividual.getAdditionalDetails() != null) {
-                details = contactDetailsRepository.findById(contactIndividual.getAdditionalDetails().getDetailId())
-                        .orElse(new ContactDetails()); // Create new if not found
-                System.out.println(details);
+                ContactDetails details = contactDetailsRepository.findById(contactIndividual.getAdditionalDetails().getDetailId())
+                        .orElse(new ContactDetails());
+                details.setContact(contact);
                 details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
                 details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
                 details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
-                logger.info("Updating details: " + details);
+                logger.info("Updating individual details: " + details);
                 contactDetailsRepository.save(details);
 
                 detailsUpdated = true; // Track that an update was made
             }
-            // If individual or details were updated, update the contact's updated date
             if (individualUpdated || detailsUpdated) {
                 contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedAt(new Date()); // Set the updated timestamp
                 contactRepository.save(contact);
-                logger.info("Updated contact updatedDate: " + contact.getUpdatedAt());
             }
         }
     }
@@ -155,9 +166,13 @@ public class ContactServiceImpl implements ContactService {
         ContactCompany company;
         ContactDetails details;
 
-        contact = ContactMapper.toContactEntity(contactCompany);
+        User createdBy = userRepository.findByUsername(username);
+
+        contact = new Contact();
         contact.setContactType(ContactType.COMPANY);
-        User createdBy = userRepo.findByUsername(username);
+        contact.setContactCategoryType(contactCompany.getContactCategoryType());
+        contact.setBestChannelToContact(contactCompany.getBestChannelToContact());
+        contact.setEngagementDate(contactCompany.getEngagementDate());
 
         if (createdBy != null) {
             contact.setCreatedBy(createdBy.getId());
@@ -168,22 +183,87 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.save(contact);
 
         if (contactCompany.getCompany() != null) {
-            company = ContactCompanyMapper.toContactCompanyEntity(contactCompany.getCompany());
+            company = new ContactCompany();
             company.setContact(contact);
+            company.setCompanyName(contactCompany.getCompany().getCompanyName());
+            company.setRegistrationType(contactCompany.getCompany().getRegistrationType());
+            company.setRepresentativeName(contactCompany.getCompany().getRepresentativeName());
+            company.setRepresentativeDesignation(contactCompany.getCompany().getRepresentativeDesignation());
+            company.setMobileNumber(contactCompany.getCompany().getMobileNumber());
+            company.setEmailAddress(contactCompany.getCompany().getEmailAddress());
+            company.setAddress(contactCompany.getCompany().getAddress());
             logger.info("Saving contact company: " + company);
             contactCompanyRepository.save(company);
         }
         if (contactCompany.getAdditionalDetails() != null) {
-            details = ContactDetailsMapper.toContactDetailsEntity(contactCompany.getAdditionalDetails());
+            details = new ContactDetails();
             details.setContact(contact);
+            details.setDesignationFor(contactCompany.getAdditionalDetails().getDesignationFor());
+            details.setBankName(contactCompany.getAdditionalDetails().getBankName());
+            details.setAccountNo(contactCompany.getAdditionalDetails().getAccountNo());
             logger.info("Saving company other details: " + details);
             contactDetailsRepository.save(details);
         }
     }
 
     @Override
-    public void updateContactCompany(ContactDto contactIndividual, String username) {
+    public void updateContactCompany(ContactDto contactCompany, String username) {
+        Contact contact;
+        User updatedBy = userRepository.findByUsername(username);
 
+        if (contactCompany.getContactId() != null) {
+            contact = contactRepository.findById(contactCompany.getContactId()).orElse(new Contact());
+            contact.setContactCategoryType(contactCompany.getContactCategoryType());
+            contact.setEngagementDate(contactCompany.getEngagementDate());
+            contact.setBestChannelToContact(contactCompany.getBestChannelToContact());
+
+            if (username != null) {
+                contact.setUpdatedBy(updatedBy.getId());
+            }
+
+            logger.info("Updating contact: " + contact);
+            contactRepository.save(contact);
+
+            // Track if any updates are made to the company or details
+            boolean companyUpdated = false;
+            boolean detailsUpdated = false;
+
+            if (contactCompany.getCompany() != null) {
+                ContactCompany company = contactCompanyRepository.findById(contactCompany.getCompany().getCompanyId())
+                        .orElse(new ContactCompany());
+                company.setContact(contact);
+                company.setCompanyName(contactCompany.getCompany().getCompanyName());
+                company.setRegistrationType(contactCompany.getCompany().getRegistrationType());
+                company.setRepresentativeName(contactCompany.getCompany().getRepresentativeName());
+                company.setRepresentativeDesignation(contactCompany.getCompany().getRepresentativeDesignation());
+                company.setMobileNumber(contactCompany.getCompany().getMobileNumber());
+                company.setEmailAddress(contactCompany.getCompany().getEmailAddress());
+                company.setAddress(contactCompany.getCompany().getAddress());
+
+                logger.info("Updating contact company " + company);
+                contactCompanyRepository.save(company);
+                companyUpdated = true;
+            }
+
+            if (contactCompany.getAdditionalDetails() != null) {
+                ContactDetails details = contactDetailsRepository.findById(contactCompany.getAdditionalDetails().getDetailId())
+                        .orElse(new ContactDetails()); // Create new if not found
+                details.setContact(contact);
+                details.setDesignationFor(contactCompany.getAdditionalDetails().getDesignationFor());
+                details.setBankName(contactCompany.getAdditionalDetails().getBankName());
+                details.setAccountNo(contactCompany.getAdditionalDetails().getAccountNo());
+                logger.info("Updating company details: " + details);
+                contactDetailsRepository.save(details);
+
+                detailsUpdated = true; // Track that an update was made
+            }
+
+            if (companyUpdated || detailsUpdated) {
+                contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedAt(new Date());
+                contactRepository.save(contact);
+            }
+        }
     }
 
     @Override

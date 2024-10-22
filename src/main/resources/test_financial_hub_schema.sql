@@ -177,7 +177,11 @@ SELECT
     co.address AS company_address,
     ad.designation_for,
     ad.bank_name,
-    ad.account_no
+    ad.account_no,
+    c.created_by,
+    c.created_at,
+    c.updated_by,
+    c.updated_at
 FROM
     contacts c
         LEFT JOIN
