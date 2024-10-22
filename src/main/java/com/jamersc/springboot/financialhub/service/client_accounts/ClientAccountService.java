@@ -11,7 +11,9 @@ public interface ClientAccountService {
 
     ClientAccountDto getClientAccountById(Long id);
 
-    void saveClientAccount(ClientAccountDto clientAccountDto, String username);
+    void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username);
+
+    void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username);
 
     void deleteClientAccountById(Long id);
 }

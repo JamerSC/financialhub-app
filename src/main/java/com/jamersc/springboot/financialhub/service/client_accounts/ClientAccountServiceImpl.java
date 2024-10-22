@@ -3,12 +3,10 @@ package com.jamersc.springboot.financialhub.service.client_accounts;
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.ContactMapper;
-import com.jamersc.springboot.financialhub.model.CaseAccount;
-import com.jamersc.springboot.financialhub.model.ClientAccount;
-import com.jamersc.springboot.financialhub.model.ClientAccountType;
-import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.CaseAccountRepository;
 import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
+import com.jamersc.springboot.financialhub.repository.ContactRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountServiceImpl;
 import jakarta.transaction.Transactional;
@@ -32,6 +30,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     private CaseAccountRepository caseAccountRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private ContactRepository contactRepository;
 
     @Override
     public List<ClientAccount> getAllClientAccounts() {
@@ -50,10 +50,9 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     }
 
     @Override
-    public void saveClientAccount(ClientAccountDto clientAccountDto, String username) {
+    public void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
         CaseAccount caseAccount;
         ClientAccount account;
-
 
         account= new ClientAccount();
         account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
@@ -94,6 +93,64 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving case account details: " + caseAccount);
             caseAccountRepository.save(caseAccount);
         }
+    }
+
+    @Override
+    public void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
+        ClientAccount account;
+        CaseAccount caseAccount;
+
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (clientAccountDto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(clientAccountDto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (clientAccountDto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(clientAccountDto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId()).orElse(null);
+                account.setClient(contactId);
+                //account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
+            }
+            account.setAccountTitle(clientAccountDto.getAccountTitle());
+            //account.setClientAccountType(ClientAccountType.CASE);
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating client's case account: " + account);
+
+            clientAccountRepository.save(account);
+
+            // Update
+            if (clientAccountDto.getCaseAccount() != null) {
+                caseAccount = caseAccountRepository.findById(clientAccountDto.getCaseAccount().getCaseId())
+                        .orElse(new CaseAccount());
+                caseAccount.setClientAccount(account);
+                caseAccount.setCaseType(clientAccountDto.getCaseAccount().getCaseType());
+                caseAccount.setCaseTitle(clientAccountDto.getAccountTitle());
+                caseAccount.setDocketNo(clientAccountDto.getCaseAccount().getDocketNo());
+                caseAccount.setNature(clientAccountDto.getCaseAccount().getNature());
+                caseAccount.setCourt(clientAccountDto.getCaseAccount().getCourt());
+                caseAccount.setBranch(clientAccountDto.getCaseAccount().getBranch());
+                caseAccount.setJudge(clientAccountDto.getCaseAccount().getJudge());
+                caseAccount.setCourtEmail(clientAccountDto.getCaseAccount().getCourtEmail());
+                caseAccount.setProsecutor(clientAccountDto.getCaseAccount().getProsecutor());
+                caseAccount.setProsecutorEmail(clientAccountDto.getCaseAccount().getProsecutorEmail());
+                caseAccount.setProsecutorOffice(clientAccountDto.getCaseAccount().getProsecutorOffice());
+                caseAccount.setOpposingParty(clientAccountDto.getCaseAccount().getOpposingParty());
+                caseAccount.setOpposingCounsel(clientAccountDto.getCaseAccount().getOpposingCounsel());
+                caseAccount.setCounselEmail(clientAccountDto.getCaseAccount().getCounselEmail());
+                caseAccount.setStatus(clientAccountDto.getCaseAccount().getStatus());
+                caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
+                caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
+                caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
+                caseAccount.setCreatedBy(account.getCreatedBy());
+                caseAccount.setUpdatedBy(account.getCreatedBy());
+                logger.info("Updating account details: " + caseAccount);
+
+                caseAccountRepository.save(caseAccount);
+            }
+        }
+
     }
 
     @Override

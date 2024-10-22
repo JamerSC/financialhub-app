@@ -70,7 +70,7 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 mb-3" id="addCaseAccountForm" th:action="@{/client-account/add-case-account}" th:object="${account}" method="POST">
+                                <form class="row g-3 mb-3" id="addCaseAccountForm" th:action="@{/client-account/add-case-account}" th:object="${caseAccount}" method="POST">
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-5">
@@ -206,9 +206,9 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 mb-3" id="editCaseAccountForm" th:action="@{/client-account/update-case-account}" th:object="${updateAccount}" method="POST">
-                                    <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+                                <form class="row g-3 mb-3" id="editCaseAccountForm" th:action="@{/client-account/update-case-account}" th:object="${updateCaseAccount}" method="POST">
                                     <div><input type="hidden" class="form-control" id="clientAccountId" th:field="*{clientAccountId}" /></div>
+                                    <div><input type="hidden" class="form-control" id="editCaseId" th:field="*{caseAccount.caseId}" /></div>
                                     <!-- One column row for state select option -->
                                     <div class="row mb-3">
                                         <div class="col-md-5">
@@ -352,12 +352,11 @@
                         // Populate modal fields with the case data
                         $('#editCaseAccountForm #clientAccountId').val(tempCase.clientAccountId);
                         $('#editCaseAccountForm #editCaseTitle').val(tempCase.accountTitle);
-                        if (tempCase.client && tempCase.client.contactId) {
+                        if (tempCase.client) {
                             $('#editCaseAccountForm #editClient').val(tempCase.client.contactId); // Make sure client is not undefined
-                        } else {
-                            console.warn('Client data is undefined.');
                         }
                         if (tempCase.caseAccount) {
+                            $('#editCaseAccountForm #editCaseId').val(tempCase.caseAccount.caseId);
                             $('#editCaseAccountForm #editCaseType').val(tempCase.caseAccount.caseType);
                             $('#editCaseAccountForm #editDocketNo').val(tempCase.caseAccount.docketNo);
                             $('#editCaseAccountForm #editNature').val(tempCase.caseAccount.nature);
