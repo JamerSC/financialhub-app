@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -80,8 +81,8 @@ public class ContactController {
 
     @GetMapping("/{id}/contact-info")
     public String getContactInformation(@PathVariable(value = "id") Long id, Model model) {
-        ContactDto contactDto = contactService.getContactById(id);
-        model.addAttribute("contact", contactDto);
+        Contact contact = contactService.findByIdWithAccounts(id);
+        model.addAttribute("contact", contact);
         return "contact/contact-info";
     }
 

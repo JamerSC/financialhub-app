@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Transactional
@@ -48,6 +49,11 @@ public class ContactServiceImpl implements ContactService {
             return contactDto;
         }
         throw new RuntimeException("Contact ID not found.");
+    }
+
+    @Override
+    public Contact findByIdWithAccounts(Long contactId) {
+        return contactRepository.findByIdWithAccounts(contactId);
     }
 
     @Override

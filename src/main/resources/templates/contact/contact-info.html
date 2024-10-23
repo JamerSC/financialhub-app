@@ -14,49 +14,95 @@
         <div class="row">
             <div class="col-12">
                 <!-- Contact Details Section -->
-                <h4 class="fw-bold fs-4 mb-4">Contact Information</h4>
+                <h4 class="fw-bold fs-4 mb-4">Contact Summary</h4>
 
                 <div class="row mb-4">
                     <div class="col-md-6">
-                        <h5>Contact Details</h5>
-                        <p><strong>Name:</strong>
+                        <div th:if="${contact.individual != null}">
+                            <h5>Individual Details</h5>
+                            <p><strong>Title:</strong> <span th:text="${contact.individual.title}"></span></p>
+                            <p><strong>First Name:</strong> <span th:text="${contact.individual.firstName}"></span></p>
+                            <p><strong>Last Name:</strong> <span th:text="${contact.individual.lastName}"></span></p>
+                            <p><strong>Email Address:</strong> <span th:text="${contact.individual.emailAddress}"></span></p>
+                            <p><strong>Mobile Number:</strong> <span th:text="${contact.individual.mobileNumber}"></span></p>
+                            <p><strong>Address:</strong> <span th:text="${contact.individual.address}"></span></p>
+                        </div>
+                        <div th:if="${contact.company != null}">
+                            <h5>Company Details</h5>
+                            <p><strong>Company Name:</strong> <span th:text="${contact.company.companyName}"></span></p>
+                            <p><strong>Registration Type:</strong> <span th:text="${contact.company.registrationType}"></span></p>
+                            <p><strong>Representative Name:</strong> <span th:text="${contact.company.representativeName}"></span></p>
+                            <p><strong>Representative Designation:</strong> <span th:text="${contact.company.representativeDesignation}"></span></p>
+                            <p><strong>Email Address:</strong> <span th:text="${contact.company.emailAddress}"></span></p>
+                            <p><strong>Mobile Number:</strong> <span th:text="${contact.company.mobileNumber}"></span></p>
+                            <p><strong>Address:</strong> <span th:text="${contact.company.address}"></span></p>
+                        </div>
+                        <!--<p><strong>Name:</strong>
                             <span th:if="${contact.individual != null}"
                                   th:text="${#strings.concat(contact.individual.firstName, ' ', contact.individual.lastName)}"></span>
                             <span th:if="${contact.company != null}"
                                   th:text="${contact.company.companyName}"></span>
-                        </p>
-                        <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.convertContactType()}"></span></p>
-                        <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.convertContactCategoryType()}"></span></p>
-                        <p><strong>Best Channel to Contact:</strong> <span th:text="${contact.bestChannelToContact}"></span></p>
+                        </p>-->
                     </div>
 
                     <div class="col-md-6">
-                        <h5>Additional Information</h5>
+                        <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.convertContactType()}"></span></p>
+                        <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.convertContactCategoryType()}"></span></p>
+                        <p><strong>Best Channel to Contact:</strong> <span th:text="${contact.bestChannelToContact}"></span></p>
                         <p><strong>Engagement Date:</strong> <span th:text="${#dates.format(contact.engagementDate, 'yyyy-MM-dd')}"></span></p>
-                        <p><strong>Created By:</strong> <span th:text="${contact.createdBy}"></span></p>
-                        <p><strong>Created At:</strong> <span th:text="${#dates.format(contact.createdAt, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
-                        <p><strong>Updated By:</strong> <span th:text="${contact.updatedBy}"></span></p>
-                        <p><strong>Updated At:</strong> <span th:text="${#dates.format(contact.updatedAt, 'yyyy-MM-dd HH:mm:ss')}"></span></p>
+                        <br>
+                        <h5>Internal Additional Details</h5>
+                        <p><strong>Designation/For:</strong> <span th:text="${contact.additionalDetails.designationFor}"></span></p>
+                        <p><strong>Designation/For:</strong> <span th:text="${contact.additionalDetails.bankName}"></span></p>
+                        <p><strong>Account No.:</strong> <span th:text="${contact.additionalDetails.accountNo}"></span></p>
                     </div>
                 </div>
 
-                 Accounts/Transactions Table Section
+                <!-- Conditionally show Individual or Company details -->
+               <!-- <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div th:if="${contact.individual != null}">
+                            <h5>Individual Details</h5>
+                            <p><strong>Title:</strong> <span th:text="${contact.individual.title}"></span></p>
+                            <p><strong>First Name:</strong> <span th:text="${contact.individual.firstName}"></span></p>
+                            <p><strong>Last Name:</strong> <span th:text="${contact.individual.lastName}"></span></p>
+                            <p><strong>Email Address:</strong> <span th:text="${contact.individual.emailAddress}"></span></p>
+                            <p><strong>Mobile Number:</strong> <span th:text="${contact.individual.mobileNumber}"></span></p>
+                            <p><strong>Address:</strong> <span th:text="${contact.individual.address}"></span></p>
+                        </div>
+
+                        <div th:if="${contact.company != null}">
+                            <h5>Company Details</h5>
+                            <p><strong>Company Name:</strong> <span th:text="${contact.company.companyName}"></span></p>
+                            <p><strong>Registration Type:</strong> <span th:text="${contact.company.registrationType}"></span></p>
+                            <p><strong>Representative Name:</strong> <span th:text="${contact.company.representativeName}"></span></p>
+                            <p><strong>Representative Designation:</strong> <span th:text="${contact.company.representativeDesignation}"></span></p>
+                            <p><strong>Email Address:</strong> <span th:text="${contact.company.emailAddress}"></span></p>
+                            <p><strong>Mobile Number:</strong> <span th:text="${contact.company.mobileNumber}"></span></p>
+                            <p><strong>Address:</strong> <span th:text="${contact.company.address}"></span></p>
+                        </div>
+                    </div>
+                </div>-->
+
                 <h5 class="fw-bold mb-3">Accounts/Transactions</h5>
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <th>Account Name</th>
+                        <td>Acc. ID</td>
+                        <th>Account Title</th>
                         <th>Account Type</th>
-                        <th>Balance</th>
-                        <th>Last Transaction Date</th>
+                        <th>Status</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="account : ${contact.clientAccounts}">
-                        <td th:text="${account.accountName}"></td>
-                        <td th:text="${account.accountType}"></td>
-                        <td th:text="${#numbers.formatDecimal(account.balance, 2)}"></td>
-                        <td th:text="${#dates.format(account.lastTransactionDate, 'yyyy-MM-dd')}"></td>
+                    <tr th:if="${#lists.isEmpty(contact.clientAccounts)}">
+                        <td colspan="4" class="text-center">No existing cases/projects...</td>
+                    </tr>
+                    <tr th:each="account : ${contact.clientAccounts}" th:unless="${#lists.isEmpty(contact.clientAccounts)}">
+                        <td th:text="${account.clientAccountId}"></td>
+                        <td th:text="${account.accountTitle}"></td>
+                        <td th:text="${account.clientAccountType.convertAccountType()}"></td>
+                        <td th:text="${account.caseAccount.status.convertStatus()}"></td>
                     </tr>
                     </tbody>
                 </table>

@@ -4,12 +4,15 @@ import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.model.Contact;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ContactService {
 
     List<Contact> getAllContacts();
 
     ContactDto getContactById(Long contactId);
+
+    Contact findByIdWithAccounts(Long contactId);
 
     void saveContactIndividual(ContactDto contactIndividual, String username);
 
