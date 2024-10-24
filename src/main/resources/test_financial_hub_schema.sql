@@ -154,6 +154,9 @@ CREATE TABLE `contact_additional_details` (
 INSERT INTO `contact_additional_details` (`contact_id`, `designation_for`, `bank_name`, `account_no`) 
 VALUES (2, 'IT Solutions Provider', 'Tech Bank', '1234567890');
 
+INSERT INTO `contact_additional_details` (`contact_id`, `designation_for`, `bank_name`, `account_no`) 
+VALUES (9, null, null, null), (11, null, null, null);
+
 SELECT 
     c.contact_id,
     c.contact_type,

@@ -1,9 +1,9 @@
 package com.jamersc.springboot.financialhub.model;
 
 public enum ContactCategoryType {
+    INTERNAL,
     CLIENT,
-    VENDOR,
-    INTERNAL;
+    VENDOR;
 
     public String convertContactCategoryType() {
         // Capitalize the first letter and make the rest lowercase

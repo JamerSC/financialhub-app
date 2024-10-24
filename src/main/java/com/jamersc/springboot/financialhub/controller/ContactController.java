@@ -83,7 +83,15 @@ public class ContactController {
     public String getContactInformation(@PathVariable(value = "id") Long id, Model model) {
         Contact contact = contactService.findByIdWithAccounts(id);
         model.addAttribute("contact", contact);
-        return "contact/contact-info";
+        if (contact.getContactCategoryType() == ContactCategoryType.INTERNAL) {
+            return "contact/contact-info-internal";
+        }
+        else if (contact.getContactCategoryType() == ContactCategoryType.CLIENT) {
+            return "contact/contact-info-client";
+        }
+        else {
+            return "contact/contact-info-vendor";
+        }
     }
 
     private String getSessionUsername() {

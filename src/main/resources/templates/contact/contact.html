@@ -50,9 +50,6 @@
                         <td th:text="${tempContact.contactCategoryType.convertContactCategoryType()}"></td>
                         <td th:text="${tempContact.bestChannelToContact}"></td>
                         <td>
-                            <!--<a class="btn btn-secondary btn-sm" title="view">
-                                <i class="lni lni-eye"></i>
-                            </a>-->
                             <a th:if="${tempContact.individual != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
                                th:href="@{/contacts/{id}/edit-individual-contact(id=${tempContact.contactId})}"
                                class="btn btn-success btn-sm editContactIndividualBtn" title="edit">
