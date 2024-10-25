@@ -39,6 +39,22 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         return clientAccountRepository.findAll();
     }
 
+    // FIND ALL CLIENT ACCOUNT CASES
+    @Override
+    public List<ClientAccount> getAllCaseAccounts() {
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.CASE);
+    }
+
+    @Override
+    public List<ClientAccount> getAllRetainerAccounts() {
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.RETAINER);
+    }
+
+    @Override
+    public List<ClientAccount> getAllProjectAccounts() {
+        return null;
+    }
+
     @Override
     public ClientAccountDto getClientAccountById(Long id) {
         ClientAccount clientAccount = clientAccountRepository.findById(id).orElse(null);

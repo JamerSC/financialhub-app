@@ -45,7 +45,7 @@ public class BankTransactionController {
         return "deposit/deposit-accounts";
     }
 
-    @GetMapping("/deposit-transaction/{id}")
+    @GetMapping("/{id}/deposit-transaction")
     public String depositTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
         List<BankTransaction> listOfDeposits = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.DEPOSIT);
@@ -64,7 +64,7 @@ public class BankTransactionController {
         return "redirect:/bank-transactions/deposit-transaction/" + deposit.getBankAccount().getBankAccountId();
     }
 
-    @GetMapping("/delete-deposit-transaction/{id}")
+    @GetMapping("/{id}/delete-deposit-transaction")
     public String deleteDeposit(@PathVariable(value = "id") Long id) {
         BankTransactionDto bankTransaction = bankTransactionService.getTransactionById(id);
         bankTransactionService.deleteTransactionById(bankTransaction.getId());
@@ -79,7 +79,7 @@ public class BankTransactionController {
         return "withdrawal/withdraw-accounts";
     }
 
-    @GetMapping("/withdrawal-transaction/{id}")
+    @GetMapping("/{id}/withdrawal-transaction")
     public String accountTransaction(@PathVariable(value = "id") Long id, Model model) {
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
         List<BankTransaction> listOfWithdrawals = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.WITHDRAWAL);
@@ -98,7 +98,7 @@ public class BankTransactionController {
         return "redirect:/bank-transactions/withdrawal-transaction/" + withdraw.getBankAccount().getBankAccountId();
     }
 
-    @GetMapping("/delete-transaction/{id}")
+    @GetMapping("/{id}/delete-transaction")
     public String deleteWithdrawal(@PathVariable(value = "id") Long id) {
         if (id == null) {
             // Handle the case where id is null

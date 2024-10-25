@@ -28,11 +28,11 @@
                             <div th:if="${caseSummary.client?.company != null}">
                                 <p><strong>Company Name:</strong> <span  th:text="${caseSummary.client.company.companyName}"></span></p>
                             </div>
-                            <p><strong>Account Type:</strong> <span th:text="${caseSummary.clientAccountType.convertAccountType()}"></span></p>
+                            <p><strong>Account Type:</strong> <span th:text="${caseSummary.clientAccountType.displayClientAccountType()}"></span></p>
                             <br>
                             <h6 class="fw-bold">Case Information</h6>
                             <p><strong>Case Title:</strong> <span th:text="${caseSummary.caseAccount.caseTitle}"></span></p>
-                            <p><strong>Case Type:</strong> <span th:text="${caseSummary.caseAccount.caseType.convertCaseType()}"></span></p>
+                            <p><strong>Case Type:</strong> <span th:text="${caseSummary.caseAccount.caseType.displayCaseType()}"></span></p>
                             <p><strong>Docket No:</strong> <span th:text="${caseSummary.caseAccount.docketNo}"></span></p>
                             <p><strong>Nature:</strong> <span th:text="${caseSummary.caseAccount.nature}"></span></p>
                             <h6 class="fw-bold">Court's info</h6>
@@ -51,7 +51,7 @@
                             <p><strong>Opposing Counsel:</strong> <span th:text="${caseSummary.caseAccount.opposingCounsel}"></span></p>
                             <p><strong>Counsel Email:</strong> <span th:text="${caseSummary.caseAccount.counselEmail}"></span></p>
                             <br>
-                            <p><strong>Status:</strong> <span th:text="${caseSummary.caseAccount.status.convertStatus()}"></span></p>
+                            <p><strong>Status:</strong> <span th:text="${caseSummary.caseAccount.status.displayStatus()}"></span></p>
                             <p><strong>Stage:</strong> <span th:text="${caseSummary.caseAccount.stage}"></span></p>
                             <br>
                             <p><strong>Start Date:</strong> <span th:text="${#dates.format(caseSummary.caseAccount.startDate, 'dd MMMM yyyy')}"></span></p>

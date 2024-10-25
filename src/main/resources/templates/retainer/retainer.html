@@ -15,7 +15,7 @@
             <div class="col-12">
                 <div class="d-flex">
                     <div class="p-1">
-                        <h4 class="fw-bold fs-4">List of Retainers</h4>
+                        <h4 class="fw-bold fs-4">Retainers</h4>
                     </div>
                 </div>
                 <table class="table table-striped shadow">
@@ -23,18 +23,32 @@
                     <tr>
                         <th>Name/Company Name</th>
                         <th>Status</th>
+                        <th>Retainer ID</th>
                         <th>Last Activity</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>People vs. People</td>
-                        <td>In progress</td>
-                        <td>Case Study</td>
+                    <tr th:each="tempRetainer : ${accountRetainers}">
                         <td>
-                            <a th:href="@{/retainers/retainer-activity}" class="btn btn-secondary btn-sm">
-                                <i class="lni lni-eye"></i>
+                            <!--<a th:href="@{/client-account/{id}/case-summary(id=${tempRetainer.clientAccountId})}" class="text-dark" title="view summary">
+                            <span th:if="${tempRetainer.client.individual != null}"
+                                  th:text="${tempRetainer.client.individual.getFullName()}"></span>
+                                <span th:if="${tempRetainer.client.company != null}"
+                                      th:text="${tempRetainer.client.company.companyName}"></span>
+                            </a>-->
+                            <span th:if="${tempRetainer.client.individual != null}"
+                                  th:text="${tempRetainer.client.individual.getFullName()}"></span>
+                            <span th:if="${tempRetainer.client.company != null}"
+                                  th:text="${tempRetainer.client.company.companyName}"></span>
+                        </td>
+                        <td th:text="${tempRetainer.retainerAccount.status.displayStatus()}"></td>
+                        <td th:text="${tempRetainer.retainerAccount.retainerId}"></td>
+                        <td>-</td>
+                        <td>
+                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editCaseAccountBtn"
+                               th:href="@{/client-account/edit-case-account(id=${tempRetainer.clientAccountId})}"  title="edit">
+                                <i class="lni lni-pencil-alt"></i>
                             </a>
                         </td>
                     </tr>

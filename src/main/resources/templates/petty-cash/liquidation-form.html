@@ -48,11 +48,11 @@
                             <!--<td th:text="${liquidation.chargeTo.individual} + ' '+ ${liquidation.chargeTo.contactCategoryType} "></td>-->
                             <td>
                                 <span th:if="${liquidation.chargeTo.individual != null}"
-                                      th:text="${liquidation.chargeTo.individual.firstName} + ' ' + ${liquidation.chargeTo.individual.lastName} + ' ('
-                                      + ${liquidation.chargeTo.contactType.convertContactType()} + '/' + ${liquidation.chargeTo.contactCategoryType.convertContactCategoryType()} + ')'"></span>
+                                      th:text="${liquidation.chargeTo.individual.getFullName()} + ' / '
+                                      + ${liquidation.chargeTo.contactType.displayContactType()} + ' / ' + ${liquidation.chargeTo.contactCategoryType.displayContactCategoryType()}"></span>
                                 <span th:if="${liquidation.chargeTo.company != null}"
-                                      th:text="${liquidation.chargeTo.company.companyName} + ' ('
-                                      + ${liquidation.chargeTo.contactType.convertContactType()} + '/' + ${liquidation.chargeTo.contactCategoryType.convertContactCategoryType()} + ')'"></span>
+                                      th:text="${liquidation.chargeTo.company.companyName} + ' / '
+                                      + ${liquidation.chargeTo.contactType.displayContactType()} + ' / ' + ${liquidation.chargeTo.contactCategoryType.displayContactCategoryType()}"></span>
                             </td>
                             <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
                             <td><input type="checkbox" th:checked="${liquidation.billed}" disabled/></td>
@@ -151,10 +151,10 @@
                                                 <option th:each="contact : ${listOfChargeTo}"
                                                         th:value="${contact.contactId}"
                                                         th:text="${contact.contactType != null && contact.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(contact.individual?.firstName, ' ', contact.individual?.lastName,
-                                                         ' (', contact.contactType.convertContactType(), '/', contact.contactCategoryType.convertContactCategoryType(), ')'))
-                                                         : (#strings.concat(contact.company?.companyName, ' (', contact.contactType.convertContactType(),
-                                                         '/', contact.contactCategoryType.convertContactCategoryType(), ')'))}">
+                                                         (#strings.concat(contact.individual.getFullName(),
+                                                         ' (', contact.contactType.displayContactType(), '/', contact.contactCategoryType.displayContactCategoryType(), ')'))
+                                                         : (#strings.concat(contact.company?.companyName, ' (', contact.contactType.displayContactType(),
+                                                         '/', contact.contactCategoryType.displayContactCategoryType(), ')'))}">
                                                 </option>
                                             </select>
                                             <div class="invalid-feedback">Please select charge to.</div>

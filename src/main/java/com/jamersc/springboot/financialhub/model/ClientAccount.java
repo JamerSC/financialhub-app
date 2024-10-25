@@ -36,6 +36,16 @@ public class ClientAccount {
             CascadeType.DETACH, CascadeType.REFRESH})
     private CaseAccount caseAccount;
 
+    /*@OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private ProjectAccount projectAccount;*/
+
+    @OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private RetainerAccount retainerAccount;
+
     @Column(name = "created_by")
     private Long createdBy;
 

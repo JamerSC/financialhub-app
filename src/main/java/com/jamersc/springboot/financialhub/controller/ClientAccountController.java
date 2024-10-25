@@ -27,7 +27,7 @@ public class ClientAccountController {
 
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
-        model.addAttribute("accountCases", clientAccountService.getAllClientAccounts());
+        model.addAttribute("accountCases", clientAccountService.getAllCaseAccounts());
         model.addAttribute("caseAccount", new ClientAccountDto());
         model.addAttribute("updateCaseAccount", new ClientAccountDto());
         model.addAttribute("clients", contactService.getAllContacts());
@@ -62,6 +62,27 @@ public class ClientAccountController {
         //model.addAttribute("caseSummary", ClientAccountMapper.toClientAccountEntity(caseSummary));
         model.addAttribute("caseSummary", caseSummary);
         return "case/case-summary";
+    }
+
+    @GetMapping("/list-of-retainers")
+    public String listOfRetainers(Model model) {
+        model.addAttribute("accountRetainers", clientAccountService.getAllRetainerAccounts());
+        return "retainer/retainer";
+    }
+
+    @GetMapping("/retainer-activity")
+    public String retainerActivity(Model model) {
+        return "retainer/retainer-activity";
+    }
+
+    @GetMapping("/list-of-projects")
+    public String listOfProjects(Model model) {
+        return "project/project";
+    }
+
+    @GetMapping("/project-summary")
+    public String projectSummary(Model model) {
+        return "project/project-summary";
     }
 
     private String getSessionUserName() {

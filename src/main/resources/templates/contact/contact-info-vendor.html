@@ -24,7 +24,7 @@
                         </div>
                         <div th:if="${contact.company != null}">
                             <p><strong>Company Name:</strong> <span th:text="${contact.company.companyName}"></span></p>
-                            <p><strong>Registration Type:</strong> <span th:text="${contact.company.registrationType}"></span></p>
+                            <p><strong>Registration Type:</strong> <span th:text="${contact.company.registrationType.displayRegistrationType()}"></span></p>
                             <p><strong>Representative Name:</strong> <span th:text="${contact.company.representativeName}"></span></p>
                             <p><strong>Representative Designation:</strong> <span th:text="${contact.company.representativeDesignation}"></span></p>
                             <p><strong>Email Address:</strong> <span th:text="${contact.company.emailAddress}"></span></p>
@@ -32,8 +32,8 @@
                             <p><strong>Address:</strong> <span th:text="${contact.company.address}"></span></p>
                         </div>
                         <div>
-                            <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.convertContactType()}"></span></p>
-                            <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.convertContactCategoryType()}"></span></p>
+                            <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.displayContactType()}"></span></p>
+                            <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.displayContactCategoryType()}"></span></p>
                             <p><strong>Best Channel to Contact:</strong> <span th:if="${contact?.bestChannelToContact}" th:text="${contact.bestChannelToContact}"></span></p>
                             <p><strong>Engagement Date:</strong> <span th:if="${#dates.format(contact?.engagementDate, 'yyyy-MM-dd')}" th:text="${#dates.format(contact.engagementDate, 'yyyy-MM-dd')}"></span></p>
                         </div>

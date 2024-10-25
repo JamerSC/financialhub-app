@@ -51,7 +51,7 @@
                                   th:text="${tempCase.client.company.companyName}"></span>
                             </a>
                         </td>
-                        <td th:text="${tempCase.caseAccount.status.convertStatus()}"></td>
+                        <td th:text="${tempCase.caseAccount.status.displayStatus()}"></td>
                         <td th:text="${tempCase.caseAccount.stage}"></td>
                         <td>-</td>
                         <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'dd MMMM yyyy')}"></td>
@@ -85,7 +85,7 @@
                                                 <option value="" selected>Select case type...</option>
                                                 <option th:each="cases : ${caseType}"
                                                         th:value="${cases}"
-                                                        th:text="${cases.convertCaseType}"></option>
+                                                        th:text="${cases.displayCaseType()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -146,10 +146,10 @@
                                                 <option th:each="tempClient : ${clients}"
                                                         th:value="${tempClient.contactId}"
                                                         th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(tempClient.individual?.firstName, ' ', tempClient.individual?.lastName,
-                                                         ' (', tempClient.contactType.convertContactType(), '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))
-                                                         : (#strings.concat(tempClient.company?.companyName, ' (', tempClient.contactType.convertContactType(),
-                                                         '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))}"></option>
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -175,7 +175,7 @@
                                                 <option value="" selected>Select status...</option>
                                                 <option th:each="tempStatus : ${status}"
                                                         th:value="${tempStatus}"
-                                                        th:text="${tempStatus.convertStatus()}"></option>
+                                                        th:text="${tempStatus.displayStatus()}"></option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">
@@ -223,7 +223,7 @@
                                                 <option value="" selected>Select case type...</option>
                                                 <option th:each="cases : ${caseType}"
                                                         th:value="${cases}"
-                                                        th:text="${cases.convertCaseType}"></option>
+                                                        th:text="${cases.displayCaseType()}"></option>
                                             </select>
                                         </div>
                                     </div>
@@ -284,10 +284,10 @@
                                                 <option th:each="tempClient : ${clients}"
                                                         th:value="${tempClient.contactId}"
                                                         th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(tempClient.individual?.firstName, ' ', tempClient.individual?.lastName,
-                                                         ' (', tempClient.contactType.convertContactType(), '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))
-                                                         : (#strings.concat(tempClient.company?.companyName, ' (', tempClient.contactType.convertContactType(),
-                                                         '/', tempClient.contactCategoryType.convertContactCategoryType(), ')'))}">
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}">
                                                 </option>
                                             </select>
                                         </div>
@@ -314,7 +314,7 @@
                                                 <option value="" selected>Select status...</option>
                                                 <option th:each="tempStatus : ${status}"
                                                         th:value="${tempStatus}"
-                                                        th:text="${tempStatus.convertStatus()}"></option>
+                                                        th:text="${tempStatus.displayStatus()}"></option>
                                             </select>
                                         </div>
                                         <div class="col-md-6">

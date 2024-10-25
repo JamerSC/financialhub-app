@@ -1,14 +1,21 @@
 package com.jamersc.springboot.financialhub.model;
 
-public enum Status {
-    OPEN,
-    IN_PROGRESS,
-    PENDING,
-    COMPLETED,
-    CLOSED;
+import lombok.Getter;
 
-    public String convertStatus() {
-        String lowerCaseName = name().toLowerCase();
-        return lowerCaseName.substring(0, 1).toUpperCase() + lowerCaseName.substring(1);
+public enum Status {
+    OPEN("Open"),
+    IN_PROGRESS("In Progress"),
+    PENDING("Pending"),
+    COMPLETED("Pending"),
+    CLOSED("Closed");
+
+    private final String statusType;
+
+    Status(String statusType) {
+        this.statusType = statusType;
+    }
+
+    public String displayStatus() {
+        return statusType;
     }
 }

@@ -238,10 +238,6 @@ CREATE TABLE `client_case_details` (
     `end_date` date NULL,
 	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
     `stage`  varchar(255) NOT NULL,
-    #`created_by` int,
-    #`created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
-    #`updated_by` int,	
-    #E`updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`case_id`)
 );
@@ -295,6 +291,7 @@ VALUES
 SELECT 
     `a`.`client_account_id`,
     `a`.`account_title`,
+    `a`.`account_type`,
     `c`.`case_id`,
     `c`.`case_type`,
     `c`.`case_title`,
@@ -302,9 +299,13 @@ SELECT
     `c`.`nature`,
     `ct`.`contact_id` AS contacts_id,
     `ct`.`contact_type`,
-    `ci`.`title` AS individual_title,
-    `ci`.`first_name` AS individual_first_name,
-    `ci`.`last_name` AS individual_last_name,
+     CONCAT(
+           IFNULL(`ci`.`title`, ''), ' ',
+           IFNULL(`ci`.`first_name`, ''), ' ',
+           IFNULL(`ci`.`middle_name`, ''), ' ',
+           IFNULL(`ci`.`last_name`, ''), ' ',
+           IFNULL(`ci`.`suffix`, '')
+       ) AS full_name,
     `ci`.`mobile_number` AS individual_mobile,
     `ci`.`email_address` AS individual_email,
     `cc`.`company_name` AS company_name,
@@ -331,8 +332,78 @@ FROM
         AND ct.contact_type = 'INDIVIDUAL'
         LEFT JOIN
     `contact_company` cc ON ct.contact_id = cc.contact_id
-        AND ct.contact_type = 'COMPANY';
+        AND ct.contact_type = 'COMPANY'
+        WHERE `a`.`account_type` = 'CASE';
 
+# DROP TABLE `client_retainer_details`;
+CREATE TABLE `client_retainer_details` (
+	`retainer_id` int NOT NULL AUTO_INCREMENT,
+    `client_account_id` int NOT NULL,
+	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
+    FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
+    PRIMARY KEY (`retainer_id`)
+);
+
+# NEW CLIENT ACCOUNT FOR RETAINER
+INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
+VALUES (1, 'John  Doe Sr.', 'RETAINER', 1, 1), (2, 'Tech Solutions', 'RETAINER', 1, 1) ;
+
+# CREATE NEW RETAINER DETAILS
+INSERT INTO `test_financial_hub_db`.`client_retainer_details` (`client_account_id`, `status`)
+VALUES (11, 'OPEN'), (12, 'IN_PROGRESS');
+
+# JOIN CLIENT ACCOUNT & RETAINER DETAILS
+SELECT 
+    `a`.`client_account_id`,
+    `a`.`account_title`,
+    `a`.`account_type`,
+    `ct`.`contact_id` AS contacts_id,
+    `ct`.`contact_type`,
+     CONCAT(
+           IFNULL(`ci`.`title`, ''), ' ',
+           IFNULL(`ci`.`first_name`, ''), ' ',
+           IFNULL(`ci`.`middle_name`, ''), ' ',
+           IFNULL(`ci`.`last_name`, ''), ' ',
+           IFNULL(`ci`.`suffix`, '')
+       ) AS full_name,
+    `ci`.`mobile_number` AS individual_mobile,
+    `ci`.`email_address` AS individual_email,
+    `cc`.`company_name` AS company_name,
+    `cc`.`representative_name` AS company_representative,
+    `cc`.`mobile_number` AS company_mobile,
+    `cc`.`email_address` AS company_email,
+    `ct`.`best_channel_to_contact`,
+    `c`.`status`,
+    `a`.`created_by`,
+    `a`.`created_at`,
+    `a`.`updated_by`,
+    `a`.`updated_at`
+FROM
+    `client_accounts` a
+        LEFT JOIN
+    `client_retainer_details` c ON a.client_account_id = c.client_account_id
+        JOIN
+    `contacts` ct ON a.contact_id = ct.contact_id
+        LEFT JOIN
+    `contact_individual` ci ON ct.contact_id = ci.contact_id
+        AND ct.contact_type = 'INDIVIDUAL'
+        LEFT JOIN
+    `contact_company` cc ON ct.contact_id = cc.contact_id
+        AND ct.contact_type = 'COMPANY'
+	WHERE `a`.`account_type` = 'RETAINER';
+
+# DROP TABLE `client_project_details`;
+CREATE TABLE `client_project_details` (
+	`project_id` int NOT NULL AUTO_INCREMENT,
+    `client_account_id` int NOT NULL,
+    `project_title` varchar(255) NOT NULL,
+    `project_type` enum('PROPERTIES', 'BUSINESS_REGISTRATION','BUSINESS_CLOSURE', 'SEC') NOT NULL,
+    `property_sub_type` enum('TRANSFER', 'SETTLEMENT_OF_ESTATE', 'ANNOTATION', 'OTHERS'),
+    `sec_sub_type` enum('AMENDMENT', 'INCREASE'),
+	`status` enum('OPEN', 'IN PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
+    FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
+    PRIMARY KEY (`project_id`)
+);
 
 DROP TABLE `fund`;
 CREATE TABLE `fund` (

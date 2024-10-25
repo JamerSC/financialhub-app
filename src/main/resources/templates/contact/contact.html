@@ -29,7 +29,7 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <th>Individual/Company Name</th>
+                        <th>Name/Company Name</th>
                         <th>Contact Type</th>
                         <th>Category Type</th>
                         <th>Action</th>
@@ -45,8 +45,8 @@
                                   th:text="${tempContact.company.companyName}"></span>
                             </a>
                         </td>
-                        <td th:text="${tempContact.contactType.convertContactType()}"></td>
-                        <td th:text="${tempContact.contactCategoryType.convertContactCategoryType()}"></td>
+                        <td th:text="${tempContact.contactType.displayContactType()}"></td>
+                        <td th:text="${tempContact.contactCategoryType.displayContactCategoryType()}"></td>
                         <td>
                             <a th:if="${tempContact.individual != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
                                th:href="@{/contacts/{id}/edit-individual-contact(id=${tempContact.contactId})}"

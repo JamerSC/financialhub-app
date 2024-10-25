@@ -21,7 +21,7 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                         <tr>
-                            <th>Acc. ID</th>
+                            <!--<th>Acc. ID</th>-->
                             <th>Account Name</th>
                             <th>Account Number</th>
                             <th>Balance</th>
@@ -31,7 +31,7 @@
                     </thead>
                     <tbody>
                         <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                            <td th:text="${tempAccount.bankAccountId}"></td>
+                            <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
                             <td th:text="${tempAccount.accountHolderName}"></td>
                             <td th:text="${tempAccount.accountNumber}"></td>
                             <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
