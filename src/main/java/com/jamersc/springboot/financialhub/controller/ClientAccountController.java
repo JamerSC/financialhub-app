@@ -1,7 +1,9 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
+import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.model.CaseType;
+import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Status;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
@@ -54,8 +56,11 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-cases";
     }
 
-    @GetMapping("/case-summary")
-    public String caseInformation(Model model) {
+    @GetMapping("/{id}/case-summary")
+    public String caseInformation(@PathVariable(value = "id") Long id,Model model) {
+        ClientAccountDto caseSummary = clientAccountService.getClientAccountById(id);
+        //model.addAttribute("caseSummary", ClientAccountMapper.toClientAccountEntity(caseSummary));
+        model.addAttribute("caseSummary", caseSummary);
         return "case/case-summary";
     }
 

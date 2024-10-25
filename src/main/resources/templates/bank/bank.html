@@ -45,7 +45,7 @@
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                             <tr>
-                                <th>Acc. ID</th>
+                                <!--<th>Acc. ID</th>-->
                                 <th>Account Name</th>
                                 <th>Account Number</th>
                                 <th>Bank Name</th>
@@ -54,14 +54,14 @@
                         </thead>
                         <tbody>
                             <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                                <td th:text="${tempAccount.bankAccountId}"></td>
+                                <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
                                 <td th:text="${tempAccount.accountHolderName}"></td>
                                 <td th:text="${tempAccount.accountNumber}"></td>
                                 <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
                                 <td>
-                                    <a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
+                                    <!--<a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
                                         <i class="lni lni-eye"></i>
-                                    </a>
+                                    </a>-->
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankAccountBtn"
                                        th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="edit">
                                         <i class="lni lni-pencil-alt"></i>
@@ -212,7 +212,7 @@
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                             <tr>
-                                <th>ID</th>
+                                <!--<th>ID</th>-->
                                 <th>Bank Name</th>
                                 <th>Abbreviation</th>
                                 <th>Branch</th>
@@ -221,14 +221,14 @@
                         </thead>
                         <tbody>
                             <tr th:each="tempBank : ${listOfAllBanks}">
-                                <td th:text="${tempBank.bankId}"></td>
+                                <!--<td th:text="${tempBank.bankId}"></td>-->
                                 <td th:text="${tempBank.name}"></td>
                                 <td th:text="${tempBank.abbreviation}"></td>
                                 <td th:text="${tempBank.branch}"></td>
                                 <td>
-                                    <a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
+                                    <!--<a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
                                         <i class="lni lni-eye"></i>
-                                    </a>
+                                    </a>-->
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankBtn"
                                         th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
                                         <i class="lni lni-pencil-alt"></i>

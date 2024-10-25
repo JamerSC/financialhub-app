@@ -39,9 +39,4 @@ public class CaseAccountDto {
     private Date startDate;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
-    private Long createdBy;
-    private Date createdAt;
-    private Long updatedBy;
-    private Date updatedAt;
-
 }

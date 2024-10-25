@@ -29,26 +29,24 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <th>Name/Company Name</th>
+                        <th>Individual/Company Name</th>
                         <th>Contact Type</th>
                         <th>Category Type</th>
-                        <th>Best Channel</th>
                         <th>Action</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="tempContact : ${contacts}">
                         <td>
-                            <a th:href="@{/contacts/{id}/contact-info(id=${tempContact.contactId})}" class="text-dark">
+                            <a th:href="@{/contacts/{id}/contact-info(id=${tempContact.contactId})}" class="text-dark" title="view">
                             <span th:if="${tempContact.individual != null}"
-                                  th:text="${#strings.concat(tempContact.individual.firstName, ' ', tempContact.individual.lastName)}"></span>
+                                  th:text="${tempContact.individual.getFullName()}"></span>
                             <span th:if="${tempContact.company != null}"
                                   th:text="${tempContact.company.companyName}"></span>
                             </a>
                         </td>
                         <td th:text="${tempContact.contactType.convertContactType()}"></td>
                         <td th:text="${tempContact.contactCategoryType.convertContactCategoryType()}"></td>
-                        <td th:text="${tempContact.bestChannelToContact}"></td>
                         <td>
                             <a th:if="${tempContact.individual != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
                                th:href="@{/contacts/{id}/edit-individual-contact(id=${tempContact.contactId})}"
