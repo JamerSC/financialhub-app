@@ -195,7 +195,7 @@ FROM
     contact_additional_details ad ON c.contact_id = ad.contact_id;
     
 # FUND - REFLENISHMENT- PETTY-CASH - REIMBURSEMENT
-DROP TABLE `client_accounts`;
+# DROP TABLE `client_accounts`;
 CREATE TABLE `client_accounts` (
     `client_account_id` INT NOT NULL AUTO_INCREMENT,
     `contact_id` INT NOT NULL,
@@ -216,8 +216,8 @@ INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `cr
 VALUES (2, 'Case Title 2', 'CASE', 1, 1), (9, 'Case Title 3', 'CASE', 1, 1), 
 (10, 'Case Title 4', 'CASE', 1, 1), (11, 'Case Title 5', 'CASE', 1, 1);
 
-DROP TABLE `case`;
-CREATE TABLE `cases` (
+# DROP TABLE `client_case_details`;
+CREATE TABLE `client_case_details` (
 	`case_id` int NOT NULL AUTO_INCREMENT,
     `client_account_id` int NOT NULL,
     `case_type` enum('CIVIL', 'CRIMINAL', 'LABOR', 'ADMINISTRATIVE', 'ELECTION', 'SPECIAL_PROCEEDINGS', 'OTHERS') NOT NULL,
@@ -238,15 +238,22 @@ CREATE TABLE `cases` (
     `end_date` date NULL,
 	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
     `stage`  varchar(255) NOT NULL,
-    `created_by` int,
-    `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
-    `updated_by` int,	
-    `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    #`created_by` int,
+    #`created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
+    #`updated_by` int,	
+    #E`updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`case_id`)
 );
 
-INSERT INTO `cases` (
+# Delete Column
+# ALTER TABLE `client_case_details` DROP COLUMN `updated_at`;
+# Change Table Name
+# ALTER TABLE `test_financial_hub_db`.`cases` RENAME TO `test_financial_hub_db`.`client_case_details`;
+
+SELECT * FROM `test_financial_hub_db`.`client_case_details`;
+
+INSERT INTO `client_case_details` (
   `client_account_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
   `court`, `branch`, `judge`, `court_email`, `prosecutor`, 
   `prosecutor_office`, `prosecutor_email`, `opposing_party`, `opposing_counsel`, 
@@ -258,7 +265,7 @@ VALUES
    'Office of Prosecutor A', 'prosecutor1@example.com', 'Opposing Party A', 'Opposing Counsel A', 
    'counsel1@example.com', '2024-01-01', '2024-06-01', 'OPEN', 'Stage 1', 1, 1);
 
-INSERT INTO `cases` (
+INSERT INTO `client_case_details` (
   `client_account_id`, `case_type`, `case_title`, `docket_no`, `nature`, 
   `court`, `branch`, `judge`, `court_email`, `prosecutor`, 
   `prosecutor_office`, `prosecutor_email`, `opposing_party`, `opposing_counsel`, 
@@ -308,11 +315,15 @@ SELECT
     `c`.`start_date`,
     `c`.`end_date`,
     `c`.`status`,
-    `c`.`stage`
+    `c`.`stage`,
+    `a`.`created_by`,
+    `a`.`created_at`,
+    `a`.`updated_by`,
+    `a`.`updated_at`
 FROM
     `client_accounts` a
         LEFT JOIN
-    `cases` c ON a.client_account_id = c.client_account_id
+    `client_case_details` c ON a.client_account_id = c.client_account_id
         JOIN
     `contacts` ct ON a.contact_id = ct.contact_id
         LEFT JOIN

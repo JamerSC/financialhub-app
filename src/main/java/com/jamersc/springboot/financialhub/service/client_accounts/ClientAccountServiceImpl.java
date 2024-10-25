@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -88,8 +89,6 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
             caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
             caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
-            caseAccount.setCreatedBy(account.getCreatedBy());
-            caseAccount.setUpdatedBy(account.getCreatedBy());
             logger.info("Saving case account details: " + caseAccount);
             caseAccountRepository.save(caseAccount);
         }
@@ -120,7 +119,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
             clientAccountRepository.save(account);
 
-            // Update
+            boolean clientAccountUpdated = false;
+
             if (clientAccountDto.getCaseAccount() != null) {
                 caseAccount = caseAccountRepository.findById(clientAccountDto.getCaseAccount().getCaseId())
                         .orElse(new CaseAccount());
@@ -143,11 +143,17 @@ public class ClientAccountServiceImpl implements ClientAccountService{
                 caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
                 caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
                 caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
-                caseAccount.setCreatedBy(account.getCreatedBy());
-                caseAccount.setUpdatedBy(account.getCreatedBy());
                 logger.info("Updating account details: " + caseAccount);
-
                 caseAccountRepository.save(caseAccount);
+
+                clientAccountUpdated = true;
+            }
+            if (clientAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
             }
         }
 

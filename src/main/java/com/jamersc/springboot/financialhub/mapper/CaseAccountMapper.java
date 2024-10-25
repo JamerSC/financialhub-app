@@ -34,10 +34,6 @@ public class CaseAccountMapper {
         caseAccount.setStage(caseAccountDto.getStage());
         caseAccount.setStartDate(caseAccountDto.getStartDate());
         caseAccount.setEndDate(caseAccountDto.getEndDate());
-        caseAccount.setCreatedBy(caseAccountDto.getCreatedBy());
-        caseAccount.setCreatedAt(caseAccountDto.getCreatedAt());
-        caseAccount.setUpdatedBy(caseAccountDto.getUpdatedBy());
-        caseAccount.setUpdatedAt(caseAccountDto.getUpdatedAt());
 
         return caseAccount;
     }
@@ -69,10 +65,6 @@ public class CaseAccountMapper {
         caseAccountDto.setStage(caseAccount.getStage());
         caseAccountDto.setStartDate(caseAccount.getStartDate());
         caseAccountDto.setEndDate(caseAccount.getEndDate());
-        caseAccountDto.setCreatedBy(caseAccount.getCreatedBy());
-        caseAccountDto.setCreatedAt(caseAccount.getCreatedAt());
-        caseAccountDto.setUpdatedBy(caseAccount.getUpdatedBy());
-        caseAccountDto.setUpdatedAt(caseAccount.getUpdatedAt());
 
         return caseAccountDto;
     }

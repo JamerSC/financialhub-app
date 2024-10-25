@@ -9,7 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 @Entity
-@Table(name = "cases")
+@Table(name = "client_case_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -76,36 +76,9 @@ public class CaseAccount {
     @Column(name = "stage")
     private String stage;
 
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "start_date")
     private Date startDate;
 
-    //@DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     private Date endDate;
-
-    @Column(name = "created_by")
-    private Long createdBy;
-
-    @Column(name = "created_at", updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @Column(name = "updated_by")
-    private Long updatedBy;
-
-    //@Column(name = "updated_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
-
-    @PrePersist
-    protected void onCreate() {
-        createdAt = new Date();
-        updatedAt = new Date();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updatedAt = new Date();
-    }
 }

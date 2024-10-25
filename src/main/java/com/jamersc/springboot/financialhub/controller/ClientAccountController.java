@@ -1,11 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
-import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.model.CaseType;
-import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Status;
-import com.jamersc.springboot.financialhub.service.client_accounts.CaseService;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import lombok.AllArgsConstructor;
