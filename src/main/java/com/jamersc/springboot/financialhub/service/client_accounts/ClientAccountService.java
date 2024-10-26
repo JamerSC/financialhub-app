@@ -14,6 +14,8 @@ public interface ClientAccountService {
 
     List<ClientAccount> getAllRetainerAccounts();
 
+    List<Long> getClientsWithRetainers();
+
     List<ClientAccount> getAllProjectAccounts();
 
     ClientAccountDto getClientAccountById(Long id);
@@ -21,6 +23,10 @@ public interface ClientAccountService {
     void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username);
 
     void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username);
+
+    void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username);
+
+    void updateClientRetainerAccount(ClientAccountDto clientAccountDto, String username);
 
     void deleteClientAccountById(Long id);
 }

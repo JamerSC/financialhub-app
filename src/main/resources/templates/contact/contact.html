@@ -49,12 +49,12 @@
                         <td th:text="${tempContact.contactCategoryType.displayContactCategoryType()}"></td>
                         <td>
                             <a th:if="${tempContact.individual != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
-                               th:href="@{/contacts/{id}/edit-individual-contact(id=${tempContact.contactId})}"
+                               th:href="@{/contacts/edit-individual-contact(id=${tempContact.contactId})}"
                                class="btn btn-success btn-sm editContactIndividualBtn" title="edit">
                                 <i class="lni lni-pencil-alt"></i>
                             </a>
                             <a th:if="${tempContact.company != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
-                               th:href="@{/contacts/{id}/edit-company-contact(id=${tempContact.contactId})}"
+                               th:href="@{/contacts/edit-company-contact(id=${tempContact.contactId})}"
                                class="btn btn-success btn-sm editContactCompanyBtn" title="edit">
                                 <i class="lni lni-pencil-alt"></i>
                             </a>

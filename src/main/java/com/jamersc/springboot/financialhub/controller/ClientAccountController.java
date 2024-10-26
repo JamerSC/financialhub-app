@@ -2,10 +2,7 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
-import com.jamersc.springboot.financialhub.model.CaseType;
-import com.jamersc.springboot.financialhub.model.ClientAccount;
-import com.jamersc.springboot.financialhub.model.RetainerAccount;
-import com.jamersc.springboot.financialhub.model.Status;
+import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import lombok.AllArgsConstructor;
@@ -15,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @AllArgsConstructor
@@ -39,7 +38,7 @@ public class ClientAccountController {
     }
 
     @PostMapping("/add-case-account")
-    public String addNewCase(@ModelAttribute("account") ClientAccountDto caseAccount) {
+    public String addCaseAccount(@ModelAttribute("account") ClientAccountDto caseAccount) {
         String username = getSessionUserName();
         clientAccountService.saveClientCaseAccount(caseAccount, username);
         return "redirect:/client-account/list-of-cases";
@@ -47,7 +46,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-case-account")
     @ResponseBody
-    public ClientAccountDto editCaseAccount(Long id) {
+    public ClientAccountDto findCaseAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -59,7 +58,7 @@ public class ClientAccountController {
     }
 
     @GetMapping("/{id}/case-summary")
-    public String caseInformation(@PathVariable(value = "id") Long id,Model model) {
+    public String viewCaseInformation(@PathVariable(value = "id") Long id, Model model) {
         ClientAccountDto caseSummary = clientAccountService.getClientAccountById(id);
         //model.addAttribute("caseSummary", ClientAccountMapper.toClientAccountEntity(caseSummary));
         model.addAttribute("caseSummary", caseSummary);
@@ -71,9 +70,32 @@ public class ClientAccountController {
     public String listOfRetainers(Model model) {
         model.addAttribute("accountRetainers", clientAccountService.getAllRetainerAccounts());
         model.addAttribute("retainerAccount", new ClientAccountDto());
+        model.addAttribute("updateRetainerAccount", new ClientAccountDto());
+        List<Long> clientsWithRetainers = clientAccountService.getClientsWithRetainers();
+        model.addAttribute("clientsWithRetainers", clientsWithRetainers);
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("status", Status.values());
         return "retainer/retainer";
+    }
+
+    @PostMapping("/add-retainer-account")
+    public String addRetainerAccount(@ModelAttribute("retainerAccount") ClientAccountDto clientAccountDto) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientRetainerAccount(clientAccountDto, createdBy);
+        return "redirect:/client-account/list-of-retainers";
+    }
+
+    @GetMapping("/edit-retainer-account")
+    @ResponseBody
+    public ClientAccountDto findRetainerAccountInformation(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-retainer-account")
+    public String updateRetainerAccount(@ModelAttribute("updateRetainerAccount") ClientAccountDto clientAccountDto) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientRetainerAccount(clientAccountDto, updatedBy);
+        return "redirect:/client-account/list-of-retainers";
     }
 
     @GetMapping("/{id}/retainer-activity")

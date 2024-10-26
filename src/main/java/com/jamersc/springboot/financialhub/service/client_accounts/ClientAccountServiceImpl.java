@@ -4,10 +4,7 @@ import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.model.*;
-import com.jamersc.springboot.financialhub.repository.CaseAccountRepository;
-import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
-import com.jamersc.springboot.financialhub.repository.ContactRepository;
-import com.jamersc.springboot.financialhub.repository.UserRepository;
+import com.jamersc.springboot.financialhub.repository.*;
 import com.jamersc.springboot.financialhub.service.bank.BankAccountServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -33,6 +30,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     private UserRepository userRepository;
     @Autowired
     private ContactRepository contactRepository;
+    @Autowired
+    private RetainerAccountRepository retainerAccountRepository;
 
     @Override
     public List<ClientAccount> getAllClientAccounts() {
@@ -48,6 +47,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     @Override
     public List<ClientAccount> getAllRetainerAccounts() {
         return clientAccountRepository.findByClientAccountType(ClientAccountType.RETAINER);
+    }
+
+    @Override
+    public List<Long> getClientsWithRetainers() {
+        return clientAccountRepository.findClientIdsWithRetainers();
     }
 
     @Override
@@ -68,14 +72,15 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
-        CaseAccount caseAccount;
         ClientAccount account;
+        CaseAccount caseAccount;
+
+        User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
         account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
         account.setAccountTitle(clientAccountDto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
-        User createdBy = userRepository.findByUsername(username);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
@@ -124,10 +129,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
                 Contact client = ContactMapper.toContactEntity(clientAccountDto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId()).orElse(null);
                 account.setClient(contactId);
-                //account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
             }
             account.setAccountTitle(clientAccountDto.getAccountTitle());
-            //account.setClientAccountType(ClientAccountType.CASE);
             if (updatedBy != null) {
                 account.setUpdatedBy(updatedBy.getId());
             }
@@ -135,7 +138,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
             clientAccountRepository.save(account);
 
-            boolean clientAccountUpdated = false;
+            boolean caseAccountUpdated = false;
 
             if (clientAccountDto.getCaseAccount() != null) {
                 caseAccount = caseAccountRepository.findById(clientAccountDto.getCaseAccount().getCaseId())
@@ -159,12 +162,105 @@ public class ClientAccountServiceImpl implements ClientAccountService{
                 caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
                 caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
                 caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
-                logger.info("Updating account details: " + caseAccount);
+                logger.info("Updating case account details: " + caseAccount);
                 caseAccountRepository.save(caseAccount);
 
-                clientAccountUpdated = true;
+                caseAccountUpdated = true;
             }
-            if (clientAccountUpdated) {
+            if (caseAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
+
+    }
+
+    @Override
+    public void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username) {
+        ClientAccount account;
+        RetainerAccount retainerAccount;
+        User createdBy = userRepository.findByUsername(username);
+
+        account= new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
+        account.setAccountTitle(clientAccountDto.getClient().getIndividual().getFullName());
+        account.setClientAccountType(ClientAccountType.RETAINER);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving new client account: " + account);
+        clientAccountRepository.save(account);
+
+        if (clientAccountDto.getRetainerAccount() != null) {
+            retainerAccount = new RetainerAccount();
+            retainerAccount.setClientAccount(account);
+            retainerAccount.setRetainerTitle(account.getClient().getIndividual().getFullName());
+            retainerAccount.setStatus(clientAccountDto.getRetainerAccount().getStatus());
+            retainerAccount.setStartDate(clientAccountDto.getRetainerAccount().getStartDate());
+            retainerAccount.setEndDate(clientAccountDto.getRetainerAccount().getEndDate());
+            logger.info("Saving retainer account details: " + retainerAccount);
+            retainerAccountRepository.save(retainerAccount);
+        }
+    }
+
+    @Override
+    public void updateClientRetainerAccount(ClientAccountDto clientAccountDto, String username) {
+        ClientAccount account;
+        RetainerAccount retainerAccount;
+
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (clientAccountDto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(clientAccountDto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (clientAccountDto.getClient() != null) {
+                Contact contact = ContactMapper.toContactEntity(clientAccountDto.getClient());
+                Contact contactId = contactRepository.findById(contact.getContactId()).orElse(null);
+                account.setClient(contactId);
+
+                // Check if client has an individual or company before setting account title
+                if (clientAccountDto.getClient().getIndividual() != null) {
+                    account.setAccountTitle(clientAccountDto.getClient().getIndividual().getFullName());
+                } else if (clientAccountDto.getClient().getCompany() != null) {
+                    account.setAccountTitle(clientAccountDto.getClient().getCompany().getCompanyName());
+                }
+            }
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating client's retainer account: " + account);
+            clientAccountRepository.save(account);
+
+            boolean retainerAccountUpdated = false;
+
+            if (clientAccountDto.getRetainerAccount() != null) {
+                retainerAccount = retainerAccountRepository.findById(clientAccountDto.getRetainerAccount().getRetainerId())
+                        .orElse(new RetainerAccount());
+                retainerAccount.setClientAccount(account);
+
+                // Check if client has an individual or company before setting retainer title
+                if (clientAccountDto.getClient() != null) {
+                    if (clientAccountDto.getClient().getIndividual() != null) {
+                        retainerAccount.setRetainerTitle(clientAccountDto.getClient().getIndividual().getFullName());
+                    } else if (clientAccountDto.getClient().getCompany() != null) {
+                        retainerAccount.setRetainerTitle(clientAccountDto.getClient().getCompany().getCompanyName());
+                    }
+                }
+
+                retainerAccount.setStatus(clientAccountDto.getRetainerAccount().getStatus());
+                retainerAccount.setStartDate(clientAccountDto.getRetainerAccount().getStartDate());
+                retainerAccount.setEndDate(clientAccountDto.getRetainerAccount().getEndDate());
+                logger.info("Updating client's retainer account details: " + account);
+                retainerAccountRepository.save(retainerAccount);
+
+                retainerAccountUpdated = true;
+            }
+
+            if (retainerAccountUpdated) {
                 if (updatedBy != null) {
                     account.setUpdatedBy(updatedBy.getId());
                 }

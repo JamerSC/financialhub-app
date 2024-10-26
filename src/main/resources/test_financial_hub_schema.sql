@@ -358,6 +358,8 @@ SELECT
     `a`.`client_account_id`,
     `a`.`account_title`,
     `c`.`retainer_title`,
+    `c`.`start_date`,
+    `c`.`end_date`,
     `a`.`account_type`,
     `ct`.`contact_id` AS contacts_id,
     `ct`.`contact_type`,

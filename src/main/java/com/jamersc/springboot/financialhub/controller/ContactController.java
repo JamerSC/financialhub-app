@@ -45,9 +45,9 @@ public class ContactController {
     }
 
     // edit individual contact
-    @GetMapping("/{id}/edit-individual-contact")
+    @GetMapping("/edit-individual-contact")
     @ResponseBody
-    public ContactDto findIndividualContact(@PathVariable(value = "id") Long id) {
+    public ContactDto findIndividualContact(Long id) {
         return contactService.getContactById(id);
     }
 
@@ -66,9 +66,9 @@ public class ContactController {
     }
 
     // edit individual contact
-    @GetMapping("/{id}/edit-company-contact")
+    @GetMapping("/edit-company-contact")
     @ResponseBody
-    public ContactDto findCompanyContact(@PathVariable(value = "id") Long id) {
+    public ContactDto findCompanyContact(Long id) {
         return contactService.getContactById(id);
     }
 
