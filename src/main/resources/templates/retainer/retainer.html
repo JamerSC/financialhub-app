@@ -17,6 +17,12 @@
                     <div class="p-1">
                         <h4 class="fw-bold fs-4">Retainers</h4>
                     </div>
+                    <!-- Add Retainer Modal Button -->
+                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addRetainerModal">
+                            <i class="lni lni-notepad"></i> Add Retainer
+                        </button>
+                    </div>
                 </div>
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
@@ -31,16 +37,16 @@
                     <tbody>
                     <tr th:each="tempRetainer : ${accountRetainers}">
                         <td>
-                            <!--<a th:href="@{/client-account/{id}/case-summary(id=${tempRetainer.clientAccountId})}" class="text-dark" title="view summary">
+                            <a th:href="@{/client-account/{id}/retainer-activity(id=${tempRetainer.clientAccountId})}" class="text-dark" title="view summary">
                             <span th:if="${tempRetainer.client.individual != null}"
                                   th:text="${tempRetainer.client.individual.getFullName()}"></span>
                                 <span th:if="${tempRetainer.client.company != null}"
                                       th:text="${tempRetainer.client.company.companyName}"></span>
-                            </a>-->
-                            <span th:if="${tempRetainer.client.individual != null}"
+                            </a>
+                            <!--<span th:if="${tempRetainer.client.individual != null}"
                                   th:text="${tempRetainer.client.individual.getFullName()}"></span>
                             <span th:if="${tempRetainer.client.company != null}"
-                                  th:text="${tempRetainer.client.company.companyName}"></span>
+                                  th:text="${tempRetainer.client.company.companyName}"></span>-->
                         </td>
                         <td th:text="${tempRetainer.retainerAccount.status.displayStatus()}"></td>
                         <td th:text="${tempRetainer.retainerAccount.retainerId}"></td>
@@ -54,6 +60,62 @@
                     </tr>
                     </tbody>
                 </table>
+                <!-- Add Retainer - Form Modal -->
+                <div class="modal fade" id="addRetainerModal" tabindex="-1" aria-labelledby="addRetainerModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="addRetainerModalLabel">Retainer (New Account)</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 mb-3" id="addRetainerAccountForm"
+                                      th:action="@{/client-account/add-retainer-account}" th:object="${retainerAccount}" method="POST">
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-8">
+                                            <label for="client" class="form-label">Client</label>
+                                            <select id="client" class="form-select" th:field="*{client}" required>
+                                                <option value="" selected>Select client...</option>
+                                                <option th:each="tempClient : ${clients}"
+                                                        th:value="${tempClient.contactId}"
+                                                        th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label for="status" class="form-label">Status</label>
+                                            <select id="status" class="form-select" th:field="*{retainerAccount.status}" required>
+                                                <option value="" selected>Select status...</option>
+                                                <option th:each="tempStatus : ${status}"
+                                                        th:value="${tempStatus}"
+                                                        th:text="${tempStatus.displayStatus()}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- One column row for state select option -->
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <label for="startDate" class="form-label">Start Date</label>
+                                            <input type="date" class="form-control" id="startDate" th:field="*{retainerAccount.startDate}" required>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="endDate" class="form-label">End Date</label>
+                                            <input type="date" class="form-control" id="endDate" th:field="*{retainerAccount.endDate}">
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary">Create Case</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

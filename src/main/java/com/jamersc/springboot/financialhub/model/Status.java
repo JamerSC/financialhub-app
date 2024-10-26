@@ -6,7 +6,7 @@ public enum Status {
     OPEN("Open"),
     IN_PROGRESS("In Progress"),
     PENDING("Pending"),
-    COMPLETED("Pending"),
+    COMPLETED("Completed"),
     CLOSED("Closed");
 
     private final String statusType;

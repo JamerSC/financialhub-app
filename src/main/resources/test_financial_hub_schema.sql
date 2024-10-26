@@ -339,6 +339,7 @@ FROM
 CREATE TABLE `client_retainer_details` (
 	`retainer_id` int NOT NULL AUTO_INCREMENT,
     `client_account_id` int NOT NULL,
+	`ratainer_title` varchar(255) NOT NULL,
 	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`retainer_id`)
@@ -356,6 +357,7 @@ VALUES (11, 'OPEN'), (12, 'IN_PROGRESS');
 SELECT 
     `a`.`client_account_id`,
     `a`.`account_title`,
+    `c`.`retainer_title`,
     `a`.`account_type`,
     `ct`.`contact_id` AS contacts_id,
     `ct`.`contact_type`,
@@ -391,6 +393,24 @@ FROM
     `contact_company` cc ON ct.contact_id = cc.contact_id
         AND ct.contact_type = 'COMPANY'
 	WHERE `a`.`account_type` = 'RETAINER';
+
+# ADD COLUMN
+ALTER TABLE `client_retainer_details`
+ADD COLUMN `end_date` date AFTER `start_date`;
+
+# MODIFY COLUMN TYPE
+ALTER TABLE `client_retainer_details` 
+MODIFY COLUMN `start_date` date NOT NULL;
+
+# RENAME COLUMN NAME
+ALTER TABLE `client_retainer_details`
+RENAME COLUMN `ratainer_title` TO `retainer_title`;
+# UPDATE Retainer Title
+UPDATE `client_retainer_details`
+SET `retainer_title` = 'Tech Solutions'
+WHERE `retainer_id` = 2;
+
+
 
 # DROP TABLE `client_project_details`;
 CREATE TABLE `client_project_details` (

@@ -21,6 +21,7 @@ public class ClientAccountMapper {
         clientAccount.setAccountTitle(clientAccount.getAccountTitle());
         clientAccount.setClientAccountType(clientAccountDto.getClientAccountType());
         clientAccount.setCaseAccount(CaseAccountMapper.toCaseAccountEntity(clientAccountDto.getCaseAccount())); // one to one
+        clientAccount.setRetainerAccount(RetainerAccountMapper.toRetainerAccountEntity(clientAccountDto.getRetainerAccount())); // one to one
         clientAccount.setCreatedBy(clientAccountDto.getCreatedBy());
         clientAccount.setCreatedAt(clientAccountDto.getCreatedAt());
         clientAccount.setUpdatedBy(clientAccountDto.getUpdatedBy());
@@ -39,6 +40,7 @@ public class ClientAccountMapper {
         clientAccountDto.setAccountTitle(clientAccount.getAccountTitle());
         clientAccountDto.setClientAccountType(clientAccount.getClientAccountType());
         clientAccountDto.setCaseAccount(CaseAccountMapper.toCaseAccountDto(clientAccount.getCaseAccount())); // one to one
+        clientAccountDto.setRetainerAccount(RetainerAccountMapper.toRetainerAccountDto(clientAccount.getRetainerAccount())); // one to one
         clientAccountDto.setCreatedBy(clientAccount.getCreatedBy());
         clientAccountDto.setCreatedAt(clientAccount.getCreatedAt());
         clientAccountDto.setUpdatedBy(clientAccount.getUpdatedBy());

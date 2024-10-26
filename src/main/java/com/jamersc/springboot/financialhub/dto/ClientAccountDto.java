@@ -17,6 +17,7 @@ public class ClientAccountDto {
         private String accountTitle;
         private ClientAccountType clientAccountType;
         private CaseAccountDto caseAccount; // one to one client account
+        private RetainerAccountDto retainerAccount;
         private Long createdBy;
         private Date createdAt;
         private Long updatedBy;

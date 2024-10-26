@@ -18,32 +18,52 @@
                         <h4 class="fw-bold fs-4">Retainer Activities</h4>
                     </div>
                 </div>
-                <table class="table table-striped shadow">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>Case Title</th>
-                        <th>Status</th>
-                        <th>Client</th>
-                        <th>Activity Description</th>
-                        <th>Activity Category</th>
-                        <th>PIC</th>
-                        <th>Start Date</th>
-                        <th>End Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr>
-                        <td>People vs. People</td>
-                        <td>In progress</td>
-                        <td>ABC Corporation</td>
-                        <td>Secure Documents</td>
-                        <td>Case Study</td>
-                        <td>Employee Sample 1</td>
-                        <td>September 1, 2024</td>
-                        <td>-</td>
-                    </tr>
-                    </tbody>
-                </table>
+                <div class="row mb-4">
+                    <!-- Client Account Information -->
+                    <div class="col-md-6 p-3">
+                        <h6 class="fw-bold">Retainer Account Information</h6>
+                        <div th:if="${retainer.client?.individual != null}">
+                            <p><strong>Full Name:</strong> <span  th:text="${retainer.client.individual.getFullName()}"></span></p>
+                        </div>
+                        <div th:if="${retainer.client?.company != null}">
+                            <p><strong>Company Name:</strong> <span  th:text="${retainer.client.company.companyName}"></span></p>
+                        </div>
+                        <p><strong>Account Type:</strong> <span th:text="${retainer.clientAccountType.displayClientAccountType()}"></span></p>
+                        <p><strong>Account Title</strong> <span th:text="${retainer.accountTitle}"></span></p>
+                        <p><strong>Retainer Title</strong> <span th:text="${retainer.retainerAccount.retainerTitle}"></span></p>
+                        <p><strong>Status:</strong> <span th:text="${retainer.retainerAccount.status.displayStatus()}"></span></p>
+                        <p><strong>Start Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.startDate, 'dd MMMM yyyy')}"></span></p>
+                        <p><strong>End Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.endDate, 'dd MMMM yyyy')}"></span></p>
+                    </div>
+                    <h5 class="fw-bold mb-3">Retainer Activities</h5>
+                    <table class="table table-striped shadow">
+                        <thead class="table-dark">
+                        <tr>
+                            <td>Activity Description</td>
+                            <th>Activity Category</th>
+                            <th>PIC</th>
+                            <th>Activity Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>Secure documents</td>
+                            <td>Certification</td>
+                            <td>Juan Doe</td>
+                            <td>Oct. 25, 2024</td>
+                        </tr>
+                        <!-- <tr th:if="${#lists.isEmpty(contact.clientAccounts)}">
+                             <td colspan="4" class="text-center">No existing cases/projects...</td>
+                         </tr>
+                         <tr th:each="account : ${contact.clientAccounts}" th:unless="${#lists.isEmpty(contact.clientAccounts)}">
+                             <td th:text="${account.clientAccountId}"></td>
+                             <td th:text="${account.accountTitle}"></td>
+                             <td th:text="${account.clientAccountType.convertAccountType()}"></td>
+                             <td th:text="${account.caseAccount.status.convertStatus()}"></td>
+                         </tr>-->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

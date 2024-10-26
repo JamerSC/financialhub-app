@@ -4,6 +4,7 @@ import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.model.CaseType;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
+import com.jamersc.springboot.financialhub.model.RetainerAccount;
 import com.jamersc.springboot.financialhub.model.Status;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
@@ -25,6 +26,7 @@ public class ClientAccountController {
     @Autowired
     private ContactService contactService;
 
+    // CASE ACCOUNT
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
         model.addAttribute("accountCases", clientAccountService.getAllCaseAccounts());
@@ -64,17 +66,24 @@ public class ClientAccountController {
         return "case/case-summary";
     }
 
+    // RETAINER ACCOUNT
     @GetMapping("/list-of-retainers")
     public String listOfRetainers(Model model) {
         model.addAttribute("accountRetainers", clientAccountService.getAllRetainerAccounts());
+        model.addAttribute("retainerAccount", new ClientAccountDto());
+        model.addAttribute("clients", contactService.getAllContacts());
+        model.addAttribute("status", Status.values());
         return "retainer/retainer";
     }
 
-    @GetMapping("/retainer-activity")
-    public String retainerActivity(Model model) {
+    @GetMapping("/{id}/retainer-activity")
+    public String retainerActivity(@PathVariable(value = "id") Long id, Model model) {
+        ClientAccountDto retainer = clientAccountService.getClientAccountById(id);
+        model.addAttribute("retainer", retainer);
         return "retainer/retainer-activity";
     }
 
+    // PROJECT ACCOUNT
     @GetMapping("/list-of-projects")
     public String listOfProjects(Model model) {
         return "project/project";
