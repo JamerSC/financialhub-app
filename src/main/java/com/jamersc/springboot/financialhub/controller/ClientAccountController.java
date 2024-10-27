@@ -25,10 +25,12 @@ public class ClientAccountController {
     @Autowired
     private ContactService contactService;
 
-    // CASE ACCOUNT
+
+    /*  ****  CASE ACCOUNT  **** */
+
     @GetMapping("/list-of-cases")
     public String listOfCases(Model model) {
-        model.addAttribute("accountCases", clientAccountService.getAllCaseAccounts());
+        model.addAttribute("listOfCases", clientAccountService.getAllCaseAccounts());
         model.addAttribute("caseAccount", new ClientAccountDto());
         model.addAttribute("updateCaseAccount", new ClientAccountDto());
         model.addAttribute("clients", contactService.getAllContacts());
@@ -65,10 +67,26 @@ public class ClientAccountController {
         return "case/case-summary";
     }
 
-    // RETAINER ACCOUNT
+
+    /* ****    PROJECT ACCOUNT **** */
+
+    @GetMapping("/list-of-projects")
+    public String listOfProjects(Model model) {
+        model.addAttribute("listOfProjects", clientAccountService.getAllProjectAccounts());
+        return "project/project";
+    }
+
+    @GetMapping("/project-summary")
+    public String projectSummary(Model model) {
+        return "project/project-summary";
+    }
+
+
+    /*  ****  RETAINER ACCOUNT  **** */
+
     @GetMapping("/list-of-retainers")
     public String listOfRetainers(Model model) {
-        model.addAttribute("accountRetainers", clientAccountService.getAllRetainerAccounts());
+        model.addAttribute("listOfRetainers", clientAccountService.getAllRetainerAccounts());
         model.addAttribute("retainerAccount", new ClientAccountDto());
         model.addAttribute("updateRetainerAccount", new ClientAccountDto());
         List<Long> clientsWithRetainers = clientAccountService.getClientsWithRetainers();
@@ -103,17 +121,6 @@ public class ClientAccountController {
         ClientAccountDto retainer = clientAccountService.getClientAccountById(id);
         model.addAttribute("retainer", retainer);
         return "retainer/retainer-activity";
-    }
-
-    // PROJECT ACCOUNT
-    @GetMapping("/list-of-projects")
-    public String listOfProjects(Model model) {
-        return "project/project";
-    }
-
-    @GetMapping("/project-summary")
-    public String projectSummary(Model model) {
-        return "project/project-summary";
     }
 
     private String getSessionUserName() {

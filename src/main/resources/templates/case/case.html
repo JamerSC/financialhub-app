@@ -37,7 +37,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr th:each="tempCase : ${accountCases}">
+                    <tr th:each="tempCase : ${listOfCases}">
                         <td>
                             <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="view summary">
                             <span th:text="${tempCase.accountTitle}"></span>

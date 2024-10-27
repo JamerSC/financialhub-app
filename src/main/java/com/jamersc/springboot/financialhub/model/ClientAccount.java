@@ -36,10 +36,10 @@ public class ClientAccount {
             CascadeType.DETACH, CascadeType.REFRESH})
     private CaseAccount caseAccount;
 
-    /*@OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
+    @OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private ProjectAccount projectAccount;*/
+    private ProjectAccount projectAccount;
 
     @OneToOne(mappedBy = "clientAccount", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,

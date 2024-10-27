@@ -56,7 +56,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public List<ClientAccount> getAllProjectAccounts() {
-        return null;
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.PROJECT);
     }
 
     @Override

@@ -3,8 +3,8 @@ package com.jamersc.springboot.financialhub.model;
 
 public enum SecSubType {
 
-    AMENDMENT("Amendment of Articles of Incorporation"),
-    INCREASE("Increase in Authorized Capital Stock");
+    AMENDMENT_OF_ARTICLES_OF_INCORPORATION("Amendment of Articles of Incorporation"),
+    INCREASE_IN_AUTHORIZED_CAPITAL_STOCK("Increase in Authorized Capital Stock");
 
     private final String secSubType;
 
@@ -12,7 +12,7 @@ public enum SecSubType {
         this.secSubType = secSubType;
     }
 
-    public String getSecSubType() {
+    public String displaySecSubType() {
         return secSubType;
     }
 }
