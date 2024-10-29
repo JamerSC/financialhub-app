@@ -32,17 +32,29 @@
                         <p><strong>Account Title:</strong> <span th:text="${projectSummary.accountTitle}"></span></p>
                         <br>
                         <h6 class="fw-bold">Project Information</h6>
-                        <p><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
-                        <p><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
-                        <p><strong>SEC/Property Sub Type:</strong> <span th:text="${projectSummary.projectAccount.secSubType != null ?
-                        projectSummary.projectAccount.secSubType.displaySecSubType() : projectSummary.projectAccount.propertySubType.displayPropertySubType()}"></span></p>
-                        <p><strong>Status:</strong> <span th:text="${projectSummary.projectAccount.status.displayStatus()}"></span></p>
+                            <p><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
+                            <p><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
+                            <p><strong>SEC/Property Sub Type:</strong> <span th:text="${projectSummary.projectAccount.secSubType != null ?
+                            projectSummary.projectAccount.secSubType.displaySecSubType() : projectSummary.projectAccount.propertySubType.displayPropertySubType()}"></span></p>
+                            <p><strong>Status:</strong> <span th:text="${projectSummary.projectAccount.status.displayStatus()}"></span></p>
                     </div>
                     <!-- Right Column -->
-                    <!--<div class="col-md-6 p-3">
-                        <p><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
-                        <p><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
-                    </div>-->
+                    <div class="col-md-6 p-3">
+                        <h6 class="fw-bold">Other Details</h6>
+                        <p><strong>Title No:</strong> <span th:text="${projectSummary.projectAccount.titleNo}"></span></p>
+                        <p><strong>Tax Declaration No:</strong> <span th:text="${projectSummary.projectAccount.taxDecNo}"></span></p>
+                        <p><strong>Lot No:</strong> <span th:text="${projectSummary.projectAccount.lotNo}"></span></p>
+                        <p><strong>Lot Area:</strong> <span th:text="${projectSummary.projectAccount.lotArea}"></span></p>
+                        <p><strong>Location:</strong> <span th:text="${projectSummary.projectAccount.location}"></span></p>
+                        <p><strong>BIR:</strong> <span th:text="${projectSummary.projectAccount.bir}"></span></p>
+                        <p><strong>RD:</strong> <span th:text="${projectSummary.projectAccount.rd}"></span></p>
+                        <p><strong>Zonal Value:</strong> <span th:text="${projectSummary.projectAccount.zonalValue}"></span></p>
+                        <p><strong>Purchase Price:</strong> <span th:text="${projectSummary.projectAccount.purchasePrice}"></span></p>
+                        <p><strong>Remarks:</strong> <span th:text="${projectSummary.projectAccount.remarks}"></span></p>
+                        <p><strong>Deceased:</strong> <span th:text="${projectSummary.projectAccount.deceased}"></span></p>
+                        <p><strong>Heirs:</strong> <span th:text="${projectSummary.projectAccount.heirs}"></span></p>
+                        <p><strong>Address:</strong> <span th:text="${projectSummary.projectAccount.address}"></span></p>
+                    </div>
                 </div>
                 <h5 class="fw-bold mb-3">Project Activities</h5>
                 <table class="table table-striped shadow">

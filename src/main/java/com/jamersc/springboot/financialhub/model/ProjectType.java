@@ -7,7 +7,7 @@ public enum ProjectType {
     PROPERTIES("Properties"),
     BUSINESS_REGISTRATION("Business Registration"),
     BUSINESS_CLOSURE("Business Closure"),
-    SEC("Securities and Exchange Commission (SEC)");
+    SEC("SEC");
 
     private final String projectType;
 

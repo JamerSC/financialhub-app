@@ -413,7 +413,7 @@ SET `retainer_title` = 'Tech Solutions'
 WHERE `retainer_id` = 2;
 
 
-DROP TABLE `client_project_details`;
+#DROP TABLE `client_project_details`;
 CREATE TABLE `client_project_details` (
 	`project_id` int NOT NULL AUTO_INCREMENT,
     `client_account_id` int NOT NULL,
@@ -421,6 +421,19 @@ CREATE TABLE `client_project_details` (
     `property_sub_type` enum('TRANSFER_OF_TITLE', 'SETTLEMENT_OF_ESTATE', 'ANNOTATION', 'OTHERS'),
     `sec_sub_type` enum('AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK'),
     `project_title` varchar(255) NOT NULL,
+	`title_no` varchar(255),
+    `tax_dec_no` varchar(255),
+    `lot_no` varchar(255),
+    `lot_area` varchar(255),
+    `location` varchar(255),
+    `bir` varchar(255),
+    `rd` varchar(255),
+    `zonal_value` varchar(255),
+    `purchase_price` varchar(255),
+    `remarks` varchar(255),
+    `deceased` varchar(255),
+    `heirs` varchar(255),
+    `address` varchar(255),
 	`status` enum('OPEN', 'IN_PROGRESS', 'PENDING', 'COMPLETED', 'CLOSED') NOT NULL,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`project_id`)
@@ -429,17 +442,19 @@ CREATE TABLE `client_project_details` (
 INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
 VALUES (1, 'Transfer of Title', 'PROJECT', 1, 1), (2, 'Tech Solutions', 'PROJECT', 1, 1);
 
-INSERT INTO `client_project_details`(`client_account_id`, `project_type`, `property_sub_type`, `sec_sub_type`, `project_title`, `status`)
-VALUES (19, 'PROPERTIES', 'TRANSFER_OF_TITLE', null, 'Transfer of Title Juan DC', 'IN_PROGRESS'),
- (20, 'SEC', null, 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'Tech Solutions', 'IN_PROGRESS');
+INSERT INTO `client_project_details`(`client_account_id`, `project_type`, `property_sub_type`, `sec_sub_type`, `project_title`, `title_no`, `tax_dec_no`, `lot_no`, `lot_area`, `location`, `bir`, `rd`, `zonal_value`, `purchase_price`, `remarks`, `deceased`, `heirs`, `address`, `status`)
+VALUES 
+(21, 'PROPERTIES', 'TRANSFER_OF_TITLE', NULL, 'Transfer of Title', 'T-12345', 'TD-67890', 'L-4567', '500 sqm', '123 Property Lane', 'BIR123', 'RD123', '500000', '2000000', 'Transfer under process', NULL, NULL, '123 Main St', 'IN_PROGRESS'),
+(22, 'SEC', NULL, 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'Tech Solutions', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'Amendment in progress', NULL, NULL, NULL, 'IN_PROGRESS');
 
+    
 # JOIN CLIENT ACCOUNT & PROJECT DETAILS
 SELECT 
     `a`.`client_account_id`,
-    `a`.`account_title`,
+    #`a`.`account_title`,
     `c`.`project_title`,
     `a`.`account_type`,
-    `ct`.`contact_id` AS contacts_id,
+    #`ct`.`contact_id` AS contacts_id,
     `ct`.`contact_type`,
      CONCAT(
            IFNULL(`ci`.`title`, ''), ' ',
@@ -448,13 +463,26 @@ SELECT
            IFNULL(`ci`.`last_name`, ''), ' ',
            IFNULL(`ci`.`suffix`, '')
        ) AS full_name,
-    `ci`.`mobile_number` AS individual_mobile,
-    `ci`.`email_address` AS individual_email,
+    #`ci`.`mobile_number` AS individual_mobile,
+    #`ci`.`email_address` AS individual_email,
     `cc`.`company_name` AS company_name,
-    `cc`.`representative_name` AS company_representative,
-    `cc`.`mobile_number` AS company_mobile,
-    `cc`.`email_address` AS company_email,
-    `ct`.`best_channel_to_contact`,
+    #`cc`.`representative_name` AS company_representative,
+    #`cc`.`mobile_number` AS company_mobile,
+    #`cc`.`email_address` AS company_email,
+    #`ct`.`best_channel_to_contact`,
+	`c`.`title_no`,
+    `c`.`tax_dec_no`,
+    `c`.`lot_no`,
+    `c`.`lot_area`,
+    `c`.`location`,
+    `c`.`bir`,
+    `c`.`rd`,
+    `c`.`zonal_value`,
+    `c`.`purchase_price`,
+    `c`.`remarks`,
+    `c`.`deceased`,
+    `c`.`heirs`,
+    `c`.`address`,
     `c`.`status`,
     `a`.`created_by`,
     `a`.`created_at`,

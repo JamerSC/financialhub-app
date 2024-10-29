@@ -36,6 +36,45 @@ public class ProjectAccount {
     @Column(name = "project_title")
     private String projectTitle;
 
+    @Column(name = "title_no")
+    private String titleNo;
+
+    @Column(name = "tax_dec_no")
+    private String taxDecNo;
+
+    @Column(name = "lot_no")
+    private String lotNo;
+
+    @Column(name = "lot_area")
+    private String lotArea;
+
+    @Column(name = "location")
+    private String location;
+
+    @Column(name = "bir")
+    private String bir;
+
+    @Column(name = "rd")
+    private String rd;
+
+    @Column(name = "zonal_value")
+    private String zonalValue;
+
+    @Column(name = "purchase_price")
+    private String purchasePrice;
+
+    @Column(name = "remarks")
+    private String remarks;
+
+    @Column(name = "deceased")
+    private String deceased;
+
+    @Column(name = "heirs")
+    private String heirs;
+
+    @Column(name = "address")
+    private String address;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private Status status;

@@ -17,11 +17,24 @@ public class ProjectAccountMapper {
 
         ProjectAccount projectAccount = new ProjectAccount();
         projectAccount.setProjectId(projectAccountDto.getProjectId());
-        //retainerAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(retainerAccountDto.getClientAccount())); // Pass the related entity
+        //projectAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(projectAccountDto.getClientAccount())); // Pass the related entity
         projectAccount.setProjectType(projectAccountDto.getProjectType());
         projectAccount.setPropertySubType(projectAccountDto.getPropertySubType());
         projectAccount.setSecSubType(projectAccountDto.getSecSubType());
         projectAccount.setProjectTitle(projectAccountDto.getProjectTitle());
+        projectAccount.setTitleNo(projectAccountDto.getTitleNo());
+        projectAccount.setTaxDecNo(projectAccountDto.getTaxDecNo());
+        projectAccount.setLotNo(projectAccountDto.getLotNo());
+        projectAccount.setLotArea(projectAccountDto.getLotArea());
+        projectAccount.setLocation(projectAccountDto.getLocation());
+        projectAccount.setBir(projectAccountDto.getBir());
+        projectAccount.setRd(projectAccountDto.getRd());
+        projectAccount.setZonalValue(projectAccountDto.getZonalValue());
+        projectAccount.setPurchasePrice(projectAccountDto.getPurchasePrice());
+        projectAccount.setRemarks(projectAccountDto.getRemarks());
+        projectAccount.setDeceased(projectAccountDto.getDeceased());
+        projectAccount.setHeirs(projectAccountDto.getHeirs());
+        projectAccount.setAddress(projectAccountDto.getAddress());
         projectAccount.setStatus(projectAccountDto.getStatus());
 
         return projectAccount;
@@ -35,11 +48,24 @@ public class ProjectAccountMapper {
 
         ProjectAccountDto projectAccountDto = new ProjectAccountDto();
         projectAccountDto.setProjectId(projectAccount.getProjectId());
-        //retainerAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(retainerAccountDto.getClientAccount())); // Pass the related entity
+        //projectAccountDto.setClientAccount(ClientAccountMapper.toClientAccountDto(projectAccount.getClientAccount())); // Pass the related entity
         projectAccountDto.setProjectType(projectAccount.getProjectType());
         projectAccountDto.setPropertySubType(projectAccount.getPropertySubType());
         projectAccountDto.setSecSubType(projectAccount.getSecSubType());
         projectAccountDto.setProjectTitle(projectAccount.getProjectTitle());
+        projectAccountDto.setTitleNo(projectAccount.getTitleNo());
+        projectAccountDto.setTaxDecNo(projectAccount.getTaxDecNo());
+        projectAccountDto.setLotNo(projectAccount.getLotNo());
+        projectAccountDto.setLotArea(projectAccount.getLotArea());
+        projectAccountDto.setLocation(projectAccount.getLocation());
+        projectAccountDto.setBir(projectAccount.getBir());
+        projectAccountDto.setRd(projectAccount.getRd());
+        projectAccountDto.setZonalValue(projectAccount.getZonalValue());
+        projectAccountDto.setPurchasePrice(projectAccount.getPurchasePrice());
+        projectAccountDto.setRemarks(projectAccount.getRemarks());
+        projectAccountDto.setDeceased(projectAccount.getDeceased());
+        projectAccountDto.setHeirs(projectAccount.getHeirs());
+        projectAccountDto.setAddress(projectAccount.getAddress());
         projectAccountDto.setStatus(projectAccount.getStatus());
 
         return projectAccountDto;
