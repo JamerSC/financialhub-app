@@ -65,66 +65,88 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3 mb-3" id="addTransferOfTitleForm" method="POST">
+                        <form class="row g-3 mb-3" id="addTransferOfTitleForm" th:action="@{/client-account/add-transfer-of-title-account}"
+                              th:object="${transferOfTitleAccount}" method="POST">
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="transferProjectTitle" class="form-label">Project Title</label>
-                                    <input type="text" class="form-control" id="transferProjectTitle" placeholder="Project title ..." required>
+                                    <input type="text" class="form-control" id="transferProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="transferClientName" class="form-label">Client Name</label>
-                                    <input type="text" class="form-control" id="transferClientName" placeholder="Client name ..." required>
+                                    <label for="client" class="form-label">Client</label>
+                                    <select id="client" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="transferTitleNo" class="form-label">Title No.</label>
-                                    <input type="text" class="form-control" id="transferTitleNo" placeholder="Title No. ..." required>
+                                    <input type="text" class="form-control" id="transferTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="transferTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
-                                    <input type="text" class="form-control" id="transferTaxDeclarationNo" placeholder="Tax Dec. ..." required>
+                                    <input type="text" class="form-control" id="transferTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-3">
                                     <label for="transferLotNo" class="form-label">Lot No.</label>
-                                    <input type="text" class="form-control" id="transferLotNo" placeholder="Lot no. ..." required>
+                                    <input type="text" class="form-control" id="transferLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
                                 </div>
                                 <div class="col-md-3">
                                     <label for="transferLotArea" class="form-label">Lot Area</label>
-                                    <input type="text" class="form-control" id="transferLotArea" placeholder="Lot area ..." required>
+                                    <input type="text" class="form-control" id="transferLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="transferLocation" class="form-label">Location</label>
-                                    <input type="text" class="form-control" id="transferLocation" placeholder="Location ..." required>
+                                    <input type="text" class="form-control" id="transferLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="transferBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
-                                    <input type="text" class="form-control" id="transferBir" placeholder="Revenue district office ..." required>
+                                    <input type="text" class="form-control" id="transferBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="transferRegistryOfDeeds" class="form-label">Registry of Deeds (RD)</label>
-                                    <input type="email" class="form-control" id="transferRegistryOfDeeds" placeholder="Registry of deeds ..." required>
+                                    <input type="text" class="form-control" id="transferRegistryOfDeeds" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="transferZonalValue" class="form-label">Zonal Value</label>
-                                    <input type="text" class="form-control" id="transferZonalValue" placeholder="Zonal value ..." required>
+                                    <input type="text" class="form-control" id="transferZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="transferPurchasePrice" class="form-label">Purchase Price</label>
-                                    <input type="text" class="form-control" id="transferPurchasePrice" placeholder="Purchase price ..." required>
+                                    <input type="text" class="form-control" id="transferPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
                                 </div>
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="transferRemarks" class="form-label">Remarks (Optional)</label>
-                                    <textarea class="form-control" id="transferRemarks" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                    <textarea class="form-control" id="transferRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="status" class="form-label">Status</label>
+                                    <select id="status" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="modal-footer">
@@ -146,7 +168,8 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <form class="row g-3 mb-3" id="addSettlementOfEstateForm" method="POST">
+                        <form class="row g-3 mb-3" id="addSettlementOfEstateForm" th:action="@{/client-account/add-settlement-of-estate-account}"
+                              th:object="${settlementOfEstateAccount}" method="POST">
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">

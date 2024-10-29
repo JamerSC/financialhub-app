@@ -20,9 +20,19 @@ public interface ClientAccountService {
 
     ClientAccountDto getClientAccountById(Long id);
 
+    /* *** Case Account *** */
+
     void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username);
 
     void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username);
+
+   /* *** Project Account *** */
+
+    void saveClientTransferOfTitleAccount(ClientAccountDto clientAccountDto, String username);
+
+    void saveClientSettlementOfEstateAccount(ClientAccountDto clientAccountDto, String username);
+
+    /* *** Retainer Account *** */
 
     void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username);
 

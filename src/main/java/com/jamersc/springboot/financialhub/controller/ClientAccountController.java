@@ -73,7 +73,27 @@ public class ClientAccountController {
     @GetMapping("/list-of-projects")
     public String listOfProjects(Model model) {
         model.addAttribute("listOfProjects", clientAccountService.getAllProjectAccounts());
+        model.addAttribute("transferOfTitleAccount", new ClientAccountDto());
+        model.addAttribute("settlementOfEstateAccount", new ClientAccountDto());
+        model.addAttribute("clients", contactService.getAllContacts());
+        model.addAttribute("status", Status.values());
         return "project/project";
+    }
+
+    @PostMapping("/add-transfer-of-title-account")
+    public String addTransferOfTitleAccount(@ModelAttribute("transferOfTitleAccount")
+                                                ClientAccountDto transferOfTitleAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientTransferOfTitleAccount(transferOfTitleAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-settlement-of-estate-account")
+    public String addSettlementOfEstateAccount(@ModelAttribute("settlementOfEstateAccount")
+                                                   ClientAccountDto settlementOfEstateAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientSettlementOfEstateAccount(settlementOfEstateAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     @GetMapping("/{id}/project-summary")

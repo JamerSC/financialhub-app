@@ -451,10 +451,9 @@ VALUES
 # JOIN CLIENT ACCOUNT & PROJECT DETAILS
 SELECT 
     `a`.`client_account_id`,
-    #`a`.`account_title`,
+    `a`.`account_title`,
     `c`.`project_title`,
     `a`.`account_type`,
-    #`ct`.`contact_id` AS contacts_id,
     `ct`.`contact_type`,
      CONCAT(
            IFNULL(`ci`.`title`, ''), ' ',
@@ -463,13 +462,7 @@ SELECT
            IFNULL(`ci`.`last_name`, ''), ' ',
            IFNULL(`ci`.`suffix`, '')
        ) AS full_name,
-    #`ci`.`mobile_number` AS individual_mobile,
-    #`ci`.`email_address` AS individual_email,
     `cc`.`company_name` AS company_name,
-    #`cc`.`representative_name` AS company_representative,
-    #`cc`.`mobile_number` AS company_mobile,
-    #`cc`.`email_address` AS company_email,
-    #`ct`.`best_channel_to_contact`,
 	`c`.`title_no`,
     `c`.`tax_dec_no`,
     `c`.`lot_no`,

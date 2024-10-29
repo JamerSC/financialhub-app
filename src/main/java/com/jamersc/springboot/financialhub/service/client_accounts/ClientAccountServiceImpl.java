@@ -25,11 +25,13 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     @Autowired
     private ClientAccountRepository clientAccountRepository;
     @Autowired
-    private CaseAccountRepository caseAccountRepository;
+    private ContactRepository contactRepository;
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private ContactRepository contactRepository;
+    private CaseAccountRepository caseAccountRepository;
+    @Autowired
+    private ProjectAccountRepository projectAccountRepository;
     @Autowired
     private RetainerAccountRepository retainerAccountRepository;
 
@@ -69,6 +71,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
         throw new RuntimeException("Client Account ID not found!");
     }
+
+    /* *** Case Account *** */
 
     @Override
     public void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
@@ -177,6 +181,62 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
 
     }
+
+    /* *** Project Account *** */
+
+    /* *** TRANSFER OF TITLE *** */
+    @Override
+    public void saveClientTransferOfTitleAccount(ClientAccountDto clientAccountDto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
+        account.setAccountTitle(clientAccountDto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        clientAccountRepository.save(account);
+
+        if (clientAccountDto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.PROPERTIES);
+            projectAccount.setPropertySubType(PropertySubType.TRANSFER_OF_TITLE);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(clientAccountDto.getAccountTitle());
+            projectAccount.setTitleNo(clientAccountDto.getProjectAccount().getTitleNo());
+            projectAccount.setTaxDecNo(clientAccountDto.getProjectAccount().getTaxDecNo());
+            projectAccount.setLotNo(clientAccountDto.getProjectAccount().getLotNo());
+            projectAccount.setLotArea(clientAccountDto.getProjectAccount().getLotArea());
+            projectAccount.setLocation(clientAccountDto.getProjectAccount().getLocation());
+            projectAccount.setBir(clientAccountDto.getProjectAccount().getBir());
+            projectAccount.setRd(clientAccountDto.getProjectAccount().getRd());
+            projectAccount.setZonalValue(clientAccountDto.getProjectAccount().getZonalValue());
+            projectAccount.setPurchasePrice(clientAccountDto.getProjectAccount().getPurchasePrice());
+            projectAccount.setRemarks(clientAccountDto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(clientAccountDto.getProjectAccount().getStatus());
+
+            logger.info("Saving transfer of title details" + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    @Override
+    public void saveClientSettlementOfEstateAccount(ClientAccountDto clientAccountDto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+        User createdBy = userRepository.findByUsername(username);
+    }
+
+
+    /* *** Retainer Account *** */
 
     @Override
     public void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username) {
