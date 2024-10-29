@@ -413,7 +413,7 @@ SET `retainer_title` = 'Tech Solutions'
 WHERE `retainer_id` = 2;
 
 
-#DROP TABLE `client_project_details`;
+DROP TABLE `client_project_details`;
 CREATE TABLE `client_project_details` (
 	`project_id` int NOT NULL AUTO_INCREMENT,
     `client_account_id` int NOT NULL,
@@ -427,11 +427,11 @@ CREATE TABLE `client_project_details` (
 );
 
 INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
-VALUES (1, 'Transfer of Title', 'PROJECT', 1, 1), (2, 'Settlement of Estate', 'PROJECT', 1, 1);
+VALUES (1, 'Transfer of Title', 'PROJECT', 1, 1), (2, 'Tech Solutions', 'PROJECT', 1, 1);
 
 INSERT INTO `client_project_details`(`client_account_id`, `project_type`, `property_sub_type`, `sec_sub_type`, `project_title`, `status`)
-VALUES (17, 'PROPERTIES', 'TRANSFER_OF_TITLE', null, 'Transfer of Title Juan DC', 'IN_PROGRESS'),
- (18, 'SEC', null, 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'Tech Solutions', 'IN_PROGRESS');
+VALUES (19, 'PROPERTIES', 'TRANSFER_OF_TITLE', null, 'Transfer of Title Juan DC', 'IN_PROGRESS'),
+ (20, 'SEC', null, 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'Tech Solutions', 'IN_PROGRESS');
 
 # JOIN CLIENT ACCOUNT & PROJECT DETAILS
 SELECT 

@@ -76,8 +76,10 @@ public class ClientAccountController {
         return "project/project";
     }
 
-    @GetMapping("/project-summary")
-    public String projectSummary(Model model) {
+    @GetMapping("/{id}/project-summary")
+    public String projectSummary(@PathVariable(value = "id") Long id, Model model) {
+        ClientAccountDto projectSummary = clientAccountService.getClientAccountById(id);
+        model.addAttribute("projectSummary", projectSummary);
         return "project/project-summary";
     }
 

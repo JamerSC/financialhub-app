@@ -17,335 +17,50 @@
                     <div class="p-1">
                         <h4 class="fw-bold fs-4">Project Summary</h4>
                     </div>
-                    <!-- Contact Option Modal Button -->
-                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#projectTypeModal">
-                            <i class="lni lni-notepad"></i> Add Project
-                        </button>
-                    </div>
-
-                    <!-- Contact Type Modal // center modal dialog -> modal-dialog-centered -->
-                    <div class="modal fade" id="projectTypeModal" tabindex="-1" aria-labelledby="projectTypeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="contactTypeModalLabel">Project Type</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="propertiesBtn">Properties</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessBtn">Business</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secBtn">Securities and Exchange (SEC)</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Property Select Modal -->
-                    <div class="modal fade" id="propertiesModal" tabindex="-1" aria-labelledby="propertiesModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="propertiesModalLabel">Project Properties Subtype</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="transferOfTitleBtn">Transfer of Title</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="settlementOfEstateBtn">Settlement of State</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleAnnotationBtn">Annotation</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="titleOtherProcessBtn">Others</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Transfer of Title Form Modal -->
-                    <div class="modal fade" id="transferOfTitleModal" tabindex="-1" aria-labelledby="transferOfTitleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="transferOfTitleModalLabel">Transfer of Title (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Transfer of Title Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Settlement of Estate Form Modal -->
-                    <div class="modal fade" id="settlementOfEstateModal" tabindex="-1" aria-labelledby="settlementOfEstateModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="settlementOfEstateModalLabel">Settlement Of Estate (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Settlement Of Estate Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Annotation of Title Form Modal -->
-                    <div class="modal fade" id="titleAnnotationModal" tabindex="-1" aria-labelledby="titleAnnotationModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titleAnnotationModalLabel">Title Annotation (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Title Annotation Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Other Title Transaction Form Modal -->
-                    <div class="modal fade" id="titleOtherProcessModal" tabindex="-1" aria-labelledby="titleOtherProcessModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="titleOtherProcessModalLabel">Title Other Process (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Title Other Process Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Business Selection Modal -->
-                    <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="businessModalLabel">Project Business</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRegBtn">Business Registration</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessRenewalBtn">Business Renewal</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessClosureBtn">Business Closure</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="businessOtherProcessBtn">Others</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Business Registration Form Modal -->
-                    <div class="modal fade" id="businessRegModal" tabindex="-1" aria-labelledby="businessRegModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="businessRegModalLabel">Business Registration (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Business Registration Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Business Renewal Form Modal -->
-                    <div class="modal fade" id="businessRenewalModal" tabindex="-1" aria-labelledby="businessRenewalModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="businessRenewalModalLabel">Business Renewal (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Business Renewal Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Business Closure Form Modal -->
-                    <div class="modal fade" id="businessClosureModal" tabindex="-1" aria-labelledby="businessClosureModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="businessClosureModalLabel">Business Closure (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Business Closure Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Business Other Process Form Modal -->
-                    <div class="modal fade" id="businessOtherProcessModal" tabindex="-1" aria-labelledby="businessOtherProcessModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="businessOtherProcessModalLabel">Business Other Process (New Project)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    Business Other Process Project
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Create Project</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- SEC Selection Modal -->
-                    <div class="modal fade" id="secModal" tabindex="-1" aria-labelledby="secModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="secModalLabel">Project Securities & Exchange Subtype</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secRegistrationBtn">Securities and Exchange (SEC) Registration</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secAmendmentBtn">Amendment of Articles of Incorporation</button>
-                                    <br>
-                                    <button class="btn btn-secondary w-100 text-center mb-2" id="secStockIncreaseBtn">Increase in Authorized Capital Stock</button>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-
-                <!-- SEC Registration Modal -->
-                <div class="modal fade" id="secRegistrationModal" tabindex="-1" aria-labelledby="secRegistrationModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="secRegistrationModalLabel">SEC Registration (New Project)</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                SEC Registration Process Project
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Create Project</button>
-                            </div>
+                <div class="row mb-4">
+                    <!-- Client Account Information -->
+                    <div class="col-md-6 p-3">
+                        <h6 class="fw-bold">Client Account Information</h6>
+                        <div th:if="${projectSummary.client?.individual != null}">
+                            <p><strong>Full Name:</strong> <span  th:text="${projectSummary.client.individual.getFullName()}"></span></p>
                         </div>
-                    </div>
-                </div>
-
-                <!-- SEC Amendment Modal -->
-                <div class="modal fade" id="secAmendmentModal" tabindex="-1" aria-labelledby="secAmendmentModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="secAmendmentModalModalLabel">SEC Amendment of Articles of Incorporation</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                SEC Amendment of Articles of Incorporation Project
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Create Project</button>
-                            </div>
+                        <div th:if="${projectSummary.client?.company != null}">
+                            <p><strong>Company Name:</strong> <span  th:text="${projectSummary.client.company.companyName}"></span></p>
                         </div>
+                        <p><strong>Account Type:</strong> <span th:text="${projectSummary.clientAccountType.displayClientAccountType()}"></span></p>
+                        <p><strong>Account Title:</strong> <span th:text="${projectSummary.accountTitle}"></span></p>
+                        <br>
+                        <h6 class="fw-bold">Project Information</h6>
+                        <p><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
+                        <p><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
+                        <p><strong>SEC/Property Sub Type:</strong> <span th:text="${projectSummary.projectAccount.secSubType != null ?
+                        projectSummary.projectAccount.secSubType.displaySecSubType() : projectSummary.projectAccount.propertySubType.displayPropertySubType()}"></span></p>
+                        <p><strong>Status:</strong> <span th:text="${projectSummary.projectAccount.status.displayStatus()}"></span></p>
                     </div>
+                    <!-- Right Column -->
+                    <!--<div class="col-md-6 p-3">
+                        <p><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
+                        <p><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
+                    </div>-->
                 </div>
-
-                <!-- SEC Stock Increase Modal -->
-                <div class="modal fade" id="secStockIncreaseModal" tabindex="-1" aria-labelledby="secStockIncreaseModalModalLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="secStockIncreaseModalModalLabel">SEC Increase in Authorized Capital Stock (New Project)</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                SEC Increase in Authorized Capital Stock Project
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Create Project</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
+                <h5 class="fw-bold mb-3">Project Activities</h5>
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
-                    <tr>
-                        <th>Project Title</th>
-                        <th>Status</th>
-                        <th>Last Activity</th>
-                        <th>Action</th>
-                    </tr>
+                        <tr>
+                            <td>Activity Description</td>
+                            <th>Activity Category</th>
+                            <th>PIC</th>
+                            <th>Activity Date</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>Transfer of Title</td>
-                        <td>In progress</td>
-                        <td>Case Study</td>
-                        <td>
-                            <a href="#" class="btn btn-secondary btn-sm">
-                                <i class="lni lni-eye"></i>
-                            </a>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>Secure documents</td>
+                            <td>Certification</td>
+                            <td>Juan Doe</td>
+                            <td>Oct. 25, 2024</td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
