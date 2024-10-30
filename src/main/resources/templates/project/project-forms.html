@@ -269,14 +269,12 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="settlementRemarks" class="form-label">Remarks (Optional)</label>
                                     <textarea class="form-control" id="settlementRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
                                 </div>
                             </div>
-
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
@@ -289,18 +287,102 @@
 
         <!-- Annotation of Title Form Modal -->
         <div class="modal fade" id="titleAnnotationModal" tabindex="-1" aria-labelledby="titleAnnotationModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="titleAnnotationModalLabel">Title Annotation (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Title Annotation Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addTitleAnnotationForm" th:action="@{/client-account/add-title-annotation-account}"
+                              th:object="${titleAnnotationAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="transferProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="annotationProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="annotationClient" class="form-label">Client</label>
+                                    <select id="annotationClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="annotationTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="annotationTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="annotationTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="annotationTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="annotationLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="annotationLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="annotationLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="annotationLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="annotationLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="annotationLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="annotationBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="annotationBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="annotationRegistryOfDeeds" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="annotationRegistryOfDeeds" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="annotationZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="annotationZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="annotationPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="annotationPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="transferRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="annotationRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="annotationStatus" class="form-label">Status</label>
+                                    <select id="annotationStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -308,18 +390,102 @@
 
         <!-- Other Title Transaction Form Modal -->
         <div class="modal fade" id="titleOtherProcessModal" tabindex="-1" aria-labelledby="titleOtherProcessModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="titleOtherProcessModalLabel">Title Other Process (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Title Other Process Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addTitleOtherForm" th:action="@{/client-account/add-title-other-account}"
+                              th:object="${titleOtherAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="titleOtherProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="titleOtherProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titleOtherClient" class="form-label">Client</label>
+                                    <select id="titleOtherClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="titleOtherTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="titleOtherTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titleOtherTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="titleOtherTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="titleOtherLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="titleOtherLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="titleOtherLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="titleOtherLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titleOtherLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="titleOtherLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="titleOtherBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="titleOtherBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titleOtherRegistryOfDeeds" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="titleOtherRegistryOfDeeds" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="titleOtherZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="titleOtherZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="titleOtherPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="titleOtherPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="titleOtherRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="titleOtherRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="titleOtherStatus" class="form-label">Status</label>
+                                    <select id="titleOtherStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -75,6 +75,8 @@ public class ClientAccountController {
         model.addAttribute("listOfProjects", clientAccountService.getAllProjectAccounts());
         model.addAttribute("transferOfTitleAccount", new ClientAccountDto());
         model.addAttribute("settlementOfEstateAccount", new ClientAccountDto());
+        model.addAttribute("titleAnnotationAccount", new ClientAccountDto());
+        model.addAttribute("titleOtherAccount", new ClientAccountDto());
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("status", Status.values());
         return "project/project";
@@ -93,6 +95,22 @@ public class ClientAccountController {
                                                    ClientAccountDto settlementOfEstateAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientSettlementOfEstateAccount(settlementOfEstateAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-title-annotation-account")
+    public String addTitleAnnotationAccount(@ModelAttribute("titleAnnotationAccount")
+                                                ClientAccountDto titleAnnotationAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientTitleAnnotationAccount(titleAnnotationAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-title-other-account")
+    public String addTitleOtherAccount(@ModelAttribute("titleOtherAccount")
+                                            ClientAccountDto titleOtherAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientTitleOtherAccount(titleOtherAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
     }
 

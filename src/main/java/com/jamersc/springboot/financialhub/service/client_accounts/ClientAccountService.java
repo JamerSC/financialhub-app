@@ -22,21 +22,25 @@ public interface ClientAccountService {
 
     /* *** Case Account *** */
 
-    void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username);
+    void saveClientCaseAccount(ClientAccountDto dto, String username);
 
-    void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username);
+    void updateClientCaseAccount(ClientAccountDto dto, String username);
 
    /* *** Project Account *** */
 
-    void saveClientTransferOfTitleAccount(ClientAccountDto clientAccountDto, String username);
+    void saveClientTransferOfTitleAccount(ClientAccountDto dto, String username);
 
-    void saveClientSettlementOfEstateAccount(ClientAccountDto clientAccountDto, String username);
+    void saveClientSettlementOfEstateAccount(ClientAccountDto dto, String username);
+
+    void saveClientTitleAnnotationAccount(ClientAccountDto dto, String username);
+
+    void saveClientTitleOtherAccount(ClientAccountDto dto, String username);
 
     /* *** Retainer Account *** */
 
-    void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username);
+    void saveClientRetainerAccount(ClientAccountDto dto, String username);
 
-    void updateClientRetainerAccount(ClientAccountDto clientAccountDto, String username);
+    void updateClientRetainerAccount(ClientAccountDto dto, String username);
 
     void deleteClientAccountById(Long id);
 }

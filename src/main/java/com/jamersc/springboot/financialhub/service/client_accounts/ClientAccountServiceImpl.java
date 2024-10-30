@@ -75,15 +75,15 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     /* *** Case Account *** */
 
     @Override
-    public void saveClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
+    public void saveClientCaseAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         CaseAccount caseAccount;
 
         User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
-        account.setAccountTitle(clientAccountDto.getAccountTitle());
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
@@ -93,48 +93,48 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         clientAccountRepository.save(account);
 
         // Update
-        if (clientAccountDto.getCaseAccount() != null) {
+        if (dto.getCaseAccount() != null) {
             caseAccount = new CaseAccount();
             caseAccount.setClientAccount(account);
-            caseAccount.setCaseType(clientAccountDto.getCaseAccount().getCaseType());
-            caseAccount.setCaseTitle(clientAccountDto.getAccountTitle());
-            caseAccount.setDocketNo(clientAccountDto.getCaseAccount().getDocketNo());
-            caseAccount.setNature(clientAccountDto.getCaseAccount().getNature());
-            caseAccount.setCourt(clientAccountDto.getCaseAccount().getCourt());
-            caseAccount.setBranch(clientAccountDto.getCaseAccount().getBranch());
-            caseAccount.setJudge(clientAccountDto.getCaseAccount().getJudge());
-            caseAccount.setCourtEmail(clientAccountDto.getCaseAccount().getCourtEmail());
-            caseAccount.setProsecutor(clientAccountDto.getCaseAccount().getProsecutor());
-            caseAccount.setProsecutorEmail(clientAccountDto.getCaseAccount().getProsecutorEmail());
-            caseAccount.setProsecutorOffice(clientAccountDto.getCaseAccount().getProsecutorOffice());
-            caseAccount.setOpposingParty(clientAccountDto.getCaseAccount().getOpposingParty());
-            caseAccount.setOpposingCounsel(clientAccountDto.getCaseAccount().getOpposingCounsel());
-            caseAccount.setCounselEmail(clientAccountDto.getCaseAccount().getCounselEmail());
-            caseAccount.setStatus(clientAccountDto.getCaseAccount().getStatus());
-            caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
-            caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
-            caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
+            caseAccount.setCaseType(dto.getCaseAccount().getCaseType());
+            caseAccount.setCaseTitle(dto.getAccountTitle());
+            caseAccount.setDocketNo(dto.getCaseAccount().getDocketNo());
+            caseAccount.setNature(dto.getCaseAccount().getNature());
+            caseAccount.setCourt(dto.getCaseAccount().getCourt());
+            caseAccount.setBranch(dto.getCaseAccount().getBranch());
+            caseAccount.setJudge(dto.getCaseAccount().getJudge());
+            caseAccount.setCourtEmail(dto.getCaseAccount().getCourtEmail());
+            caseAccount.setProsecutor(dto.getCaseAccount().getProsecutor());
+            caseAccount.setProsecutorEmail(dto.getCaseAccount().getProsecutorEmail());
+            caseAccount.setProsecutorOffice(dto.getCaseAccount().getProsecutorOffice());
+            caseAccount.setOpposingParty(dto.getCaseAccount().getOpposingParty());
+            caseAccount.setOpposingCounsel(dto.getCaseAccount().getOpposingCounsel());
+            caseAccount.setCounselEmail(dto.getCaseAccount().getCounselEmail());
+            caseAccount.setStatus(dto.getCaseAccount().getStatus());
+            caseAccount.setStage(dto.getCaseAccount().getStage());
+            caseAccount.setStartDate(dto.getCaseAccount().getStartDate());
+            caseAccount.setEndDate(dto.getCaseAccount().getEndDate());
             logger.info("Saving case account details: " + caseAccount);
             caseAccountRepository.save(caseAccount);
         }
     }
 
     @Override
-    public void updateClientCaseAccount(ClientAccountDto clientAccountDto, String username) {
+    public void updateClientCaseAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         CaseAccount caseAccount;
 
         User updatedBy = userRepository.findByUsername(username);
 
-        if (clientAccountDto.getClientAccountId() != null) {
-            account = clientAccountRepository.findById(clientAccountDto.getClientAccountId())
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
-            if (clientAccountDto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(clientAccountDto.getClient());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId()).orElse(null);
                 account.setClient(contactId);
             }
-            account.setAccountTitle(clientAccountDto.getAccountTitle());
+            account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
                 account.setUpdatedBy(updatedBy.getId());
             }
@@ -144,28 +144,28 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
             boolean caseAccountUpdated = false;
 
-            if (clientAccountDto.getCaseAccount() != null) {
-                caseAccount = caseAccountRepository.findById(clientAccountDto.getCaseAccount().getCaseId())
+            if (dto.getCaseAccount() != null) {
+                caseAccount = caseAccountRepository.findById(dto.getCaseAccount().getCaseId())
                         .orElse(new CaseAccount());
                 caseAccount.setClientAccount(account);
-                caseAccount.setCaseType(clientAccountDto.getCaseAccount().getCaseType());
-                caseAccount.setCaseTitle(clientAccountDto.getAccountTitle());
-                caseAccount.setDocketNo(clientAccountDto.getCaseAccount().getDocketNo());
-                caseAccount.setNature(clientAccountDto.getCaseAccount().getNature());
-                caseAccount.setCourt(clientAccountDto.getCaseAccount().getCourt());
-                caseAccount.setBranch(clientAccountDto.getCaseAccount().getBranch());
-                caseAccount.setJudge(clientAccountDto.getCaseAccount().getJudge());
-                caseAccount.setCourtEmail(clientAccountDto.getCaseAccount().getCourtEmail());
-                caseAccount.setProsecutor(clientAccountDto.getCaseAccount().getProsecutor());
-                caseAccount.setProsecutorEmail(clientAccountDto.getCaseAccount().getProsecutorEmail());
-                caseAccount.setProsecutorOffice(clientAccountDto.getCaseAccount().getProsecutorOffice());
-                caseAccount.setOpposingParty(clientAccountDto.getCaseAccount().getOpposingParty());
-                caseAccount.setOpposingCounsel(clientAccountDto.getCaseAccount().getOpposingCounsel());
-                caseAccount.setCounselEmail(clientAccountDto.getCaseAccount().getCounselEmail());
-                caseAccount.setStatus(clientAccountDto.getCaseAccount().getStatus());
-                caseAccount.setStage(clientAccountDto.getCaseAccount().getStage());
-                caseAccount.setStartDate(clientAccountDto.getCaseAccount().getStartDate());
-                caseAccount.setEndDate(clientAccountDto.getCaseAccount().getEndDate());
+                caseAccount.setCaseType(dto.getCaseAccount().getCaseType());
+                caseAccount.setCaseTitle(dto.getAccountTitle());
+                caseAccount.setDocketNo(dto.getCaseAccount().getDocketNo());
+                caseAccount.setNature(dto.getCaseAccount().getNature());
+                caseAccount.setCourt(dto.getCaseAccount().getCourt());
+                caseAccount.setBranch(dto.getCaseAccount().getBranch());
+                caseAccount.setJudge(dto.getCaseAccount().getJudge());
+                caseAccount.setCourtEmail(dto.getCaseAccount().getCourtEmail());
+                caseAccount.setProsecutor(dto.getCaseAccount().getProsecutor());
+                caseAccount.setProsecutorEmail(dto.getCaseAccount().getProsecutorEmail());
+                caseAccount.setProsecutorOffice(dto.getCaseAccount().getProsecutorOffice());
+                caseAccount.setOpposingParty(dto.getCaseAccount().getOpposingParty());
+                caseAccount.setOpposingCounsel(dto.getCaseAccount().getOpposingCounsel());
+                caseAccount.setCounselEmail(dto.getCaseAccount().getCounselEmail());
+                caseAccount.setStatus(dto.getCaseAccount().getStatus());
+                caseAccount.setStage(dto.getCaseAccount().getStage());
+                caseAccount.setStartDate(dto.getCaseAccount().getStartDate());
+                caseAccount.setEndDate(dto.getCaseAccount().getEndDate());
                 logger.info("Updating case account details: " + caseAccount);
                 caseAccountRepository.save(caseAccount);
 
@@ -186,15 +186,15 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     /* *** TRANSFER OF TITLE *** */
     @Override
-    public void saveClientTransferOfTitleAccount(ClientAccountDto clientAccountDto, String username) {
+    public void saveClientTransferOfTitleAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         ProjectAccount projectAccount;
 
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
-        account.setAccountTitle(clientAccountDto.getAccountTitle());
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
@@ -202,27 +202,27 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
         clientAccountRepository.save(account);
 
-        if (clientAccountDto.getProjectAccount() != null) {
+        if (dto.getProjectAccount() != null) {
             projectAccount = new ProjectAccount();
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.TRANSFER_OF_TITLE);
             projectAccount.setSecSubType(null);
-            projectAccount.setProjectTitle(clientAccountDto.getAccountTitle());
-            projectAccount.setTitleNo(clientAccountDto.getProjectAccount().getTitleNo());
-            projectAccount.setTaxDecNo(clientAccountDto.getProjectAccount().getTaxDecNo());
-            projectAccount.setLotNo(clientAccountDto.getProjectAccount().getLotNo());
-            projectAccount.setLotArea(clientAccountDto.getProjectAccount().getLotArea());
-            projectAccount.setLocation(clientAccountDto.getProjectAccount().getLocation());
-            projectAccount.setBir(clientAccountDto.getProjectAccount().getBir());
-            projectAccount.setRd(clientAccountDto.getProjectAccount().getRd());
-            projectAccount.setZonalValue(clientAccountDto.getProjectAccount().getZonalValue());
-            projectAccount.setPurchasePrice(clientAccountDto.getProjectAccount().getPurchasePrice());
-            projectAccount.setRemarks(clientAccountDto.getProjectAccount().getRemarks());
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+            projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+            projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+            projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+            projectAccount.setLocation(dto.getProjectAccount().getLocation());
+            projectAccount.setBir(dto.getProjectAccount().getBir());
+            projectAccount.setRd(dto.getProjectAccount().getRd());
+            projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+            projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
             projectAccount.setDeceased(null);
             projectAccount.setHeirs(null);
             projectAccount.setAddress(null);
-            projectAccount.setStatus(clientAccountDto.getProjectAccount().getStatus());
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
             logger.info("Saving transfer of title details" + projectAccount);
             projectAccountRepository.save(projectAccount);
@@ -231,15 +231,15 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     /* *** SETTLEMENT OF ESTATE *** */
     @Override
-    public void saveClientSettlementOfEstateAccount(ClientAccountDto clientAccountDto, String username) {
+    public void saveClientSettlementOfEstateAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         ProjectAccount projectAccount;
 
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
-        account.setAccountTitle(clientAccountDto.getAccountTitle());
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
@@ -247,45 +247,132 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
         clientAccountRepository.save(account);
 
-        if (clientAccountDto.getProjectAccount() != null) {
+        if (dto.getProjectAccount() != null) {
             projectAccount = new ProjectAccount();
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.SETTLEMENT_OF_ESTATE);
             projectAccount.setSecSubType(null);
-            projectAccount.setProjectTitle(clientAccountDto.getAccountTitle());
-            projectAccount.setTitleNo(clientAccountDto.getProjectAccount().getTitleNo());
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
             projectAccount.setTaxDecNo(null);
             projectAccount.setLotNo(null);
             projectAccount.setLotArea(null);
             projectAccount.setLocation(null);
-            projectAccount.setBir(clientAccountDto.getProjectAccount().getBir());
-            projectAccount.setRd(clientAccountDto.getProjectAccount().getRd());
+            projectAccount.setBir(dto.getProjectAccount().getBir());
+            projectAccount.setRd(dto.getProjectAccount().getRd());
             projectAccount.setZonalValue(null);
             projectAccount.setPurchasePrice(null);
-            projectAccount.setRemarks(clientAccountDto.getProjectAccount().getRemarks());
-            projectAccount.setDeceased(clientAccountDto.getProjectAccount().getDeceased());
-            projectAccount.setHeirs(clientAccountDto.getProjectAccount().getHeirs());
-            projectAccount.setAddress(clientAccountDto.getProjectAccount().getAddress());
-            projectAccount.setStatus(clientAccountDto.getProjectAccount().getStatus());
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(dto.getProjectAccount().getDeceased());
+            projectAccount.setHeirs(dto.getProjectAccount().getHeirs());
+            projectAccount.setAddress(dto.getProjectAccount().getAddress());
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
             logger.info("Saving transfer of title details" + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
     }
 
+    @Override
+    public void saveClientTitleAnnotationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.PROPERTIES);
+            projectAccount.setPropertySubType(PropertySubType.ANNOTATION);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+            projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+            projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+            projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+            projectAccount.setLocation(dto.getProjectAccount().getLocation());
+            projectAccount.setBir(dto.getProjectAccount().getBir());
+            projectAccount.setRd(dto.getProjectAccount().getRd());
+            projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+            projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving annotation details" + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    @Override
+    public void saveClientTitleOtherAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.PROPERTIES);
+            projectAccount.setPropertySubType(PropertySubType.OTHERS);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+            projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+            projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+            projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+            projectAccount.setLocation(dto.getProjectAccount().getLocation());
+            projectAccount.setBir(dto.getProjectAccount().getBir());
+            projectAccount.setRd(dto.getProjectAccount().getRd());
+            projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+            projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving other title details" + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
 
     /* *** Retainer Account *** */
 
     @Override
-    public void saveClientRetainerAccount(ClientAccountDto clientAccountDto, String username) {
+    public void saveClientRetainerAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         RetainerAccount retainerAccount;
         User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
-        account.setAccountTitle(clientAccountDto.getClient().getIndividual().getFullName());
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getClient().getIndividual().getFullName());
         account.setClientAccountType(ClientAccountType.RETAINER);
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getId());
@@ -294,38 +381,38 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         logger.info("Saving new client account: " + account);
         clientAccountRepository.save(account);
 
-        if (clientAccountDto.getRetainerAccount() != null) {
+        if (dto.getRetainerAccount() != null) {
             retainerAccount = new RetainerAccount();
             retainerAccount.setClientAccount(account);
             retainerAccount.setRetainerTitle(account.getClient().getIndividual().getFullName());
-            retainerAccount.setStatus(clientAccountDto.getRetainerAccount().getStatus());
-            retainerAccount.setStartDate(clientAccountDto.getRetainerAccount().getStartDate());
-            retainerAccount.setEndDate(clientAccountDto.getRetainerAccount().getEndDate());
+            retainerAccount.setStatus(dto.getRetainerAccount().getStatus());
+            retainerAccount.setStartDate(dto.getRetainerAccount().getStartDate());
+            retainerAccount.setEndDate(dto.getRetainerAccount().getEndDate());
             logger.info("Saving retainer account details: " + retainerAccount);
             retainerAccountRepository.save(retainerAccount);
         }
     }
 
     @Override
-    public void updateClientRetainerAccount(ClientAccountDto clientAccountDto, String username) {
+    public void updateClientRetainerAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
         RetainerAccount retainerAccount;
 
         User updatedBy = userRepository.findByUsername(username);
 
-        if (clientAccountDto.getClientAccountId() != null) {
-            account = clientAccountRepository.findById(clientAccountDto.getClientAccountId())
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
-            if (clientAccountDto.getClient() != null) {
-                Contact contact = ContactMapper.toContactEntity(clientAccountDto.getClient());
+            if (dto.getClient() != null) {
+                Contact contact = ContactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(contact.getContactId()).orElse(null);
                 account.setClient(contactId);
 
                 // Check if client has an individual or company before setting account title
-                if (clientAccountDto.getClient().getIndividual() != null) {
-                    account.setAccountTitle(clientAccountDto.getClient().getIndividual().getFullName());
-                } else if (clientAccountDto.getClient().getCompany() != null) {
-                    account.setAccountTitle(clientAccountDto.getClient().getCompany().getCompanyName());
+                if (dto.getClient().getIndividual() != null) {
+                    account.setAccountTitle(dto.getClient().getIndividual().getFullName());
+                } else if (dto.getClient().getCompany() != null) {
+                    account.setAccountTitle(dto.getClient().getCompany().getCompanyName());
                 }
             }
             if (updatedBy != null) {
@@ -336,23 +423,23 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
             boolean retainerAccountUpdated = false;
 
-            if (clientAccountDto.getRetainerAccount() != null) {
-                retainerAccount = retainerAccountRepository.findById(clientAccountDto.getRetainerAccount().getRetainerId())
+            if (dto.getRetainerAccount() != null) {
+                retainerAccount = retainerAccountRepository.findById(dto.getRetainerAccount().getRetainerId())
                         .orElse(new RetainerAccount());
                 retainerAccount.setClientAccount(account);
 
                 // Check if client has an individual or company before setting retainer title
-                if (clientAccountDto.getClient() != null) {
-                    if (clientAccountDto.getClient().getIndividual() != null) {
-                        retainerAccount.setRetainerTitle(clientAccountDto.getClient().getIndividual().getFullName());
-                    } else if (clientAccountDto.getClient().getCompany() != null) {
-                        retainerAccount.setRetainerTitle(clientAccountDto.getClient().getCompany().getCompanyName());
+                if (dto.getClient() != null) {
+                    if (dto.getClient().getIndividual() != null) {
+                        retainerAccount.setRetainerTitle(dto.getClient().getIndividual().getFullName());
+                    } else if (dto.getClient().getCompany() != null) {
+                        retainerAccount.setRetainerTitle(dto.getClient().getCompany().getCompanyName());
                     }
                 }
 
-                retainerAccount.setStatus(clientAccountDto.getRetainerAccount().getStatus());
-                retainerAccount.setStartDate(clientAccountDto.getRetainerAccount().getStartDate());
-                retainerAccount.setEndDate(clientAccountDto.getRetainerAccount().getEndDate());
+                retainerAccount.setStatus(dto.getRetainerAccount().getStatus());
+                retainerAccount.setStartDate(dto.getRetainerAccount().getStartDate());
+                retainerAccount.setEndDate(dto.getRetainerAccount().getEndDate());
                 logger.info("Updating client's retainer account details: " + account);
                 retainerAccountRepository.save(retainerAccount);
 
