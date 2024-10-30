@@ -189,6 +189,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     public void saveClientTransferOfTitleAccount(ClientAccountDto clientAccountDto, String username) {
         ClientAccount account;
         ProjectAccount projectAccount;
+
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
@@ -228,11 +229,49 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    /* *** SETTLEMENT OF ESTATE *** */
     @Override
     public void saveClientSettlementOfEstateAccount(ClientAccountDto clientAccountDto, String username) {
         ClientAccount account;
         ProjectAccount projectAccount;
+
         User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(clientAccountDto.getClient()));
+        account.setAccountTitle(clientAccountDto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        clientAccountRepository.save(account);
+
+        if (clientAccountDto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.PROPERTIES);
+            projectAccount.setPropertySubType(PropertySubType.SETTLEMENT_OF_ESTATE);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(clientAccountDto.getAccountTitle());
+            projectAccount.setTitleNo(clientAccountDto.getProjectAccount().getTitleNo());
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(clientAccountDto.getProjectAccount().getBir());
+            projectAccount.setRd(clientAccountDto.getProjectAccount().getRd());
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(clientAccountDto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(clientAccountDto.getProjectAccount().getDeceased());
+            projectAccount.setHeirs(clientAccountDto.getProjectAccount().getHeirs());
+            projectAccount.setAddress(clientAccountDto.getProjectAccount().getAddress());
+            projectAccount.setStatus(clientAccountDto.getProjectAccount().getStatus());
+
+            logger.info("Saving transfer of title details" + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
     }
 
 

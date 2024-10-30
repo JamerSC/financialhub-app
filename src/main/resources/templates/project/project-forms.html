@@ -74,8 +74,8 @@
                                     <input type="text" class="form-control" id="transferProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
                                 </div>
                                 <div class="col-md-6">
-                                    <label for="client" class="form-label">Client</label>
-                                    <select id="client" class="form-select" th:field="*{client}" required>
+                                    <label for="transferClient" class="form-label">Client</label>
+                                    <select id="transferClient" class="form-select" th:field="*{client}" required>
                                         <option value="" selected>Select client...</option>
                                         <option th:each="tempClient : ${clients}"
                                                 th:value="${tempClient.contactId}"
@@ -174,14 +174,33 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="settlementProjectTitle" class="form-label">Project Title</label>
-                                    <input type="text" class="form-control" id="settlementProjectTitle" placeholder="Project title ..." required>
+                                    <input type="text" class="form-control" id="settlementProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="settlementClientName" class="form-label">Client Name</label>
-                                    <input type="text" class="form-control" id="settlementClientName" placeholder="Client name ..." required>
+                                    <select id="settlementClientName" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="settlementTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="settlementTitleNo" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="settlementDeceased" class="form-label">Deceased</label>
+                                    <input type="text" class="form-control" id="settlementDeceased" th:field="*{projectAccount.deceased}" placeholder="Deceased full name. ..." required>
+                                </div>
+                            </div>
+                            <!--<div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="settlementTitleNo" class="form-label">Title No.</label>
                                     <input type="text" class="form-control" id="settlementTitleNo" placeholder="Title No. ..." required>
@@ -190,8 +209,8 @@
                                     <label for="settlementTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
                                     <input type="text" class="form-control" id="settlementTaxDeclarationNo" placeholder="Tax Dec. ..." required>
                                 </div>
-                            </div>
-                            <div class="row mb-3">
+                            </div>-->
+                            <!--<div class="row mb-3">
                                 <div class="col-md-3">
                                     <label for="settlementLotNo" class="form-label">Lot No.</label>
                                     <input type="text" class="form-control" id="settlementLotNo" placeholder="Lot no. ..." required>
@@ -204,18 +223,20 @@
                                     <label for="settlementLocation" class="form-label">Location</label>
                                     <input type="text" class="form-control" id="settlementLocation" placeholder="Location ..." required>
                                 </div>
-                            </div>
+                            </div>-->
+
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="settlementBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
-                                    <input type="text" class="form-control" id="settlementBir" placeholder="Revenue district office ..." required>
+                                    <input type="text" class="form-control" id="settlementBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
                                 </div>
                                 <div class="col-md-6">
                                     <label for="settlementRegistryOfDeeds" class="form-label">Registry of Deeds (RD)</label>
-                                    <input type="email" class="form-control" id="settlementRegistryOfDeeds" placeholder="Registry of deeds ..." required>
+                                    <input type="text" class="form-control" id="settlementRegistryOfDeeds" th:field="*{projectAccount.rd}" placeholder="Registry of deeds ..." required>
                                 </div>
                             </div>
-                            <div class="row mb-3">
+
+                            <!--<div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="settlementZonalValue" class="form-label">Zonal Value</label>
                                     <input type="text" class="form-control" id="settlementZonalValue" placeholder="Zonal value ..." required>
@@ -224,13 +245,38 @@
                                     <label for="settlementPurchasePrice" class="form-label">Purchase Price</label>
                                     <input type="text" class="form-control" id="settlementPurchasePrice" placeholder="Purchase price ..." required>
                                 </div>
+                            </div>-->
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="settlementHeirs" class="form-label">Heir(s)</label>
+                                    <textarea class="form-control" id="settlementHeirs" th:field="*{projectAccount.heirs}" rows="4" cols="6" placeholder="Add heirs ..." required></textarea>
+                                </div>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="settlementAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="settlementAddress" th:field="*{projectAccount.address}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="settlementStatus" class="form-label">Status</label>
+                                    <select id="settlementStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="settlementRemarks" class="form-label">Remarks (Optional)</label>
-                                    <textarea class="form-control" id="settlementRemarks" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                    <textarea class="form-control" id="settlementRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
                                 </div>
                             </div>
+
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
