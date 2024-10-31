@@ -64,8 +64,15 @@
                         <td th:text="${account.clientAccountId}"></td>
                         <td th:text="${account.accountTitle}"></td>
                         <td th:text="${account.clientAccountType.displayClientAccountType()}"></td>
-                        <td th:if="${account.caseAccount?.status != null}" th:text="${account.caseAccount.status.displayStatus()}"></td>
-                        <td th:unless="${account.caseAccount?.status != null}">Status not available</td>
+                        <td th:text="${account.caseAccount != null && account.caseAccount.status != null ?
+                                       account.caseAccount.status.displayStatus() :
+                                       (account.projectAccount != null && account.projectAccount.status != null ?
+                                       account.projectAccount.status.displayStatus() :
+                                       (account.retainerAccount != null && account.retainerAccount.status != null ?
+                                       account.retainerAccount.status.displayStatus() : 'N/A'))}">
+                        </td>
+                        <!--<td th:if="${account.caseAccount?.status != null}" th:text="${account.caseAccount.status.displayStatus()}"></td>
+                        <td th:unless="${account.caseAccount?.status != null}">Status not available</td>-->
                     </tr>
                     </tbody>
                 </table>

@@ -36,6 +36,20 @@ public interface ClientAccountService {
 
     void saveClientTitleOtherAccount(ClientAccountDto dto, String username);
 
+    void saveClientBusinessRegistrationAccount(ClientAccountDto dto, String username);
+
+    void saveClientBusinessRenewalAccount(ClientAccountDto dto, String username);
+
+    void saveClientBusinessClosureAccount(ClientAccountDto dto, String username);
+
+    void saveClientBusinessOtherAccount(ClientAccountDto dto, String username);
+
+    void saveClientSecRegistrationAccount(ClientAccountDto dto, String username);
+
+    void saveClientSecAmendmentAccount(ClientAccountDto dto, String username);
+
+    void saveClientSecStockIncreaseAccount(ClientAccountDto dto, String username);
+
     /* *** Retainer Account *** */
 
     void saveClientRetainerAccount(ClientAccountDto dto, String username);

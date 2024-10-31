@@ -23,7 +23,7 @@
                         <br>
                         <button class="btn btn-primary w-100 text-center mb-2" id="businessBtn">Business</button>
                         <br>
-                        <button class="btn btn-primary w-100 text-center mb-2" id="secBtn">Securities and Exchange (SEC)</button>
+                        <button class="btn btn-primary w-100 text-center mb-2" id="secBtn">Securities & Exchange Commission (SEC)</button>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -66,7 +66,8 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 mb-3" id="addTransferOfTitleForm" th:action="@{/client-account/add-transfer-of-title-account}"
-                              th:object="${transferOfTitleAccount}" method="POST">
+                              th:object="${projectAccount}" method="POST">
+                            <!-- transferOfTitleAccount -->
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -169,7 +170,8 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 mb-3" id="addSettlementOfEstateForm" th:action="@{/client-account/add-settlement-of-estate-account}"
-                              th:object="${settlementOfEstateAccount}" method="POST">
+                              th:object="${projectAccount}" method="POST">
+                            <!--settlementOfEstateAccount-->
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -193,7 +195,7 @@
                             <div class="row mb-3">
                                 <div class="col-md-4">
                                     <label for="settlementTitleNo" class="form-label">Title No.</label>
-                                    <input type="text" class="form-control" id="settlementTitleNo" placeholder="Title No. ..." required>
+                                    <input type="text" class="form-control" id="settlementTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
                                 </div>
                                 <div class="col-md-8">
                                     <label for="settlementDeceased" class="form-label">Deceased</label>
@@ -295,7 +297,8 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 mb-3" id="addTitleAnnotationForm" th:action="@{/client-account/add-title-annotation-account}"
-                              th:object="${titleAnnotationAccount}" method="POST">
+                              th:object="${projectAccount}" method="POST">
+                            <!-- titleAnnotationAccount -->
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -398,7 +401,8 @@
                     </div>
                     <div class="modal-body">
                         <form class="row g-3 mb-3" id="addTitleOtherForm" th:action="@{/client-account/add-title-other-account}"
-                              th:object="${titleOtherAccount}" method="POST">
+                              th:object="${projectAccount}" method="POST">
+                            <!-- titleOtherAccount -->
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
@@ -517,18 +521,58 @@
 
         <!-- Business Registration Form Modal -->
         <div class="modal fade" id="businessRegModal" tabindex="-1" aria-labelledby="businessRegModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="businessRegModalLabel">Business Registration (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Business Registration Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addBusinessRegistrationForm" th:action="@{/client-account/add-business-registration-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessRegProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="businessRegProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="businessRegClient" class="form-label">Client</label>
+                                    <select id="businessRegClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="businessRegRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="businessRegRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessRegStatus" class="form-label">Status</label>
+                                    <select id="businessRegStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -536,18 +580,58 @@
 
         <!-- Business Renewal Form Modal -->
         <div class="modal fade" id="businessRenewalModal" tabindex="-1" aria-labelledby="businessRenewalModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="businessRenewalModalLabel">Business Renewal (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Business Renewal Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addBusinessRenewalForm" th:action="@{/client-account/add-business-renewal-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessRenewalProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="businessRenewalProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="businessRenewalClient" class="form-label">Client</label>
+                                    <select id="businessRenewalClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="businessRenewalRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="businessRenewalRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessRenewalStatus" class="form-label">Status</label>
+                                    <select id="businessRenewalStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -555,18 +639,58 @@
 
         <!-- Business Closure Form Modal -->
         <div class="modal fade" id="businessClosureModal" tabindex="-1" aria-labelledby="businessClosureModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="businessClosureModalLabel">Business Closure (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Business Closure Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addBusinessClosureForm" th:action="@{/client-account/add-business-closure-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessClosureProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="businessClosureProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="businessClosureClient" class="form-label">Client</label>
+                                    <select id="businessClosureClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="businessClosureRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="businessClosureRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessClosureStatus" class="form-label">Status</label>
+                                    <select id="businessClosureStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -574,18 +698,58 @@
 
         <!-- Business Other Process Form Modal -->
         <div class="modal fade" id="businessOtherProcessModal" tabindex="-1" aria-labelledby="businessOtherProcessModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="businessOtherProcessModalLabel">Business Other Process (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        Business Other Process Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addBusinessOtherForm" th:action="@{/client-account/add-business-other-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessOtherProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="businessOtherProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="businessOtherClient" class="form-label">Client</label>
+                                    <select id="businessOtherClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="businessOtherRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="businessOtherRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="businessOtherStatus" class="form-label">Status</label>
+                                    <select id="businessOtherStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -600,7 +764,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <button class="btn btn-primary w-100 text-center mb-2" id="secRegistrationBtn">Securities and Exchange (SEC) Registration</button>
+                        <button class="btn btn-primary w-100 text-center mb-2" id="secRegistrationBtn">SEC Registration</button>
                         <br>
                         <button class="btn btn-primary w-100 text-center mb-2" id="secAmendmentBtn">Amendment of Articles of Incorporation</button>
                         <br>
@@ -615,18 +779,58 @@
 
         <!-- SEC Registration Modal -->
         <div class="modal fade" id="secRegistrationModal" tabindex="-1" aria-labelledby="secRegistrationModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="secRegistrationModalLabel">SEC Registration (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        SEC Registration Process Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addSecRegistrationForm" th:action="@{/client-account/add-sec-registration-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secRegistrationProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="secRegistrationProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="secRegistrationClient" class="form-label">Client</label>
+                                    <select id="secRegistrationClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="secRegistrationRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="secRegistrationRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secRegistrationStatus" class="form-label">Status</label>
+                                    <select id="secRegistrationStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -634,18 +838,58 @@
 
         <!-- SEC Amendment Modal -->
         <div class="modal fade" id="secAmendmentModal" tabindex="-1" aria-labelledby="secAmendmentModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="secAmendmentModalModalLabel">SEC Amendment of Articles of Incorporation</h5>
+                        <h5 class="modal-title" id="secAmendmentModalLabel">SEC Amendment of Articles of Incorporation</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        SEC Amendment of Articles of Incorporation Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addSecAmendmentForm" th:action="@{/client-account/add-sec-amendment-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secAmendmentProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="secAmendmentProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="secAmendmentClient" class="form-label">Client</label>
+                                    <select id="secAmendmentClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="secAmendmentRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="secAmendmentRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secAmendmentStatus" class="form-label">Status</label>
+                                    <select id="secAmendmentStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -653,18 +897,58 @@
 
         <!-- SEC Stock Increase Modal -->
         <div class="modal fade" id="secStockIncreaseModal" tabindex="-1" aria-labelledby="secStockIncreaseModalModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="secStockIncreaseModalModalLabel">SEC Increase in Authorized Capital Stock (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        SEC Increase in Authorized Capital Stock Project
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Create Project</button>
+                        <form class="row g-3 mb-3" id="addSecStockIncreaseForm" th:action="@{/client-account/add-sec-stock-increase-account}"
+                              th:object="${projectAccount}" method="POST">
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secStockIncreaseProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="secStockIncreaseProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="secStockIncreaseClient" class="form-label">Client</label>
+                                    <select id="secStockIncreaseClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="secStockIncreaseRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="secStockIncreaseRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="secStockIncreaseStatus" class="form-label">Status</label>
+                                    <select id="secStockIncreaseStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

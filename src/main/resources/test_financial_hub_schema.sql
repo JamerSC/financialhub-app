@@ -244,6 +244,7 @@ CREATE TABLE `client_case_details` (
 
 # Delete Column
 # ALTER TABLE `client_case_details` DROP COLUMN `updated_at`;
+
 # Change Table Name
 # ALTER TABLE `test_financial_hub_db`.`cases` RENAME TO `test_financial_hub_db`.`client_case_details`;
 
@@ -407,6 +408,7 @@ MODIFY COLUMN `start_date` date NOT NULL;
 # RENAME COLUMN NAME
 ALTER TABLE `client_retainer_details`
 RENAME COLUMN `ratainer_title` TO `retainer_title`;
+
 # UPDATE Retainer Title
 UPDATE `client_retainer_details`
 SET `retainer_title` = 'Tech Solutions'
@@ -417,9 +419,10 @@ WHERE `retainer_id` = 2;
 CREATE TABLE `client_project_details` (
 	`project_id` int NOT NULL AUTO_INCREMENT,
     `client_account_id` int NOT NULL,
-    `project_type` enum('PROPERTIES', 'BUSINESS_REGISTRATION','BUSINESS_CLOSURE', 'SEC') NOT NULL,
+    `project_type` enum('PROPERTIES', 'BUSINESS', 'SEC') NOT NULL,
     `property_sub_type` enum('TRANSFER_OF_TITLE', 'SETTLEMENT_OF_ESTATE', 'ANNOTATION', 'OTHERS'),
-    `sec_sub_type` enum('AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK'),
+    `business_sub_type` enum('BUSINESS_REGISTRATION', 'BUSINESS_RENEWAL', 'BUSINESS_CLOSURE', 'OTHERS'),
+    `sec_sub_type` enum('SEC_REGISTRATION','AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK'),
     `project_title` varchar(255) NOT NULL,
 	`title_no` varchar(255),
     `tax_dec_no` varchar(255),
@@ -438,6 +441,19 @@ CREATE TABLE `client_project_details` (
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`project_id`)
 );
+
+# ADD NEW COLUMN
+# ALTER TABLE `client_project_details`
+# ADD COLUMN `business_sub_type` enum('BUSINESS_REGISTRATION', 'BUSINESS_RENEWAL', 'BUSINESS_CLOSURE', 'OTHERS') AFTER `property_sub_type`;
+
+# CHANGE ENUM VALUES
+ALTER TABLE `client_project_details` 
+MODIFY COLUMN `sec_sub_type` enum('SEC_REGISTRATION', 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION', 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK');
+
+# UPDATE project type
+# UPDATE your_table_name SET project_type = 'BUSINESS' 
+# WHERE project_type IN ('BUSINESS_REGISTRATION', 'BUSINESS_CLOSURE');
+
 
 INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
 VALUES (1, 'Transfer of Title', 'PROJECT', 1, 1), (2, 'Tech Solutions', 'PROJECT', 1, 1);
@@ -463,6 +479,10 @@ SELECT
            IFNULL(`ci`.`suffix`, '')
        ) AS full_name,
     `cc`.`company_name` AS company_name,
+    `c`.`project_type`,
+    `c`.`property_sub_type`,
+    `c`.`business_sub_type`,
+    `c`.`sec_sub_type`,
 	`c`.`title_no`,
     `c`.`tax_dec_no`,
     `c`.`lot_no`,
@@ -494,7 +514,6 @@ FROM
     `contact_company` cc ON ct.contact_id = cc.contact_id
         AND ct.contact_type = 'COMPANY'
 	WHERE `a`.`account_type` = 'PROJECT';
-
 
 
 #DROP TABLE `fund`;

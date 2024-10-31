@@ -73,44 +73,104 @@ public class ClientAccountController {
     @GetMapping("/list-of-projects")
     public String listOfProjects(Model model) {
         model.addAttribute("listOfProjects", clientAccountService.getAllProjectAccounts());
-        model.addAttribute("transferOfTitleAccount", new ClientAccountDto());
-        model.addAttribute("settlementOfEstateAccount", new ClientAccountDto());
-        model.addAttribute("titleAnnotationAccount", new ClientAccountDto());
-        model.addAttribute("titleOtherAccount", new ClientAccountDto());
+        model.addAttribute("projectAccount", new ClientAccountDto());
+        /* model.addAttribute("updateProjectAccount", new ClientAccountDto()); */
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("status", Status.values());
         return "project/project";
     }
 
+    /* ** Property Account ** */
+
     @PostMapping("/add-transfer-of-title-account")
-    public String addTransferOfTitleAccount(@ModelAttribute("transferOfTitleAccount")
-                                                ClientAccountDto transferOfTitleAccount) {
+    public String addTransferOfTitleAccount(@ModelAttribute("projectAccount")
+                                                ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
-        clientAccountService.saveClientTransferOfTitleAccount(transferOfTitleAccount, createdBy);
+        clientAccountService.saveClientTransferOfTitleAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
     }
 
     @PostMapping("/add-settlement-of-estate-account")
-    public String addSettlementOfEstateAccount(@ModelAttribute("settlementOfEstateAccount")
-                                                   ClientAccountDto settlementOfEstateAccount) {
+    public String addSettlementOfEstateAccount(@ModelAttribute("projectAccount")
+                                                   ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
-        clientAccountService.saveClientSettlementOfEstateAccount(settlementOfEstateAccount, createdBy);
+        clientAccountService.saveClientSettlementOfEstateAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
     }
 
     @PostMapping("/add-title-annotation-account")
-    public String addTitleAnnotationAccount(@ModelAttribute("titleAnnotationAccount")
-                                                ClientAccountDto titleAnnotationAccount) {
+    public String addTitleAnnotationAccount(@ModelAttribute("projectAccount")
+                                                ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
-        clientAccountService.saveClientTitleAnnotationAccount(titleAnnotationAccount, createdBy);
+        clientAccountService.saveClientTitleAnnotationAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
     }
 
     @PostMapping("/add-title-other-account")
-    public String addTitleOtherAccount(@ModelAttribute("titleOtherAccount")
-                                            ClientAccountDto titleOtherAccount) {
+    public String addTitleOtherAccount(@ModelAttribute("projectAccount")
+                                            ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
-        clientAccountService.saveClientTitleOtherAccount(titleOtherAccount, createdBy);
+        clientAccountService.saveClientTitleOtherAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    /* **  Business Account ** */
+
+    @PostMapping("/add-business-registration-account")
+    public String addBusinessRegistrationAccount(@ModelAttribute("projectAccount")
+                                       ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientBusinessRegistrationAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-business-renewal-account")
+    public String addBusinessRenewalAccount(@ModelAttribute("projectAccount")
+                                                 ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientBusinessRenewalAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-business-closure-account")
+    public String addBusinessClosureAccount(@ModelAttribute("projectAccount")
+                                                 ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientBusinessClosureAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-business-other-account")
+    public String addBusinessOtherAccount(@ModelAttribute("projectAccount")
+                                            ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientBusinessOtherAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    /* ** SEC Account ** */
+
+    @PostMapping("/add-sec-registration-account")
+    public String addSecRegistrationAccount(@ModelAttribute("projectAccount")
+                                          ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientSecRegistrationAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-sec-amendment-account")
+    public String addSecAmendmentAccount(@ModelAttribute("projectAccount")
+                                            ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientSecAmendmentAccount(projectAccount, createdBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
+    @PostMapping("/add-sec-stock-increase-account")
+    public String addSecStockIncreaseAccount(@ModelAttribute("projectAccount")
+                                         ClientAccountDto projectAccount) {
+        String createdBy = getSessionUserName();
+        clientAccountService.saveClientSecStockIncreaseAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
     }
 

@@ -30,6 +30,10 @@ public class ProjectAccount {
     private PropertySubType propertySubType;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "business_sub_type")
+    private BusinessSubType businessSubType;
+
+    @Enumerated(EnumType.STRING)
     @Column(name = "sec_sub_type")
     private SecSubType secSubType;
 

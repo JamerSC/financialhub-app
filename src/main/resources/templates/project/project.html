@@ -31,7 +31,7 @@
                         <tr>
                             <th>Project Title</th>
                             <th>Project Type</th>
-                            <th>SEC/Property Sub Type</th>
+                            <th>Business/Property/SEC Sub Type</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
@@ -46,7 +46,10 @@
                         </td>
                         <td th:text="${tempProject.projectAccount.projectType?.displayProjectType()}"></td>
                         <td th:text="${tempProject.projectAccount.secSubType != null ?
-                        tempProject.projectAccount.secSubType.displaySecSubType() : tempProject.projectAccount.propertySubType.displayPropertySubType()}"></td>
+                                       tempProject.projectAccount.secSubType.displaySecSubType() :
+                                       (tempProject.projectAccount.propertySubType != null ?
+                                       tempProject.projectAccount.propertySubType.displayPropertySubType() :
+                                       tempProject.projectAccount.businessSubType.displayBusinessSubType())}"></td>
                         <td th:text="${tempProject.projectAccount.status?.displayStatus()}"></td>
                         <td>
                             <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="edit">

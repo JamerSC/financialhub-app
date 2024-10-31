@@ -20,6 +20,7 @@ public class ProjectAccountMapper {
         //projectAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(projectAccountDto.getClientAccount())); // Pass the related entity
         projectAccount.setProjectType(projectAccountDto.getProjectType());
         projectAccount.setPropertySubType(projectAccountDto.getPropertySubType());
+        projectAccount.setBusinessSubType(projectAccountDto.getBusinessSubType());
         projectAccount.setSecSubType(projectAccountDto.getSecSubType());
         projectAccount.setProjectTitle(projectAccountDto.getProjectTitle());
         projectAccount.setTitleNo(projectAccountDto.getTitleNo());
@@ -51,6 +52,7 @@ public class ProjectAccountMapper {
         //projectAccountDto.setClientAccount(ClientAccountMapper.toClientAccountDto(projectAccount.getClientAccount())); // Pass the related entity
         projectAccountDto.setProjectType(projectAccount.getProjectType());
         projectAccountDto.setPropertySubType(projectAccount.getPropertySubType());
+        projectAccountDto.setBusinessSubType(projectAccount.getBusinessSubType());
         projectAccountDto.setSecSubType(projectAccount.getSecSubType());
         projectAccountDto.setProjectTitle(projectAccount.getProjectTitle());
         projectAccountDto.setTitleNo(projectAccount.getTitleNo());

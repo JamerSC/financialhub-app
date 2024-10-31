@@ -200,6 +200,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
         }
+        logger.info("Saving project account transfer of title: " + account);
         clientAccountRepository.save(account);
 
         if (dto.getProjectAccount() != null) {
@@ -207,6 +208,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.TRANSFER_OF_TITLE);
+            projectAccount.setBusinessSubType(null);
             projectAccount.setSecSubType(null);
             projectAccount.setProjectTitle(dto.getAccountTitle());
             projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
@@ -224,7 +226,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setAddress(null);
             projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
-            logger.info("Saving transfer of title details" + projectAccount);
+            logger.info("Saving transfer of title details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
     }
@@ -245,6 +247,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
         }
+        logger.info("Saving project account settlement of estate: " + account);
         clientAccountRepository.save(account);
 
         if (dto.getProjectAccount() != null) {
@@ -252,6 +255,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.SETTLEMENT_OF_ESTATE);
+            projectAccount.setBusinessSubType(null);
             projectAccount.setSecSubType(null);
             projectAccount.setProjectTitle(dto.getAccountTitle());
             projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
@@ -269,11 +273,12 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setAddress(dto.getProjectAccount().getAddress());
             projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
-            logger.info("Saving transfer of title details" + projectAccount);
+            logger.info("Saving settlement of estate details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
     }
 
+    /* *** ANNOTATION *** */
     @Override
     public void saveClientTitleAnnotationAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
@@ -289,6 +294,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
         }
+        logger.info("Saving project account title annotation: " + account);
         clientAccountRepository.save(account);
 
         if (dto.getProjectAccount() != null) {
@@ -296,6 +302,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.ANNOTATION);
+            projectAccount.setBusinessSubType(null);
             projectAccount.setSecSubType(null);
             projectAccount.setProjectTitle(dto.getAccountTitle());
             projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
@@ -313,11 +320,12 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setAddress(null);
             projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
-            logger.info("Saving annotation details" + projectAccount);
+            logger.info("Saving annotation details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
     }
 
+    /* *** TITLE OTHER TRANSACTION *** */
     @Override
     public void saveClientTitleOtherAccount(ClientAccountDto dto, String username) {
         ClientAccount account;
@@ -333,6 +341,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account.setCreatedBy(createdBy.getId());
             account.setUpdatedBy(createdBy.getId());
         }
+        logger.info("Saving project account title other transaction: " + account);
         clientAccountRepository.save(account);
 
         if (dto.getProjectAccount() != null) {
@@ -340,6 +349,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setClientAccount(account);
             projectAccount.setProjectType(ProjectType.PROPERTIES);
             projectAccount.setPropertySubType(PropertySubType.OTHERS);
+            projectAccount.setBusinessSubType(null);
             projectAccount.setSecSubType(null);
             projectAccount.setProjectTitle(dto.getAccountTitle());
             projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
@@ -357,7 +367,335 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccount.setAddress(null);
             projectAccount.setStatus(dto.getProjectAccount().getStatus());
 
-            logger.info("Saving other title details" + projectAccount);
+            logger.info("Saving other title details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* *** BUSINESS REGISTRATION *** */
+    @Override
+    public void saveClientBusinessRegistrationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account business registration: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.BUSINESS);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(BusinessSubType.BUSINESS_REGISTRATION);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving business registration details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* *** BUSINESS RENEWAL *** */
+    @Override
+    public void saveClientBusinessRenewalAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account business renewal: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.BUSINESS);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(BusinessSubType.BUSINESS_RENEWAL);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving business renewal details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* *** BUSINESS CLOSURE *** */
+    @Override
+    public void saveClientBusinessClosureAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account business closure: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.BUSINESS);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(BusinessSubType.BUSINESS_CLOSURE);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving business closure details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* *** BUSINESS OTHER TRANSACTION *** */
+    @Override
+    public void saveClientBusinessOtherAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account business others: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.BUSINESS);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(BusinessSubType.OTHERS);
+            projectAccount.setSecSubType(null);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving business other details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* ** SEC REGISTRATION ** */
+    @Override
+    public void saveClientSecRegistrationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account sec registration: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.SEC);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(null);
+            projectAccount.setSecSubType(SecSubType.SEC_REGISTRATION);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving sec registration details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+
+    /* ** SEC AMENDMENT ** */
+    @Override
+    public void saveClientSecAmendmentAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account sec amendment: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.SEC);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(null);
+            projectAccount.setSecSubType(SecSubType.AMENDMENT_OF_ARTICLES_OF_INCORPORATION);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving sec amendment details: " + projectAccount);
+            projectAccountRepository.save(projectAccount);
+        }
+    }
+    /* ** SEC STOCK INCREASE ** */
+    @Override
+    public void saveClientSecStockIncreaseAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
+
+        User createdBy = userRepository.findByUsername(username);
+
+        account = new ClientAccount();
+        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setAccountTitle(dto.getAccountTitle());
+        account.setClientAccountType(ClientAccountType.PROJECT);
+        if (createdBy != null) {
+            account.setCreatedBy(createdBy.getId());
+            account.setUpdatedBy(createdBy.getId());
+        }
+        logger.info("Saving project account sec stock increase: " + account);
+        clientAccountRepository.save(account);
+
+        if (dto.getProjectAccount() != null) {
+            projectAccount = new ProjectAccount();
+            projectAccount.setClientAccount(account);
+            projectAccount.setProjectType(ProjectType.SEC);
+            projectAccount.setPropertySubType(null);
+            projectAccount.setBusinessSubType(null);
+            projectAccount.setSecSubType(SecSubType.INCREASE_IN_AUTHORIZED_CAPITAL_STOCK);
+            projectAccount.setProjectTitle(dto.getAccountTitle());
+            projectAccount.setTitleNo(null);
+            projectAccount.setTaxDecNo(null);
+            projectAccount.setLotNo(null);
+            projectAccount.setLotArea(null);
+            projectAccount.setLocation(null);
+            projectAccount.setBir(null);
+            projectAccount.setRd(null);
+            projectAccount.setZonalValue(null);
+            projectAccount.setPurchasePrice(null);
+            projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+            projectAccount.setDeceased(null);
+            projectAccount.setHeirs(null);
+            projectAccount.setAddress(null);
+            projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+            logger.info("Saving sec stock increase details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
     }

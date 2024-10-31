@@ -14,6 +14,7 @@ public class ProjectAccountDto {
     private ClientAccountDto clientAccount;
     private ProjectType projectType;
     private PropertySubType propertySubType;
+    private BusinessSubType businessSubType;
     private SecSubType secSubType;
     private String projectTitle;
     private String titleNo;
