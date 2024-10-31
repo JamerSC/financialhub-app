@@ -62,7 +62,6 @@ public class ClientAccountController {
     @GetMapping("/{id}/case-summary")
     public String viewCaseInformation(@PathVariable(value = "id") Long id, Model model) {
         ClientAccountDto caseSummary = clientAccountService.getClientAccountById(id);
-        //model.addAttribute("caseSummary", ClientAccountMapper.toClientAccountEntity(caseSummary));
         model.addAttribute("caseSummary", caseSummary);
         return "case/case-summary";
     }
@@ -90,12 +89,24 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-transfer-of-title")
+    @ResponseBody
+    public ClientAccountDto findTransferOfTitleAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-settlement-of-estate-account")
     public String addSettlementOfEstateAccount(@ModelAttribute("projectAccount")
                                                    ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientSettlementOfEstateAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
+    }
+
+    @GetMapping("/edit-settlement-of-estate-account")
+    @ResponseBody
+    public ClientAccountDto findSettlementOfEstateAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     @PostMapping("/add-title-annotation-account")
@@ -106,12 +117,24 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-title-annotation-account")
+    @ResponseBody
+    public ClientAccountDto findTitleAnnotationAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-title-other-account")
     public String addTitleOtherAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientTitleOtherAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
+    }
+
+    @GetMapping("/edit-title-other-account")
+    @ResponseBody
+    public ClientAccountDto findTitleOtherAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     /* **  Business Account ** */
@@ -124,12 +147,24 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-business-registration-account")
+    @ResponseBody
+    public ClientAccountDto findBusinessRegistrationAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-business-renewal-account")
     public String addBusinessRenewalAccount(@ModelAttribute("projectAccount")
                                                  ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientBusinessRenewalAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
+    }
+
+    @GetMapping("/edit-business-renewal-account")
+    @ResponseBody
+    public ClientAccountDto findBusinessRenewalAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     @PostMapping("/add-business-closure-account")
@@ -140,12 +175,24 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-business-closure-account")
+    @ResponseBody
+    public ClientAccountDto findBusinessClosureAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-business-other-account")
     public String addBusinessOtherAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientBusinessOtherAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
+    }
+
+    @GetMapping("/edit-business-other-account")
+    @ResponseBody
+    public ClientAccountDto findBusinessOtherAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     /* ** SEC Account ** */
@@ -158,6 +205,12 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-sec-registration-account")
+    @ResponseBody
+    public ClientAccountDto findSecRegistrationAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-sec-amendment-account")
     public String addSecAmendmentAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
@@ -166,12 +219,24 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
+    @GetMapping("/edit-sec-amendment-account")
+    @ResponseBody
+    public ClientAccountDto findSecAmendmentAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
+    }
+
     @PostMapping("/add-sec-stock-increase-account")
     public String addSecStockIncreaseAccount(@ModelAttribute("projectAccount")
                                          ClientAccountDto projectAccount) {
         String createdBy = getSessionUserName();
         clientAccountService.saveClientSecStockIncreaseAccount(projectAccount, createdBy);
         return "redirect:/client-account/list-of-projects";
+    }
+
+    @GetMapping("/edit-sec-stock-increase-account")
+    @ResponseBody
+    public ClientAccountDto findSecStockIncreaseAccount(Long id) {
+        return clientAccountService.getClientAccountById(id);
     }
 
     @GetMapping("/{id}/project-summary")
