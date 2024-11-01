@@ -231,6 +231,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    @Override
+    public void updateClientTransferOfTitleAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* *** SETTLEMENT OF ESTATE *** */
     @Override
     public void saveClientSettlementOfEstateAccount(ClientAccountDto dto, String username) {
@@ -276,6 +281,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving settlement of estate details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
+    }
+
+    @Override
+    public void updateClientSettlementOfEstateAccount(ClientAccountDto dto, String username) {
+
     }
 
     /* *** ANNOTATION *** */
@@ -325,6 +335,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    @Override
+    public void updateClientTitleAnnotationAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* *** TITLE OTHER TRANSACTION *** */
     @Override
     public void saveClientTitleOtherAccount(ClientAccountDto dto, String username) {
@@ -370,6 +385,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving other title details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
+    }
+
+    @Override
+    public void updateClientTitleOtherAccount(ClientAccountDto dto, String username) {
+
     }
 
     /* *** BUSINESS REGISTRATION *** */
@@ -419,6 +439,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    @Override
+    public void updateClientBusinessRegistrationAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* *** BUSINESS RENEWAL *** */
     @Override
     public void saveClientBusinessRenewalAccount(ClientAccountDto dto, String username) {
@@ -464,6 +489,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving business renewal details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
+    }
+
+    @Override
+    public void updateClientBusinessRenewalAccount(ClientAccountDto dto, String username) {
+
     }
 
     /* *** BUSINESS CLOSURE *** */
@@ -513,6 +543,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    @Override
+    public void updateClientBusinessClosureAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* *** BUSINESS OTHER TRANSACTION *** */
     @Override
     public void saveClientBusinessOtherAccount(ClientAccountDto dto, String username) {
@@ -558,6 +593,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving business other details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
+    }
+
+    @Override
+    public void updateClientBusinessOtherAccount(ClientAccountDto dto, String username) {
+
     }
 
     /* ** SEC REGISTRATION ** */
@@ -607,6 +647,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         }
     }
 
+    @Override
+    public void updateClientSecRegistrationAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* ** SEC AMENDMENT ** */
     @Override
     public void saveClientSecAmendmentAccount(ClientAccountDto dto, String username) {
@@ -653,6 +698,12 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             projectAccountRepository.save(projectAccount);
         }
     }
+
+    @Override
+    public void updateClientSecAmendmentAccount(ClientAccountDto dto, String username) {
+
+    }
+
     /* ** SEC STOCK INCREASE ** */
     @Override
     public void saveClientSecStockIncreaseAccount(ClientAccountDto dto, String username) {
@@ -698,6 +749,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             logger.info("Saving sec stock increase details: " + projectAccount);
             projectAccountRepository.save(projectAccount);
         }
+    }
+
+    @Override
+    public void updateClientSecStockIncreaseAccount(ClientAccountDto dto, String username) {
+
     }
 
     /* *** Retainer Account *** */

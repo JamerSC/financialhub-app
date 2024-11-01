@@ -73,7 +73,7 @@ public class ClientAccountController {
     public String listOfProjects(Model model) {
         model.addAttribute("listOfProjects", clientAccountService.getAllProjectAccounts());
         model.addAttribute("projectAccount", new ClientAccountDto());
-        /* model.addAttribute("updateProjectAccount", new ClientAccountDto()); */
+         model.addAttribute("updateProjectAccount", new ClientAccountDto());
         model.addAttribute("clients", contactService.getAllContacts());
         model.addAttribute("status", Status.values());
         return "project/project";
@@ -89,10 +89,18 @@ public class ClientAccountController {
         return "redirect:/client-account/list-of-projects";
     }
 
-    @GetMapping("/edit-transfer-of-title")
+    @GetMapping("/edit-transfer-of-title-account")
     @ResponseBody
     public ClientAccountDto findTransferOfTitleAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-transfer-of-title-account")
+    public String updateTransferOfTitleAccount(@ModelAttribute("updateProjectAccount")
+                                            ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientTransferOfTitleAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     @PostMapping("/add-settlement-of-estate-account")
@@ -109,6 +117,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-settlement-of-estate-account")
+    public String updateSettlementOfEstateAccount(@ModelAttribute("updateProjectAccount")
+                                                  ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientSettlementOfEstateAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-title-annotation-account")
     public String addTitleAnnotationAccount(@ModelAttribute("projectAccount")
                                                 ClientAccountDto projectAccount) {
@@ -123,6 +139,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-title-annotation-account")
+    public String updateTitleAnnotationAccount(@ModelAttribute("updateProjectAccount")
+                                                  ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientTitleAnnotationAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-title-other-account")
     public String addTitleOtherAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
@@ -135,6 +159,14 @@ public class ClientAccountController {
     @ResponseBody
     public ClientAccountDto findTitleOtherAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-title-other-account")
+    public String updateTitleOtherAccount(@ModelAttribute("updateProjectAccount")
+                                               ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientTitleOtherAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     /* **  Business Account ** */
@@ -153,6 +185,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-business-registration-account")
+    public String updateBusinessRegistrationAccount(@ModelAttribute("updateProjectAccount")
+                                          ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientBusinessRegistrationAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-business-renewal-account")
     public String addBusinessRenewalAccount(@ModelAttribute("projectAccount")
                                                  ClientAccountDto projectAccount) {
@@ -165,6 +205,14 @@ public class ClientAccountController {
     @ResponseBody
     public ClientAccountDto findBusinessRenewalAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-business-renewal-account")
+    public String updateBusinessRenewalAccount(@ModelAttribute("updateProjectAccount")
+                                                    ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientBusinessRenewalAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     @PostMapping("/add-business-closure-account")
@@ -181,6 +229,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-business-closure-account")
+    public String updateBusinessClosureAccount(@ModelAttribute("updateProjectAccount")
+                                               ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientBusinessClosureAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-business-other-account")
     public String addBusinessOtherAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
@@ -193,6 +249,14 @@ public class ClientAccountController {
     @ResponseBody
     public ClientAccountDto findBusinessOtherAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-business-other-account")
+    public String updateBusinessOtherAccount(@ModelAttribute("updateProjectAccount")
+                                               ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientBusinessOtherAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     /* ** SEC Account ** */
@@ -211,6 +275,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-sec-registration-account")
+    public String updateSecRegistrationAccount(@ModelAttribute("updateProjectAccount")
+                                             ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientSecRegistrationAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-sec-amendment-account")
     public String addSecAmendmentAccount(@ModelAttribute("projectAccount")
                                             ClientAccountDto projectAccount) {
@@ -225,6 +297,14 @@ public class ClientAccountController {
         return clientAccountService.getClientAccountById(id);
     }
 
+    @PostMapping("/update-sec-amendment-account")
+    public String updateSecAmendmentAccount(@ModelAttribute("updateProjectAccount")
+                                               ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientSecAmendmentAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
+    }
+
     @PostMapping("/add-sec-stock-increase-account")
     public String addSecStockIncreaseAccount(@ModelAttribute("projectAccount")
                                          ClientAccountDto projectAccount) {
@@ -237,6 +317,14 @@ public class ClientAccountController {
     @ResponseBody
     public ClientAccountDto findSecStockIncreaseAccount(Long id) {
         return clientAccountService.getClientAccountById(id);
+    }
+
+    @PostMapping("/update-sec-stock-increase-account")
+    public String updateSecStockIncreaseAccount(@ModelAttribute("updateProjectAccount")
+                                            ClientAccountDto updateProjectAccount) {
+        String updatedBy = getSessionUserName();
+        clientAccountService.updateClientSecStockIncreaseAccount(updateProjectAccount, updatedBy);
+        return "redirect:/client-account/list-of-projects";
     }
 
     @GetMapping("/{id}/project-summary")

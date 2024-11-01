@@ -160,6 +160,112 @@
             </div>
         </div>
 
+        <!-- UPDATE Transfer of Title Form Modal -->
+        <div class="modal fade" id="editTransferOfTitleModal" tabindex="-1" aria-labelledby="editTransferOfTitleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTransferOfTitleModalLabel">Transfer of Title (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editTransferOfTitleForm" th:action="@{/client-account/update-transfer-of-title-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editTransferOfTitleAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editTransferOfTitleProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- transferOfTitleAccount -->
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTransferProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editTransferProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTransferClient" class="form-label">Client</label>
+                                    <select id="editTransferClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTransferTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="editTransferTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTransferTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="editTransferTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="editTransferLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="editTransferLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editTransferLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="editTransferLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTransferLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="editTransferLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTransferBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="editTransferBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTransferRd" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="editTransferRd" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTransferZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="editTransferZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTransferPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="editTransferPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editTransferRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editTransferRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTransferStatus" class="form-label">Status</label>
+                                    <select id="editTransferStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Settlement of Estate Form Modal -->
         <div class="modal fade" id="settlementOfEstateModal" tabindex="-1" aria-labelledby="settlementOfEstateModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -287,6 +393,135 @@
             </div>
         </div>
 
+        <!-- UPDATE Settlement of Estate Form Modal -->
+        <div class="modal fade" id="editSettlementOfEstateModal" tabindex="-1" aria-labelledby="editSettlementOfEstateModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSettlementOfEstateModalLabel">Settlement Of Estate (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editSettlementOfEstateForm" th:action="@{/client-account/update-settlement-of-estate-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editSettlementOfEstateAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editSettlementOfEstateProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!--settlementOfEstateAccount-->
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSettlementProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editSettlementProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSettlementClient" class="form-label">Client Name</label>
+                                    <select id="editSettlementClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+                                    <label for="editSettlementTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="editSettlementTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-8">
+                                    <label for="editSettlementDeceased" class="form-label">Deceased</label>
+                                    <input type="text" class="form-control" id="editSettlementDeceased" th:field="*{projectAccount.deceased}" placeholder="Deceased full name. ..." required>
+                                </div>
+                            </div>
+                            <!--<div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="settlementTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="settlementTitleNo" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="settlementTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="settlementTaxDeclarationNo" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>-->
+                            <!--<div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="settlementLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="settlementLotNo" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="settlementLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="settlementLotArea" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="settlementLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="settlementLocation" placeholder="Location ..." required>
+                                </div>
+                            </div>-->
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSettlementBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="editSettlementBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSettlementRd" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="editSettlementRd" th:field="*{projectAccount.rd}" placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+
+                            <!--<div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="settlementZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="settlementZonalValue" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="settlementPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="settlementPurchasePrice" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>-->
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editSettlementHeirs" class="form-label">Heir(s)</label>
+                                    <textarea class="form-control" id="editSettlementHeirs" th:field="*{projectAccount.heirs}" rows="4" cols="6" placeholder="Add heirs ..." required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSettlementAddress" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="editSettlementAddress" th:field="*{projectAccount.address}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSettlementStatus" class="form-label">Status</label>
+                                    <select id="editSettlementStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editSettlementRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editSettlementRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Annotation of Title Form Modal -->
         <div class="modal fade" id="titleAnnotationModal" tabindex="-1" aria-labelledby="titleAnnotationModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -302,7 +537,7 @@
                             <!-- One column row for state select option -->
                             <div class="row mb-3">
                                 <div class="col-md-6">
-                                    <label for="transferProjectTitle" class="form-label">Project Title</label>
+                                    <label for="annotationProjectTitle" class="form-label">Project Title</label>
                                     <input type="text" class="form-control" id="annotationProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
                                 </div>
                                 <div class="col-md-6">
@@ -365,7 +600,7 @@
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-12">
-                                    <label for="transferRemarks" class="form-label">Remarks (Optional)</label>
+                                    <label for="annotationRemarks" class="form-label">Remarks (Optional)</label>
                                     <textarea class="form-control" id="annotationRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
                                 </div>
                             </div>
@@ -384,6 +619,112 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE Annotation of Title Form Modal -->
+        <div class="modal fade" id="editTitleAnnotationModal" tabindex="-1" aria-labelledby="editTitleAnnotationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTitleAnnotationModalLabel">Title Annotation (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editTitleAnnotationForm" th:action="@{/client-account/update-title-annotation-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editTitleAnnotationAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editTitleAnnotationProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- titleAnnotationAccount -->
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editAnnotationProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editAnnotationProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editAnnotationClient" class="form-label">Client</label>
+                                    <select id="editAnnotationClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editAnnotationTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="editAnnotationTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editAnnotationTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="editAnnotationTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="editAnnotationLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="editAnnotationLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editAnnotationLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="editAnnotationLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editAnnotationLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="editAnnotationLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editAnnotationBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="editAnnotationBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editAnnotationRd" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="editAnnotationRd" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editAnnotationZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="editAnnotationZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editAnnotationPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="editAnnotationPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editAnnotationRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editAnnotationRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editAnnotationStatus" class="form-label">Status</label>
+                                    <select id="editAnnotationStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
                             </div>
                         </form>
                     </div>
@@ -495,6 +836,112 @@
             </div>
         </div>
 
+        <!-- UPDATE Other Title Transaction Form Modal -->
+        <div class="modal fade" id="editTitleOtherModal" tabindex="-1" aria-labelledby="editTitleOtherModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editTitleOtherModalLabel">Title Other Process (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editTitleOtherForm" th:action="@{/client-account/update-title-other-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editTitleOtherAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editTitleOtherProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- titleOtherAccount -->
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editTitleOtherProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherClient" class="form-label">Client</label>
+                                    <select id="editTitleOtherClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherTitleNo" class="form-label">Title No.</label>
+                                    <input type="text" class="form-control" id="editTitleOtherTitleNo" th:field="*{projectAccount.titleNo}" placeholder="Title No. ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherTaxDeclarationNo" class="form-label">Tax Declaration No.</label>
+                                    <input type="text" class="form-control" id="editTitleOtherTaxDeclarationNo" th:field="*{projectAccount.taxDecNo}" placeholder="Tax Dec. ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-3">
+                                    <label for="editTitleOtherLotNo" class="form-label">Lot No.</label>
+                                    <input type="text" class="form-control" id="editTitleOtherLotNo" th:field="*{projectAccount.lotNo}" placeholder="Lot no. ..." required>
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="editTitleOtherLotArea" class="form-label">Lot Area</label>
+                                    <input type="text" class="form-control" id="editTitleOtherLotArea" th:field="*{projectAccount.lotArea}" placeholder="Lot area ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherLocation" class="form-label">Location</label>
+                                    <input type="text" class="form-control" id="editTitleOtherLocation" th:field="*{projectAccount.location}" placeholder="Location ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherBir" class="form-label">Bureau of Internal Revenue (BIR)</label>
+                                    <input type="text" class="form-control" id="editTitleOtherBir" th:field="*{projectAccount.bir}" placeholder="Revenue district office ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherRd" class="form-label">Registry of Deeds (RD)</label>
+                                    <input type="text" class="form-control" id="editTitleOtherRd" th:field="*{projectAccount.rd}"  placeholder="Registry of deeds ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherZonalValue" class="form-label">Zonal Value</label>
+                                    <input type="text" class="form-control" id="editTitleOtherZonalValue" th:field="*{projectAccount.zonalValue}" placeholder="Zonal value ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherPurchasePrice" class="form-label">Purchase Price</label>
+                                    <input type="text" class="form-control" id="editTitleOtherPurchasePrice" th:field="*{projectAccount.purchasePrice}" placeholder="Purchase price ..." required>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editTitleOtherRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editTitleOtherRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editTitleOtherStatus" class="form-label">Status</label>
+                                    <select id="editTitleOtherStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Business Selection Modal -->
         <div class="modal fade" id="businessModal" tabindex="-1" aria-labelledby="businessModalLabel" aria-hidden="true">
             <div class="modal-dialog">
@@ -578,6 +1025,67 @@
             </div>
         </div>
 
+        <!-- UPDATE Business Registration Form Modal -->
+        <div class="modal fade" id="editBusinessRegModal" tabindex="-1" aria-labelledby="editBusinessRegModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBusinessRegModalLabel">Business Registration (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editBusinessRegistrationForm" th:action="@{/client-account/update-business-registration-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editBusinessRegistrationAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editBusinessRegistrationProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessRegProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editBusinessRegProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editBusinessRegClient" class="form-label">Client</label>
+                                    <select id="editBusinessRegClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editBusinessRegRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editBusinessRegRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessRegStatus" class="form-label">Status</label>
+                                    <select id="editBusinessRegStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Business Renewal Form Modal -->
         <div class="modal fade" id="businessRenewalModal" tabindex="-1" aria-labelledby="businessRenewalModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -630,6 +1138,67 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE Business Renewal Form Modal -->
+        <div class="modal fade" id="editBusinessRenewalModal" tabindex="-1" aria-labelledby="editBusinessRenewalModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBusinessRenewalModalLabel">Business Renewal (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editBusinessRenewalForm" th:action="@{/client-account/update-business-renewal-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editBusinessRenewalAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editBusinessRenewalProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessRenewalProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editBusinessRenewalProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editBusinessRenewalClient" class="form-label">Client</label>
+                                    <select id="editBusinessRenewalClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editBusinessRenewalRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editBusinessRenewalRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessRenewalStatus" class="form-label">Status</label>
+                                    <select id="editBusinessRenewalStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
                             </div>
                         </form>
                     </div>
@@ -696,6 +1265,67 @@
             </div>
         </div>
 
+        <!-- UPDATE Business Closure Form Modal -->
+        <div class="modal fade" id="editBusinessClosureModal" tabindex="-1" aria-labelledby="editBusinessClosureModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBusinessClosureModalLabel">Business Closure (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editBusinessClosureForm" th:action="@{/client-account/update-business-closure-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editBusinessClosureAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editBusinessClosureProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessClosureProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editBusinessClosureProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editBusinessClosureClient" class="form-label">Client</label>
+                                    <select id="editBusinessClosureClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editBusinessClosureRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editBusinessClosureRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessClosureStatus" class="form-label">Status</label>
+                                    <select id="editBusinessClosureStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Business Other Process Form Modal -->
         <div class="modal fade" id="businessOtherProcessModal" tabindex="-1" aria-labelledby="businessOtherProcessModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
@@ -748,6 +1378,67 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE Business Other Process Form Modal -->
+        <div class="modal fade" id="editBusinessOtherModal" tabindex="-1" aria-labelledby="editBusinessOtherModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editBusinessOtherModalLabel">Business Other Process (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editBusinessOtherForm" th:action="@{/client-account/update-business-other-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editBusinessOtherAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editBusinessOtherProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessOtherProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editBusinessOtherProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editBusinessOtherClient" class="form-label">Client</label>
+                                    <select id="editBusinessOtherClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editBusinessOtherRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editBusinessOtherRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editBusinessOtherStatus" class="form-label">Status</label>
+                                    <select id="editBusinessOtherStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
                             </div>
                         </form>
                     </div>
@@ -836,12 +1527,73 @@
             </div>
         </div>
 
+        <!-- UPDATE SEC Registration Modal -->
+        <div class="modal fade" id="editSecRegistrationModal" tabindex="-1" aria-labelledby="editSecRegistrationModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSecRegistrationModalLabel">SEC Registration (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editSecRegistrationForm" th:action="@{/client-account/update-sec-registration-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editSecRegistrationAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editSecRegistrationProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecRegistrationProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editSecRegistrationProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSecRegistrationClient" class="form-label">Client</label>
+                                    <select id="editSecRegistrationClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editSecRegistrationRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editSecRegistrationRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecRegistrationStatus" class="form-label">Status</label>
+                                    <select id="editSecRegistrationStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- SEC Amendment Modal -->
         <div class="modal fade" id="secAmendmentModal" tabindex="-1" aria-labelledby="secAmendmentModalLabel" aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="secAmendmentModalLabel">SEC Amendment of Articles of Incorporation</h5>
+                        <h5 class="modal-title" id="secAmendmentModalLabel">SEC Amendment of Articles of Incorporation (New Project)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -888,6 +1640,67 @@
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <button type="submit" class="btn btn-primary">Save Project</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- UPDATE SEC Amendment Modal -->
+        <div class="modal fade" id="editSecAmendmentModal" tabindex="-1" aria-labelledby="editSecAmendmentModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSecAmendmentModalLabel">SEC Amendment of Articles of Incorporation (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editSecAmendmentForm" th:action="@{/client-account/update-sec-amendment-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editSecAmendmentAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editSecAmendmentProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecAmendmentProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editSecAmendmentProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSecAmendmentClient" class="form-label">Client</label>
+                                    <select id="editSecAmendmentClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editSecAmendmentRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editSecAmendmentRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecAmendmentStatus" class="form-label">Status</label>
+                                    <select id="editSecAmendmentStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
                             </div>
                         </form>
                     </div>
@@ -953,6 +1766,68 @@
                 </div>
             </div>
         </div>
+
+        <!-- UPDATE SEC Stock Increase Modal -->
+        <div class="modal fade" id="editSecStockIncreaseModal" tabindex="-1" aria-labelledby="editSecStockIncreaseModalModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editSecStockIncreaseModalModalLabel">SEC Increase in Authorized Capital Stock (Update Project)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="row g-3 mb-3" id="editSecStockIncreaseForm" th:action="@{/client-account/update-sec-stock-increase-account}"
+                              th:object="${updateProjectAccount}" method="POST">
+                            <div><input type="hidden" class="form-control" id="editSecStockIncreaseAccountId" th:field="*{clientAccountId}"/></div>
+                            <div><input type="hidden" class="form-control" id="editSecStockIncreaseProjectId" th:field="*{projectAccount.projectId}"/></div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecStockIncreaseProjectTitle" class="form-label">Project Title</label>
+                                    <input type="text" class="form-control" id="editSecStockIncreaseProjectTitle" th:field="*{accountTitle}" placeholder="Project title ..." required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="editSecStockIncreaseClient" class="form-label">Client</label>
+                                    <select id="editSecStockIncreaseClient" class="form-select" th:field="*{client}" required>
+                                        <option value="" selected>Select client...</option>
+                                        <option th:each="tempClient : ${clients}"
+                                                th:value="${tempClient.contactId}"
+                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
+                                                         tempClient.contactCategoryType.displayContactCategoryType()))
+                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
+                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+                                    <label for="editSecStockIncreaseRemarks" class="form-label">Remarks (Optional)</label>
+                                    <textarea class="form-control" id="editSecStockIncreaseRemarks" th:field="*{projectAccount.remarks}" rows="4" cols="6" placeholder="Add remarks ..."></textarea>
+                                </div>
+                            </div>
+                            <!-- One column row for state select option -->
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label for="editSecStockIncreaseStatus" class="form-label">Status</label>
+                                    <select id="editSecStockIncreaseStatus" class="form-select" th:field="*{projectAccount.status}" required>
+                                        <option value="" selected>Select status...</option>
+                                        <option th:each="tempStatus : ${status}"
+                                                th:value="${tempStatus}"
+                                                th:text="${tempStatus.displayStatus()}"></option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
 </body>
