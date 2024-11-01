@@ -233,7 +233,59 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientTransferOfTitleAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account transfer of title: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+                projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+                projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+                projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+                projectAccount.setLocation(dto.getProjectAccount().getLocation());
+                projectAccount.setBir(dto.getProjectAccount().getBir());
+                projectAccount.setRd(dto.getProjectAccount().getRd());
+                projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+                projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating transfer of title details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** SETTLEMENT OF ESTATE *** */
@@ -285,7 +337,56 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientSettlementOfEstateAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account settlement of estate : " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+                projectAccount.setBir(dto.getProjectAccount().getBir());
+                projectAccount.setRd(dto.getProjectAccount().getRd());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setDeceased(dto.getProjectAccount().getDeceased());
+                projectAccount.setHeirs(dto.getProjectAccount().getHeirs());
+                projectAccount.setAddress(dto.getProjectAccount().getAddress());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating settlement of estate details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** ANNOTATION *** */
@@ -337,7 +438,59 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientTitleAnnotationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account title annotation: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+                projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+                projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+                projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+                projectAccount.setLocation(dto.getProjectAccount().getLocation());
+                projectAccount.setBir(dto.getProjectAccount().getBir());
+                projectAccount.setRd(dto.getProjectAccount().getRd());
+                projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+                projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating title annotation details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** TITLE OTHER TRANSACTION *** */
@@ -389,7 +542,59 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientTitleOtherAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account title other process   : " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setTitleNo(dto.getProjectAccount().getTitleNo());
+                projectAccount.setTaxDecNo(dto.getProjectAccount().getTaxDecNo());
+                projectAccount.setLotNo(dto.getProjectAccount().getLotNo());
+                projectAccount.setLotArea(dto.getProjectAccount().getLotArea());
+                projectAccount.setLocation(dto.getProjectAccount().getLocation());
+                projectAccount.setBir(dto.getProjectAccount().getBir());
+                projectAccount.setRd(dto.getProjectAccount().getRd());
+                projectAccount.setZonalValue(dto.getProjectAccount().getZonalValue());
+                projectAccount.setPurchasePrice(dto.getProjectAccount().getPurchasePrice());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating title other process details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** BUSINESS REGISTRATION *** */
@@ -441,7 +646,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientBusinessRegistrationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account business reg: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating business reg details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** BUSINESS RENEWAL *** */
@@ -493,7 +741,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientBusinessRenewalAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account business renewal: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating business renewal details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** BUSINESS CLOSURE *** */
@@ -545,7 +836,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientBusinessClosureAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account business closure: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating business closure details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** BUSINESS OTHER TRANSACTION *** */
@@ -597,7 +931,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientBusinessOtherAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account business other process: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating business other process details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* ** SEC REGISTRATION ** */
@@ -649,7 +1026,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientSecRegistrationAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account sec registration: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating sec registration details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* ** SEC AMENDMENT ** */
@@ -701,7 +1121,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientSecAmendmentAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account sec amendment of articles: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating sec amendment of articles details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* ** SEC STOCK INCREASE ** */
@@ -753,7 +1216,50 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
     @Override
     public void updateClientSecStockIncreaseAccount(ClientAccountDto dto, String username) {
+        ClientAccount account;
+        ProjectAccount projectAccount;
 
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (dto.getClientAccountId() != null) {
+            account = clientAccountRepository.findById(dto.getClientAccountId())
+                    .orElse(new ClientAccount());
+            if (dto.getClient() != null) {
+                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact contactId = contactRepository.findById(client.getContactId())
+                        .orElse(null);
+                account.setClient(contactId);
+            }
+            account.setAccountTitle(dto.getAccountTitle());
+            if (updatedBy != null) {
+                account.setUpdatedBy(updatedBy.getId());
+            }
+            logger.info("Updating project account sec stock increase: " + account);
+            clientAccountRepository.save(account);
+
+            boolean projectAccountUpdated = false;
+
+            if (dto.getProjectAccount() != null) {
+                projectAccount = projectAccountRepository.findById(dto.getProjectAccount().getProjectId())
+                        .orElse(new ProjectAccount());
+                projectAccount.setClientAccount(account);
+                projectAccount.setProjectTitle(dto.getAccountTitle());
+                projectAccount.setRemarks(dto.getProjectAccount().getRemarks());
+                projectAccount.setStatus(dto.getProjectAccount().getStatus());
+
+                logger.info("Updating sec stock increase details: " + projectAccount);
+                projectAccountRepository.save(projectAccount);
+
+                projectAccountUpdated = true;
+            }
+            if (projectAccountUpdated) {
+                if (updatedBy != null) {
+                    account.setUpdatedBy(updatedBy.getId());
+                }
+                account.setUpdatedAt(new Date());
+                clientAccountRepository.save(account);
+            }
+        }
     }
 
     /* *** Retainer Account *** */
