@@ -43,6 +43,7 @@ INSERT INTO `roles` (`name`) VALUES ('ROLE_EMPLOYEE');
 INSERT INTO `roles` (`name`) VALUES ('ROLE_MANAGER');
 INSERT INTO `roles` (`name`) VALUES ('ROLE_ADMIN');
 
+-- Junction Table
 ### USERS ROLES
 -- Create users_roles table (join table for many-to-many relationship)
 DROP TABLE `users_roles`;
@@ -626,8 +627,59 @@ LEFT JOIN `contact_company` `cc`
 ON `c`.`contact_id` = `cc`.`contact_id`
 ORDER BY `pcl`.`created_at` ASC;
 
-### CHECK VOUCHERS
+# DROP TABLE `gl_admin_activity_category`;
+CREATE TABLE `gl_admin_activity_category` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `admin_activity` varchar(100) NOT NULL,
+    PRIMARY KEY(`id`)
+);
 
+INSERT INTO `gl_admin_activity_category` (`admin_activity`) VALUES
+('Print/Photocopy (Colored)'),
+('Print/Photocopy (B&W)'),
+('Office Supplies (Folder/Envelope)'),
+('Office Supplies (Others)'),
+('Courier - Registered Mail'),
+('Courier - Accredited Private Courier'),
+('Courier - Express - Grab/Lalamove/Joyride'),
+('Transpo - Gas'),
+('Transpo - Toll'),
+('Transpo - Driver'),
+('Transpo - Parking'),
+('Transpo - Vehicle - Rental'),
+('Meal'),
+('Notary - Jurat'),
+('Notary - Acknowledgment'),
+('Notary - Sale/Transfer'),
+('Liason & Messengerial'),
+('Certification/Document Fee'),
+('Application/Registration Fee'),
+('Assessment Fee'),
+('Representation'),
+('Psychiatrist/Psychologist'),
+('Surveyor'),
+('Auditor/Accountant'),
+('Others - Professional'),
+('Others');
+
+#DROP TABLE `gl_legal_activity_category`;
+CREATE TABLE `gl_legal_activity_category` (
+	`id` int NOT NULL AUTO_INCREMENT,
+    `legal_activity` varchar(100) NOT NULL,
+    PRIMARY KEY(`id`)
+);
+
+INSERT INTO `gl_legal_activity_category` (`legal_activity`) VALUES
+('Acceptance'),
+('Service'),
+('Professional'),
+('Meeting/Consultation'),
+('Appearance'),
+('Pleadings'),
+('Preparation of Legal/Business Document'),
+('Others');
+
+### CHECK VOUCHERS
 DROP TABLE `check_vouchers`;
 CREATE TABLE `check_vouchers` (
 	`id` int NOT NULL AUTO_INCREMENT,
