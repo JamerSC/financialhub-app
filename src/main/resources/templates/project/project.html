@@ -55,69 +55,69 @@
                             <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'TRANSFER_OF_TITLE'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTransferOfTitleBtn" title="edit"
                                th:href="@{/client-account/edit-transfer-of-title-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'SETTLEMENT_OF_ESTATE'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSettlementOfEstateBtn" title="edit"
                                th:href="@{/client-account/edit-settlement-of-estate-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'ANNOTATION'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTitleAnnotationBtn" title="edit"
                                th:href="@{/client-account/edit-title-annotation-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'OTHERS'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTitleOtherBtn" title="edit"
                                th:href="@{/client-account/edit-title-other-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <!-- Conditional Edit Button for BusinessSubType -->
                             <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_REGISTRATION'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessRegistrationBtn" title="edit"
                                th:href="@{/client-account/edit-business-registration-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_RENEWAL'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessRenewalBtn" title="edit"
                                th:href="@{/client-account/edit-business-renewal-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_CLOSURE'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessClosureBtn" title="edit"
                                th:href="@{/client-account/edit-business-closure-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'OTHERS'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessOtherBtn" title="edit"
                                th:href="@{/client-account/edit-business-other-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <!-- Conditional Edit Button for SecSubType -->
                             <a th:if="${tempProject.projectAccount.secSubType?.name() == 'SEC_REGISTRATION'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecRegistrationBtn" title="edit"
                                th:href="@{/client-account/edit-sec-registration-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.secSubType?.name() == 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecAmendmentBtn" title="edit"
                                th:href="@{/client-account/edit-sec-amendment-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
 
                             <a th:if="${tempProject.projectAccount.secSubType?.name() == 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK'}"
                                sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecStockIncreaseBtn" title="edit"
                                th:href="@{/client-account/edit-sec-stock-increase-account(id=${tempProject.clientAccountId})}">
-                                <i class="lni lni-pencil-alt"></i>
+                                <i class="lni lni-pen-to-square"></i>
                             </a>
                         </td>
                     </tr>

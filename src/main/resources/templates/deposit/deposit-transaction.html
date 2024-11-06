@@ -75,11 +75,11 @@
                             <td th:text="${tempDeposit.transactionNote}"></td>
                             <td>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="Edit">
-                                    <i class="lni lni-pencil-alt"></i>
+                                    <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
                                    th:href="@{/bank-transactions/{id}/delete-deposit-transaction(id=${tempDeposit.id})}">
-                                    <i class="lni lni-trash-can"></i>
+                                    <i class="lni lni-trash-3"></i>
                                 </a>
                             </td>
                         </tr>

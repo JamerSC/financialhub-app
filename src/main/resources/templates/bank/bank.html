@@ -64,7 +64,7 @@
                                     </a>-->
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankAccountBtn"
                                        th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="edit">
-                                        <i class="lni lni-pencil-alt"></i>
+                                        <i class="lni lni-pen-to-square"></i>
                                     </a>
                                 </td>
                             </tr>
@@ -231,7 +231,7 @@
                                     </a>-->
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankBtn"
                                         th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
-                                        <i class="lni lni-pencil-alt"></i>
+                                        <i class="lni lni-pen-to-square"></i>
                                     </a>
                                 </td>
                             </tr>

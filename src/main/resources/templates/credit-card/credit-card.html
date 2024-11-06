@@ -52,11 +52,11 @@
                                 </a>
                                 <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
                                    th:href="@{/credit-card/credit-card-update-form/{id}(id=${tempCreditCard.id})}">
-                                    <i class="lni lni-pencil-alt"></i>
+                                    <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
                                    th:href="@{/credit-card/delete-credit-card-record/{id}(id=${tempCreditCard.id})}">
-                                    <i class="lni lni-trash-can"></i>
+                                    <i class="lni lni-trash-3"></i>
                                 </a>
                             </td>
                         </tr>
