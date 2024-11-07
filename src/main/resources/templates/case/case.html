@@ -20,7 +20,7 @@
                     <!-- Contact Option Modal Button -->
                     <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCaseModal">
-                            <i class="lni lni-plus"></i> Add Case
+                            <i class="lni lni-plus"></i> Case
                         </button>
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                 <div class="modal fade" id="addCaseModal" tabindex="-1" aria-labelledby="addCaseModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header mb-2">
                                 <h5 class="modal-title" id="addCaseModalLabel">Case (New Account)</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
@@ -207,7 +207,7 @@
                 <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel" aria-hidden="true">
                     <div class="modal-dialog modal-xl">
                         <div class="modal-content">
-                            <div class="modal-header">
+                            <div class="modal-header mb-3">
                                 <h5 class="modal-title" id="editCaseModalLabel">Case (Update Account)</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>

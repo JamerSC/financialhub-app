@@ -42,11 +42,17 @@
                         <div class="p-1">
                             <h4 class="fw-bold fs-4">Petty Cash Vouchers</h4>
                         </div>
-                        <!-- Create User Modal Button -->
-                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <!-- Create Petty Cash -->
+                        <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <a th:href="@{/petty-cash/{id}/petty-cash-form(id=${fund.id})}" class="btn btn-primary btn-sm">
                                 <i class="lni lni-plus"></i> Add New
                             </a>
+                        </div>-->
+                        <!-- Petty Cash -->
+                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPettyCashModal">
+                                <i class="lni lni-plus"></i> Petty Cash
+                            </button>
                         </div>
                     </div>
                     <table class="table table-striped shadow">
@@ -90,6 +96,72 @@
                         </tr>
                         </tbody>
                     </table>
+                    <!-- Add Petty Cash Form Modal -->
+                    <div class="modal fade" id="addPettyCashModal" tabindex="-1" aria-labelledby="addPettyCashModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header mb-2">
+                                    <h5 class="modal-title" id="addPettyCashModalLabel">Petty Cash</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="row g-3 mb-3" id="addPettyCashForm" action="#" method="POST">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="pettyCashNo" class="form-label">Petty Cash No.</label>
+                                                <input type="text" class="form-control" id="pettyCashNo" placeholder="Petty cash no..." required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="requestDate" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="requestDate" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="activityDescription" class="form-label">Activity Description</label>
+                                                <textarea class="form-control" id="activityDescription" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                                <!--
+                                                <div class="col-md-6">
+                                                <label for="activityDescription" class="form-label">Activity Description</label>
+                                                <input type="text" class="form-control" id="activityDescription" placeholder="Activity description ..." required>
+                                                </div>
+                                                -->
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="activityCategory" class="form-label">Activity Category</label>
+                                                <input type="text" class="form-control" id="activityCategory" placeholder="Activity Category ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="soaCategory" class="form-label">SOA Category</label>
+                                                <input type="text" class="form-control" id="soaCategory" placeholder="Soa description ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="accounts" class="form-label">Activity Description</label>
+                                                <input type="text" class="form-control" id="accounts" placeholder="Accounts ..." required>
+                                                <input type="hidden" class="form-control" id="accountsId">
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="amount" class="form-label">Amount</label>
+                                                <input type="number" step="0.01" class="form-control" id="amount">
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!--Delete modal popup-->
                     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                         <div class="modal-dialog">

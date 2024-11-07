@@ -35,7 +35,7 @@
                 <div class="col-6 text-end">
                     <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
-                            <i class="lni lni-notepad"></i> Add Account
+                            <i class="lni lni-plus"></i> Account
                         </button>
                     </div>
                 </div>
@@ -100,7 +100,7 @@
                     <div class="modal fade" id="addAccountModal" tabindex="-1" aria-labelledby="addAccountModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header mb-2">
                                     <h5 class="modal-title" id="addAccountModalLabel">Bank Account (New)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
@@ -139,7 +139,7 @@
                     <div class="modal fade" id="editAccountModal" tabindex="-1" aria-labelledby="editAccountModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header mb-2">
                                     <h5 class="modal-title" id="editAccountModalLabel">Bank Account (Update)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
@@ -201,7 +201,7 @@
                 <div class="col-6 text-end">
                     <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                         <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
-                            <i class="lni lni-notepad"></i> Add Bank
+                            <i class="lni lni-plus"></i> Bank
                         </button>
                     </div>
                 </div>
@@ -267,7 +267,7 @@
                     <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header mb-2">
                                     <h5 class="modal-title" id="addBankModalLabel">Bank (New)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
@@ -301,7 +301,7 @@
                     <div class="modal fade" id="editBankModal" tabindex="-1" aria-labelledby="editBankModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header  mb-2">
                                     <h5 class="modal-title" id="editBankModalLabel">Bank (Update)</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
