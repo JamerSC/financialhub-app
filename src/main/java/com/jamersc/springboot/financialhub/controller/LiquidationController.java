@@ -21,7 +21,7 @@ import java.util.List;
 @RequestMapping("/liquidation")
 public class LiquidationController {
 
-    private static final Logger logger = LoggerFactory.getLogger(LiquidationController.class);
+   /* private static final Logger logger = LoggerFactory.getLogger(LiquidationController.class);
 
     @Autowired
     private PettyCashService pettyCashService;
@@ -30,12 +30,12 @@ public class LiquidationController {
     private LiquidationService liquidationService;
 
     @Autowired
-    private ContactService contactService;
+    private ContactService contactService;*/
 
-    @GetMapping("/liquidation-pcv/{id}")
+   /* @GetMapping("/liquidation-pcv/{id}")
     public String liquidationForm(@PathVariable(value = "id") Long id, Model model) {
         PettyCash pettyCash = pettyCashService.findPettyCashById(id);
-        List<Liquidation> liquidations = liquidationService.findByPettyCashVoucherId(pettyCash.getId());
+        List<Liquidation> liquidations = liquidationService.findByPettyCashVoucherId(pettyCash.getPettyCashId());
         Double totalLiquidationAmount = liquidations.stream().mapToDouble(Liquidation::getCost).sum();
         Double remainingBalance = pettyCash.getTotalAmount() - totalLiquidationAmount;
         Liquidation newLiquidation = new Liquidation();
@@ -48,18 +48,18 @@ public class LiquidationController {
         model.addAttribute("listOfChargeTo", listOfChargeTo); //
         model.addAttribute("newLiquidation", newLiquidation); // create new item
         return "petty-cash/liquidation-form";
-    }
+    }*/
 
-    @PostMapping("/add-item")
+   /* @PostMapping("/add-item")
     public String addLiquidation(@ModelAttribute("newLiquidation") Liquidation liquidation) {
         liquidationService.save(liquidation);
-        return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getId();
+        return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getPettyCashId();
     }
 
     @GetMapping("/delete-item/{id}")
     public String deleteItem(@PathVariable(value = "id") Long id) {
         Liquidation liquidation = liquidationService.findLiquidationById(id);
         liquidationService.deleteLiquidationItemById(liquidation.getId());
-        return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getId();
-    }
+        return "redirect:/liquidation/liquidation-pcv/" + liquidation.getPettyCash().getPettyCashId();
+    }*/
 }

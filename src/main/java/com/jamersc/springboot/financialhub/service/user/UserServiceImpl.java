@@ -73,7 +73,7 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
-        user.setEnabled(userDto.isEnabled());
+        user.setEnabled(true);
         User creator = userRepository.findByUsername(createdBy);
         if (creator != null) {
             user.setCreatedBy(creator.getId());

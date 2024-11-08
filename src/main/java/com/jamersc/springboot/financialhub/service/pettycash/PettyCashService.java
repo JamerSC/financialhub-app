@@ -7,11 +7,11 @@ import java.util.List;
 
 public interface PettyCashService {
 
-    List<PettyCash> getAllPettyCashRecord();
+    List<PettyCashDto> getAllPettyCashRecord();
 
-    PettyCashDto findPettyCashRecordById(Long id);
+    PettyCashDto findPettyCashById(Long id);
 
-    PettyCash findPettyCashById(Long id);
+    PettyCash findPettyCashLiquidationById(Long id);
 
     void savePettyCashRecord(PettyCashDto pettyCashDto, String username);
 

@@ -3,10 +3,9 @@ package com.jamersc.springboot.financialhub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "petty_cash_vouchers")
@@ -14,31 +13,52 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "liquidations")
+@ToString(exclude = {"fund", "accounts", "liquidations"})
 public class PettyCash {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "petty_cash_id")
+    private Long pettyCashId;
 
-    @Column(name = "pcv_number")
-    private String pcvNumber;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "fund_id")
+    private Fund fund;
 
-    @Column(name = "received_by")
-    private String receivedBy;
+    @Column(name = "pc_voucher_no")
+    private String voucherNo;
 
     @Column(name = "date")
     private Date date;
 
-    @Column(name = "particulars")
-    private String particulars;
+    @Column(name = "activity_description",columnDefinition = "TEXT")
+    private String activityDescription;
+
+    @Column(name = "activity_category")
+    private String activityCategory;
+
+    @Column(name = "soa_category")
+    private String soaCategory;
+
+    @ManyToMany
+    @JoinTable(
+            name = "petty_cash_client_accounts",
+            joinColumns = @JoinColumn(name = "petty_cash_id"),
+            inverseJoinColumns = @JoinColumn(name = "client_account_id")
+    )
+    private Set<ClientAccount> accounts;
 
     @Column(name = "total_amount")
     private Double totalAmount;
 
+    @Column(name = "approved")
+    private Boolean approved;
+
+    @Column(name = "received_by")
+    private Long receivedBy;
+
     @Column(name = "approved_by")
-    private String approvedBy;
+    private Long approvedBy;
 
     @Column(name = "created_by")
     private Long createdBy;
@@ -54,27 +74,11 @@ public class PettyCash {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "fund_id")
-    private Fund fund;
-
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "pettyCash",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH},
             orphanRemoval = true)
-    private List<Liquidation> liquidations = new ArrayList<>();
-
-    // Convenience method to add a liquidation
-    public void addLiquidation(Liquidation liquidation) {
-        liquidations.add(liquidation);
-        liquidation.setPettyCash(this);
-    }
-
-    // Convenience method to remove a liquidation
-    public void removeLiquidation(Liquidation liquidation) {
-        liquidations.remove(liquidation);
-        liquidation.setPettyCash(null);
-    }
+    private List<Liquidation> liquidations;
 
     @PrePersist
     protected void onCreate() {

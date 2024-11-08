@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "client_accounts")
@@ -12,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"client", "caseAccount"})
+@ToString(exclude = {"client", "caseAccount", "projectAccount", "retainerAccount", "pettyCash"})
 public class ClientAccount {
 
     @Id
@@ -45,6 +46,9 @@ public class ClientAccount {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private RetainerAccount retainerAccount;
+
+    @ManyToMany(mappedBy = "accounts")
+    private Set<PettyCash> pettyCash;
 
     @Column(name = "created_by")
     private Long createdBy;

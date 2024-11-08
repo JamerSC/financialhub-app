@@ -43,7 +43,7 @@ public class PettyCashController {
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model,  @RequestParam(defaultValue = "1") Long id) {
         Fund fund = fundService.getFundById(id); // fund id# 1
-        List<PettyCash> pettyCash = pettyCashService.getAllPettyCashRecord();
+        List<PettyCashDto> pettyCash = pettyCashService.getAllPettyCashRecord();
         model.addAttribute("pettyCash", pettyCash);
         model.addAttribute("fund", fund);
         return  "petty-cash/petty-cash";
@@ -53,7 +53,7 @@ public class PettyCashController {
     public String pettyCashForm(@PathVariable(value = "id") Long id, Model model) {
         Fund fund = fundService.getFundById(id);
         PettyCashDto pettyCashDto = new PettyCashDto();
-        pettyCashDto.setFund(fund);
+        //pettyCashDto.setFund(fund);
         model.addAttribute("pettyCashDto",pettyCashDto);
         model.addAttribute("fund", fund);
         return "petty-cash/petty-cash-form";
@@ -75,9 +75,9 @@ public class PettyCashController {
 
     @GetMapping("/petty-cash-update-form/{id}")
     public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
-        PettyCashDto pettyCashDto = pettyCashService.findPettyCashRecordById(id);
+        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
         if (pettyCashDto != null) {
-            logger.info("Fetching petty cash form id: " + pettyCashDto.getId());
+            logger.info("Fetching petty cash form id: " + pettyCashDto.getPettyCashId());
             model.addAttribute("pettyCashDto", pettyCashDto);
             return "petty-cash/petty-cash-update-form";
         }
@@ -108,7 +108,7 @@ public class PettyCashController {
 
     @GetMapping("/generate-petty-cash-voucher/{id}")
     public ResponseEntity<byte[]> generatePettyCashVoucher(@PathVariable(value = "id") Long id) {
-        PettyCashDto pettyCashDto = pettyCashService.findPettyCashRecordById(id);
+        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
         if (pettyCashDto == null) {
             return ResponseEntity.notFound().build();
         }
@@ -116,7 +116,7 @@ public class PettyCashController {
         ByteArrayInputStream stream = pettyCashVoucherService.generatePettyCashVoucher(pettyCashDto);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=" + pettyCashDto.getPcvNumber() + ".pdf");
+        headers.add("Content-Disposition", "inline; filename=" + pettyCashDto.getVoucherNo() + ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

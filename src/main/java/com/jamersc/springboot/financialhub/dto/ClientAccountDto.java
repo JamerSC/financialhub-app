@@ -23,4 +23,7 @@ public class ClientAccountDto {
         private Date createdAt;
         private Long updatedBy;
         private Date updatedAt;
+
+        public ClientAccountDto(Long clientAccountId, String accountTitle, ClientAccountType clientAccountType) {
+        }
 }

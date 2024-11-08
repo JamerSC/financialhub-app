@@ -41,7 +41,7 @@ public class UserDto {
     @Size(min = 6, max = 64, message = "Password must be between 6 and 64 characters!")
     private String password;
 
-    private boolean enabled = true;
+    private Boolean enabled = true;
 
     @RoleIdsNotEmpty(message = "At least one role must be selected")
     private Set<Long> roleIds;

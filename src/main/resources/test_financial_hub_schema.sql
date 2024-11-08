@@ -517,21 +517,21 @@ FROM
 	WHERE `a`.`account_type` = 'PROJECT';
 
 
-#DROP TABLE `fund`;
+# DROP TABLE `fund`;
 CREATE TABLE `fund` (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`fund_id` int NOT NULL AUTO_INCREMENT,
     `fund_balance` decimal(10,2) NOT NULL,
     `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`fund_id`)
 );
 
 INSERT INTO `fund`(`fund_balance`, `created_by`, `updated_by` ) VALUE (5000.00, 1, 1);
 
-# FUND TRANSACTION
-DROP TABLE `fund_transactions`;
+#FUND TRANSACTION
+#DROP TABLE `fund_transactions`;
 CREATE TABLE `fund_transactions` (
 	`id` int NOT NULL AUTO_INCREMENT,
     `fund_id` int NOT NULL,
@@ -546,8 +546,7 @@ CREATE TABLE `fund_transactions` (
     PRIMARY KEY (`id`)
 );
 
-
-DROP TABLE `fund_transaction_details`;
+#DROP TABLE `fund_transaction_details`;
 CREATE TABLE `fund_transaction_details` (
 	`id` int NOT NULL AUTO_INCREMENT,
     `fund_transaction_id` int NOT NULL,
@@ -561,20 +560,36 @@ CREATE TABLE `fund_transaction_details` (
 
 DROP TABLE `petty_cash_vouchers`;
 CREATE TABLE `petty_cash_vouchers` (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`petty_cash_id` int NOT NULL AUTO_INCREMENT,
     `fund_id` int NOT NULL,
-    `pcv_number` varchar(50) NOT NULL,
-    `received_by` varchar(255) NOT NULL,
+    `pc_voucher_no` varchar(50) NOT NULL,
     `date` date NOT NULL,
-    `particulars` varchar(255) NOT NULL,
+    `activity_description` text NOT NULL,
+    `activity_category` varchar(100) NOT NULL,
+    `soa_category` varchar(100) NOT NULL,
     `total_amount` decimal(10, 2) NOT NULL,
-    `approved_by` varchar(255) NOT NULL,
+    `approved` boolean,
+    `approved_by` int,
+	`received_by` int,
     `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`fund_id`) REFERENCES `fund`(id) ON DELETE CASCADE,
-    PRIMARY KEY (`id`)
+    FOREIGN KEY (`fund_id`) REFERENCES `fund`(`fund_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`petty_cash_id`)
+);
+
+# ALTER TABLE `petty_cash_vouchers`
+# RENAME COLUMN `pcv_number` TO `petty_cash_no`;
+
+# Junction Table for petty cash & client accounts
+DROP TABLE `petty_cash_client_accounts`;
+CREATE TABLE `petty_cash_client_accounts` (
+    `petty_cash_id` INT,
+    `client_account_id` INT,
+    PRIMARY KEY (`petty_cash_id`,`client_account_id`),
+    FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(`petty_cash_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`) ON DELETE CASCADE
 );
 
 # DATE - format: YYYY-MM-DD.
@@ -585,7 +600,7 @@ VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000
 
 DROP TABLE `petty_cash_liquidation`;
 CREATE TABLE `petty_cash_liquidation` (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`liquidation_id` int NOT NULL AUTO_INCREMENT,
     `petty_cash_id` int NOT NULL,
     `contact_id` int NOT NULL,
 	`date` date NOT NULL,
@@ -627,11 +642,11 @@ LEFT JOIN `contact_company` `cc`
 ON `c`.`contact_id` = `cc`.`contact_id`
 ORDER BY `pcl`.`created_at` ASC;
 
-# DROP TABLE `gl_admin_activity_category`;
+DROP TABLE `gl_admin_activity_category`;
 CREATE TABLE `gl_admin_activity_category` (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`admin_activity_id` int NOT NULL AUTO_INCREMENT,
     `admin_activity` varchar(100) NOT NULL,
-    PRIMARY KEY(`id`)
+    PRIMARY KEY(`admin_activity_id`)
 );
 
 INSERT INTO `gl_admin_activity_category` (`admin_activity`) VALUES
@@ -662,11 +677,11 @@ INSERT INTO `gl_admin_activity_category` (`admin_activity`) VALUES
 ('Others - Professional'),
 ('Others');
 
-#DROP TABLE `gl_legal_activity_category`;
+DROP TABLE `gl_legal_activity_category`;
 CREATE TABLE `gl_legal_activity_category` (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`legal_activity_id` int NOT NULL AUTO_INCREMENT,
     `legal_activity` varchar(100) NOT NULL,
-    PRIMARY KEY(`id`)
+    PRIMARY KEY(`legal_activity_id`)
 );
 
 INSERT INTO `gl_legal_activity_category` (`legal_activity`) VALUES

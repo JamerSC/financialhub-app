@@ -1,6 +1,7 @@
 package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.mapper.PettyCashMapper;
 import com.jamersc.springboot.financialhub.model.Fund;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -36,23 +38,21 @@ public class PettyCashServiceImpl implements PettyCashService {
     private FundRepository fundRepository;
 
     @Override
-    public List<PettyCash> getAllPettyCashRecord() {
-        return pettyCashRepository.findAll();
+    public List<PettyCashDto> getAllPettyCashRecord() {
+        return pettyCashRepository.findAll().stream()
+                .map(PettyCashMapper::toPettyCashDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public PettyCashDto findPettyCashRecordById(Long id) {
-        PettyCash pettyCash = pettyCashRepository.findById(id).orElse(null);
-        if (pettyCash != null) {
-            PettyCashDto pettyCashDto = new PettyCashDto();
-            BeanUtils.copyProperties(pettyCash, pettyCashDto);
-            return pettyCashDto;
-        }
-        return null;
+    public PettyCashDto findPettyCashById(Long id) {
+        PettyCash pettyCash = pettyCashRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
+        return PettyCashMapper.toPettyCashDto(pettyCash);
     }
 
     @Override
-    public PettyCash findPettyCashById(Long id) {
+    public PettyCash findPettyCashLiquidationById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id).orElseThrow(() -> new RuntimeException("Petty Cash not found"));
         Hibernate.initialize(pettyCash.getLiquidations());
         //pettyCash.getLiquidations().size();
@@ -62,12 +62,12 @@ public class PettyCashServiceImpl implements PettyCashService {
     @Override
     public void savePettyCashRecord(PettyCashDto pettyCashDto, String username) {
         PettyCash pettyCash;
-        if (pettyCashDto.getId() != null) {
-            pettyCash = pettyCashRepository.findById(pettyCashDto.getId()).orElse(new PettyCash());
-            pettyCash.setPcvNumber(pettyCashDto.getPcvNumber());
+        if (pettyCashDto.getPettyCashId() != null) {
+            pettyCash = pettyCashRepository.findById(pettyCashDto.getPettyCashId()).orElse(new PettyCash());
+            pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
             pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
             pettyCash.setDate(pettyCashDto.getDate());
-            pettyCash.setParticulars(pettyCashDto.getParticulars());
+            pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
             pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
             pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
             Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());
@@ -79,10 +79,10 @@ public class PettyCashServiceImpl implements PettyCashService {
             System.out.println("Updated successfully! " + pettyCashDto);
         } else {
             pettyCash = new PettyCash();
-            pettyCash.setPcvNumber(pettyCashDto.getPcvNumber());
+            pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
             pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
             pettyCash.setDate(pettyCashDto.getDate());
-            pettyCash.setParticulars(pettyCashDto.getParticulars());
+            pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
             pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
             pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
             Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());

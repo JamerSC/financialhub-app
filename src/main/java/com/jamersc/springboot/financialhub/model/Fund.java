@@ -18,14 +18,14 @@ public class Fund {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "fund_id")
+    private Long fundId;
 
     // Petty Cash
     @OneToMany(mappedBy = "fund", orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private List<PettyCash> pettyCash = new ArrayList<>();
+    private List<PettyCash> pettyCash;
 
     @Column(name = "fund_balance")
     private Double fundBalance;

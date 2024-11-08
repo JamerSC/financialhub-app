@@ -17,8 +17,8 @@ public class Liquidation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "liquidation_id")
+    private Long liquidationId;
 
     @ManyToOne(fetch = FetchType.LAZY, cascade={
             CascadeType.PERSIST, CascadeType.MERGE,
@@ -27,7 +27,6 @@ public class Liquidation {
     private PettyCash pettyCash;
 
     @Column(name = "date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
 
     @Column(name = "particulars")
@@ -46,9 +45,6 @@ public class Liquidation {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_id")
     private Contact chargeTo;
-
-    @Column(name = "billed")
-    private boolean billed;
 
     @Column(name = "created_by")
     private Long createdBy;

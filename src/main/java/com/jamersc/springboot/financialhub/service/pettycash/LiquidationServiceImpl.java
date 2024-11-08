@@ -14,8 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Transactional
 @Service
-public class LiquidationServiceImpl implements LiquidationService{
-
+public class LiquidationServiceImpl {
+    //implements LiquidationService
+/*
     @Autowired
     private LiquidationRepository liquidationRepository;
 
@@ -34,9 +35,9 @@ public class LiquidationServiceImpl implements LiquidationService{
 
     @Override
     public void save(Liquidation liquidation) {
-        if (liquidation.getPettyCash() != null && liquidation.getPettyCash().getId() != null) {
+        if (liquidation.getPettyCash() != null && liquidation.getPettyCash().getPettyCashId() != null) {
             // Ensure PettyCash is managed
-            PettyCash managedPettyCash = pettyCashRepository.getReferenceById(liquidation.getPettyCash().getId());
+            PettyCash managedPettyCash = pettyCashRepository.getReferenceById(liquidation.getPettyCash().getPettyCashId());
             liquidation.setPettyCash(managedPettyCash);
         }
         liquidationRepository.save(liquidation);
@@ -45,5 +46,5 @@ public class LiquidationServiceImpl implements LiquidationService{
     @Override
     public void deleteLiquidationItemById(Long id) {
         liquidationRepository.deleteById(id);
-    }
+    }*/
 }

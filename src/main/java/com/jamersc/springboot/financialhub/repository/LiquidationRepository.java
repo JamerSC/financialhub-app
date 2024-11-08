@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface LiquidationRepository extends JpaRepository<Liquidation, Long> {
-    List<Liquidation> findByPettyCash_Id(Long id);
+    //List<Liquidation> findByPettyCash_Id(Long id);
 }

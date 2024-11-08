@@ -47,7 +47,7 @@ public class PettyCashVoucherService {
                     leftTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
                     // Right-aligned title
-                    PdfPCell rightTitleCell = new PdfPCell(new Phrase("No. " + pettyCashDto.getPcvNumber(), titleFont));
+                    PdfPCell rightTitleCell = new PdfPCell(new Phrase("No. " + pettyCashDto.getVoucherNo(), titleFont));
                     rightTitleCell.setBorder(Rectangle.NO_BORDER); // No border
                     rightTitleCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
@@ -123,7 +123,7 @@ public class PettyCashVoucherService {
                     particularsDetailTable.setWidths(new float[]{7f, 3f}); // 70% and 30% widths
 
                     // Particulars details
-                    PdfPCell particularsDetailCell = new PdfPCell(new Phrase(pettyCashDto.getParticulars(), regularFont));
+                    PdfPCell particularsDetailCell = new PdfPCell(new Phrase(pettyCashDto.getActivityDescription(), regularFont));
                     particularsDetailCell.setBorder(Rectangle.BOX); // Border added
                     particularsDetailCell.setHorizontalAlignment(Element.ALIGN_LEFT); // Align to left
                     particularsDetailCell.setVerticalAlignment(Element.ALIGN_TOP); // Align to top
