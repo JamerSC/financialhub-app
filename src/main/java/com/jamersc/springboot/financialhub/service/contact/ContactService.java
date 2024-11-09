@@ -4,13 +4,14 @@ import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.model.Contact;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface ContactService {
 
-    List<Contact> getAllContacts();
+    List<ContactDto> getAllContacts();
 
     ContactDto getContactById(Long contactId);
+
+    List<ContactDto> getContactsWithInternalCategory();
 
     Contact findByIdWithAccounts(Long contactId);
 

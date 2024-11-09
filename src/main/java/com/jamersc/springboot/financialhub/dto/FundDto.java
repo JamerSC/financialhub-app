@@ -13,7 +13,7 @@ import java.util.List;
 @ToString
 public class FundDto {
 
-    private Long id;
+    private Long fundId;
     private List<PettyCashDto> pettyCash;
     private Double fundBalance;
     private Long createdBy;

@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @AllArgsConstructor
 @Controller
@@ -26,14 +25,13 @@ public class ContactController {
 
     @GetMapping("/contact-list")
     public String payeeList(Model model) {
-        List<Contact> contacts = contactService.getAllContacts();
+        model.addAttribute("contacts", contactService.getAllContacts());
         model.addAttribute("contactIndividual", new ContactDto());
         model.addAttribute("updateContactIndividual", new ContactDto());
         model.addAttribute("contactCompany", new ContactDto());
         model.addAttribute("updateContactCompany", new ContactDto());
         model.addAttribute("contactCategoryType", ContactCategoryType.values());
         model.addAttribute("registrationType", RegistrationType.values());
-        model.addAttribute("contacts", contacts);
         return "contact/contact";
     }
 

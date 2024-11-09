@@ -1,10 +1,13 @@
 package com.jamersc.springboot.financialhub.service.pettycash;
 
+import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.mapper.PettyCashMapper;
+import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Fund;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
 import com.jamersc.springboot.financialhub.repository.FundRepository;
 import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
@@ -19,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +34,8 @@ public class PettyCashServiceImpl implements PettyCashService {
     private static final Logger logger = LoggerFactory.getLogger(PettyCashServiceImpl.class);
     @Autowired
     private PettyCashRepository pettyCashRepository;
+    @Autowired
+    private ClientAccountRepository clientAccountRepository;
     @Autowired
     private UserRepository userRepo;
     @Autowired
@@ -43,7 +50,12 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    public PettyCashDto findPettyCashById(Long id) {
+    public List<PettyCash> getAllPettyCashWithClientAccounts() {
+        return pettyCashRepository.findAllWithClientAccounts();
+    }
+
+    @Override
+    public PettyCashDto getPettyCashById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
         logger.info("Find petty cash by ID: " + pettyCash.getPettyCashId());
@@ -51,50 +63,78 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    public PettyCash findPettyCashLiquidationById(Long id) {
-        PettyCash pettyCash = pettyCashRepository.findById(id).orElseThrow(() -> new RuntimeException("Petty Cash not found"));
+    public PettyCash getPettyCashLiquidationById(Long id) {
+        PettyCash pettyCash = pettyCashRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Petty Cash not found"));
         Hibernate.initialize(pettyCash.getLiquidations());
         //pettyCash.getLiquidations().size();
         return pettyCash;
     }
 
     @Override
-    public void savePettyCashRecord(PettyCashDto pettyCashDto, String username) {
+    public void savePettyCash(PettyCashDto dto, String username) {
         PettyCash pettyCash;
-        if (pettyCashDto.getPettyCashId() != null) {
-            pettyCash = pettyCashRepository.findById(pettyCashDto.getPettyCashId()).orElse(new PettyCash());
-            pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
-            pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
-            pettyCash.setDate(pettyCashDto.getDate());
-            pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
-            pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
-            pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
-            Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());
+
+        if (dto.getPettyCashId() != null) {
+            pettyCash = pettyCashRepository.findById(dto.getPettyCashId())
+                    .orElse(new PettyCash());
+
+            Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             pettyCash.setFund(manageFund);
+
+            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setDate(dto.getDate());
+            pettyCash.setActivityDescription(dto.getActivityDescription());
+            pettyCash.setActivityDescription(dto.getActivityCategory());
+            pettyCash.setActivityDescription(dto.getSoaCategory());
+
+            //pettyCash.setAccounts(pettyCashDto.getAccounts());
+
+            pettyCash.setTotalAmount(dto.getTotalAmount());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+
+            pettyCash.setApprovedBy(dto.getApprovedBy());
+
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
                 pettyCash.setUpdatedBy(updatedBy.getId());
             }
-            System.out.println("Updated successfully! " + pettyCashDto);
+
+            logger.info("Successfully updated petty cash: " + pettyCash);
+
         } else {
             pettyCash = new PettyCash();
-            pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
-            pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
-            pettyCash.setDate(pettyCashDto.getDate());
-            pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
-            pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
-            pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
-            Fund manageFund = fundRepository.getReferenceById(pettyCashDto.getFund().getId());
+
+            Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             pettyCash.setFund(manageFund);
+
+            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setDate(dto.getDate());
+            pettyCash.setActivityDescription(dto.getActivityDescription());
+            pettyCash.setActivityDescription(dto.getActivityCategory());
+            pettyCash.setActivityDescription(dto.getSoaCategory());
+
+            Set<ClientAccount> accounts = dto.getAccounts().stream()
+                    .map(ClientAccountDto::getClientAccountId)
+                    .map(clientAccountRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            pettyCash.setAccounts(accounts);
+
+            pettyCash.setTotalAmount(dto.getTotalAmount());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+
             User createdBy = userRepo.findByUsername(username);
             if (createdBy != null) {
+                pettyCash.setApprovedBy(createdBy.getId());
                 pettyCash.setCreatedBy(createdBy.getId());
                 pettyCash.setUpdatedBy(createdBy.getId());
-            } else {
-                pettyCash.setCreatedBy(1L);
-                pettyCash.setUpdatedBy(1L);
             }
-            System.out.println("Created successfully! " + pettyCashDto);
+            logger.info("Successfully created new petty cash: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashRepository.save(pettyCash);

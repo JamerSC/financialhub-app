@@ -579,6 +579,20 @@ CREATE TABLE `petty_cash_vouchers` (
     PRIMARY KEY (`petty_cash_id`)
 );
 
+
+INSERT INTO `petty_cash_vouchers` 
+(`fund_id`, `pc_voucher_no`, `date`, `activity_description`, `activity_category`, `soa_category`, `total_amount`, `approved`, `approved_by`, `received_by`, `created_by`)
+VALUES 
+(1, 'PCV-001', '2024-10-01', 'Purchase of office supplies', 'Office Expenses', 'Supplies', 150.00, FALSE, 1, 1, 1),
+
+(1, 'PCV-002', '2024-10-05', 'Transportation for project site visit', 'Travel', 'Transportation', 75.00, FALSE, NULL, 1, 1),
+
+(1, 'PCV-003', '2024-10-10', 'Lunch meeting with client', 'Meals & Entertainment', 'Client Engagement', 200.00, FALSE, 1, 1, 1),
+
+(1, 'PCV-004', '2024-10-12', 'Printing of marketing materials', 'Marketing', 'Print Media', 500.00, FALSE, 2, 5, 3),
+
+(1, 'PCV-005', '2024-10-15', 'Travel for business development', 'Travel', 'Business Development', 300.00, FALSE, 1, 1, 1);
+
 # ALTER TABLE `petty_cash_vouchers`
 # RENAME COLUMN `pcv_number` TO `petty_cash_no`;
 
@@ -591,6 +605,48 @@ CREATE TABLE `petty_cash_client_accounts` (
     FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(`petty_cash_id`) ON DELETE CASCADE,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`) ON DELETE CASCADE
 );
+
+INSERT INTO `petty_cash_client_accounts` (`petty_cash_id`, `client_account_id`)
+VALUES 
+(1, 1),
+(1, 2),
+(1, 3),
+(2, 1),
+(2, 2),
+(2, 3),
+(3, 1),
+(3, 2),
+(3, 3),
+(4, 1),
+(4, 2),
+(4, 3),
+(5, 1),
+(5, 2),
+(5, 3);
+
+SELECT 
+    pcv.petty_cash_id,
+    pcv.pc_voucher_no AS "PCV Number",
+    pcv.date AS "Date",
+    pcv.activity_description AS "Activity Description",
+    pcv.activity_category AS "Activity Category",
+    pcv.soa_category AS "SOA Category",
+    pcv.total_amount AS "Total Amount",
+    pcv.approved AS "Approved",
+    pcv.approved_by AS "Approved By",
+    pcv.received_by AS "Received By",
+    GROUP_CONCAT(ca.account_title ORDER BY ca.account_title ASC SEPARATOR ', ') AS "Account Titles"
+FROM 
+    petty_cash_vouchers pcv
+JOIN 
+    petty_cash_client_accounts pcca ON pcv.petty_cash_id = pcca.petty_cash_id
+JOIN 
+    client_accounts ca ON pcca.client_account_id = ca.client_account_id
+GROUP BY 
+    pcv.petty_cash_id
+ORDER BY 
+    pcv.date DESC;
+
 
 # DATE - format: YYYY-MM-DD.
 INSERT INTO `petty_cash_vouchers`(`fund_id`, `pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)

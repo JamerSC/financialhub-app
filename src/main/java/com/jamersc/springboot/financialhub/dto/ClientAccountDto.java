@@ -4,6 +4,7 @@ import com.jamersc.springboot.financialhub.model.ClientAccountType;
 import lombok.*;
 
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -19,6 +20,7 @@ public class ClientAccountDto {
         private CaseAccountDto caseAccount; // one to one client account
         private ProjectAccountDto projectAccount; // one to one client account
         private RetainerAccountDto retainerAccount; // one to one client account
+        private Set<PettyCashDto> pettyCash;
         private Long createdBy;
         private Date createdAt;
         private Long updatedBy;
@@ -27,7 +29,7 @@ public class ClientAccountDto {
         public ClientAccountDto(Long clientAccountId, String accountTitle, ClientAccountType clientAccountType) {
         }
 
-        public String getClientDisplayName() {
+   /*     public String getClientDisplayName() {
                 if (client != null) {
                         if (client.getIndividual() != null) {
                                 return client.getIndividual().getFullName();
@@ -36,5 +38,5 @@ public class ClientAccountDto {
                         }
                 }
                 return "";
-        }
+        }*/
 }

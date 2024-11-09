@@ -1,8 +1,11 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.ContactDto;
+import com.jamersc.springboot.financialhub.dto.FundDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
-import com.jamersc.springboot.financialhub.model.Fund;
+import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
+import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import com.jamersc.springboot.financialhub.service.pettycash.FundService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
@@ -38,27 +41,43 @@ public class PettyCashController {
     @Autowired
     private ClientAccountService clientAccountService;
     @Autowired
+    private ContactService contactService;
+    @Autowired
     private PettyCashVoucherService pettyCashVoucherService;
 
-    @GetMapping("/petty-cash-voucher")
+    @GetMapping("/list-of-petty-cash")
     public String pettyCashVoucherPage(Model model,  @RequestParam(defaultValue = "1") Long id) {
-        Fund fund = fundService.getFundById(id); // fund id# 1
-        model.addAttribute("listOfPettyCash", pettyCashService.getAllPettyCash());
+        FundDto fund = fundService.getFundById(id); // fund id# 1
+        List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
+        model.addAttribute("listOfPettyCash", listOfPettyCash);
         model.addAttribute("pettyCash", new PettyCashDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
         model.addAttribute("fund", fund);
+        List<ContactDto> internalContacts= contactService.getContactsWithInternalCategory();
+        model.addAttribute("internalContacts", internalContacts);
         return  "petty-cash/petty-cash";
     }
 
-    @GetMapping("/{id}/petty-cash-form")
+    @PostMapping("/{id}/add-petty-cash")
+    public String pettyCashForm(@ModelAttribute("pettyCash") PettyCashDto pettyCash,
+                                @PathVariable(value = "id") Long id) {
+        String createdBy = getSessionUsername();
+        FundDto fund = fundService.getFundById(id);
+        pettyCash.setFund(fund);
+        pettyCashService.savePettyCash(pettyCash, createdBy);
+        return "redirect:/petty-cash/list-of-petty-cash";
+    }
+
+    /*@GetMapping("/{id}/add-petty-cash")
     public String pettyCashForm(@PathVariable(value = "id") Long id, Model model) {
+        String createdBy = getSessionUsername();
         Fund fund = fundService.getFundById(id);
         PettyCashDto pettyCashDto = new PettyCashDto();
         //pettyCashDto.setFund(fund);
         model.addAttribute("pettyCashDto",pettyCashDto);
         model.addAttribute("fund", fund);
         return "petty-cash/petty-cash-form";
-    }
+    }*/
 
     @PostMapping("/petty-cash-form")
     public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
@@ -69,20 +88,20 @@ public class PettyCashController {
         } else {
             String createdBy = getSessionUsername();
             logger.info("Created petty cash voucher: " + pettyCashDto);
-            pettyCashService.savePettyCashRecord(pettyCashDto, createdBy);
-            return "redirect:/petty-cash/petty-cash-voucher";
+            pettyCashService.savePettyCash(pettyCashDto, createdBy);
+            return "redirect:/petty-cash/list-of-petty-cash";
         }
     }
 
     @GetMapping("/petty-cash-update-form/{id}")
     public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
-        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
+        PettyCashDto pettyCashDto = pettyCashService.getPettyCashById(id);
         if (pettyCashDto != null) {
             logger.info("Fetching petty cash form id: " + pettyCashDto.getPettyCashId());
             model.addAttribute("pettyCashDto", pettyCashDto);
             return "petty-cash/petty-cash-update-form";
         }
-        return "redirect:/petty-cash/petty-cash-voucher";
+        return "redirect:/petty-cash/list-of-petty-cash";
     }
 
     @PostMapping("/petty-cash-update-form")
@@ -93,9 +112,9 @@ public class PettyCashController {
             return "petty-cash/petty-cash-update-form";
         } else {
             String updatedBy = getSessionUsername();
-            pettyCashService.savePettyCashRecord(pettyCashDto, updatedBy);
+            pettyCashService.savePettyCash(pettyCashDto, updatedBy);
             logger.info("Updated petty cash voucher!\n" + pettyCashDto);
-            return "redirect:/petty-cash/petty-cash-voucher";
+            return "redirect:/petty-cash/list-of-petty-cash";
         }
     }
 
@@ -104,12 +123,12 @@ public class PettyCashController {
         logger.info("Process deleting petty cash form id: " + id);
         pettyCashService.deletePettyCashRecordById(id);
         logger.info("Deleted petty cash form id: " + id);
-        return "redirect:/petty-cash/petty-cash-voucher";
+        return "redirect:/petty-cash/list-of-petty-cash";
     }
 
     @GetMapping("/generate-petty-cash-voucher/{id}")
     public ResponseEntity<byte[]> generatePettyCashVoucher(@PathVariable(value = "id") Long id) {
-        PettyCashDto pettyCashDto = pettyCashService.findPettyCashById(id);
+        PettyCashDto pettyCashDto = pettyCashService.getPettyCashById(id);
         if (pettyCashDto == null) {
             return ResponseEntity.notFound().build();
         }

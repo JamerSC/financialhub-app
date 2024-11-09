@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class FundMapper {
 
     // Convert DTO to Entity
-    public Fund toFundEntity(FundDto fundDto) {
+    public static Fund toFundEntity(FundDto fundDto) {
         if (fundDto == null) {
             return null;
         }
@@ -23,7 +23,7 @@ public class FundMapper {
                 : null;
 
         Fund fund = new Fund();
-        fund.setFundId(fundDto.getId());
+        fund.setFundId(fundDto.getFundId());
         fund.setPettyCash(pettyCashEntities);
         fund.setFundBalance(fundDto.getFundBalance());
         fund.setCreatedBy(fundDto.getCreatedBy());
@@ -34,7 +34,7 @@ public class FundMapper {
         return fund;
     }
     // Convert Entity to DTO
-    public FundDto toFundDto(Fund fund) {
+    public static FundDto toFundDto(Fund fund) {
         if (fund == null) {
             return null;
         }

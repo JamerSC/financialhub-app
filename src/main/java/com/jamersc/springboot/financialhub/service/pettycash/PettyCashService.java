@@ -9,11 +9,13 @@ public interface PettyCashService {
 
     List<PettyCashDto> getAllPettyCash();
 
-    PettyCashDto findPettyCashById(Long id);
+    List<PettyCash> getAllPettyCashWithClientAccounts();
 
-    PettyCash findPettyCashLiquidationById(Long id);
+    PettyCashDto getPettyCashById(Long id);
 
-    void savePettyCashRecord(PettyCashDto pettyCashDto, String username);
+    PettyCash getPettyCashLiquidationById(Long id);
+
+    void savePettyCash(PettyCashDto dto, String username);
 
     void save(PettyCash pettyCash);
 

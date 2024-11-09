@@ -47,7 +47,7 @@ public class ClientAccount {
             CascadeType.DETACH, CascadeType.REFRESH})
     private RetainerAccount retainerAccount;
 
-    @ManyToMany(mappedBy = "accounts")
+    @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
     private Set<PettyCash> pettyCash;
 
     @Column(name = "created_by")

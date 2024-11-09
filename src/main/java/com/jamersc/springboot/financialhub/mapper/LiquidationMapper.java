@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class LiquidationMapper {
 
     // Convert DTO to Entity
-    public Liquidation toLiquidationEntity(LiquidationDto liquidationDto) {
+    public static Liquidation toLiquidationEntity(LiquidationDto liquidationDto) {
         if (liquidationDto == null) {
             return null;
         }
@@ -49,7 +49,7 @@ public class LiquidationMapper {
     }
 
     // Convert Entity to DTO
-    public LiquidationDto toLiquidationDto(Liquidation liquidation) {
+    public static LiquidationDto toLiquidationDto(Liquidation liquidation) {
         if (liquidation == null) {
             return null;
         }

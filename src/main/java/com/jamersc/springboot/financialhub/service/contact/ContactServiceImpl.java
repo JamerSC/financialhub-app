@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @Transactional
@@ -36,20 +37,27 @@ public class ContactServiceImpl implements ContactService {
     private ContactDetailsRepository contactDetailsRepository;
 
     @Override
-    public List<Contact> getAllContacts() {
-        return contactRepository.findAll();
+    public List<ContactDto> getAllContacts() {
+        return contactRepository.findAll().stream()
+                .map(ContactMapper::toContactDto)
+                .collect(Collectors.toList());
     }
 
     @Override
     public ContactDto getContactById(Long contactId) {
-        Contact contact = contactRepository.findById(contactId).orElse(null);
-        if (contact != null) {
-            ContactDto contactDto = ContactMapper.toContactDto(contact);
-            logger.info("Contact ID Details: " + contactDto);
-            return contactDto;
-        }
-        throw new RuntimeException("Contact ID not found.");
+        Contact contact = contactRepository.findById(contactId)
+                .orElseThrow(() -> new RuntimeException("Contact ID not found!"));
+        logger.info("Contact ID Details: " + contact);
+        return ContactMapper.toContactDto(contact);
     }
+
+    @Override
+    public List<ContactDto> getContactsWithInternalCategory() {
+        return contactRepository.findContactsWithInternalCategory().stream()
+                .map(ContactMapper::toContactDto)
+                .collect(Collectors.toList());
+    }
+
 
     @Override
     public Contact findByIdWithAccounts(Long contactId) {

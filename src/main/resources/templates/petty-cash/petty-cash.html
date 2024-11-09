@@ -59,22 +59,23 @@
                         <thead class="table-dark">
                         <tr>
                             <th>PCV Number</th>
-                            <th>Received By</th>
                             <th>Date</th>
                             <th>Total Amount</th>
-                            <th>Approved By</th>
-                            <th>Fund ID</th>
+                            <th>Account(s)</th>
                             <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr th:each="tempPettyCash : ${listOfPettyCash}">
                             <td th:text="${tempPettyCash.voucherNo}"></td>
-                            <td th:text="${tempPettyCash.receivedBy}"></td>
                             <td th:text="${#dates.format(tempPettyCash.date, 'dd MMMM yyyy')}"></td>
                             <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td th:text="${tempPettyCash.approvedBy}"></td>
-                            <td th:text="${tempPettyCash.fund.fundId}"></td>
+                            <td>
+                                <!-- Display each account in the accounts list as a list item -->
+                                <ul>
+                                    <li th:each="account : ${tempPettyCash.accounts}" th:text="${account.accountTitle} + ' (' + ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
+                                </ul>
+                            </td>
                             <td>
                                 <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
                                     th:href="@{/liquidation/liquidation-pcv/{id}(id=${tempPettyCash.pettyCashId})}">
@@ -105,61 +106,71 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="addPettyCashForm" th:action="@{/petty-cash/add-petty-cash}"
+                                    <form class="row g-3 mb-3" id="addPettyCashForm" th:action="@{/petty-cash/{id}/add-petty-cash(id=${fund.fundId})}"
                                           th:object="${pettyCash}" method="POST">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
-                                                <label for="pettyCashNo" class="form-label">Petty Cash No.</label>
-                                                <input type="text" class="form-control" id="pettyCashNo" placeholder="Petty cash no..." required>
+                                                <label for="voucherNo" class="form-label">Voucher No.</label>
+                                                <input type="text" class="form-control" id="voucherNo" th:field="*{voucherNo}" placeholder="Voucher no..." required>
                                             </div>
                                             <div class="col-md-6">
-                                                <label for="requestDate" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="requestDate" required>
+                                                <label for="date" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="date" th:field="*{date}" required>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <label for="activityDescription" class="form-label">Activity Description</label>
-                                                <textarea class="form-control" id="activityDescription" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
-                                                <!--
-                                                <div class="col-md-6">
-                                                <label for="activityDescription" class="form-label">Activity Description</label>
-                                                <input type="text" class="form-control" id="activityDescription" placeholder="Activity description ..." required>
-                                                </div>
-                                                -->
+                                                <textarea class="form-control" id="activityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <label for="activityCategory" class="form-label">Activity Category</label>
-                                                <input type="text" class="form-control" id="activityCategory" placeholder="Activity Category ..." required>
+                                                <input type="text" class="form-control" id="activityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
                                             <div class="col-md-12">
                                                 <label for="soaCategory" class="form-label">SOA Category</label>
-                                                <input type="text" class="form-control" id="soaCategory" placeholder="Soa description ..." required>
+                                                <input type="text" class="form-control" id="soaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <!--<div class="col-md-12">
-                                                <label for="accounts" class="form-label">Activity Description</label>
-                                                <input type="text" class="form-control" id="accounts" placeholder="Accounts ..." required>
-                                                <input type="hidden" class="form-control" id="accountsId">
-                                            </div>-->
-                                            <!-- Input TextArea Field Tagify lib -->
+                                            <!-- Tagify Textarea Field -->
                                             <div class="form-group">
                                               <label for="accounts">Accounts</label>
                                               <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
                                               <input type="hidden" id="accountsJson" th:field="*{accounts}" />
                                             </div>
                                         </div>
+                                       <!-- <div class="row mb-3">
+
+                                        </div>-->
                                         <div class="row mb-3">
+                                            <div class="col-md-3">
+                                                <label for="totalAmount" class="form-label">Amount</label>
+                                                <input type="number" step="0.01" class="form-control" id="totalAmount" th:field="*{totalAmount}" required>
+                                            </div>
                                             <div class="col-md-6">
-                                                <label for="amount" class="form-label">Amount</label>
-                                                <input type="number" step="0.01" class="form-control" id="amount">
+                                                <label for="receivedBy" class="form-label">Received By</label>
+                                                <select id="receivedBy" class="form-select" th:field="*{receivedBy}" required>
+                                                    <option value="" selected>Select petty cash receiver...</option>
+                                                    <option th:each="tempContact : ${internalContacts}"
+                                                            th:value="${tempContact.contactId}"
+                                                            th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
+                                                             (#strings.concat(tempContact.individual.getFullName(),
+                                                             ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
+                                                             : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
+                                                             '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3 d-flex align-items-center mt-4">
+                                                <input class="form-check-input me-2" th:field="*{approved}" type="checkbox" id="approved">
+                                                <label class="form-check-label" for="approved">Approved</label>
                                             </div>
                                         </div>
+
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save</button>

@@ -40,7 +40,7 @@ public class PettyCash {
     @Column(name = "soa_category")
     private String soaCategory;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "petty_cash_client_accounts",
             joinColumns = @JoinColumn(name = "petty_cash_id"),
