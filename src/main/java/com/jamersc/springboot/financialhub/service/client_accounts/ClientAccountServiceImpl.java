@@ -15,13 +15,14 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
 @AllArgsConstructor
 public class ClientAccountServiceImpl implements ClientAccountService{
 
-    private static final Logger logger = LoggerFactory.getLogger(BankAccountServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(ClientAccountServiceImpl.class);
     @Autowired
     private ClientAccountRepository clientAccountRepository;
     @Autowired
@@ -36,19 +37,28 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     private RetainerAccountRepository retainerAccountRepository;
 
     @Override
-    public List<ClientAccount> getAllClientAccounts() {
-        return clientAccountRepository.findAll();
+    public List<ClientAccountDto> getAllClientAccounts() {
+        logger.info("Find all client accounts");
+        return clientAccountRepository.findAll().stream()
+                .map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toList());
     }
 
     // FIND ALL CLIENT ACCOUNT CASES
     @Override
-    public List<ClientAccount> getAllCaseAccounts() {
-        return clientAccountRepository.findByClientAccountType(ClientAccountType.CASE);
+    public List<ClientAccountDto> getAllCaseAccounts() {
+        logger.info("Get all client case accounts");
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.CASE)
+                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public List<ClientAccount> getAllRetainerAccounts() {
-        return clientAccountRepository.findByClientAccountType(ClientAccountType.RETAINER);
+    public List<ClientAccountDto> getAllRetainerAccounts() {
+        logger.info("Get all client retainer accounts");
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.RETAINER)
+                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -57,8 +67,11 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     }
 
     @Override
-    public List<ClientAccount> getAllProjectAccounts() {
-        return clientAccountRepository.findByClientAccountType(ClientAccountType.PROJECT);
+    public List<ClientAccountDto> getAllProjectAccounts() {
+        logger.info("Get all client project accounts");
+        return clientAccountRepository.findByClientAccountType(ClientAccountType.PROJECT)
+                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toList());
     }
 
     @Override

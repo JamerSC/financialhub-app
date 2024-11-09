@@ -68,7 +68,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="tempPettyCash : ${pettyCash}">
+                        <tr th:each="tempPettyCash : ${listOfPettyCash}">
                             <td th:text="${tempPettyCash.voucherNo}"></td>
                             <td th:text="${tempPettyCash.receivedBy}"></td>
                             <td th:text="${#dates.format(tempPettyCash.date, 'dd MMMM yyyy')}"></td>
@@ -105,7 +105,8 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="addPettyCashForm" action="#" method="POST">
+                                    <form class="row g-3 mb-3" id="addPettyCashForm" th:action="@{/petty-cash/add-petty-cash}"
+                                          th:object="${pettyCash}" method="POST">
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="pettyCashNo" class="form-label">Petty Cash No.</label>
@@ -141,10 +142,16 @@
                                             </div>
                                         </div>
                                         <div class="row mb-3">
-                                            <div class="col-md-12">
+                                            <!--<div class="col-md-12">
                                                 <label for="accounts" class="form-label">Activity Description</label>
                                                 <input type="text" class="form-control" id="accounts" placeholder="Accounts ..." required>
                                                 <input type="hidden" class="form-control" id="accountsId">
+                                            </div>-->
+                                            <!-- Input TextArea Field Tagify lib -->
+                                            <div class="form-group">
+                                              <label for="accounts">Accounts</label>
+                                              <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
+                                              <input type="hidden" id="accountsJson" th:field="*{accounts}" />
                                             </div>
                                         </div>
                                         <div class="row mb-3">
@@ -182,6 +189,41 @@
                     </div>
                 </div>
             </div>
+            <script th:inline="javascript">
+                $(document).ready(function() {
+                    const accountData = /*[[${listOfAccounts}]]*/ || [];
+
+                    // Map the data, ensuring we handle null or undefined values
+                    const formattedAccounts = accountData.map(account => ({
+                        id: account.clientAccountId,
+                        value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`,
+                    }));
+
+                    try {
+                        const input = $("#accounts")[0];
+                        const tagify = new Tagify(input, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0, // show suggestions on focus
+                                maxItems: 10 // max items to display in dropdown
+                            }
+                        });
+
+                        tagify.on('add', function() {
+                            const values = tagify.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                        });
+
+                        tagify.on('remove', function() {
+                            const values = tagify.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                        });
+                    } catch (error) {
+                        console.error("Tagify initialization error:", error);
+                    }
+                });
+            </script>
         </div>
     </main>
 

@@ -44,7 +44,7 @@ public class HubController {
                                      @RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "5") int size) {
         model.addAttribute("totalOfUsers", userService.getAllUsers());
-        model.addAttribute("totalOfPettyCash", pettyCashService.getAllPettyCashRecord());
+        model.addAttribute("totalOfPettyCash", pettyCashService.getAllPettyCash());
         model.addAttribute("totalOfChecks", checkService.getAllCheckRecord());
 
         Page<User> usersPage = userService.findAll(PageRequest.of(page, size));

@@ -8,15 +8,15 @@ import java.util.List;
 
 public interface ClientAccountService {
 
-    List<ClientAccount> getAllClientAccounts();
+    List<ClientAccountDto> getAllClientAccounts();
 
-    List<ClientAccount> getAllCaseAccounts();
+    List<ClientAccountDto> getAllCaseAccounts();
 
-    List<ClientAccount> getAllRetainerAccounts();
+    List<ClientAccountDto> getAllRetainerAccounts();
 
     List<Long> getClientsWithRetainers();
 
-    List<ClientAccount> getAllProjectAccounts();
+    List<ClientAccountDto> getAllProjectAccounts();
 
     ClientAccountDto getClientAccountById(Long id);
 

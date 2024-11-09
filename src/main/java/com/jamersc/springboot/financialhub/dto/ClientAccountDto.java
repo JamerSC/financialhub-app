@@ -26,4 +26,15 @@ public class ClientAccountDto {
 
         public ClientAccountDto(Long clientAccountId, String accountTitle, ClientAccountType clientAccountType) {
         }
+
+        public String getClientDisplayName() {
+                if (client != null) {
+                        if (client.getIndividual() != null) {
+                                return client.getIndividual().getFullName();
+                        } else if (client.getCompany() != null) {
+                                return client.getCompany().getCompanyName();
+                        }
+                }
+                return "";
+        }
 }

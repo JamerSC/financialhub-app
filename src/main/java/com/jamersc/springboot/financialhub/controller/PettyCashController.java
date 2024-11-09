@@ -2,7 +2,7 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.Fund;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.pettycash.FundService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
@@ -32,19 +32,20 @@ public class PettyCashController {
     private static final Logger logger = LoggerFactory.getLogger(PettyCashController.class);
 
     @Autowired
+    private FundService fundService;
+    @Autowired
     private PettyCashService pettyCashService;
-
+    @Autowired
+    private ClientAccountService clientAccountService;
     @Autowired
     private PettyCashVoucherService pettyCashVoucherService;
-
-    @Autowired
-    private FundService fundService;
 
     @GetMapping("/petty-cash-voucher")
     public String pettyCashVoucherPage(Model model,  @RequestParam(defaultValue = "1") Long id) {
         Fund fund = fundService.getFundById(id); // fund id# 1
-        List<PettyCashDto> pettyCash = pettyCashService.getAllPettyCashRecord();
-        model.addAttribute("pettyCash", pettyCash);
+        model.addAttribute("listOfPettyCash", pettyCashService.getAllPettyCash());
+        model.addAttribute("pettyCash", new PettyCashDto());
+        model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
         model.addAttribute("fund", fund);
         return  "petty-cash/petty-cash";
     }

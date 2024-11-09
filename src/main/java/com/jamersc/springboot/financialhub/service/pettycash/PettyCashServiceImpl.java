@@ -26,19 +26,17 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PettyCashServiceImpl implements PettyCashService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
+    private static final Logger logger = LoggerFactory.getLogger(PettyCashServiceImpl.class);
     @Autowired
     private PettyCashRepository pettyCashRepository;
-
     @Autowired
     private UserRepository userRepo;
-
     @Autowired
     private FundRepository fundRepository;
 
     @Override
-    public List<PettyCashDto> getAllPettyCashRecord() {
+    public List<PettyCashDto> getAllPettyCash() {
+        logger.info("Get all petty cash records.");
         return pettyCashRepository.findAll().stream()
                 .map(PettyCashMapper::toPettyCashDto)
                 .collect(Collectors.toList());
@@ -48,6 +46,7 @@ public class PettyCashServiceImpl implements PettyCashService {
     public PettyCashDto findPettyCashById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
+        logger.info("Find petty cash by ID: " + pettyCash.getPettyCashId());
         return PettyCashMapper.toPettyCashDto(pettyCash);
     }
 
