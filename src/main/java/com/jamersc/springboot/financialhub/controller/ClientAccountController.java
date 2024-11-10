@@ -1,8 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
-import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
-import com.jamersc.springboot.financialhub.model.*;
+import com.jamersc.springboot.financialhub.model.CaseType;
+import com.jamersc.springboot.financialhub.model.Status;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import lombok.AllArgsConstructor;
@@ -48,7 +48,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-case-account")
     @ResponseBody
-    public ClientAccountDto findCaseAccount(Long id) {
+    public ClientAccountDto findCaseAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -91,7 +91,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-transfer-of-title-account")
     @ResponseBody
-    public ClientAccountDto findTransferOfTitleAccount(Long id) {
+    public ClientAccountDto findTransferOfTitleAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -113,7 +113,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-settlement-of-estate-account")
     @ResponseBody
-    public ClientAccountDto findSettlementOfEstateAccount(Long id) {
+    public ClientAccountDto findSettlementOfEstateAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -135,7 +135,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-title-annotation-account")
     @ResponseBody
-    public ClientAccountDto findTitleAnnotationAccount(Long id) {
+    public ClientAccountDto findTitleAnnotationAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -157,7 +157,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-title-other-account")
     @ResponseBody
-    public ClientAccountDto findTitleOtherAccount(Long id) {
+    public ClientAccountDto findTitleOtherAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -181,7 +181,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-business-registration-account")
     @ResponseBody
-    public ClientAccountDto findBusinessRegistrationAccount(Long id) {
+    public ClientAccountDto findBusinessRegistrationAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -203,7 +203,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-business-renewal-account")
     @ResponseBody
-    public ClientAccountDto findBusinessRenewalAccount(Long id) {
+    public ClientAccountDto findBusinessRenewalAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -225,7 +225,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-business-closure-account")
     @ResponseBody
-    public ClientAccountDto findBusinessClosureAccount(Long id) {
+    public ClientAccountDto findBusinessClosureAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -247,7 +247,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-business-other-account")
     @ResponseBody
-    public ClientAccountDto findBusinessOtherAccount(Long id) {
+    public ClientAccountDto findBusinessOtherAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -271,7 +271,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-sec-registration-account")
     @ResponseBody
-    public ClientAccountDto findSecRegistrationAccount(Long id) {
+    public ClientAccountDto findSecRegistrationAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -293,7 +293,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-sec-amendment-account")
     @ResponseBody
-    public ClientAccountDto findSecAmendmentAccount(Long id) {
+    public ClientAccountDto findSecAmendmentAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -315,7 +315,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-sec-stock-increase-account")
     @ResponseBody
-    public ClientAccountDto findSecStockIncreaseAccount(Long id) {
+    public ClientAccountDto findSecStockIncreaseAccountById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 
@@ -358,7 +358,7 @@ public class ClientAccountController {
 
     @GetMapping("/edit-retainer-account")
     @ResponseBody
-    public ClientAccountDto findRetainerAccountInformation(Long id) {
+    public ClientAccountDto findRetainerAccountInformationById(Long id) {
         return clientAccountService.getClientAccountById(id);
     }
 

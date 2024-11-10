@@ -19,7 +19,7 @@ public class PettyCashMapper {
 
         PettyCash pettyCash = new PettyCash();
         pettyCash.setPettyCashId(pettyCashDto.getPettyCashId());
-        //pettyCash.setFund(pettyCashDto.getFund());
+        //pettyCash.setFund(FundMapper.toFundEntity(pettyCashDto.getFund()));
         pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
         pettyCash.setDate(pettyCashDto.getDate());
         pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
@@ -55,7 +55,7 @@ public class PettyCashMapper {
 
         PettyCashDto pettyCashDto = new PettyCashDto();
         pettyCashDto.setPettyCashId(pettyCash.getPettyCashId());
-        //pettyCash.setFund(pettyCashDto.getFund());
+        //pettyCashDto.setFund(FundMapper.toFundDto(pettyCash.getFund()));
         pettyCashDto.setVoucherNo(pettyCash.getVoucherNo());
         pettyCashDto.setDate(pettyCash.getDate());
         pettyCashDto.setActivityDescription(pettyCash.getActivityDescription());

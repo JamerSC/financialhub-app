@@ -68,16 +68,21 @@ public class PettyCashController {
         return "redirect:/petty-cash/list-of-petty-cash";
     }
 
-    /*@GetMapping("/{id}/add-petty-cash")
-    public String pettyCashForm(@PathVariable(value = "id") Long id, Model model) {
-        String createdBy = getSessionUsername();
-        Fund fund = fundService.getFundById(id);
-        PettyCashDto pettyCashDto = new PettyCashDto();
-        //pettyCashDto.setFund(fund);
-        model.addAttribute("pettyCashDto",pettyCashDto);
-        model.addAttribute("fund", fund);
-        return "petty-cash/petty-cash-form";
-    }*/
+    @GetMapping("/edit-petty-cash")
+    @ResponseBody
+    public PettyCashDto findPettyCashRecordById(Long id) {
+        return pettyCashService.getPettyCashById(id);
+    }
+
+    @PostMapping("/update-petty-cash")
+    public String updatePettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash,
+                                  @RequestParam(defaultValue = "1") Long id) {
+        String updatedBy = getSessionUsername();
+        FundDto fund = fundService.getFundById(id);
+        pettyCash.setFund(fund);
+        pettyCashService.savePettyCash(pettyCash, updatedBy);
+        return "redirect:/petty-cash/list-of-petty-cash";
+    }
 
     @PostMapping("/petty-cash-form")
     public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,

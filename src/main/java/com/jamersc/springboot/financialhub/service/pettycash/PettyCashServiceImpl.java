@@ -2,6 +2,8 @@ package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
+import com.jamersc.springboot.financialhub.mapper.FundMapper;
 import com.jamersc.springboot.financialhub.mapper.PettyCashMapper;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Fund;
@@ -11,13 +13,11 @@ import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
 import com.jamersc.springboot.financialhub.repository.FundRepository;
 import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
-import com.jamersc.springboot.financialhub.service.user.UserServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -58,8 +58,20 @@ public class PettyCashServiceImpl implements PettyCashService {
     public PettyCashDto getPettyCashById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
-        logger.info("Find petty cash by ID: " + pettyCash.getPettyCashId());
-        return PettyCashMapper.toPettyCashDto(pettyCash);
+
+        Set<ClientAccountDto> accounts = pettyCash.getAccounts()
+                .stream().
+                map(ClientAccountMapper::toClientAccountDto)
+                .collect(Collectors.toSet());
+
+        PettyCashDto dto = PettyCashMapper.toPettyCashDto(pettyCash);
+        dto.setAccounts(accounts);
+
+        logger.info("Petty Cash ID: " + dto.getPettyCashId());
+        logger.info("Petty cash details: " + dto);
+        logger.info("Petty cash tag link account: " + dto.getAccounts());
+
+        return dto;
     }
 
     @Override
@@ -80,8 +92,12 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash = pettyCashRepository.findById(dto.getPettyCashId())
                     .orElse(new PettyCash());
 
-            Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
-            pettyCash.setFund(manageFund);
+            //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
+            if (dto.getFund() != null) {
+                Fund fund = FundMapper.toFundEntity(dto.getFund());
+                Fund fundId = fundRepository.findById(fund.getFundId()).orElse(null);
+                pettyCash.setFund(fundId);
+            }
 
             pettyCash.setVoucherNo(dto.getVoucherNo());
             pettyCash.setReceivedBy(dto.getReceivedBy());
@@ -90,18 +106,18 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-            Set<ClientAccount> accounts = dto.getAccounts().stream()
+            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
                     .map(ClientAccountDto::getClientAccountId)
                     .map(clientAccountRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);
+            pettyCash.setAccounts(accounts);*/
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
             pettyCash.setReceivedBy(dto.getReceivedBy());
             pettyCash.setApproved(dto.getApproved());
-            pettyCash.setApprovedBy(dto.getApprovedBy());
+            pettyCash.setApprovedBy(pettyCash.getApprovedBy());
 
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
@@ -134,14 +150,14 @@ public class PettyCashServiceImpl implements PettyCashService {
             pettyCash.setAccounts(accounts);
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
-            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setReceivedBy(dto.getReceivedBy()); // receiver
             pettyCash.setApproved(dto.getApproved());
 
             User createdBy = userRepo.findByUsername(username);
             if (createdBy != null) {
-                pettyCash.setApprovedBy(createdBy.getId());
-                pettyCash.setCreatedBy(createdBy.getId());
-                pettyCash.setUpdatedBy(createdBy.getId());
+                pettyCash.setApprovedBy(createdBy.getId()); // approved by
+                pettyCash.setCreatedBy(createdBy.getId()); // created
+                pettyCash.setUpdatedBy(createdBy.getId()); // updated
             }
             logger.info("Successfully created new petty cash: " + pettyCash);
         }

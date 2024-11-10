@@ -42,6 +42,12 @@
                         <div class="p-1">
                             <h4 class="fw-bold fs-4">Petty Cash Vouchers</h4>
                         </div>
+                        <!-- Create Petty Cash -->
+                        <!--<div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <a th:href="@{/petty-cash/{id}/petty-cash-form(id=${fund.id})}" class="btn btn-primary btn-sm">
+                                <i class="lni lni-plus"></i> Add New
+                            </a>
+                        </div>-->
                         <!-- Petty Cash -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPettyCashModal">
@@ -187,10 +193,9 @@
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="editPettyCashForm" th:action="@{/petty-cash/update-petty-cash}"
+                                    <form class="row g-3 mb-3" id="editPettyCashForm" th:action="@{/petty-cash/{id}/add-petty-cash(id=${fund.fundId})}"
                                           th:object="${pettyCash}" method="POST">
-                                        <div><input type="hidden" class="form-control" id="editPettyCashId" th:field="*{pettyCashId}" /></div>
-                                        <!--<div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>-->
+                                        <div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="editVoucherNo" class="form-label">Voucher No.</label>
@@ -219,15 +224,17 @@
                                                 <input type="text" class="form-control" id="editSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
                                             </div>
                                         </div>
-                                        <!-- Edit Tagify Textarea Field -->
                                         <div class="row mb-3">
+                                            <!-- Tagify Textarea Field -->
                                             <div class="form-group">
                                                 <label for="accounts">Accounts</label>
-                                                <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." disabled></textarea>
-                                                <input type="hidden" id="editAccountsJson"/>
-                                                <!--<input type="hidden" id="editAccountsJson" th:field="*{accounts}"/>-->
+                                                <textarea class="form-control" id="editAccounts" th:field="*{accounts}" rows="4" cols="6" placeholder="Add accounts ..." ></textarea>
+                                                <input type="hidden" id="editAccountsJson" th:field="*{accounts}" />
                                             </div>
                                         </div>
+                                        <!-- <div class="row mb-3">
+
+                                         </div>-->
                                         <div class="row mb-3">
                                             <div class="col-md-3">
                                                 <label for="editTotalAmount" class="form-label">Amount</label>
@@ -283,14 +290,152 @@
             </div>
             <script th:inline="javascript">
                 $(document).ready(function() {
-                    // Initialize Tagify for "Accounts" field in Add Modal
+                    // TAGIFY for "Accounts" in Add Modal
+
+                    const accountData = /*[[${listOfAccounts}]]*/ || [];
+
+                    // Map the data, ensuring we handle null or undefined values
+                    const formattedAccounts = accountData.map(account => ({
+                        id: account.clientAccountId,
+                        value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`,
+                    }));
+
+                    try {
+                        const input = $("#accounts")[0];
+                        const tagify = new Tagify(input, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0, // show suggestions on focus
+                                maxItems: 10 // max items to display in dropdown
+                            }
+                        });
+
+                        tagify.on('add', function() {
+                            const values = tagify.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                        });
+
+                        tagify.on('remove', function() {
+                            const values = tagify.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                        });
+                    } catch (error) {
+                        console.error("Tagify initialization error:", error);
+                    }
+
+                    // FOR UPDATE
+                    const editAccountData = /*[[${listOfAccounts}]]*/ || [];
+
+                    // Map the data, ensuring we handle null or undefined values
+                    const editFormattedAccounts = editAccountData.map(account => ({
+                        id: account.clientAccountId,
+                        value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`
+                    }));
+
+                    let tagify;
+                    try {
+                        const input = $("#editAccounts")[0];
+                        tagify = new Tagify(input, {
+                            enforceWhitelist: true,
+                            whitelist: editFormattedAccounts,
+                            dropdown: {
+                                enabled: 0, // show suggestions on focus
+                                maxItems: 10 // max items to display in dropdown
+                            }
+                        });
+
+                        // Add listener for Tagify changes to update hidden input
+                        tagify.on('add', updateAccountsJson);
+                        tagify.on('remove', updateAccountsJson);
+
+                        function updateAccountsJson() {
+                            const values = tagify.value.map(tag => tag.id);
+                            $("#editAccountsJson").val(JSON.stringify(values));
+                        }
+                    } catch (error) {
+                        console.error("Tagify initialization error:", error);
+                    }
+
+                    // UPDATE PETTY CASH
+                    $('.table .ePettyCashBtn').on('click', function() {
+                        event.preventDefault();
+                        // Get url from edit btn
+                        var href = $(this).attr('href');
+
+                        $.get(href, function(tempPettyCash, status) {
+
+                            if (tempPettyCash.fund) {
+                               $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
+                            }
+
+                            $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.voucherNo);
+                            $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
+                            $('#editPettyCashForm #editActivityDescription').val(tempPettyCash.activityDescription);
+                            $('#editPettyCashForm #editActivityCategory').val(tempPettyCash.activityCategory);
+                            $('#editPettyCashForm #editSoaCategory').val(tempPettyCash.soaCategory);
+                            $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
+                            $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy);
+                            $('#editPettyCashForm #editApproved').prop('checked',tempPettyCash.approved);
+
+                            if (tempPettyCash.accounts) {
+
+                                // Populate Tagify with existing accounts
+                                const existingAccounts = tempPettyCash.accounts.map(account => ({
+                                    id: account.clientAccountId,
+                                    value: `${account.accountTitle} (${account.clientAccountType})`
+                                }));
+                                tagify.removeAllTags(); // Clear existing tags
+                                tagify.addTags(existingAccounts); // Add fetched tag
+
+                                $('#editPettyCashForm #editAccounts').val(tempPettyCash.accounts);
+                                $('#editPettyCashForm #editAccountsJson').val(tempPettyCash.accounts);
+                            }
+
+                            $('#editPettyCashModal').modal('show');
+                        });
+                    });
+                     // Function to format date
+                    function formatDate(date) {
+                        if (!date) return ''; // Return empty if no date
+
+                        // If date is a string, try to parse it as a Date object
+                        if (typeof date === 'string') {
+                            date = new Date(date);
+                        } else if (typeof date === 'number') {
+                            date = new Date(date); // Handle timestamps
+                        }
+
+                        // Format date as YYYY-MM-DD
+                        const year = date.getFullYear();
+                        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                        const day = String(date.getDate()).padStart(2, '0');
+
+                        return `${year}-${month}-${day}`; // Return formatted date
+                    }
+                });
+            </script>
+        </div>
+    </main>
+
+</body>
+</html>
+
+
+
+
+
+<script th:inline="javascript">
+                $(document).ready(function() {
+
+                    // Initialize Tagify for "Accounts" in Add Modal
                     const accountData = /*[[${listOfAccounts}]]*/ || [];
                     const formattedAccounts = accountData.map(account => ({
                         id: account.clientAccountId,
                         value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`
                     }));
 
-                    // Initialize Tagify on "accounts" input in Add Modal
+                    // Only initialize Tagify once for "accounts" input
                     const inputAdd = document.querySelector('#accounts');
                     const tagifyAdd = new Tagify(inputAdd, {
                         enforceWhitelist: true,
@@ -301,20 +446,17 @@
                         }
                     });
 
-                    // Update hidden input field with selected tag IDs for Add Modal
+                    // Update hidden input field with selected tag IDs (for Add Modal)
                     tagifyAdd.on('add', function() {
                         const values = tagifyAdd.value.map(tag => tag.id);
                         $("#accountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
                     });
-
                     tagifyAdd.on('remove', function() {
                         const values = tagifyAdd.value.map(tag => tag.id);
                         $("#accountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
                     });
 
-                    // Initialize Tagify on "editAccounts" input in Edit Modal
+                    // Initialize Tagify only once for "editAccounts" input in Edit Modal
                     const inputEdit = document.querySelector('#editAccounts');
                     const tagifyEdit = new Tagify(inputEdit, {
                         enforceWhitelist: true,
@@ -325,19 +467,16 @@
                         }
                     });
 
-                    // Fetch and populate data in the Edit Modal when edit button is clicked
-                    $('.table .ePettyCashBtn').on('click', function(event) {
+
+                    $('.table .ePettyCashBtn').on('click', function() {
                         event.preventDefault();
                         var href = $(this).attr('href');
 
                         $.get(href, function(tempPettyCash, status) {
-                            //console.log(tempPettyCash);
 
-                            $('#editPettyCashForm #editPettyCashId').val(tempPettyCash.pettyCashId);
-
-                            //if (tempPettyCash.fund) {
-                            //   $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
-                            //}
+                            if (tempPettyCash.fund) {
+                               $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
+                            }
 
                             $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.voucherNo);
                             $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
@@ -346,33 +485,23 @@
                             $('#editPettyCashForm #editSoaCategory').val(tempPettyCash.soaCategory);
                             $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
                             $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy);
-                            $('#editPettyCashForm #editApproved').prop('checked', tempPettyCash.approved);
+                            $('#editPettyCashForm #editApproved').prop('checked',tempPettyCash.approved);
 
-                            // Populate accounts in Tagify for Edit Modal
-                            tagifyEdit.removeAllTags();
+                            // Populate accounts with Tagify (clear old tags first)
+                            //tagifyEdit.removeAllTags();
                             if (tempPettyCash.accounts) {
                                 const accountTags = tempPettyCash.accounts.map(account => ({
                                     id: account.clientAccountId,
                                     value: `${account.accountTitle} (${account.clientAccountType})`
                                 }));
-                                tagifyEdit.addTags(accountTags);
+                                tagifyEdit.addTags(accountTags)
                             }
 
                             $('#editPettyCashModal').modal('show');
                         });
                     });
 
-                    // Log the accounts value in Edit Modal on add/remove
-                    //tagifyEdit.on('add', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
-                    //});
-                    //tagifyEdit.on('remove', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-                    //});
-
-                    // Format date to YYYY-MM-DD
+                     // Function to format date
                     function formatDate(date) {
                         if (!date) return '';
 
@@ -382,16 +511,12 @@
                             date = new Date(date);
                         }
 
+                        // Format date as YYYY-MM-DD
                         const year = date.getFullYear();
                         const month = String(date.getMonth() + 1).padStart(2, '0');
                         const day = String(date.getDate()).padStart(2, '0');
 
-                        return `${year}-${month}-${day}`;
+                        return `${year}-${month}-${day}`; // Formatted date
                     }
                 });
             </script>
-        </div>
-    </main>
-
-</body>
-</html>
