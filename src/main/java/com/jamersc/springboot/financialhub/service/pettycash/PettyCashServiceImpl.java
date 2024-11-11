@@ -1,6 +1,7 @@
 package com.jamersc.springboot.financialhub.service.pettycash;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
+import com.jamersc.springboot.financialhub.dto.FundDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.FundMapper;
@@ -58,7 +59,7 @@ public class PettyCashServiceImpl implements PettyCashService {
     public PettyCashDto getPettyCashById(Long id) {
         PettyCash pettyCash = pettyCashRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
-
+        // Convert to Dto Accounts, Petty Cash, & Fund
         Set<ClientAccountDto> accounts = pettyCash.getAccounts()
                 .stream().
                 map(ClientAccountMapper::toClientAccountDto)
@@ -67,10 +68,10 @@ public class PettyCashServiceImpl implements PettyCashService {
         PettyCashDto dto = PettyCashMapper.toPettyCashDto(pettyCash);
         dto.setAccounts(accounts);
 
-        logger.info("Petty Cash ID: " + dto.getPettyCashId());
-        logger.info("Petty cash details: " + dto);
-        logger.info("Petty cash tag link account: " + dto.getAccounts());
+        FundDto fund = FundMapper.toFundDto(pettyCash.getFund());
+        dto.setFund(fund);
 
+        logger.info("Petty Cash: " + dto);
         return dto;
     }
 

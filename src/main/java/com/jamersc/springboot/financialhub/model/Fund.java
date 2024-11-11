@@ -22,7 +22,7 @@ public class Fund {
     private Long fundId;
 
     // Petty Cash
-    @OneToMany(mappedBy = "fund", orphanRemoval = true, cascade = {
+    @OneToMany(mappedBy = "fund", fetch = FetchType.LAZY,  orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<PettyCash> pettyCash;

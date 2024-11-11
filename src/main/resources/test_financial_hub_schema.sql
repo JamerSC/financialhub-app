@@ -645,7 +645,7 @@ JOIN
 GROUP BY 
     pcv.petty_cash_id
 ORDER BY 
-    pcv.date DESC;
+    pcv.date ASC;
 
 
 # DATE - format: YYYY-MM-DD.

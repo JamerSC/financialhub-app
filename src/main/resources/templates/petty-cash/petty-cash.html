@@ -190,7 +190,7 @@
                                     <form class="row g-3 mb-3" id="editPettyCashForm" th:action="@{/petty-cash/update-petty-cash}"
                                           th:object="${pettyCash}" method="POST">
                                         <div><input type="hidden" class="form-control" id="editPettyCashId" th:field="*{pettyCashId}" /></div>
-                                        <!--<div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>-->
+                                        <div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <label for="editVoucherNo" class="form-label">Voucher No.</label>
@@ -335,9 +335,9 @@
 
                             $('#editPettyCashForm #editPettyCashId').val(tempPettyCash.pettyCashId);
 
-                            //if (tempPettyCash.fund) {
-                            //   $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
-                            //}
+                            if (tempPettyCash.fund) {
+                               $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
+                            }
 
                             $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.voucherNo);
                             $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
@@ -363,14 +363,14 @@
                     });
 
                     // Log the accounts value in Edit Modal on add/remove
-                    //tagifyEdit.on('add', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
-                    //});
-                    //tagifyEdit.on('remove', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-                    //});
+                    tagifyEdit.on('add', function() {
+                        const values = tagifyEdit.value.map(tag => tag.id);
+                        console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
+                    });
+                    tagifyEdit.on('remove', function() {
+                        const values = tagifyEdit.value.map(tag => tag.id);
+                        console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
+                    });
 
                     // Format date to YYYY-MM-DD
                     function formatDate(date) {

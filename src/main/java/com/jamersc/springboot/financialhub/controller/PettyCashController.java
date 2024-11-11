@@ -75,11 +75,8 @@ public class PettyCashController {
     }
 
     @PostMapping("/update-petty-cash")
-    public String updatePettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash,
-                                  @RequestParam(defaultValue = "1") Long id) {
+    public String updatePettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash) {
         String updatedBy = getSessionUsername();
-        FundDto fund = fundService.getFundById(id);
-        pettyCash.setFund(fund);
         pettyCashService.savePettyCash(pettyCash, updatedBy);
         return "redirect:/petty-cash/list-of-petty-cash";
     }
