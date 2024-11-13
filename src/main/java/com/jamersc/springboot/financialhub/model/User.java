@@ -7,18 +7,22 @@ import java.util.Date;
 import java.util.Set;
 
 @Entity
-@Table(name = "users")
+@Table(name = "contact_users")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "roles")
+@ToString(exclude = {"roles", "contact"})
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
+    @Column(name = "user_id")
+    private Long userId;
+
+    @OneToOne
+    @JoinColumn(name = "contact_id", nullable = false)
+    private Contact contact;
 
     @Column(name = "first_name")
     private String firstName;

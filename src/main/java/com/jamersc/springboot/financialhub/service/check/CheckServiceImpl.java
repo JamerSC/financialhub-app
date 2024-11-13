@@ -49,8 +49,8 @@ public class CheckServiceImpl implements CheckService{
         Check check = new Check();
         User creator = userRepo.findByUsername(createdBy);
         if (creator != null) {
-            check.setCreatedBy(creator.getId());
-            check.setUpdatedBy(creator.getId());
+            check.setCreatedBy(creator.getUserId());
+            check.setUpdatedBy(creator.getUserId());
         } else {
             check.setCreatedBy(1L);
             check.setUpdatedBy(1L);
@@ -65,7 +65,7 @@ public class CheckServiceImpl implements CheckService{
         if (check != null) {
             User updater = userRepo.findByUsername(updatedBy);
             if (updater != null) {
-                check.setUpdatedBy(updater.getId());
+                check.setUpdatedBy(updater.getUserId());
             } else {
                 check.setUpdatedBy(1L);
             }

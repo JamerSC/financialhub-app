@@ -67,7 +67,7 @@ public class BankServiceImpl implements BankService{
             bank.setBranch(bankDto.getBranch());
             User updatedBy = userRepository.findByUsername(username);
             if (updatedBy != null) {
-                bank.setUpdatedBy(updatedBy.getId());
+                bank.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updated Bank ID No. " + bank.getBankId());
         } else {
@@ -77,8 +77,8 @@ public class BankServiceImpl implements BankService{
             bank.setBranch(bankDto.getBranch());
             User createdBy = userRepository.findByUsername(username);
             if (createdBy != null) {
-                bank.setCreatedBy(createdBy.getId());
-                bank.setUpdatedBy(createdBy.getId());
+                bank.setCreatedBy(createdBy.getUserId());
+                bank.setUpdatedBy(createdBy.getUserId());
             }
             logger.info("New bank created successfully!");
         }

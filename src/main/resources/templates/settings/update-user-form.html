@@ -19,7 +19,21 @@
                     <!-- Insert form-->
                     <form action="#" th:action="@{/settings/user-settings-update-form}" th:object="${userDto}" method="POST">
                         <div>
-                            <input type="hidden" th:field="*{id}">
+                            <input type="hidden" th:field="*{userId}">
+                        </div>
+                        <div class="mb-3">
+                            <label for="internalContact" class="form-label">Internal Contacts</label>
+                            <select id="internalContact" class="form-select" th:field="*{contact}" required>
+                                <option value="" selected>Select petty cash receiver...</option>
+                                <option th:each="tempContact : ${internalContacts}"
+                                        th:value="${tempContact.contactId}"
+                                        th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
+                                                             (#strings.concat(tempContact.individual.getFullName(),
+                                                             ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
+                                                             : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
+                                                             '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}">
+                                </option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="firstName" class="col-form-label">First name:</label>

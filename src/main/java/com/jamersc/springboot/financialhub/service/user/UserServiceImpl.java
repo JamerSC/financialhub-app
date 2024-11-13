@@ -1,8 +1,12 @@
 package com.jamersc.springboot.financialhub.service.user;
 
 import com.jamersc.springboot.financialhub.dto.UserDto;
+import com.jamersc.springboot.financialhub.mapper.ContactMapper;
+import com.jamersc.springboot.financialhub.mapper.UserMapper;
+import com.jamersc.springboot.financialhub.model.Contact;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.repository.ContactRepository;
 import com.jamersc.springboot.financialhub.repository.RoleRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -38,6 +42,8 @@ public class UserServiceImpl implements UserService {
     private RoleRepository roleRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private ContactRepository contactRepository;
 
     @Override
     public User findByUsername(String username) {
@@ -71,15 +77,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void save(UserDto userDto, String createdBy) {
         User user = new User();
+        if (userDto.getContact() != null) {
+            Contact contact = ContactMapper.toContactEntity(userDto.getContact());
+            /*Contact contactId = contactRepository.findById(contact.getContactId())
+                    .orElse(null);*/
+            user.setContact(contact);
+        }
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(true);
         User creator = userRepository.findByUsername(createdBy);
         if (creator != null) {
-            user.setCreatedBy(creator.getId());
-            user.setUpdatedBy(creator.getId());
+            user.setCreatedBy(creator.getUserId());
+            user.setUpdatedBy(creator.getUserId());
             logger.info("Create By: " + creator.getUsername());
-            logger.info("User ID: " + creator.getId());
+            logger.info("User ID: " + creator.getUserId());
         } else {
             user.setCreatedBy(1L);
             user.setUpdatedBy(1L);
@@ -98,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void update(UserDto userDto, String updatedBy) {
-        User user = userRepository.findById(userDto.getId()).orElse(null);
+        User user = userRepository.findById(userDto.getUserId()).orElse(null);
         if (user != null) {
             // Update user details except password and roles
             BeanUtils.copyProperties(userDto, user, "password", "roles", "createdBy", "createdAt");
@@ -107,6 +119,8 @@ public class UserServiceImpl implements UserService {
                 String encodedPassword = passwordEncoder.encode(userDto.getPassword());
                 user.setPassword(encodedPassword);
             }
+
+
             // Update roles
             Set<Role> roles = userDto.getRoleIds().stream()
                     .map(roleRepository::findById)
@@ -117,7 +131,7 @@ public class UserServiceImpl implements UserService {
 
             User updater = userRepository.findByUsername(updatedBy);
             if (updater != null) {
-                user.setUpdatedBy(updater.getId());
+                user.setUpdatedBy(updater.getUserId());
             } else {
                 user.setUpdatedBy(1L);
             }
@@ -125,7 +139,7 @@ public class UserServiceImpl implements UserService {
             userRepository.save(user);
             logger.info("Successfully updated user: " + user.getUsername());
         } else {
-            logger.warn("User with ID " + userDto.getId() + " not found.");
+            logger.warn("User with ID " + userDto.getUserId() + " not found.");
         }
     }
 

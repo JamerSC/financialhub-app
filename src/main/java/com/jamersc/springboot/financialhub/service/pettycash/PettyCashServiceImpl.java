@@ -122,7 +122,7 @@ public class PettyCashServiceImpl implements PettyCashService {
 
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
-                pettyCash.setUpdatedBy(updatedBy.getId());
+                pettyCash.setUpdatedBy(updatedBy.getUserId());
             }
 
             logger.info("Successfully updated petty cash: " + pettyCash);
@@ -156,9 +156,9 @@ public class PettyCashServiceImpl implements PettyCashService {
 
             User createdBy = userRepo.findByUsername(username);
             if (createdBy != null) {
-                pettyCash.setApprovedBy(createdBy.getId()); // approved by
-                pettyCash.setCreatedBy(createdBy.getId()); // created
-                pettyCash.setUpdatedBy(createdBy.getId()); // updated
+                pettyCash.setApprovedBy(createdBy.getUserId()); // approved by
+                pettyCash.setCreatedBy(createdBy.getUserId()); // created
+                pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }
             logger.info("Successfully created new petty cash: " + pettyCash);
         }

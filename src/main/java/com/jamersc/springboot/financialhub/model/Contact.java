@@ -37,6 +37,11 @@ public class Contact {
     @Column(name = "best_channel_to_contact")
     private String bestChannelToContact;
 
+    @OneToOne(mappedBy = "contact",
+            cascade={CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private User user;
+
     // Bidirectional relationships
     @OneToOne(mappedBy = "contact",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,

@@ -89,7 +89,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
 
         account.setAccountBalance(currentBalance + deposit.getTransactionAmount());
         if (user != null) {
-            account.setUpdatedBy(user.getId());
+            account.setUpdatedBy(user.getUserId());
         }
         logger.info("Bank Account details " + account);
         bankAccountRepository.save(account);
@@ -101,8 +101,8 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         depositTransaction.setTransactionAmount(deposit.getTransactionAmount());
         depositTransaction.setTransactionNote(deposit.getTransactionNote());
         if (user != null) {
-            depositTransaction.setCreatedBy(user.getId());
-            depositTransaction.setUpdatedBy(user.getId());
+            depositTransaction.setCreatedBy(user.getUserId());
+            depositTransaction.setUpdatedBy(user.getUserId());
         }
         logger.info("Deposit account completed to " + depositTransaction);
         bankTransactionRepository.save(depositTransaction); // save deposit transaction
@@ -123,7 +123,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         // total account balance = account balance - withdraw amount
         account.setAccountBalance(account.getAccountBalance() - withdraw.getTransactionAmount());
         if (user != null) {
-            account.setUpdatedBy(user.getId());
+            account.setUpdatedBy(user.getUserId());
         }
         bankAccountRepository.save(account);
 
@@ -134,8 +134,8 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         withdrawTransaction.setTransactionAmount(withdraw.getTransactionAmount());
         withdrawTransaction.setTransactionNote(withdraw.getTransactionNote());
         if (user != null) {
-            withdrawTransaction.setCreatedBy(user.getId());
-            withdrawTransaction.setUpdatedBy(user.getId());
+            withdrawTransaction.setCreatedBy(user.getUserId());
+            withdrawTransaction.setUpdatedBy(user.getUserId());
         }
         bankTransactionRepository.save(withdrawTransaction); // save deposit transaction
     }

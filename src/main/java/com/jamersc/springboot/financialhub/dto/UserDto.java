@@ -17,7 +17,9 @@ import java.util.Set;
 @PasswordMatches
 public class UserDto {
 
-    private Long id;
+    private Long userId;
+
+    private ContactDto contact;
 
     @NotNull(message = "Firstname is required!")
     @Size(min = 1, max = 50, message = "Firstname must be between 1 and 50 characters!")

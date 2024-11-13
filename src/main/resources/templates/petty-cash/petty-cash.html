@@ -42,11 +42,17 @@
                         <div class="p-1">
                             <h4 class="fw-bold fs-4">Petty Cash Vouchers</h4>
                         </div>
-                        <!-- Petty Cash -->
-                        <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                        <!-- Petty Cash Btn for ADMIN/MANAGER -->
+                        <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="ms-auto p-1">
                             <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#addPettyCashModal" title="Add Voucher">
-                                <!--<i class="lni lni-plus"></i>-->
+                                <i class="lni lni-plus-circle"></i> Voucher
+                            </button>
+                        </div>
+                        <!-- Petty Cash Btn for Admin Employee -->
+                        <div sec:authorize="hasRole('EMPLOYEE')" class="ms-auto p-1">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addAdminPettyCashModal" title="Add Voucher">
                                 <i class="lni lni-plus-circle"></i> Voucher
                             </button>
                         </div>
@@ -98,7 +104,8 @@
                         </tr>
                         </tbody>
                     </table>
-                    <!-- Add Petty Cash Form Modal -->
+
+                    <!-- Manager/Admin - Petty Cash Form Modal -->
                     <div class="modal fade" id="addPettyCashModal" tabindex="-1" aria-labelledby="addPettyCashModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -140,14 +147,14 @@
                                         <div class="row mb-3">
                                             <!-- Tagify Textarea Field -->
                                             <div class="form-group">
-                                              <label for="accounts">Accounts</label>
-                                              <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
-                                              <input type="hidden" id="accountsJson" th:field="*{accounts}" />
+                                                <label for="accounts">Accounts</label>
+                                                <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
+                                                <input type="hidden" id="accountsJson" th:field="*{accounts}" />
                                             </div>
                                         </div>
-                                       <!-- <div class="row mb-3">
+                                        <!-- <div class="row mb-3">
 
-                                        </div>-->
+                                         </div>-->
                                         <div class="row mb-3">
                                             <div class="col-md-3">
                                                 <label for="totalAmount" class="form-label">Amount</label>
@@ -181,7 +188,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Update Petty Cash Form Modal -->
+                    <!-- Manager/Admin - Update Petty Cash Form Modal -->
                     <div class="modal fade" id="editPettyCashModal" tabindex="-1" aria-labelledby="editPettyCashModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
                             <div class="modal-content">
@@ -258,6 +265,69 @@
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                             <button type="submit" class="btn btn-primary">Save/Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Admin Works - Petty Cash Form Modal -->
+                    <div class="modal fade" id="addAdminPettyCashModal" tabindex="-1" aria-labelledby="addAdminPettyCashModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header mb-2">
+                                    <h5 class="modal-title" id="addAdminPettyCashModalLabel">Petty Cash Voucher</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="row g-3 mb-3" id="addAdminPettyCashForm" th:action="@{/petty-cash/{id}/add-admin-petty-cash(id=${fund.fundId})}"
+                                          th:object="${pettyCash}" method="POST">
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="adminVoucherNo" class="form-label">Voucher No.</label>
+                                                <input type="text" class="form-control" id="adminVoucherNo" th:field="*{voucherNo}" placeholder="Voucher no..." required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="adminDate" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="adminDate" th:field="*{date}" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="adminActivityDescription" class="form-label">Activity Description</label>
+                                                <textarea class="form-control" id="adminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="adminActivityCategory" class="form-label">Activity Category</label>
+                                                <input type="text" class="form-control" id="adminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="adminSoaCategory" class="form-label">SOA Category</label>
+                                                <input type="text" class="form-control" id="adminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <!-- Tagify Textarea Field -->
+                                            <div class="form-group">
+                                                <label for="accounts">Accounts</label>
+                                                <textarea class="form-control" id="adminAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
+                                                <input type="hidden" id="adminAccountsJson" th:field="*{accounts}" />
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="adminTotalAmount" class="form-label">Amount</label>
+                                                <input type="number" step="0.01" class="form-control" id="adminTotalAmount" th:field="*{totalAmount}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save</button>
                                         </div>
                                     </form>
                                 </div>

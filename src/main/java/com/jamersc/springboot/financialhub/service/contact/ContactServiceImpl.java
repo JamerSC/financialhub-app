@@ -1,9 +1,6 @@
 package com.jamersc.springboot.financialhub.service.contact;
 
 import com.jamersc.springboot.financialhub.dto.ContactDto;
-import com.jamersc.springboot.financialhub.mapper.ContactCompanyMapper;
-import com.jamersc.springboot.financialhub.mapper.ContactDetailsMapper;
-import com.jamersc.springboot.financialhub.mapper.ContactIndividualMapper;
 import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.*;
@@ -16,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -79,8 +75,8 @@ public class ContactServiceImpl implements ContactService {
         contact.setEngagementDate(contactIndividual.getEngagementDate());
 
         if (username != null) {
-            contact.setCreatedBy(createdBy.getId());
-            contact.setUpdatedBy(createdBy.getId());
+            contact.setCreatedBy(createdBy.getUserId());
+            contact.setUpdatedBy(createdBy.getUserId());
         }
 
         logger.info("Saving new contact individual: " + contact);
@@ -125,7 +121,7 @@ public class ContactServiceImpl implements ContactService {
             contact.setBestChannelToContact(contactIndividual.getBestChannelToContact());
 
             if (username != null) {
-                contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedBy(updatedBy.getUserId());
             }
 
             logger.info("Updating contact: " + contact);
@@ -167,7 +163,7 @@ public class ContactServiceImpl implements ContactService {
                 detailsUpdated = true; // Track that an update was made
             }
             if (individualUpdated || detailsUpdated) {
-                contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedBy(updatedBy.getUserId());
                 contact.setUpdatedAt(new Date()); // Set the updated timestamp
                 contactRepository.save(contact);
             }
@@ -189,8 +185,8 @@ public class ContactServiceImpl implements ContactService {
         contact.setEngagementDate(contactCompany.getEngagementDate());
 
         if (createdBy != null) {
-            contact.setCreatedBy(createdBy.getId());
-            contact.setUpdatedBy(createdBy.getId());
+            contact.setCreatedBy(createdBy.getUserId());
+            contact.setUpdatedBy(createdBy.getUserId());
         }
 
         logger.info("Saving new contact company: " + contact);
@@ -232,7 +228,7 @@ public class ContactServiceImpl implements ContactService {
             contact.setBestChannelToContact(contactCompany.getBestChannelToContact());
 
             if (username != null) {
-                contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedBy(updatedBy.getUserId());
             }
 
             logger.info("Updating contact: " + contact);
@@ -273,7 +269,7 @@ public class ContactServiceImpl implements ContactService {
             }
 
             if (companyUpdated || detailsUpdated) {
-                contact.setUpdatedBy(updatedBy.getId());
+                contact.setUpdatedBy(updatedBy.getUserId());
                 contact.setUpdatedAt(new Date());
                 contactRepository.save(contact);
             }

@@ -70,15 +70,15 @@ public class BankAccountServiceImpl implements BankAccountService{
             }
             User updatedBy = userRepository.findByUsername(username);
             if (updatedBy != null) {
-                bankAccount.setUpdatedBy(updatedBy.getId());
+                bankAccount.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updated Bank ID No. " + bankAccountDto.getBankAccountId());
         } else {
             bankAccount = new BankAccount();
             User createdBy = userRepository.findByUsername(username);
             if (createdBy != null) {
-                bankAccount.setCreatedBy(createdBy.getId());
-                bankAccount.setUpdatedBy(createdBy.getId());
+                bankAccount.setCreatedBy(createdBy.getUserId());
+                bankAccount.setUpdatedBy(createdBy.getUserId());
             }
             // Mapper static method no need for autowired
             Bank bankId = BankMapper.toBankEntity(bankAccountDto.getBank());

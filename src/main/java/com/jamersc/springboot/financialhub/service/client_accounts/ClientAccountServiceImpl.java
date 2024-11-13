@@ -5,7 +5,6 @@ import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.*;
-import com.jamersc.springboot.financialhub.service.bank.BankAccountServiceImpl;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -99,8 +98,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving new client account: " + account);
         clientAccountRepository.save(account);
@@ -149,7 +148,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating client's case account: " + account);
 
@@ -186,7 +185,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (caseAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -210,8 +209,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account transfer of title: " + account);
         clientAccountRepository.save(account);
@@ -262,7 +261,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account transfer of title: " + account);
             clientAccountRepository.save(account);
@@ -293,7 +292,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -314,8 +313,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account settlement of estate: " + account);
         clientAccountRepository.save(account);
@@ -366,7 +365,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account settlement of estate : " + account);
             clientAccountRepository.save(account);
@@ -394,7 +393,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -415,8 +414,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account title annotation: " + account);
         clientAccountRepository.save(account);
@@ -467,7 +466,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account title annotation: " + account);
             clientAccountRepository.save(account);
@@ -498,7 +497,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -519,8 +518,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account title other transaction: " + account);
         clientAccountRepository.save(account);
@@ -571,7 +570,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account title other process   : " + account);
             clientAccountRepository.save(account);
@@ -602,7 +601,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -623,8 +622,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account business registration: " + account);
         clientAccountRepository.save(account);
@@ -675,7 +674,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account business reg: " + account);
             clientAccountRepository.save(account);
@@ -697,7 +696,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -718,8 +717,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account business renewal: " + account);
         clientAccountRepository.save(account);
@@ -770,7 +769,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account business renewal: " + account);
             clientAccountRepository.save(account);
@@ -792,7 +791,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -813,8 +812,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account business closure: " + account);
         clientAccountRepository.save(account);
@@ -865,7 +864,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account business closure: " + account);
             clientAccountRepository.save(account);
@@ -887,7 +886,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -908,8 +907,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account business others: " + account);
         clientAccountRepository.save(account);
@@ -960,7 +959,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account business other process: " + account);
             clientAccountRepository.save(account);
@@ -982,7 +981,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -1003,8 +1002,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account sec registration: " + account);
         clientAccountRepository.save(account);
@@ -1055,7 +1054,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account sec registration: " + account);
             clientAccountRepository.save(account);
@@ -1077,7 +1076,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -1098,8 +1097,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account sec amendment: " + account);
         clientAccountRepository.save(account);
@@ -1150,7 +1149,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account sec amendment of articles: " + account);
             clientAccountRepository.save(account);
@@ -1172,7 +1171,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -1193,8 +1192,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving project account sec stock increase: " + account);
         clientAccountRepository.save(account);
@@ -1245,7 +1244,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             account.setAccountTitle(dto.getAccountTitle());
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating project account sec stock increase: " + account);
             clientAccountRepository.save(account);
@@ -1267,7 +1266,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             }
             if (projectAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);
@@ -1288,8 +1287,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         account.setAccountTitle(dto.getClient().getIndividual().getFullName());
         account.setClientAccountType(ClientAccountType.RETAINER);
         if (createdBy != null) {
-            account.setCreatedBy(createdBy.getId());
-            account.setUpdatedBy(createdBy.getId());
+            account.setCreatedBy(createdBy.getUserId());
+            account.setUpdatedBy(createdBy.getUserId());
         }
         logger.info("Saving new client account: " + account);
         clientAccountRepository.save(account);
@@ -1329,7 +1328,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
                 }
             }
             if (updatedBy != null) {
-                account.setUpdatedBy(updatedBy.getId());
+                account.setUpdatedBy(updatedBy.getUserId());
             }
             logger.info("Updating client's retainer account: " + account);
             clientAccountRepository.save(account);
@@ -1361,7 +1360,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
             if (retainerAccountUpdated) {
                 if (updatedBy != null) {
-                    account.setUpdatedBy(updatedBy.getId());
+                    account.setUpdatedBy(updatedBy.getUserId());
                 }
                 account.setUpdatedAt(new Date());
                 clientAccountRepository.save(account);

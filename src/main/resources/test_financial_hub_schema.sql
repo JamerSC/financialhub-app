@@ -4,9 +4,10 @@
 
 ### USERS
 
-DROP TABLE `users`;
-CREATE TABLE `users` (
-	`id` int NOT NULL AUTO_INCREMENT,
+DROP TABLE `contact_users`;
+CREATE TABLE `contact_users` (
+	`user_id` int NOT NULL AUTO_INCREMENT,
+    `contact_id` int NOT NULL,
     `first_name` varchar(255) NOT NULL,
     `last_name` varchar(255) NOT NULL,
     `middle_name` varchar(255) NULL,
@@ -18,12 +19,64 @@ CREATE TABLE `users` (
     `created_at` timestamp default current_timestamp,
 	`updated_by` int,
     `updated_at` timestamp default current_timestamp on update current_timestamp,
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`) ON DELETE SET NULL,
     PRIMARY KEY (`id`)
 );
 
+# INNER JOIN (only users with a valid contact)
+SELECT 
+    u.user_id AS user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.username,
+    c.contact_id,
+    c.contact_type,
+    c.category_type,
+    c.engagement_date,
+    c.best_channel_to_contact
+FROM 
+    contact_users u
+INNER JOIN 
+    contacts c ON u.contact_id = c.contact_id;
+    
+#LEFT JOIN (all users, including those without a contact)
+
+SELECT 
+    u.user_id AS user_id,
+    u.first_name,
+    u.last_name,
+    u.email,
+    u.username,
+    c.contact_id,
+    c.contact_type,
+    c.category_type,
+    c.engagement_date,
+    c.best_channel_to_contact
+FROM 
+    contact_users u
+LEFT JOIN 
+    contacts c ON u.contact_id = c.contact_id;
+    
+# ALTER TABLE `test_financial_hub_db`.`contact_users`
+# RENAME COLUMN `id` TO `user_id`;
+
+# Change Table Name
+#ALTER TABLE `test_financial_hub_db`.`users` RENAME TO `test_financial_hub_db`.`contact_users`;
+
+#ALTER TABLE `test_financial_hub_db`.`contact_users` DROP COLUMN `contact_id`;
+
+#ALTER TABLE  `test_financial_hub_db`.`contact_users`
+#MODIFY COLUMN `contact_id` INT AFTER `id`;
+
+#ALTER TABLE `test_financial_hub_db`.`contact_users`
+#ADD COLUMN `contact_id` INT,
+#ADD CONSTRAINT `fk_users_contact`
+#FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`) ON DELETE SET NULL;
+
 -- Insert users (passwords should be encoded using BCrypt, below are plaintext for demonstration)
 -- password: 123123 {bcrypt}$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq
-INSERT INTO `users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`, `created_by`, `updated_by`) 
+INSERT INTO `contact_users` (`first_name`, `last_name`, `middle_name`, `email`, `username`, `password`, `enabled`, `created_by`, `updated_by`) 
 VALUES
 ('John', 'Doe', 'Eod', 'john@mail.com', 'john', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
 ('Mary', 'Public', 'Private', 'mary@mail.com', 'mary', '$2a$10$LGHqAThaYY3yZW0qIiSZoejcr.BUUNex8YKo69DdNhIndLMhTiDWq', true, 3, 3),
@@ -131,8 +184,7 @@ CREATE TABLE `contact_company` (
     `mobile_number` VARCHAR(20),
     `email_address` VARCHAR(255),
     `address` TEXT,
-    FOREIGN KEY (`contact_id`)
-        REFERENCES contacts (`contact_id`),
+    FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`),
     PRIMARY KEY (`company_id`)
 );
 
@@ -407,8 +459,8 @@ ALTER TABLE `client_retainer_details`
 MODIFY COLUMN `start_date` date NOT NULL;
 
 # RENAME COLUMN NAME
-ALTER TABLE `client_retainer_details`
-RENAME COLUMN `ratainer_title` TO `retainer_title`;
+# ALTER TABLE `client_retainer_details`
+# RENAME COLUMN `ratainer_title` TO `retainer_title`;
 
 # UPDATE Retainer Title
 UPDATE `client_retainer_details`
@@ -623,6 +675,9 @@ VALUES
 (5, 1),
 (5, 2),
 (5, 3);
+
+INSERT INTO `petty_cash_client_accounts` (`petty_cash_id`, `client_account_id`)
+VALUES (9, 1), (12, 1),(13, 2),(14, 3);
 
 SELECT 
     pcv.petty_cash_id,
