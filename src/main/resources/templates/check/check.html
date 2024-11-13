@@ -21,8 +21,8 @@
                         </div>
                         <!-- Create User Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <a th:href="@{/check/check-form}" href="#" class="btn btn-primary btn-sm">
-                                <i class="lni lni-plus"></i> Add New
+                            <a th:href="@{/check/check-form}" href="#" class="btn btn-primary btn-sm" title="Add Voucher">
+                                <i class="lni lni-plus"></i> Voucher
                             </a>
                         </div>
                     </div>
@@ -46,18 +46,18 @@
                             <td th:text="${#numbers.formatDecimal(tempCheck.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td th:text="${tempCheck.bank}"></td>
                             <td th:text="${tempCheck.checkNumber}"></td>
-                            <td>
-                                <a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
-                                    th:href="@{/check/generate-check-voucher/{id}(id=${tempCheck.id})}" target="_blank">
+                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <a href="#" class="btn btn-secondary btn-sm"
+                                    th:href="@{/check/generate-check-voucher/{id}(id=${tempCheck.id})}" target="_blank" title="Print">
                                     <i class="lni lni-printer"></i>
                                 </a>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                                   th:href="@{/check/check-update-form/{id}(id=${tempCheck.id})}">
+                                <a href="#" class="btn btn-success btn-sm"
+                                   th:href="@{/check/check-update-form/{id}(id=${tempCheck.id})}" title="Edit">
                                     <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/check/delete-check-record/{id}(id=${tempCheck.id})}">
-                                    <i class="lni lni-trash-3"></i>
+                                   th:href="@{/check/delete-check-record/{id}(id=${tempCheck.id})}" title="Archive">
+                                    <i class="lni lni-box-archive-1"></i>
                                 </a>
                             </td>
                         </tr>

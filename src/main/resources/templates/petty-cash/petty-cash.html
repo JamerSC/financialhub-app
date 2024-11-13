@@ -44,8 +44,10 @@
                         </div>
                         <!-- Petty Cash -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addPettyCashModal">
-                                <i class="lni lni-plus"></i> Petty Cash
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addPettyCashModal" title="Add Voucher">
+                                <!--<i class="lni lni-plus"></i>-->
+                                <i class="lni lni-plus-circle"></i> Voucher
                             </button>
                         </div>
                     </div>
@@ -70,9 +72,9 @@
                                     <li th:each="account : ${tempPettyCash.accounts}" th:text="${account.accountTitle} + ' (' + ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
                                 </ul>
                             </td>
-                            <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm ePettyCashBtn"
-                                   th:href="@{/petty-cash/edit-petty-cash(id=${tempPettyCash.pettyCashId})}">
+                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <a href="#" class="btn btn-success btn-sm ePettyCashBtn"
+                                   th:href="@{/petty-cash/edit-petty-cash(id=${tempPettyCash.pettyCashId})}" title="Edit">
                                     <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
@@ -87,9 +89,10 @@
                                    th:href="@{/petty-cash/petty-cash-update-form/{id}(id=${tempPettyCash.pettyCashId})}">
                                     <i class="lni lni-pen-to-square"></i>
                                 </a>-->
-                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn" title="Archive"
                                    th:href="@{/petty-cash/delete-petty-cash-record/{id}(id=${tempPettyCash.pettyCashId})}">
-                                    <i class="lni lni-trash-3"></i>
+                                    <!--<i class="lni lni-trash-3"></i>-->
+                                    <i class="lni lni-box-archive-1"></i>
                                 </a>
                             </td>
                         </tr>

@@ -34,8 +34,9 @@
                 <!-- Create Accounts Modal Button -->
                 <div class="col-6 text-end">
                     <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal">
-                            <i class="lni lni-plus"></i> Account
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addAccountModal"
+                                title="Add Bank Account">
+                            <i class="lni lni-plus-circle"></i> Bank Account
                         </button>
                     </div>
                 </div>
@@ -49,7 +50,7 @@
                                 <th>Account Name</th>
                                 <th>Account Number</th>
                                 <th>Bank Name</th>
-                                <th>Actions</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -58,12 +59,12 @@
                                 <td th:text="${tempAccount.accountHolderName}"></td>
                                 <td th:text="${tempAccount.accountNumber}"></td>
                                 <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                                <td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                                     <!--<a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
                                         <i class="lni lni-eye"></i>
                                     </a>-->
-                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankAccountBtn"
-                                       th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="edit">
+                                    <a class="btn btn-success btn-sm editBankAccountBtn"
+                                       th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="Edit">
                                         <i class="lni lni-pen-to-square"></i>
                                     </a>
                                 </td>
@@ -200,8 +201,9 @@
                 <!-- Create Accounts Modal Button -->
                 <div class="col-6 text-end">
                     <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal">
-                            <i class="lni lni-plus"></i> Bank
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBankModal"
+                                title="Add Bank">
+                            <i class="lni lni-plus-circle"></i> Bank
                         </button>
                     </div>
                 </div>
@@ -216,7 +218,7 @@
                                 <th>Bank Name</th>
                                 <th>Abbreviation</th>
                                 <th>Branch</th>
-                                <th>Actions</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -225,11 +227,11 @@
                                 <td th:text="${tempBank.name}"></td>
                                 <td th:text="${tempBank.abbreviation}"></td>
                                 <td th:text="${tempBank.branch}"></td>
-                                <td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                                     <!--<a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
                                         <i class="lni lni-eye"></i>
                                     </a>-->
-                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBankBtn"
+                                    <a class="btn btn-success btn-sm editBankBtn"
                                         th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
                                         <i class="lni lni-pen-to-square"></i>
                                     </a>

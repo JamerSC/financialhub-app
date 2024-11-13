@@ -19,8 +19,9 @@
                     </div>
                     <!-- Contact Option Modal Button -->
                     <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addCaseModal">
-                            <i class="lni lni-plus"></i> Case
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#addCaseModal" title="Add Account">
+                            <i class="lni lni-plus-circle"></i> Case
                         </button>
                     </div>
                 </div>
@@ -33,18 +34,18 @@
                         <th>Stage</th>
                         <th>Last Activity</th>
                         <th>Start Date</th>
-                        <th>Actions</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr th:each="tempCase : ${listOfCases}">
                         <td>
-                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="view summary">
+                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
                             <span th:text="${tempCase.accountTitle}"></span>
                             </a>
                         </td>
                         <td>
-                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="view summary">
+                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
                             <span th:if="${tempCase.client.individual != null}"
                                   th:text="${tempCase.client.individual.getFullName()}"></span>
                             <span th:if="${tempCase.client.company != null}"
@@ -55,12 +56,12 @@
                         <td th:text="${tempCase.caseAccount.stage}"></td>
                         <td>-</td>
                         <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'dd MMMM yyyy')}"></td>
-                        <td>
+                        <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <!--<a th:href="@{/client-account/case-summary}" class="btn btn-secondary btn-sm" title="view">
                                 <i class="lni lni-eye"></i>
                             </a>-->
-                            <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editCaseAccountBtn"
-                                th:href="@{/client-account/edit-case-account(id=${tempCase.clientAccountId})}"  title="edit">
+                            <a class="btn btn-success btn-sm editCaseAccountBtn"
+                                th:href="@{/client-account/edit-case-account(id=${tempCase.clientAccountId})}"  title="Edit">
                                 <i class="lni lni-pen-to-square"></i>
                             </a>
                         </td>

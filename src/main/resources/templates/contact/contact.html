@@ -19,8 +19,9 @@
                     </div>
                     <!-- Contact Option Modal Button -->
                     <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#contactTypeModal">
-                            <i class="lni lni-plus"></i> Contact
+                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#contactTypeModal" title="Add Contact">
+                            <i class="lni lni-plus-circle"></i> Contact
                         </button>
                     </div>
                     <!-- Individual/Company form modal -->
@@ -32,7 +33,7 @@
                         <th>Name/Company Name</th>
                         <th>Contact Type</th>
                         <th>Category Type</th>
-                        <th>Action</th>
+                        <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" >Action</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -47,15 +48,15 @@
                         </td>
                         <td th:text="${tempContact.contactType.displayContactType()}"></td>
                         <td th:text="${tempContact.contactCategoryType.displayContactCategoryType()}"></td>
-                        <td>
-                            <a th:if="${tempContact.individual != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
+                        <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                            <a th:if="${tempContact.individual != null}"
                                th:href="@{/contacts/edit-individual-contact(id=${tempContact.contactId})}"
-                               class="btn btn-success btn-sm editContactIndividualBtn" title="edit">
+                               class="btn btn-success btn-sm editContactIndividualBtn" title="Edit">
                                 <i class="lni lni-pen-to-square"></i>
                             </a>
-                            <a th:if="${tempContact.company != null}" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"
+                            <a th:if="${tempContact.company != null}"
                                th:href="@{/contacts/edit-company-contact(id=${tempContact.contactId})}"
-                               class="btn btn-success btn-sm editContactCompanyBtn" title="edit">
+                               class="btn btn-success btn-sm editContactCompanyBtn" title="Edit">
                                 <i class="lni lni-pen-to-square"></i>
                             </a>
                         </td>

@@ -49,8 +49,9 @@
                         </div>
                         <!-- Create Item Modal Button -->
                         <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addDepositModal">
-                                <i class="lni lni-plus"></i> Deposit
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addDepositModal" title="Add Deposit">
+                                <i class="lni lni-plus-circle"></i> Deposit
                             </button>
                         </div>
                     </div>
@@ -73,13 +74,13 @@
                             <td th:text="${tempDeposit.transactionType.displayBankTransactionType() }"></td>
                             <td th:text="${tempDeposit.transactionAmount != null ? #numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <td th:text="${tempDeposit.transactionNote}"></td>
-                            <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm" title="Edit">
+                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <a href="#" class="btn btn-success btn-sm" title="Edit">
                                     <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/bank-transactions/{id}/delete-deposit-transaction(id=${tempDeposit.id})}">
-                                    <i class="lni lni-trash-3"></i>
+                                   th:href="@{/bank-transactions/{id}/delete-deposit-transaction(id=${tempDeposit.id})}" title="Archive">
+                                    <i class="lni lni-box-archive-1"></i>
                                 </a>
                             </td>
                         </tr>
