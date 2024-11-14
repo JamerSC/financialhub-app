@@ -49,7 +49,24 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public List<ContactDto> getContactsWithInternalCategory() {
-        return contactRepository.findContactsWithInternalCategory().stream()
+        return contactRepository.findContactsWithInternalCategory()
+                .stream()
+                .map(ContactMapper::toContactDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContactDto> findContactsWithInternalCategoryAndNullUser() {
+        return contactRepository.findContactsWithInternalCategoryAndNullUser()
+                .stream()
+                .map(ContactMapper::toContactDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ContactDto> findContactsWithInternalCategoryAndNotNullUser() {
+        return contactRepository.findContactsWithInternalCategoryAndNotNullUser()
+                .stream()
                 .map(ContactMapper::toContactDto)
                 .collect(Collectors.toList());
     }

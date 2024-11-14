@@ -13,6 +13,10 @@ public interface ContactService {
 
     List<ContactDto> getContactsWithInternalCategory();
 
+    List<ContactDto> findContactsWithInternalCategoryAndNullUser();
+
+    List<ContactDto> findContactsWithInternalCategoryAndNotNullUser();
+
     Contact findByIdWithAccounts(Long contactId);
 
     void saveContactIndividual(ContactDto contactIndividual, String username);

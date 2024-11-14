@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    public User toUserEntity(UserDto userDto, Contact contact, Set<Role> roles) {
+    public static User toUserEntity(UserDto userDto, Contact contact, Set<Role> roles) {
         if (userDto == null) {
             return null;
         }
@@ -34,7 +34,7 @@ public class UserMapper {
         return user;
     }
 
-    public UserDto toUserDto(User user) {
+    public static UserDto toUserDto(User user) {
         if (user == null) {
             return null;
         }

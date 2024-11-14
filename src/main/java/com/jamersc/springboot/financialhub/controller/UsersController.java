@@ -40,7 +40,7 @@ public class UsersController {
 
     @GetMapping("/users")
     public String usersManagementPage(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<User> usersPage = userService.findAll(PageRequest.of(page, 6));
+        Page<User> usersPage = userService.findAll(PageRequest.of(page, 10));
         List<User> users = usersPage.getContent();
         model.addAttribute("users", users);
         model.addAttribute("currentPage", page);
@@ -51,7 +51,7 @@ public class UsersController {
     @GetMapping("/user-settings-create-form")
     public String createUsersAccountPage(Model model) {
         addRolesToModel(model);
-        addContactsToModel(model);
+        addContactsNewUserToModel(model);
         model.addAttribute("userDto", new UserDto());
         return "settings/create-user-form";
     }
@@ -63,7 +63,7 @@ public class UsersController {
         logger.info("Processing registration form for: " + username);
         if (result.hasErrors()) {
             addRolesToModel(model);
-            addContactsToModel(model);
+            addContactsNewUserToModel(model);
             return "settings/create-user-form";
         }
         User existingUsername = userService.findByUsername(username);
@@ -72,7 +72,7 @@ public class UsersController {
             result.rejectValue("username", "error.username",
                     "Invalid! Username '" + username + "' already exist!");
             addRolesToModel(model);
-            addContactsToModel(model);
+            addContactsNewUserToModel(model);
             model.addAttribute("formHasErrors", true);
             logger.warn("Username already exists!");
             return "settings/create-user-form";
@@ -89,7 +89,7 @@ public class UsersController {
         if (userDto != null) {
             model.addAttribute("userDto", userDto);
             addRolesToModel(model);
-            addContactsToModel(model);
+            addContactsExistingUserToModel(model);
             return "settings/update-user-form";
         }
         return "redirect:/settings/users";
@@ -101,7 +101,7 @@ public class UsersController {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
             addRolesToModel(model);
-            addContactsToModel(model);
+            addContactsExistingUserToModel(model);
             return "settings/update-user-form";
         }
         String updatedBy = getSessionUsername();
@@ -117,13 +117,12 @@ public class UsersController {
                 result.rejectValue("username", "error.username",
                         "Invalid! Username '" + userDto.getUsername() + "' already exists!");
                 addRolesToModel(model);
-                addContactsToModel(model);
+                addContactsExistingUserToModel(model);
                 logger.warn("Username already exists!");
                 return "settings/update-user-form";
             }
         }
         userService.update(userDto, updatedBy);
-        logger.info("Updated user id: " + userDto.getUserId());
         return "redirect:/settings/users";
     }
 
@@ -131,7 +130,6 @@ public class UsersController {
     public String deleteUsersAccountById(@PathVariable(value = "id") Long id) {
         logger.info("Process deleting user id: " + id);
         userService.deleteUserRecordById(id);
-        logger.info("Successfully deleted user record id" + id);
         return "redirect:/settings/users";
     }
 
@@ -146,9 +144,14 @@ public class UsersController {
         model.addAttribute("roles", roles);
     }
 
-    private void addContactsToModel(Model model) {
-        List<ContactDto> internalContacts= contactService.getContactsWithInternalCategory();
-        model.addAttribute("internalContacts", internalContacts);
+    private void addContactsNewUserToModel(Model model) {
+        List<ContactDto> internalContactsNewUser = contactService.findContactsWithInternalCategoryAndNullUser();
+        model.addAttribute("internalContactsNewUser", internalContactsNewUser);
+    }
+
+    private void addContactsExistingUserToModel(Model model) {
+        List<ContactDto> internalContactsWithUserAccess = contactService.findContactsWithInternalCategoryAndNotNullUser();
+        model.addAttribute("internalContactsWithUserAccess", internalContactsWithUserAccess);
     }
 
     private String getSessionUsername() {

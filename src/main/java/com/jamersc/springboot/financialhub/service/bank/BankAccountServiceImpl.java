@@ -48,9 +48,9 @@ public class BankAccountServiceImpl implements BankAccountService{
         BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
         if (bankAccount != null) {
             // Mapper static method no need for autowired
-            BankAccountDto bankAccountDto = BankAccountMapper.toBankAccountDto(bankAccount);
-            logger.info("Find Bank account details: " + bankAccountDto);
-            return bankAccountDto;
+            BankAccountDto dto = BankAccountMapper.toBankAccountDto(bankAccount);
+            logger.info("Find Bank account details: " + dto);
+            return dto;
         }
         throw new RuntimeException("Bank Account ID not found!");
     }

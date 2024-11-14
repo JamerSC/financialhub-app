@@ -23,6 +23,37 @@ CREATE TABLE `contact_users` (
     PRIMARY KEY (`id`)
 );
 
+# FIND FOREIGN KEY CONSTRAINT NAME
+SELECT CONSTRAINT_NAME 
+FROM information_schema.KEY_COLUMN_USAGE 
+WHERE TABLE_NAME = 'contact_users' 
+AND COLUMN_NAME = 'contact_id';
+#CONSTRAINT_NAME  'fk_users_contact'
+
+SELECT CONSTRAINT_NAME
+FROM information_schema.KEY_COLUMN_USAGE
+WHERE TABLE_NAME = 'contact_users'
+  AND TABLE_SCHEMA = 'test_financial_hub_db'  -- Replace with your database name
+  AND COLUMN_NAME = 'contact_id';
+
+# DROP FOREIGN KEY
+ALTER TABLE contact_users
+DROP FOREIGN KEY fk_users_contact;
+
+# CREATE TABLE CODE
+SHOW CREATE TABLE contact_users;
+
+# ADD NEW FOREIGN KEY CONSTRAINT
+ALTER TABLE contact_users
+ADD CONSTRAINT fk_contact_user
+FOREIGN KEY (contact_id)
+REFERENCES contacts(contact_id)
+ON DELETE SET NULL;
+
+# ALTER TABLE COLUMN TYPE
+ALTER TABLE `contact_users` 
+MODIFY `contact_id` INT;
+
 # INNER JOIN (only users with a valid contact)
 SELECT 
     u.user_id AS user_id,

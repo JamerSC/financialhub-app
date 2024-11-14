@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.service.user;
 
+import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.dto.UserDto;
 import com.jamersc.springboot.financialhub.mapper.ContactMapper;
 import com.jamersc.springboot.financialhub.mapper.UserMapper;
@@ -64,29 +65,34 @@ public class UserServiceImpl implements UserService {
     public UserDto findUserRecordById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
-            UserDto userDto = new UserDto();
-            BeanUtils.copyProperties(user, userDto);
+            UserDto dto= UserMapper.toUserDto(user);
+
+            ContactDto contact = ContactMapper.toContactDto(user.getContact());
+            dto.setContact(contact);
             // Populate roleIds
-            Set<Long> roleIds = user.getRoles().stream().map(Role::getId).collect(Collectors.toSet());
-            userDto.setRoleIds(roleIds);
-            return userDto;
+            Set<Long> roleIds = user.getRoles().stream()
+                    .map(Role::getId).
+                    collect(Collectors.toSet());
+            dto.setRoleIds(roleIds);
+
+            return dto;
         }
         return null;
     }
 
     @Override
-    public void save(UserDto userDto, String createdBy) {
+    public void save(UserDto userDto, String username) {
         User user = new User();
+        User creator = userRepository.findByUsername(username);
+
         if (userDto.getContact() != null) {
             Contact contact = ContactMapper.toContactEntity(userDto.getContact());
-            /*Contact contactId = contactRepository.findById(contact.getContactId())
-                    .orElse(null);*/
             user.setContact(contact);
         }
         String encodedPassword = passwordEncoder.encode(userDto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(true);
-        User creator = userRepository.findByUsername(createdBy);
+
         if (creator != null) {
             user.setCreatedBy(creator.getUserId());
             user.setUpdatedBy(creator.getUserId());
@@ -109,8 +115,45 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void update(UserDto userDto, String updatedBy) {
-        User user = userRepository.findById(userDto.getUserId()).orElse(null);
+    public void update(UserDto userDto, String username) {
+        User user;
+        User updatedBy = userRepository.findByUsername(username);
+
+        if (userDto.getUserId() != null) {
+            user = userRepository.findById(userDto.getUserId()).orElse(new User());
+
+            if (userDto.getContact()  != null) {
+                Contact contact = ContactMapper.toContactEntity(userDto.getContact());
+                user.setContact(contact);
+            }
+
+            user.setFirstName(userDto.getFirstName());
+            user.setMiddleName(userDto.getMiddleName());
+            user.setLastName(userDto.getLastName());
+
+            Set<Role> roles = userDto.getRoleIds().stream()
+                    .map(roleRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            user.setRoles(roles);
+
+            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+                user.setPassword(encodedPassword);
+            }
+
+            if (updatedBy != null) {
+                user.setUpdatedBy(updatedBy.getUserId());
+            }
+
+            logger.info("Updated user details successfully!");
+            userRepository.save(user);
+        }
+
+
+
+        /*User user = userRepository.findById(userDto.getUserId()).orElse(null);
         if (user != null) {
             // Update user details except password and roles
             BeanUtils.copyProperties(userDto, user, "password", "roles", "createdBy", "createdAt");
@@ -119,7 +162,6 @@ public class UserServiceImpl implements UserService {
                 String encodedPassword = passwordEncoder.encode(userDto.getPassword());
                 user.setPassword(encodedPassword);
             }
-
 
             // Update roles
             Set<Role> roles = userDto.getRoleIds().stream()
@@ -140,7 +182,7 @@ public class UserServiceImpl implements UserService {
             logger.info("Successfully updated user: " + user.getUsername());
         } else {
             logger.warn("User with ID " + userDto.getUserId() + " not found.");
-        }
+        }*/
     }
 
     @Override

@@ -23,15 +23,16 @@
                         </div>
                         <div class="mb-3">
                             <label for="internalContact" class="form-label">Internal Contacts</label>
-                            <select id="internalContact" class="form-select" th:field="*{contact}" required>
+                            <select id="internalContact" class="form-select" th:field="*{contact.contactId}" disabled>
                                 <option value="" selected>Select petty cash receiver...</option>
-                                <option th:each="tempContact : ${internalContacts}"
+                                <option th:each="tempContact : ${internalContactsWithUserAccess}"
                                         th:value="${tempContact.contactId}"
                                         th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
                                                              (#strings.concat(tempContact.individual.getFullName(),
                                                              ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
                                                              : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
                                                              '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}">
+                                    <!--th:selected="${tempContact.contactId}"-->
                                 </option>
                             </select>
                         </div>
@@ -96,7 +97,7 @@
                             <button type="submit" class="btn btn-primary">Update</button>
                         </div>
                         <div class="d-grid mb-3">
-                            <a th:href="@{/settings/user-settings}" class="btn btn-secondary">Cancel</a>
+                            <a th:href="@{/settings/users}" class="btn btn-secondary">Cancel</a>
                         </div>
                     </form>
                 </div>
