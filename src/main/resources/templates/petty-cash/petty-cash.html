@@ -13,7 +13,7 @@
 
     <main class="content px-3 py-4"  layout:fragment="content">
         <div class="container-fluid">
-            <div class="row">
+            <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="row">
                 <div class="card-group">
                     <div class="card">
                         <div class="card-body">
@@ -64,7 +64,7 @@
                             <th>Date</th>
                             <th>Total Amount</th>
                             <th>Account(s)</th>
-                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                            <th sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN', 'MANAGER')">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -78,9 +78,13 @@
                                     <li th:each="account : ${tempPettyCash.accounts}" th:text="${account.accountTitle} + ' (' + ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
                                 </ul>
                             </td>
-                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                <a href="#" class="btn btn-success btn-sm ePettyCashBtn"
+                            <td>
+                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm ePettyCashBtn"
                                    th:href="@{/petty-cash/edit-petty-cash(id=${tempPettyCash.pettyCashId})}" title="Edit">
+                                    <i class="lni lni-pen-to-square"></i>
+                                </a>
+                                <a sec:authorize="hasRole('EMPLOYEE')" href="#" class="btn btn-success btn-sm eAdminPettyCashBtn"
+                                   th:href="@{/petty-cash/edit-admin-petty-cash(id=${tempPettyCash.pettyCashId})}" title="Edit">
                                     <i class="lni lni-pen-to-square"></i>
                                 </a>
                                 <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
@@ -233,7 +237,7 @@
                                         <div class="row mb-3">
                                             <div class="form-group">
                                                 <label for="accounts">Accounts</label>
-                                                <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." disabled></textarea>
+                                                <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." readonly></textarea>
                                                 <input type="hidden" id="editAccountsJson"/>
                                                 <!--<input type="hidden" id="editAccountsJson" th:field="*{accounts}"/>-->
                                             </div>
@@ -271,6 +275,7 @@
                             </div>
                         </div>
                     </div>
+                    <!-- ADMIN WORKS -->
                     <!-- Admin Works - Petty Cash Form Modal -->
                     <div class="modal fade" id="addAdminPettyCashModal" tabindex="-1" aria-labelledby="addAdminPettyCashModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-lg">
@@ -313,7 +318,7 @@
                                         <div class="row mb-3">
                                             <!-- Tagify Textarea Field -->
                                             <div class="form-group">
-                                                <label for="accounts">Accounts</label>
+                                                <label for="adminAccounts">Accounts</label>
                                                 <textarea class="form-control" id="adminAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
                                                 <input type="hidden" id="adminAccountsJson" th:field="*{accounts}" />
                                             </div>
@@ -334,6 +339,73 @@
                             </div>
                         </div>
                     </div>
+                    <!-- Update Admin Works - Petty Cash Form Modal -->
+                    <div class="modal fade" id="editAdminPettyCashModal" tabindex="-1" aria-labelledby="editAdminPettyCashModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header mb-2">
+                                    <h5 class="modal-title" id="editAdminPettyCashModalLabel">Petty Cash Voucher (Update)</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="row g-3 mb-3" id="editAdminPettyCashForm" th:action="@{/petty-cash/update-admin-petty-cash}"
+                                          th:object="${pettyCash}" method="POST">
+                                        <div><input type="hidden" class="form-control" id="editAdminPettyCashId" th:field="*{pettyCashId}" /></div>
+                                        <div><input type="hidden" class="form-control" id="editAdminFundId" th:field="*{fund.fundId}" /></div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="editAdminVoucherNo" class="form-label">Voucher No.</label>
+                                                <input type="text" class="form-control" id="editAdminVoucherNo" th:field="*{voucherNo}" placeholder="Voucher no..." required>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label for="editAdminDate" class="form-label">Date</label>
+                                                <input type="date" class="form-control" id="editAdminDate" th:field="*{date}" required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="editAdminActivityDescription" class="form-label">Activity Description</label>
+                                                <textarea class="form-control" id="editAdminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="editAdminActivityCategory" class="form-label">Activity Category</label>
+                                                <input type="text" class="form-control" id="editAdminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-12">
+                                                <label for="editAdminSoaCategory" class="form-label">SOA Category</label>
+                                                <input type="text" class="form-control" id="editAdminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <!-- Tagify Textarea Field -->
+                                            <div class="form-group">
+                                                <label for="editAdminAccounts">Accounts</label>
+                                                <textarea class="form-control" id="editAdminAccounts" rows="4" cols="6" placeholder="Add accounts ..." readonly></textarea>
+                                                <input type="hidden" id="editAdminAccountsJson" />
+                                                <!--<input type="hidden" id="editAdminAccountsJson" th:field="*{accounts}" />-->
+                                            </div>
+                                        </div>
+                                        <div class="row mb-3">
+                                            <div class="col-md-6">
+                                                <label for="editAdminTotalAmount" class="form-label">Amount</label>
+                                                <input type="number" step="0.01" class="form-control" id="editAdminTotalAmount" th:field="*{totalAmount}" required>
+                                            </div>
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Save/Update</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <!--Delete modal popup-->
                     <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                         <div class="modal-dialog">
@@ -387,6 +459,29 @@
                         //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
                     });
 
+                    // Initialize Tagify on "accounts" input in Add Modal
+                    const inputAddAdmin = document.querySelector('#adminAccounts');
+                    const tagifyAddAdmin = new Tagify(inputAddAdmin, {
+                        enforceWhitelist: true,
+                        whitelist: formattedAccounts,
+                        dropdown: {
+                            enabled: 0,
+                            maxItems: 10
+                        }
+                    });
+
+                    tagifyAddAdmin.on('add', function() {
+                        const values = tagifyAddAdmin.value.map(tag => tag.id);
+                        $("#adminAccountsJson").val(JSON.stringify(values));
+                        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
+                    });
+
+                    tagifyAddAdmin.on('remove', function() {
+                        const values = tagifyAddAdmin.value.map(tag => tag.id);
+                        $("#adminAccountsJson").val(JSON.stringify(values));
+                        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
+                    });
+
                     // Initialize Tagify on "editAccounts" input in Edit Modal
                     const inputEdit = document.querySelector('#editAccounts');
                     const tagifyEdit = new Tagify(inputEdit, {
@@ -398,7 +493,7 @@
                         }
                     });
 
-                    // Fetch and populate data in the Edit Modal when edit button is clicked
+                    // UPDATE ADMIN PETTY CASH
                     $('.table .ePettyCashBtn').on('click', function(event) {
                         event.preventDefault();
                         var href = $(this).attr('href');
@@ -436,16 +531,72 @@
                     });
 
                     // Log the accounts value in Edit Modal on add/remove
-                    tagifyEdit.on('add', function() {
-                        const values = tagifyEdit.value.map(tag => tag.id);
+                    //tagifyEdit.on('add', function() {
+                    //    const values = tagifyEdit.value.map(tag => tag.id);
+                    //    //console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
+                    //});
+                    //tagifyEdit.on('remove', function() {
+                    //    const values = tagifyEdit.value.map(tag => tag.id);
+                    //    //console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
+                    //});
+
+
+                    // UPDATE ADMIN WORKS PETTY CASH
+
+                    // Initialize Tagify on "editAccounts" input in Edit Modal
+                    const inputEditAdmin = document.querySelector('#editAdminAccounts');
+                    const tagifyEditAdmin = new Tagify(inputEditAdmin, {
+                        enforceWhitelist: true,
+                        whitelist: formattedAccounts,
+                        dropdown: {
+                            enabled: 0,
+                            maxItems: 10
+                        }
+                    });
+
+                    $('.table .eAdminPettyCashBtn').on('click', function(event) {
+                        event.preventDefault();
+                        var href = $(this).attr('href');
+
+                        $.get(href, function(tempPettyCash, status) {
+                            //console.log(tempPettyCash);
+
+                            $('#editAdminPettyCashForm #editAdminPettyCashId').val(tempPettyCash.pettyCashId);
+
+                            if (tempPettyCash.fund) {
+                               $('#editAdminPettyCashForm #editAdminFundId').val(tempPettyCash.fund.fundId);
+                            }
+
+                            $('#editAdminPettyCashForm #editAdminVoucherNo').val(tempPettyCash.voucherNo);
+                            $('#editAdminPettyCashForm #editAdminDate').val(formatDate(tempPettyCash.date));
+                            $('#editAdminPettyCashForm #editAdminActivityDescription').val(tempPettyCash.activityDescription);
+                            $('#editAdminPettyCashForm #editAdminActivityCategory').val(tempPettyCash.activityCategory);
+                            $('#editAdminPettyCashForm #editAdminSoaCategory').val(tempPettyCash.soaCategory);
+                            $('#editAdminPettyCashForm #editAdminTotalAmount').val(tempPettyCash.totalAmount);
+
+                            // Populate accounts in Tagify for Edit Modal
+                            tagifyEditAdmin.removeAllTags();
+                            if (tempPettyCash.accounts) {
+                                const accountTags = tempPettyCash.accounts.map(account => ({
+                                    id: account.clientAccountId,
+                                    value: `${account.accountTitle} (${account.clientAccountType})`
+                                }));
+                                tagifyEditAdmin.addTags(accountTags);
+                            }
+
+                            $('#editAdminPettyCashModal').modal('show');
+                        });
+                    });
+
+                    tagifyEditAdmin.on('add', function() {
+                        const values = tagifyEditAdmin.value.map(tag => tag.id);
                         console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
                     });
-                    tagifyEdit.on('remove', function() {
-                        const values = tagifyEdit.value.map(tag => tag.id);
+                    tagifyEditAdmin.on('remove', function() {
+                        const values = tagifyEditAdmin.value.map(tag => tag.id);
                         console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
                     });
 
-                    // Format date to YYYY-MM-DD
                     function formatDate(date) {
                         if (!date) return '';
 

@@ -54,7 +54,7 @@ public class PettyCash {
     @Column(name = "approved")
     private Boolean approved;
 
-    @Column(name = "received_by")
+    @Column(name = "received_by", updatable = false)
     private Long receivedBy;
 
     @Column(name = "approved_by")

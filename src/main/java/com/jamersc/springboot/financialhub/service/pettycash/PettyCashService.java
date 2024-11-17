@@ -17,6 +17,8 @@ public interface PettyCashService {
 
     void savePettyCash(PettyCashDto dto, String username);
 
+    void saveAdminPettyCash(PettyCashDto dto, String username);
+
     void save(PettyCash pettyCash);
 
     void deletePettyCashRecordById(Long id);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Navigation</title>
@@ -58,37 +59,37 @@
                     <span>Petty Cash</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
                 <a th:href="@{/credit-card/credit-card-voucher}" class="sidebar-link">
                     <i class="lni lni-credit-card-multiple"></i>
                     <span>Credit Card</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/check/check-voucher}" class="sidebar-link">
                     <i class="lni lni-file-pencil"></i>
                     <span>Checks</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/bank-transactions/deposit-accounts}" class="sidebar-link">
                     <i class="lni lni-hand-taking-dollar"></i>
                     <span>Deposits</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/bank-transactions/withdrawal-accounts}" class="sidebar-link">
                     <i class="lni lni-wallet-1"></i>
                     <span>Withdrawals</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/bank/bank-statements}" class="sidebar-link">
                     <i class="lni lni-text-paragraph"></i>
                     <span>Bank Statement</span>
                 </a>
             </li>
-            <li class="sidebar-item">
+            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/bank/banks}" class="sidebar-link">
                     <i class="lni lni-briefcase-plus-1"></i>
                     <span>Bank Accounts</span>
@@ -101,13 +102,19 @@
                     <span>Settings</span>
                 </a>
                 <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
+                    <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                         <a th:href="@{/settings/users}" class="sidebar-link">
                             <i class="lni lni-user-4"></i>
                             Users
                         </a>
                     </li>
-                    <li class="sidebar-item">
+                    <li sec:authorize="hasRole('EMPLOYEE')" class="sidebar-item">
+                        <a th:href="@{/settings/user-profile}" class="sidebar-link">
+                            <i class="lni lni-user-4"></i>
+                            User Profile
+                        </a>
+                    </li>
+                    <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="lni lni-gear-1"></i>
                             Maintenance

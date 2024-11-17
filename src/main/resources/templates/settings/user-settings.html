@@ -38,24 +38,24 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.firstName}"></td>
-                            <td th:text="${user.middleName}"></td>
-                            <td th:text="${user.lastName}"></td>
-                            <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm">
-                                    <i class="lni lni-printer"></i>
-                                </a>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                                   th:href="@{/settings/user-settings-update-form/{id}(id=${user.userId})}">
-                                    <i class="lni lni-pen-to-square"></i>
-                                </a>
-                                <a  sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
-                                   th:href="@{/settings/delete-user-record/{id}(id=${user.userId})}">
-                                    <i class="lni lni-trash-3"></i>
-                                </a>
-                            </td>
-                        </tr>
+                            <tr th:each="user : ${users}">
+                                <td th:text="${user.firstName}"></td>
+                                <td th:text="${user.middleName}"></td>
+                                <td th:text="${user.lastName}"></td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <a href="#" class="btn btn-secondary btn-sm">
+                                        <i class="lni lni-printer"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-sm"
+                                       th:href="@{/settings/user-settings-update-form/{id}(id=${user.userId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                    <a  sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                       th:href="@{/settings/delete-user-record/{id}(id=${user.userId})}">
+                                        <i class="lni lni-trash-3"></i>
+                                    </a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                     <!-- Pagination Controls -->

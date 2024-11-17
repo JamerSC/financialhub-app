@@ -153,10 +153,10 @@ INSERT INTO users_roles (user_id, role_id) VALUES (4, 1); -- Employee
 #TRUNCATE TABLE `roles`;
 #TRUNCATE TABLE `users_roles`;
 
-SELECT u.id AS user_id, u.first_name, u.last_name, u.middle_name,
+SELECT u.user_id AS user_id, u.first_name, u.last_name, u.middle_name,
 u.email, u.username, r.id AS role_id, r.name AS role_name
-FROM users u
-JOIN users_roles ur ON u.id = ur.user_id
+FROM contact_users u
+JOIN users_roles ur ON u.user_id = ur.user_id
 JOIN roles r ON ur.role_id = r.id;
 
 -- Table to store all contact types (Individual/Company)
@@ -727,7 +727,7 @@ FROM
 JOIN 
     petty_cash_client_accounts pcca ON pcv.petty_cash_id = pcca.petty_cash_id
 JOIN 
-    client_accounts ca ON pcca.client_account_id = ca.client_account_id
+    client_accounts ca ON pcca.client_account_id = ca.client_account_id	
 GROUP BY 
     pcv.petty_cash_id
 ORDER BY 

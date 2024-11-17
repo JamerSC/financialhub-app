@@ -52,7 +52,7 @@ public class PettyCashServiceImpl implements PettyCashService {
 
     @Override
     public List<PettyCash> getAllPettyCashWithClientAccounts() {
-        return pettyCashRepository.findAllWithClientAccounts();
+        return pettyCashRepository.findAll();
     }
 
     @Override
@@ -117,12 +117,19 @@ public class PettyCashServiceImpl implements PettyCashService {
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
             pettyCash.setReceivedBy(dto.getReceivedBy());
-            pettyCash.setApproved(dto.getApproved());
-            pettyCash.setApprovedBy(pettyCash.getApprovedBy());
 
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
+
                 pettyCash.setUpdatedBy(updatedBy.getUserId());
+
+                if (dto.getApproved()) {
+                    pettyCash.setApprovedBy(updatedBy.getUserId());
+                    pettyCash.setApproved(dto.getApproved());
+                } else  {
+                    pettyCash.setApprovedBy(null);
+                    pettyCash.setApproved(null);
+                }
             }
 
             logger.info("Successfully updated petty cash: " + pettyCash);
@@ -161,6 +168,88 @@ public class PettyCashServiceImpl implements PettyCashService {
                 pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }
             logger.info("Successfully created new petty cash: " + pettyCash);
+        }
+        //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
+        pettyCashRepository.save(pettyCash);
+    }
+
+    @Override
+    public void saveAdminPettyCash(PettyCashDto dto, String username) {
+        PettyCash pettyCash;
+
+        if (dto.getPettyCashId() != null) {
+            // UPDATE PETTY CASH
+            pettyCash = pettyCashRepository.findById(dto.getPettyCashId())
+                    .orElse(new PettyCash());
+
+            //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
+            if (dto.getFund() != null) {
+                Fund fund = FundMapper.toFundEntity(dto.getFund());
+                Fund fundId = fundRepository.findById(fund.getFundId()).orElse(null);
+                pettyCash.setFund(fundId);
+            }
+
+            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setDate(dto.getDate());
+            pettyCash.setActivityDescription(dto.getActivityDescription());
+            pettyCash.setActivityCategory(dto.getActivityCategory());
+            pettyCash.setSoaCategory(dto.getSoaCategory());
+
+            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
+                    .map(ClientAccountDto::getClientAccountId)
+                    .map(clientAccountRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            pettyCash.setAccounts(accounts);*/
+
+            pettyCash.setTotalAmount(dto.getTotalAmount());
+            //pettyCash.setReceivedBy(dto.getReceivedBy());
+            //pettyCash.setApproved(dto.getApproved());
+            //pettyCash.setApprovedBy(dto.getApprovedBy());
+
+            User updatedBy = userRepo.findByUsername(username);
+            if (updatedBy != null) {
+                pettyCash.setUpdatedBy(updatedBy.getUserId());
+            }
+
+            logger.info("Successfully updated petty cash cash admin works: " + pettyCash);
+
+        } else {
+            // CREATE NEW PETTY CASH
+
+            pettyCash = new PettyCash();
+
+            Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
+            pettyCash.setFund(manageFund);
+
+            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setReceivedBy(dto.getReceivedBy());
+            pettyCash.setDate(dto.getDate());
+            pettyCash.setActivityDescription(dto.getActivityDescription());
+            pettyCash.setActivityCategory(dto.getActivityCategory());
+            pettyCash.setSoaCategory(dto.getSoaCategory());
+
+            Set<ClientAccount> accounts = dto.getAccounts().stream()
+                    .map(ClientAccountDto::getClientAccountId)
+                    .map(clientAccountRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            pettyCash.setAccounts(accounts);
+
+            pettyCash.setTotalAmount(dto.getTotalAmount());
+            pettyCash.setApproved(null);
+            pettyCash.setApprovedBy(null); // approved by
+
+            User createdBy = userRepo.findByUsername(username);
+            if (createdBy != null) {
+                pettyCash.setReceivedBy(createdBy.getContact().getContactId()); // receiver
+                pettyCash.setCreatedBy(createdBy.getUserId()); // created
+                pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
+            }
+            logger.info("Successfully created new petty cash admin works: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashRepository.save(pettyCash);

@@ -24,7 +24,7 @@
                         <div class="mb-3">
                             <label for="internalContact" class="form-label">Internal Contacts</label>
                             <select id="internalContact" class="form-select" th:field="*{contact.contactId}" disabled>
-                                <option value="" selected>Select petty cash receiver...</option>
+                                <option value="" selected>Select a user...</option>
                                 <option th:each="tempContact : ${internalContactsWithUserAccess}"
                                         th:value="${tempContact.contactId}"
                                         th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
