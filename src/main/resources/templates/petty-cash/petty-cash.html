@@ -168,13 +168,9 @@
                                                 <label for="receivedBy" class="form-label">Received By</label>
                                                 <select id="receivedBy" class="form-select" th:field="*{receivedBy}" required>
                                                     <option value="" selected>Select petty cash receiver...</option>
-                                                    <option th:each="tempContact : ${internalContacts}"
-                                                            th:value="${tempContact.contactId}"
-                                                            th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
-                                                             (#strings.concat(tempContact.individual.getFullName(),
-                                                             ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
-                                                             : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
-                                                             '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}"></option>
+                                                    <option th:each="tempUser : ${internalUsers}"
+                                                            th:value="${tempUser.userId}"
+                                                            th:text="${tempUser.fullName}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3 d-flex align-items-center mt-4">
@@ -251,13 +247,9 @@
                                                 <label for="editReceivedBy" class="form-label">Received By</label>
                                                 <select id="editReceivedBy" class="form-select" th:field="*{receivedBy}" required>
                                                     <option value="" selected>Select petty cash receiver...</option>
-                                                    <option th:each="tempContact : ${internalContacts}"
-                                                            th:value="${tempContact.contactId}"
-                                                            th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
-                                                             (#strings.concat(tempContact.individual.getFullName(),
-                                                             ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
-                                                             : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
-                                                             '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}"></option>
+                                                    <option th:each="tempUser : ${internalUsers}"
+                                                            th:value="${tempUser.userId}"
+                                                            th:text="${tempUser.fullName}"></option>
                                                 </select>
                                             </div>
                                             <div class="col-md-3 d-flex align-items-center mt-4">

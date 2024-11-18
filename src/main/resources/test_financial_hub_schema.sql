@@ -8,10 +8,7 @@ DROP TABLE `contact_users`;
 CREATE TABLE `contact_users` (
 	`user_id` int NOT NULL AUTO_INCREMENT,
     `contact_id` int NOT NULL,
-    `first_name` varchar(255) NOT NULL,
-    `last_name` varchar(255) NOT NULL,
-    `middle_name` varchar(255) NULL,
-    `email` varchar(255) NOT NULL,
+    `fullname` varchar(255) NOT NULL,
     `username` varchar(255) NOT NULL UNIQUE,
     `password` char(80) NOT NULL,
     `enabled` boolean NOT NULL,
@@ -22,6 +19,15 @@ CREATE TABLE `contact_users` (
     FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`) ON DELETE SET NULL,
     PRIMARY KEY (`id`)
 );
+#`first_name`, `last_name`, `middle_name` varchar(255) NULL,
+#ALTER TABLE `test_financial_hub_db`.`contact_users` DROP COLUMN `email`;
+
+ALTER TABLE `test_financial_hub_db`.`contact_users`
+RENAME COLUMN `fullname` TO `full_name`;
+
+# ADD COLUMN
+ALTER TABLE `contact_users`
+ADD COLUMN `fullname` varchar(255) NOT NULL AFTER `contact_id`;
 
 # FIND FOREIGN KEY CONSTRAINT NAME
 SELECT CONSTRAINT_NAME 

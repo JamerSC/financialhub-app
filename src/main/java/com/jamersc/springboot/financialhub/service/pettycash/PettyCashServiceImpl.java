@@ -120,16 +120,15 @@ public class PettyCashServiceImpl implements PettyCashService {
 
             User updatedBy = userRepo.findByUsername(username);
             if (updatedBy != null) {
-
                 pettyCash.setUpdatedBy(updatedBy.getUserId());
+            }
 
-                if (dto.getApproved()) {
-                    pettyCash.setApprovedBy(updatedBy.getUserId());
-                    pettyCash.setApproved(dto.getApproved());
-                } else  {
-                    pettyCash.setApprovedBy(null);
-                    pettyCash.setApproved(null);
-                }
+            if (dto.getApproved() && updatedBy != null) {
+                pettyCash.setApprovedBy(updatedBy.getUserId());
+                pettyCash.setApproved(dto.getApproved());
+            } else  {
+                pettyCash.setApprovedBy(null);
+                pettyCash.setApproved(null);
             }
 
             logger.info("Successfully updated petty cash: " + pettyCash);
@@ -245,7 +244,7 @@ public class PettyCashServiceImpl implements PettyCashService {
 
             User createdBy = userRepo.findByUsername(username);
             if (createdBy != null) {
-                pettyCash.setReceivedBy(createdBy.getContact().getContactId()); // receiver
+                pettyCash.setReceivedBy(createdBy.getUserId()); // receiver
                 pettyCash.setCreatedBy(createdBy.getUserId()); // created
                 pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }

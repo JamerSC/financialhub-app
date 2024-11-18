@@ -4,11 +4,13 @@ import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.dto.FundDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import com.jamersc.springboot.financialhub.service.pettycash.FundService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
+import com.jamersc.springboot.financialhub.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -43,6 +45,8 @@ public class PettyCashController {
     @Autowired
     private ContactService contactService;
     @Autowired
+    private UserService userService;
+    @Autowired
     private PettyCashVoucherService pettyCashVoucherService;
 
     @GetMapping("/list-of-petty-cash")
@@ -53,8 +57,8 @@ public class PettyCashController {
         model.addAttribute("pettyCash", new PettyCashDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
         model.addAttribute("fund", fund);
-        List<ContactDto> internalContacts= contactService.getContactsWithInternalCategory();
-        model.addAttribute("internalContacts", internalContacts);
+        List<User> internalUsers = userService.getAllUsers();
+        model.addAttribute("internalUsers", internalUsers);
         return  "petty-cash/petty-cash";
     }
 

@@ -21,10 +21,7 @@ public class UserMapper {
         User user = new User();
         user.setUserId(userDto.getUserId());
         user.setContact(contact);
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setMiddleName(userDto.getMiddleName());
-        user.setEmail(userDto.getEmail());
+        user.setFullName(userDto.getFullName());
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword()); // Ideally, password should be hashed
         user.setEnabled(userDto.getEnabled());
@@ -42,10 +39,7 @@ public class UserMapper {
         UserDto userDto = new UserDto();
         userDto.setUserId(user.getUserId());
         userDto.setContact(ContactMapper.toContactDto(user.getContact()));
-        userDto.setFirstName(user.getFirstName());
-        userDto.setLastName(user.getLastName());
-        userDto.setMiddleName(user.getMiddleName());
-        userDto.setEmail(user.getEmail());
+        userDto.setFullName(user.getFullName());
         userDto.setUsername(user.getUsername());
         userDto.setEnabled(user.getEnabled());
         userDto.setRoleIds(

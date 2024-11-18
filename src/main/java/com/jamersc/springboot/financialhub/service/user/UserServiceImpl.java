@@ -81,17 +81,19 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void save(UserDto userDto, String username) {
+    public void save(UserDto dto, String username) {
         User user = new User();
         User creator = userRepository.findByUsername(username);
 
-        if (userDto.getContact() != null) {
-            Contact contact = ContactMapper.toContactEntity(userDto.getContact());
+        if (dto.getContact() != null) {
+            Contact contact = ContactMapper.toContactEntity(dto.getContact());
             user.setContact(contact);
         }
-        String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+        String encodedPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(true);
+
+        user.setFullName(dto.getFullName());
 
         if (creator != null) {
             user.setCreatedBy(creator.getUserId());
@@ -102,44 +104,42 @@ public class UserServiceImpl implements UserService {
             user.setCreatedBy(1L);
             user.setUpdatedBy(1L);
         }
-        Set<Role> roles = userDto.getRoleIds().stream()
+        Set<Role> roles = dto.getRoleIds().stream()
                                 .map(roleRepository::findById)
                                 .filter(Optional::isPresent)
                                 .map(Optional::get)
                                 .collect(Collectors.toSet());
         user.setRoles(roles);
         // BeanUtils.copyProperties(userDto, user, "createdAt");
-        BeanUtils.copyProperties(userDto, user, "password", "roles");
+        BeanUtils.copyProperties(dto, user, "password", "roles");
         userRepository.save(user);
         logger.info("Successfully created user: " + user.getUsername());
     }
 
     @Override
-    public void update(UserDto userDto, String username) {
+    public void update(UserDto dto, String username) {
         User user;
         User updatedBy = userRepository.findByUsername(username);
 
-        if (userDto.getUserId() != null) {
-            user = userRepository.findById(userDto.getUserId()).orElse(new User());
+        if (dto.getUserId() != null) {
+            user = userRepository.findById(dto.getUserId()).orElse(new User());
 
-            if (userDto.getContact()  != null) {
-                Contact contact = ContactMapper.toContactEntity(userDto.getContact());
+            if (dto.getContact()  != null) {
+                Contact contact = ContactMapper.toContactEntity(dto.getContact());
                 user.setContact(contact);
             }
 
-            user.setFirstName(userDto.getFirstName());
-            user.setMiddleName(userDto.getMiddleName());
-            user.setLastName(userDto.getLastName());
+            user.setFullName(dto.getFullName());
 
-            Set<Role> roles = userDto.getRoleIds().stream()
+            Set<Role> roles = dto.getRoleIds().stream()
                     .map(roleRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
             user.setRoles(roles);
 
-            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
+            if (dto.getPassword() != null && !dto.getPassword().isEmpty()) {
+                String encodedPassword = passwordEncoder.encode(dto.getPassword());
                 user.setPassword(encodedPassword);
             }
 

@@ -35,30 +35,10 @@
                             </select>
                         </div>
                         <div class="mb-3">
-                            <label for="firstName" class="col-form-label">First name:</label>
-                            <input type="text" class="form-control" id="firstName" th:field="*{firstName}" placeholder="Enter first name...">
-                            <div th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="error">
-                                Firstname is required!
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="middleName" class="col-form-label">Middle name:</label>
-                            <input type="text" class="form-control" id="middleName" th:field="*{middleName}" placeholder="Enter middle name...">
-                            <!-- Middle name is optional -->
-                        </div>
-                        <div class="mb-3">
-                            <label for="lastName" class="col-form-label">Last name:</label>
-                            <input type="text" class="form-control" id="lastName" th:field="*{lastName}" placeholder="Enter last name...">
-                            <div th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="error">
-                                Lastname is required!
-                            </div>
-                        </div>
-                        <div class="mb-3">
-                            <label for="email" class="col-form-label">Email:</label>
-                            <input type="text" class="form-control" id="email" th:field="*{email}" placeholder="Enter email address...">
-                            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error" >
-                                Email is required!
+                            <label for="fullName" class="col-form-label">First name:</label>
+                            <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Enter full name...">
+                            <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error">
+                                Full name is required!
                             </div>
                         </div>
                         <div class="mb-3">
