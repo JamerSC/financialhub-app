@@ -491,12 +491,16 @@
                         var href = $(this).attr('href');
 
                         $.get(href, function(tempPettyCash, status) {
-                            //console.log(tempPettyCash);
+                            console.log(tempPettyCash);
 
                             $('#editPettyCashForm #editPettyCashId').val(tempPettyCash.pettyCashId);
 
                             if (tempPettyCash.fund) {
                                $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
+                            }
+
+                            if (tempPettyCash.receivedBy) {
+                               $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy.userId);
                             }
 
                             $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.voucherNo);
@@ -505,7 +509,6 @@
                             $('#editPettyCashForm #editActivityCategory').val(tempPettyCash.activityCategory);
                             $('#editPettyCashForm #editSoaCategory').val(tempPettyCash.soaCategory);
                             $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
-                            $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy);
                             $('#editPettyCashForm #editApproved').prop('checked', tempPettyCash.approved);
 
                             // Populate accounts in Tagify for Edit Modal

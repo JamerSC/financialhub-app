@@ -13,7 +13,7 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"fund", "accounts", "liquidations"})
+@ToString(exclude = {"fund", "accounts", "liquidations", "receivedBy"})
 public class PettyCash {
 
     @Id
@@ -54,8 +54,11 @@ public class PettyCash {
     @Column(name = "approved")
     private Boolean approved;
 
-    @Column(name = "received_by", updatable = false)
-    private Long receivedBy;
+    //@Column(name = "received_by", updatable = false)
+    //private Long receivedBy;
+    @ManyToOne
+    @JoinColumn(name = "received_by")
+    private User receivedBy;
 
     @Column(name = "approved_by")
     private Long approvedBy;

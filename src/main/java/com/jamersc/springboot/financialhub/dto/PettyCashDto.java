@@ -26,7 +26,7 @@ public class PettyCashDto {
     private List<LiquidationDto> liquidations; // One to Many
     private Double totalAmount;
     private Boolean approved;
-    private Long receivedBy;
+    private UserDto receivedBy; // Many to One (user)
     private Long approvedBy;
     private Long createdBy;
     private Date createdAt;

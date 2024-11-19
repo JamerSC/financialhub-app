@@ -57,12 +57,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Page<User> findAll(Pageable pageable) {
+    public Page<User> getAllUsersByPage(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
 
     @Override
-    public UserDto findUserRecordById(Long id) {
+    public UserDto findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
             UserDto dto= UserMapper.toUserDto(user);
@@ -186,7 +186,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserRecordById(Long id) {
+    public void deleteUserById(Long id) {
         logger.info("Successfully deleted user record by id: " + id);
         userRepository.deleteById(id);
     }

@@ -3,7 +3,9 @@ package com.jamersc.springboot.financialhub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -35,6 +37,11 @@ public class User {
 
     @Column(name = "enabled")
     private Boolean enabled;
+
+    @OneToMany(mappedBy = "receivedBy", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private List<PettyCash> pettyCash;
 
     @Column(name = "created_by")
     private Long createdBy;

@@ -38,7 +38,7 @@ public class BankAccount {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.REFRESH, CascadeType.DETACH
     })
-    private List<BankTransaction> bankTransactions = new ArrayList<>();
+    private List<BankTransaction> bankTransactions;
 
     @Column(name = "created_by")
     private Long createdBy;

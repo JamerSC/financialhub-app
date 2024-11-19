@@ -13,19 +13,19 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    public static User toUserEntity(UserDto userDto, Contact contact, Set<Role> roles) {
+    public static User toUserEntity(UserDto userDto) {
         if (userDto == null) {
             return null;
         }
 
         User user = new User();
         user.setUserId(userDto.getUserId());
-        user.setContact(contact);
+        //user.setContact(contact);
         user.setFullName(userDto.getFullName());
         user.setUsername(userDto.getUsername());
         user.setPassword(userDto.getPassword()); // Ideally, password should be hashed
         user.setEnabled(userDto.getEnabled());
-        user.setRoles(roles);
+        //user.setRoles(roles);
         user.setCreatedAt(new Date());
 
         return user;

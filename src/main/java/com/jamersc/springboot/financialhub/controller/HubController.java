@@ -47,7 +47,7 @@ public class HubController {
         model.addAttribute("totalOfPettyCash", pettyCashService.getAllPettyCash());
         model.addAttribute("totalOfChecks", checkService.getAllCheckRecord());
 
-        Page<User> usersPage = userService.findAll(PageRequest.of(page, size));
+        Page<User> usersPage = userService.getAllUsersByPage(PageRequest.of(page, size));
         List<User> users = usersPage.getContent();
         model.addAttribute("users", users);
         model.addAttribute("currentPage", page);

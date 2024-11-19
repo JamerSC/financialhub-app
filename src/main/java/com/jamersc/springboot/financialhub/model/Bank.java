@@ -33,7 +33,7 @@ public class Bank {
     @OneToMany(mappedBy = "bank", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private List<BankAccount> accounts = new ArrayList<>();
+    private List<BankAccount> accounts;
 
     @Column(name = "created_by")
     private Long createdBy;

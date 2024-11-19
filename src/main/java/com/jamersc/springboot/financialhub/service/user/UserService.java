@@ -12,14 +12,14 @@ public interface UserService {
 
     List<User> getAllUsers();
 
-    Page<User> findAll(Pageable pageable);
+    Page<User> getAllUsersByPage(Pageable pageable);
 
-    UserDto findUserRecordById(Long id);
+    UserDto findUserById(Long id);
 
     // Save create user & created by user id session.
     void save(UserDto dto, String username);
 
     void update(UserDto dto, String username);
 
-    void deleteUserRecordById(Long id);
+    void deleteUserById(Long id);
 }

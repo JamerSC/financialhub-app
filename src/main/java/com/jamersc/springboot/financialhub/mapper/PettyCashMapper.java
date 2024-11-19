@@ -12,20 +12,20 @@ import java.util.stream.Collectors;
 @Component
 public class PettyCashMapper {
 
-    public static PettyCash toPettyCashEntity(PettyCashDto pettyCashDto) {
-        if (pettyCashDto == null) {
+    public static PettyCash toPettyCashEntity(PettyCashDto dto) {
+        if (dto == null) {
             return null;
         }
 
         PettyCash pettyCash = new PettyCash();
-        pettyCash.setPettyCashId(pettyCashDto.getPettyCashId());
-        //pettyCash.setFund(FundMapper.toFundEntity(pettyCashDto.getFund()));
-        pettyCash.setVoucherNo(pettyCashDto.getVoucherNo());
-        pettyCash.setDate(pettyCashDto.getDate());
-        pettyCash.setActivityDescription(pettyCashDto.getActivityDescription());
-        pettyCash.setActivityCategory(pettyCashDto.getActivityCategory());
-        pettyCash.setSoaCategory(pettyCashDto.getSoaCategory());
-        Set<ClientAccount> accounts = pettyCashDto.getAccounts().stream()
+        pettyCash.setPettyCashId(dto.getPettyCashId());
+        //pettyCash.setFund(FundMapper.toFundEntity(dto.getFund()));
+        pettyCash.setVoucherNo(dto.getVoucherNo());
+        pettyCash.setDate(dto.getDate());
+        pettyCash.setActivityDescription(dto.getActivityDescription());
+        pettyCash.setActivityCategory(dto.getActivityCategory());
+        pettyCash.setSoaCategory(dto.getSoaCategory());
+        Set<ClientAccount> accounts = dto.getAccounts().stream()
                 .map(clientAccountDto -> {
                     ClientAccount account = new ClientAccount();
                     account.setClientAccountId(clientAccountDto.getClientAccountId());
@@ -35,15 +35,15 @@ public class PettyCashMapper {
                 })
                 .collect(Collectors.toSet());
         pettyCash.setAccounts(accounts);
-        // pettyCash.setLiquidations(pettyCashDto.getLiquidations());
-        pettyCash.setTotalAmount(pettyCashDto.getTotalAmount());
-        pettyCash.setApproved(pettyCashDto.getApproved());
-        pettyCash.setReceivedBy(pettyCashDto.getReceivedBy());
-        pettyCash.setApprovedBy(pettyCashDto.getApprovedBy());
-        pettyCash.setCreatedBy(pettyCashDto.getCreatedBy());
-        pettyCash.setCreatedAt(pettyCashDto.getCreatedAt());
-        pettyCash.setUpdatedBy(pettyCashDto.getUpdatedBy());
-        pettyCash.setUpdatedAt(pettyCashDto.getUpdatedAt());
+        // pettyCash.setLiquidations(dto.getLiquidations());
+        pettyCash.setTotalAmount(dto.getTotalAmount());
+        pettyCash.setApproved(dto.getApproved());
+        pettyCash.setReceivedBy(UserMapper.toUserEntity(dto.getReceivedBy()));
+        pettyCash.setApprovedBy(dto.getApprovedBy());
+        pettyCash.setCreatedBy(dto.getCreatedBy());
+        pettyCash.setCreatedAt(dto.getCreatedAt());
+        pettyCash.setUpdatedBy(dto.getUpdatedBy());
+        pettyCash.setUpdatedAt(dto.getUpdatedAt());
 
         return pettyCash;
     }
@@ -53,14 +53,14 @@ public class PettyCashMapper {
             return null;
         }
 
-        PettyCashDto pettyCashDto = new PettyCashDto();
-        pettyCashDto.setPettyCashId(pettyCash.getPettyCashId());
-        //pettyCashDto.setFund(FundMapper.toFundDto(pettyCash.getFund()));
-        pettyCashDto.setVoucherNo(pettyCash.getVoucherNo());
-        pettyCashDto.setDate(pettyCash.getDate());
-        pettyCashDto.setActivityDescription(pettyCash.getActivityDescription());
-        pettyCashDto.setActivityCategory(pettyCash.getActivityCategory());
-        pettyCashDto.setSoaCategory(pettyCash.getSoaCategory());
+        PettyCashDto dto = new PettyCashDto();
+        dto.setPettyCashId(pettyCash.getPettyCashId());
+        //dto.setFund(FundMapper.toFundDto(pettyCash.getFund()));
+        dto.setVoucherNo(pettyCash.getVoucherNo());
+        dto.setDate(pettyCash.getDate());
+        dto.setActivityDescription(pettyCash.getActivityDescription());
+        dto.setActivityCategory(pettyCash.getActivityCategory());
+        dto.setSoaCategory(pettyCash.getSoaCategory());
         Set<ClientAccountDto> accounts = pettyCash.getAccounts().stream()
                 .map(account -> new ClientAccountDto(
                         account.getClientAccountId(),
@@ -68,17 +68,17 @@ public class PettyCashMapper {
                         account.getClientAccountType()
                 ))
                 .collect(Collectors.toSet());
-        pettyCashDto.setAccounts(accounts);
-        // pettyCash.setLiquidations(pettyCashDto.getLiquidations());
-        pettyCashDto.setTotalAmount(pettyCash.getTotalAmount());
-        pettyCashDto.setApproved(pettyCash.getApproved());
-        pettyCashDto.setReceivedBy(pettyCash.getReceivedBy());
-        pettyCashDto.setApprovedBy(pettyCash.getApprovedBy());
-        pettyCashDto.setCreatedBy(pettyCash.getCreatedBy());
-        pettyCashDto.setCreatedAt(pettyCash.getCreatedAt());
-        pettyCashDto.setUpdatedBy(pettyCash.getUpdatedBy());
-        pettyCashDto.setUpdatedAt(pettyCash.getUpdatedAt());
+        dto.setAccounts(accounts);
+        // pettyCash.setLiquidations(dto.getLiquidations());
+        dto.setTotalAmount(pettyCash.getTotalAmount());
+        dto.setApproved(pettyCash.getApproved());
+        dto.setReceivedBy(UserMapper.toUserDto(pettyCash.getReceivedBy()));
+        dto.setApprovedBy(pettyCash.getApprovedBy());
+        dto.setCreatedBy(pettyCash.getCreatedBy());
+        dto.setCreatedAt(pettyCash.getCreatedAt());
+        dto.setUpdatedBy(pettyCash.getUpdatedBy());
+        dto.setUpdatedAt(pettyCash.getUpdatedAt());
 
-        return pettyCashDto;
+        return dto;
     }
 }

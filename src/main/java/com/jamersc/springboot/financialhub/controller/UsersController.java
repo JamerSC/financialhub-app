@@ -2,7 +2,6 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.dto.UserDto;
-import com.jamersc.springboot.financialhub.model.Contact;
 import com.jamersc.springboot.financialhub.model.Role;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
@@ -40,7 +39,7 @@ public class UsersController {
 
     @GetMapping("/users")
     public String usersManagementPage(Model model, @RequestParam(defaultValue = "0") int page) {
-        Page<User> usersPage = userService.findAll(PageRequest.of(page, 10));
+        Page<User> usersPage = userService.getAllUsersByPage(PageRequest.of(page, 10));
         List<User> users = usersPage.getContent();
         model.addAttribute("users", users);
         model.addAttribute("currentPage", page);
@@ -85,7 +84,7 @@ public class UsersController {
 
     @GetMapping("/user-settings-update-form/{id}")
     public String updateUsersAccountPage(@PathVariable(value = "id") Long id, Model model) {
-        UserDto userDto = userService.findUserRecordById(id);
+        UserDto userDto = userService.findUserById(id);
         if (userDto != null) {
             model.addAttribute("userDto", userDto);
             addRolesToModel(model);
@@ -105,7 +104,7 @@ public class UsersController {
             return "settings/update-user-form";
         }
         String updatedBy = getSessionUsername();
-        UserDto existingUser = userService.findUserRecordById(userDto.getUserId());
+        UserDto existingUser = userService.findUserById(userDto.getUserId());
         if (existingUser == null) {
             logger.error("User not found with id: " + userDto.getUserId());
             return "redirect:/settings/users";
@@ -129,7 +128,7 @@ public class UsersController {
     @GetMapping("/delete-user-record/{id}")
     public String deleteUsersAccountById(@PathVariable(value = "id") Long id) {
         logger.info("Process deleting user id: " + id);
-        userService.deleteUserRecordById(id);
+        userService.deleteUserById(id);
         return "redirect:/settings/users";
     }
 
