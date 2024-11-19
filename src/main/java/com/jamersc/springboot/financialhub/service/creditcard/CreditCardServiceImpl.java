@@ -45,7 +45,7 @@ public class CreditCardServiceImpl implements CreditCardService {
         CreditCard creditCard;
         if (creditCardDto.getId() != null) {
             creditCard = creditCardRepository.findById(creditCardDto.getId()).orElse(new CreditCard());
-            User updatedBy = userService.findByUsername(username);
+            User updatedBy = userService.getByUsername(username);
             if (updatedBy != null) {
                 creditCard.setUpdatedBy(updatedBy.getUserId());
             } else {
@@ -53,7 +53,7 @@ public class CreditCardServiceImpl implements CreditCardService {
             }
         } else {
             creditCard = new CreditCard();
-            User createdBy = userService.findByUsername(username);
+            User createdBy = userService.getByUsername(username);
             if (createdBy != null) {
                 creditCard.setCreatedBy(createdBy.getUserId());
                 creditCard.setUpdatedBy(createdBy.getUserId());

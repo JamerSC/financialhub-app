@@ -730,9 +730,9 @@ SELECT
     GROUP_CONCAT(ca.account_title ORDER BY ca.account_title ASC SEPARATOR ', ') AS "Account Titles"
 FROM 
     petty_cash_vouchers pcv
-JOIN 
+LEFT JOIN 
     petty_cash_client_accounts pcca ON pcv.petty_cash_id = pcca.petty_cash_id
-JOIN 
+LEFT JOIN 
     client_accounts ca ON pcca.client_account_id = ca.client_account_id	
 GROUP BY 
     pcv.petty_cash_id

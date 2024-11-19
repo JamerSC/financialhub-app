@@ -65,7 +65,7 @@ public class UsersController {
             addContactsNewUserToModel(model);
             return "settings/create-user-form";
         }
-        User existingUsername = userService.findByUsername(username);
+        User existingUsername = userService.getByUsername(username);
         if(existingUsername != null) {
             addUsersToModel(model);
             result.rejectValue("username", "error.username",
@@ -111,7 +111,7 @@ public class UsersController {
         }
         // Check if the username has been updated
         if (!existingUser.getUsername().equals(userDto.getUsername())) {
-            User existingUsername = userService.findByUsername(userDto.getUsername());
+            User existingUsername = userService.getByUsername(userDto.getUsername());
             if (existingUsername != null) {
                 result.rejectValue("username", "error.username",
                         "Invalid! Username '" + userDto.getUsername() + "' already exists!");

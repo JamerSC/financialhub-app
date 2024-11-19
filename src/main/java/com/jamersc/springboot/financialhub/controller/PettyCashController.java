@@ -1,12 +1,10 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.dto.ContactDto;
 import com.jamersc.springboot.financialhub.dto.FundDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
-import com.jamersc.springboot.financialhub.service.contact.ContactService;
 import com.jamersc.springboot.financialhub.service.pettycash.FundService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
@@ -27,6 +25,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.ByteArrayInputStream;
+import java.security.Principal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -43,16 +42,19 @@ public class PettyCashController {
     @Autowired
     private ClientAccountService clientAccountService;
     @Autowired
-    private ContactService contactService;
-    @Autowired
     private UserService userService;
     @Autowired
     private PettyCashVoucherService pettyCashVoucherService;
 
     @GetMapping("/list-of-petty-cash")
-    public String pettyCashVoucherPage(Model model,  @RequestParam(defaultValue = "1") Long id) {
+    public String pettyCashVoucherPage(Model model, @RequestParam(defaultValue = "1") Long id,
+                                       Principal principal) {
+
+        User loggedInUser = userService.getByUsername(principal.getName());
+
         FundDto fund = fundService.getFundById(id); // fund id# 1
-        List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
+        //List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
+        List<PettyCash> listOfPettyCash = pettyCashService.getPettyCashByUserRole(loggedInUser);
         model.addAttribute("listOfPettyCash", listOfPettyCash);
         model.addAttribute("pettyCash", new PettyCashDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
