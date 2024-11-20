@@ -41,7 +41,7 @@
                         <tr th:each="tempCreditCard : ${creditCards}">
                             <td th:text="${tempCreditCard.ccvNumber}"></td>
                             <td th:text="${tempCreditCard.payeeName}"></td>
-                            <td th:text="${#dates.format(tempCreditCard.date, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${#dates.format(tempCreditCard.date, 'MM/dd/yyyy')}"></td>
                             <td th:text="${#numbers.formatDecimal(tempCreditCard.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td th:text="${tempCreditCard.bank}"></td>
                             <td th:text="${tempCreditCard.modeOfPayment}"></td>

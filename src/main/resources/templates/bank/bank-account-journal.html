@@ -33,7 +33,6 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                         <tr>
-                            <th>Acc. ID</th>
                             <th>Transaction Date</th>
                             <th>Trans. Type</th>
                             <th>Debit</th>
@@ -45,8 +44,7 @@
                             <td colspan="5" class="text-center">No Journal Entry...</td>
                         </tr>
                         <tr th:each="tempTransaction : ${transactions}" th:unless="${#lists.isEmpty(transactions)}">
-                            <td th:text="${tempTransaction.id}"></td>
-                            <td th:text="${#dates.format(tempTransaction.transactionDate, 'dd MMMM yyyy')}"></td>
+                            <td th:text="${#dates.format(tempTransaction.transactionDate, 'MM/dd/yyyy')}"></td>
                             <td th:text="${tempTransaction.transactionType.displayBankTransactionType()}"></td>
                             <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
                             <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
