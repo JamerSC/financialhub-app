@@ -12,6 +12,12 @@ public interface PettyCashService {
 
     List<PettyCash> getPettyCashByUserRole(User user);
 
+    // Petty Cash Controller
+    List<PettyCash> getUnapprovedPettyCashByReceivedBy(User user);
+
+    // MyActivity Controller
+    List<PettyCash> getApprovedPettyCashByReceivedBy(User user);
+
     List<PettyCash> getAllPettyCashWithClientAccounts();
 
     PettyCashDto getPettyCashById(Long id);

@@ -15,7 +15,7 @@ public interface PettyCashRepository extends JpaRepository <PettyCash, Long> {
     //List<PettyCash> findAllWithClientAccounts();
 
     // Find by createdBy
-    List<PettyCash> findByCreatedBy(Long createdBy);
+    //List<PettyCash> findByCreatedBy(Long createdBy);
 
     // Find by receivedBy
     List<PettyCash> findByReceivedBy(User receivedBy);
@@ -23,4 +23,12 @@ public interface PettyCashRepository extends JpaRepository <PettyCash, Long> {
     // Find by both createdBy and receivedBy
     @Query("SELECT p FROM PettyCash p WHERE p.createdBy = :createdBy AND p.receivedBy = :receivedBy")
     List<PettyCash> findByCreatedByAndReceivedBy(@Param("createdBy") Long createdBy, @Param("receivedBy") User receivedBy);
+
+    // Find all unapproved petty cash entries for a specific receivedBy user
+    @Query("SELECT p FROM PettyCash p WHERE p.approved = false AND p.receivedBy = :receivedBy")
+    List<PettyCash> findUnapprovedPettyCashByReceivedBy(@Param("receivedBy") User receivedBy);
+
+    // Find all approved petty cash entries for a specific receivedBy user
+    @Query("SELECT p FROM PettyCash p WHERE p.approved = true AND p.receivedBy = :receivedBy")
+    List<PettyCash> findApprovedPettyCashByReceivedBy(@Param("receivedBy") User receivedBy);
 }

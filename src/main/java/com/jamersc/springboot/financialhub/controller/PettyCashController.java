@@ -54,7 +54,8 @@ public class PettyCashController {
 
         FundDto fund = fundService.getFundById(id); // fund id# 1
         //List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
-        List<PettyCash> listOfPettyCash = pettyCashService.getPettyCashByUserRole(loggedInUser);
+        //List<PettyCash> listOfPettyCash = pettyCashService.getPettyCashByUserRole(loggedInUser);
+        List<PettyCash> listOfPettyCash = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
         model.addAttribute("listOfPettyCash", listOfPettyCash);
         model.addAttribute("pettyCash", new PettyCashDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());

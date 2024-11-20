@@ -20,22 +20,25 @@
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
-                        <tr>
-                            <th>Date</th>
-                            <th>Activity Description</th>
-                            <th>Activity Category</th>
-                            <th>Account</th>
-                            <th>Type</th>
-                        </tr>
+                            <tr>
+                                <th>Activity Date</th>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>Account(s)</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Month/Day/Year</td>
-                            <td>Secure Documents</td>
-                            <td>Case Study</td>
-                            <td>ABC Corp.</td>
-                            <td>Legal or Admin</td>
-                        </tr>
+                            <tr th:each="tempActivity : ${myActivities}">
+                                <td th:text="${#dates.format(tempActivity.date, 'dd MMMM yyyy')}"></td>
+                                <td th:text="${tempActivity.activityDescription}"></td>
+                                <td th:text="${tempActivity.activityCategory}"></td>
+                                <td>
+                                    <!-- Display each account in the accounts list as a list item -->
+                                    <ul>
+                                        <li th:each="account : ${tempActivity.accounts}" th:text="${account.accountTitle} + ' (' + ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
+                                    </ul>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

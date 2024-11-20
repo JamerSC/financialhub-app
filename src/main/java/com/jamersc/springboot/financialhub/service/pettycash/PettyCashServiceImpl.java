@@ -68,6 +68,34 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
+    public List<PettyCash> getUnapprovedPettyCashByReceivedBy(User user) {
+        if (user.getRoles()
+                .stream()
+                .anyMatch(role -> role.getName()
+                        .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
+            // Admin & Manager View Petty Cash
+            return pettyCashRepository.findAll();
+        } else  {
+            //
+            return pettyCashRepository.findUnapprovedPettyCashByReceivedBy(user);
+        }
+    }
+
+    @Override
+    public List<PettyCash> getApprovedPettyCashByReceivedBy(User user) {
+        if (user.getRoles()
+                .stream()
+                .anyMatch(role -> role.getName()
+                        .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
+            // Admin & Manager View Petty Cash
+            return pettyCashRepository.findAll();
+        } else  {
+            //
+            return pettyCashRepository.findApprovedPettyCashByReceivedBy(user);
+        }
+    }
+
+    @Override
     public List<PettyCash> getAllPettyCashWithClientAccounts() {
         return pettyCashRepository.findAll();
     }
