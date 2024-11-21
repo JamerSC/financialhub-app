@@ -10,8 +10,6 @@ public interface PettyCashService {
 
     List<PettyCashDto> getAllPettyCash();
 
-    List<PettyCash> getPettyCashByUserRole(User user);
-
     // Petty Cash Controller
     List<PettyCash> getUnapprovedPettyCashByReceivedBy(User user);
 

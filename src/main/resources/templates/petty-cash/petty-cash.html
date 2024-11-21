@@ -64,7 +64,7 @@
                             <th>Date</th>
                             <th>Total Amount</th>
                             <th>Account(s)</th>
-                            <th>Approved</th>
+                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Approved</th>
                             <th sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN', 'MANAGER')">Actions</th>
                         </tr>
                         </thead>
@@ -74,13 +74,15 @@
                             <td th:text="${#dates.format(tempPettyCash.date, 'MM/dd/yyyy')}"></td> <!-- dd MMMM yyyy -->
                             <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td>
-                                <!-- Display each account in the accounts list as a list item -->
-                                <ul>
-                                    <li th:each="account : ${tempPettyCash.accounts}"
-                                        th:text="${account.accountTitle} + ' (' + ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
-                                </ul>
+                                <div class="mb-2">
+                                    <!-- Loop through accounts and display each in a styled <p> -->
+                                    <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
+                                        <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                        <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                    </p>
+                                </div>
                             </td>
-                            <td>
+                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                                 <input type="checkbox" class="form-check-input" th:checked="${tempPettyCash.approved}" disabled/>
                             </td>
                             <td>

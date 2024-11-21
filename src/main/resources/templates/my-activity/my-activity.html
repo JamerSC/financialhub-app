@@ -17,6 +17,12 @@
                         <div class="p-1">
                             <h4 class="fw-bold fs-4">My Activity</h4>
                         </div>
+                        <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="ms-auto p-1">
+                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                    data-bs-target="#addMyActivityModal" title="Add Activity">
+                                <i class="lni lni-plus-circle"></i> Activity
+                            </button>
+                        </div>
                     </div>
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
@@ -34,12 +40,13 @@
                                 <td th:text="${tempActivity.activityDescription}"></td>
                                 <td th:text="${tempActivity.activityCategory}"></td>
                                 <td>
-                                    <!-- Display each account in the accounts list as a list item -->
-                                    <ul>
-                                        <li th:each="account : ${tempActivity.accounts}"
-                                            th:text="${account.accountTitle} + ' (' +
-                                            ${account.clientAccountType.displayClientAccountType()} + ')'"></li>
-                                    </ul>
+                                    <div class="mb-2">
+                                        <!-- Loop through accounts and display each in a styled <p> -->
+                                        <p th:each="account : ${tempActivity.accounts}" class="mb-1">
+                                            <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                            <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                        </p>
+                                    </div>
                                 </td>
                                 <td>
                                     <span th:if="${tempActivity.receivedBy != null}"

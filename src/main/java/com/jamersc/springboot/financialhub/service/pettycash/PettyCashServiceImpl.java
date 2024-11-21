@@ -53,31 +53,16 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    public List<PettyCash> getPettyCashByUserRole(User user) {
-
-        if (user.getRoles()
-                .stream()
-                .anyMatch(role -> role.getName()
-                .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
-            // Admin & Manager View Petty Cash
-            return pettyCashRepository.findAll();
-        } else  {
-            //
-            return pettyCashRepository.findByReceivedBy(user);
-        }
-    }
-
-    @Override
     public List<PettyCash> getUnapprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashRepository.findAll();
+            return pettyCashRepository.fillAllPettyCashDateDesc();
         } else  {
             //
-            return pettyCashRepository.findUnapprovedPettyCashByReceivedBy(user);
+            return pettyCashRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
         }
     }
 
@@ -88,10 +73,10 @@ public class PettyCashServiceImpl implements PettyCashService {
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashRepository.findAll();
+            return pettyCashRepository.fillAllPettyCashDateDesc();
         } else  {
             //
-            return pettyCashRepository.findApprovedPettyCashByReceivedBy(user);
+            return pettyCashRepository.findApprovedPettyCashByReceivedByDateDesc(user);
         }
     }
 
