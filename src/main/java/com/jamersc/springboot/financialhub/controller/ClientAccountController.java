@@ -2,11 +2,11 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.model.CaseType;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import com.jamersc.springboot.financialhub.model.Status;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
 import com.jamersc.springboot.financialhub.service.contact.ContactService;
-import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashActivityService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -27,7 +27,7 @@ public class ClientAccountController {
     @Autowired
     private ContactService contactService;
     @Autowired
-    private PettyCashService pettyCashService;
+    private PettyCashActivityService pettyCashService;
 
 
     /*  ****  CASE ACCOUNT  **** */
@@ -67,7 +67,7 @@ public class ClientAccountController {
     public String viewCaseInformation(@PathVariable(value = "id") Long id, Model model) {
         ClientAccountDto caseSummary = clientAccountService.getClientAccountById(id);
         model.addAttribute("caseSummary", caseSummary);
-        List<PettyCash> listOfCaseActivities = pettyCashService.getByClientAccountId(caseSummary.getClientAccountId());
+        List<PettyCashActivity> listOfCaseActivities = pettyCashService.getByClientAccountId(caseSummary.getClientAccountId());
         model.addAttribute("listOfCaseActivities", listOfCaseActivities);
         return "case/case-summary";
     }
@@ -337,7 +337,7 @@ public class ClientAccountController {
     public String projectSummary(@PathVariable(value = "id") Long id, Model model) {
         ClientAccountDto projectSummary = clientAccountService.getClientAccountById(id);
         model.addAttribute("projectSummary", projectSummary);
-        List<PettyCash> listOfProjectActivities = pettyCashService.getByClientAccountId(projectSummary.getClientAccountId());
+        List<PettyCashActivity> listOfProjectActivities = pettyCashService.getByClientAccountId(projectSummary.getClientAccountId());
         model.addAttribute("listOfProjectActivities", listOfProjectActivities);
         return "project/project-summary";
     }
@@ -381,7 +381,7 @@ public class ClientAccountController {
     public String retainerActivity(@PathVariable(value = "id") Long id, Model model) {
         ClientAccountDto retainer = clientAccountService.getClientAccountById(id);
         model.addAttribute("retainer", retainer);
-        List<PettyCash> listOfRetainerActivities = pettyCashService.getByClientAccountId(retainer.getClientAccountId());
+        List<PettyCashActivity> listOfRetainerActivities = pettyCashService.getByClientAccountId(retainer.getClientAccountId());
         model.addAttribute("listOfRetainerActivities", listOfRetainerActivities);
         return "retainer/retainer-activity";
     }

@@ -1,15 +1,8 @@
-package com.jamersc.springboot.financialhub.service.pettycash;
+package com.jamersc.springboot.financialhub.service.petty_cash_activity;
 
-import com.jamersc.springboot.financialhub.model.Liquidation;
-import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.repository.LiquidationRepository;
-import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Transactional

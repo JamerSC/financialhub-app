@@ -20,7 +20,7 @@ public class ClientAccountDto {
         private CaseAccountDto caseAccount; // one to one client account
         private ProjectAccountDto projectAccount; // one to one client account
         private RetainerAccountDto retainerAccount; // one to one client account
-        private Set<PettyCashDto> pettyCash;
+        private Set<PettyCashActivityDto> pettyCash;
         private Long createdBy;
         private Date createdAt;
         private Long updatedBy;

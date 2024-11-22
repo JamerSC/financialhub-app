@@ -2,7 +2,7 @@ package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.check.CheckService;
-import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashActivityService;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -29,7 +29,7 @@ public class HubController {
     private UserService userService;
 
     @Autowired
-    private PettyCashService pettyCashService;
+    private PettyCashActivityService pettyCashActivityService;
 
     @Autowired
     private CheckService checkService;
@@ -44,7 +44,7 @@ public class HubController {
                                      @RequestParam(defaultValue = "0") int page,
                                      @RequestParam(defaultValue = "5") int size) {
         model.addAttribute("totalOfUsers", userService.getAllUsers());
-        model.addAttribute("totalOfPettyCash", pettyCashService.getAllPettyCash());
+        model.addAttribute("totalOfPettyCash", pettyCashActivityService.getAllPettyCash());
         model.addAttribute("totalOfChecks", checkService.getAllCheckRecord());
 
         Page<User> usersPage = userService.getAllUsersByPage(PageRequest.of(page, size));

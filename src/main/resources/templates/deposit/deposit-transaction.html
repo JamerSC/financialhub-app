@@ -70,7 +70,7 @@
                                 <td colspan="5" class="text-center">No deposit transaction...</td>
                              </tr>
                             <tr th:each="tempDeposit : ${listOfDeposits}" th:unless="${#lists.isEmpty(listOfDeposits)}">
-                            <td th:text="${#dates.format(tempDeposit.transactionDate, 'MM/dd/yyyy')}"></td>
+                            <td th:text="${#dates.format(tempDeposit.transactionDate, 'MMM. d, yyyy')}"></td>
                             <td th:text="${tempDeposit.transactionType.displayBankTransactionType() }"></td>
                             <td th:text="${tempDeposit.transactionAmount != null ? #numbers.formatDecimal(tempDeposit.transactionAmount, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
                             <td th:text="${tempDeposit.transactionNote}"></td>

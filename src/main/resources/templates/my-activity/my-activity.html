@@ -27,7 +27,7 @@
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                             <tr>
-                                <th>Activity Date</th>
+                                <th>Date</th>
                                 <th>Description</th>
                                 <th>Category</th>
                                 <th>Account(s)</th>
@@ -36,16 +36,16 @@
                         </thead>
                         <tbody>
                             <tr th:each="tempActivity : ${myActivities}">
-                                <td th:text="${#dates.format(tempActivity.date, 'MM/dd/yyyy')}"></td> <!-- dd MMMM yyyy -->
+                                <td th:text="${#dates.format(tempActivity.date, 'MMM. d, yyyy')}"></td>
                                 <td th:text="${tempActivity.activityDescription}"></td>
                                 <td th:text="${tempActivity.activityCategory}"></td>
                                 <td>
                                     <div class="mb-2">
                                         <div>
-                                            <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempActivity.pettyCashId}">
+                                            <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempActivity.pcActivityId}">
                                                 Show Accounts <i class="lni lni-chevron-down"></i>
                                             </a>
-                                            <div th:id="'collapse-' + ${tempActivity.pettyCashId}" class="collapse mt-2">
+                                            <div th:id="'collapse-' + ${tempActivity.pcActivityId}" class="collapse mt-2">
                                                 <p th:each="account : ${tempActivity.accounts}" class="mb-1">
                                                     <span class="fw-bold" th:text="${account.accountTitle}"></span>
                                                     <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>

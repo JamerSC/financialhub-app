@@ -1,9 +1,9 @@
 package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.FundDto;
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
 import com.jamersc.springboot.financialhub.model.Fund;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class FundMapper {
             return null;
         }
 
-        List<PettyCash> pettyCashEntities = fundDto.getPettyCash() != null
+        List<PettyCashActivity> pettyCashEntities = fundDto.getPettyCash() != null
                 ? fundDto.getPettyCash().stream().map(PettyCashMapper::toPettyCashEntity).collect(Collectors.toList())
                 : null;
 
@@ -39,13 +39,13 @@ public class FundMapper {
             return null;
         }
 
-        List<PettyCashDto> pettyCashDtos = fund.getPettyCash() != null
+        List<PettyCashActivityDto> pettyCashActivityDtos = fund.getPettyCash() != null
                 ? fund.getPettyCash().stream().map(PettyCashMapper::toPettyCashDto).collect(Collectors.toList())
                 : null;
 
         return new FundDto(
                 fund.getFundId(),
-                pettyCashDtos,
+                pettyCashActivityDtos,
                 fund.getFundBalance(),
                 fund.getCreatedBy(),
                 fund.getCreatedAt(),

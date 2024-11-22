@@ -35,7 +35,8 @@
                             <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.displayContactType()}"></span></p>
                             <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.displayContactCategoryType()}"></span></p>
                             <p><strong>Best Channel to Contact:</strong> <span th:if="${contact?.bestChannelToContact}" th:text="${contact.bestChannelToContact}"></span></p>
-                            <p><strong>Engagement Date:</strong> <span th:if="${#dates.format(contact?.engagementDate, 'yyyy-MM-dd')}" th:text="${#dates.format(contact.engagementDate, 'yyyy-MM-dd')}"></span></p>
+                            <p><strong>Engagement Date:</strong> <span th:if="${#dates.format(contact?.engagementDate, 'MMMM d, yyyy')}"
+                                                                       th:text="${#dates.format(contact.engagementDate, 'MMMM d, yyyy')}"></span></p>
                         </div>
                     </div>
 

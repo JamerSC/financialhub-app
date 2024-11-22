@@ -3,7 +3,6 @@ package com.jamersc.springboot.financialhub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -25,7 +24,7 @@ public class Fund {
     @OneToMany(mappedBy = "fund", fetch = FetchType.LAZY,  orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private List<PettyCash> pettyCash;
+    private List<PettyCashActivity> pettyCash;
 
     @Column(name = "fund_balance")
     private Double fundBalance;

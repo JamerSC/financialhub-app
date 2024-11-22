@@ -1,20 +1,8 @@
 package com.jamersc.springboot.financialhub.controller;
 
-import com.jamersc.springboot.financialhub.model.Contact;
-import com.jamersc.springboot.financialhub.model.Liquidation;
-import com.jamersc.springboot.financialhub.model.PettyCash;
-import com.jamersc.springboot.financialhub.service.contact.ContactService;
-import com.jamersc.springboot.financialhub.service.pettycash.LiquidationService;
-import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Controller

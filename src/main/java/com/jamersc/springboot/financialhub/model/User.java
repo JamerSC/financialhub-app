@@ -3,7 +3,6 @@ package com.jamersc.springboot.financialhub.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -41,7 +40,7 @@ public class User {
     @OneToMany(mappedBy = "receivedBy", fetch = FetchType.LAZY, orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    private List<PettyCash> pettyCash;
+    private List<PettyCashActivity> pettyCash;
 
     @Column(name = "created_by")
     private Long createdBy;

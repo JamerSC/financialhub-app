@@ -1,8 +1,8 @@
-package com.jamersc.springboot.financialhub.service.pettycash;
+package com.jamersc.springboot.financialhub.service.petty_cash_activity;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.FundDto;
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
 import com.jamersc.springboot.financialhub.dto.UserDto;
 import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
 import com.jamersc.springboot.financialhub.mapper.FundMapper;
@@ -10,11 +10,11 @@ import com.jamersc.springboot.financialhub.mapper.PettyCashMapper;
 import com.jamersc.springboot.financialhub.mapper.UserMapper;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
 import com.jamersc.springboot.financialhub.model.Fund;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.repository.ClientAccountRepository;
 import com.jamersc.springboot.financialhub.repository.FundRepository;
-import com.jamersc.springboot.financialhub.repository.PettyCashRepository;
+import com.jamersc.springboot.financialhub.repository.PettyCashActivityRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
@@ -32,11 +32,11 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @AllArgsConstructor
-public class PettyCashServiceImpl implements PettyCashService {
+public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PettyCashServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PettyCashActivityServiceImpl.class);
     @Autowired
-    private PettyCashRepository pettyCashRepository;
+    private PettyCashActivityRepository pettyCashActivityRepository;
     @Autowired
     private ClientAccountRepository clientAccountRepository;
     @Autowired
@@ -45,58 +45,58 @@ public class PettyCashServiceImpl implements PettyCashService {
     private FundRepository fundRepository;
 
     @Override
-    public List<PettyCashDto> getAllPettyCash() {
+    public List<PettyCashActivityDto> getAllPettyCash() {
         logger.info("Get all petty cash records.");
-        return pettyCashRepository.findAll().stream()
+        return pettyCashActivityRepository.findAll().stream()
                 .map(PettyCashMapper::toPettyCashDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<PettyCash> getUnapprovedPettyCashByReceivedBy(User user) {
+    public List<PettyCashActivity> getUnapprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashRepository.fillAllPettyCashDateDesc();
+            return pettyCashActivityRepository.fillAllPettyCashDateDesc();
         } else  {
             //
-            return pettyCashRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
+            return pettyCashActivityRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
         }
     }
 
     @Override
-    public List<PettyCash> getApprovedPettyCashByReceivedBy(User user) {
+    public List<PettyCashActivity> getApprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashRepository.fillAllPettyCashDateDesc();
+            return pettyCashActivityRepository.fillAllPettyCashDateDesc();
         } else  {
             //
-            return pettyCashRepository.findApprovedPettyCashByReceivedByDateDesc(user);
+            return pettyCashActivityRepository.findApprovedPettyCashByReceivedByDateDesc(user);
         }
     }
 
     @Override
-    public List<PettyCash> getByClientAccountId(Long id) {
-        return  pettyCashRepository.findByClientAccountId(id);
+    public List<PettyCashActivity> getByClientAccountId(Long id) {
+        return  pettyCashActivityRepository.findByClientAccountId(id);
     }
 
     @Override
-    public List<PettyCash> getAllPettyCashWithClientAccounts() {
-        return pettyCashRepository.findAll();
+    public List<PettyCashActivity> getAllPettyCashWithClientAccounts() {
+        return pettyCashActivityRepository.findAll();
     }
 
     @Override
-    public PettyCashDto getPettyCashById(Long id) {
-        PettyCash pettyCash = pettyCashRepository.findById(id)
+    public PettyCashActivityDto getPettyCashById(Long id) {
+        PettyCashActivity pettyCash = pettyCashActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
         // Convert to Dto Accounts, Petty Cash, & Fund
 
-        PettyCashDto dto = PettyCashMapper.toPettyCashDto(pettyCash);
+        PettyCashActivityDto dto = PettyCashMapper.toPettyCashDto(pettyCash);
 
         Set<ClientAccountDto> accounts = pettyCash.getAccounts()
                 .stream().
@@ -115,8 +115,8 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    public PettyCash getPettyCashLiquidationById(Long id) {
-        PettyCash pettyCash = pettyCashRepository.findById(id)
+    public PettyCashActivity getPettyCashLiquidationById(Long id) {
+        PettyCashActivity pettyCash = pettyCashActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash not found"));
         Hibernate.initialize(pettyCash.getLiquidations());
         //pettyCash.getLiquidations().size();
@@ -124,13 +124,13 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
-    public void savePettyCash(PettyCashDto dto, String username) {
-        PettyCash pettyCash;
+    public void savePettyCash(PettyCashActivityDto dto, String username) {
+        PettyCashActivity pettyCash;
 
-        if (dto.getPettyCashId() != null) {
+        if (dto.getPcActivityId() != null) {
             // UPDATE PETTY CASH
-            pettyCash = pettyCashRepository.findById(dto.getPettyCashId())
-                    .orElse(new PettyCash());
+            pettyCash = pettyCashActivityRepository.findById(dto.getPcActivityId())
+                    .orElse(new PettyCashActivity());
 
             //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             if (dto.getFund() != null) {
@@ -139,7 +139,7 @@ public class PettyCashServiceImpl implements PettyCashService {
                 pettyCash.setFund(fundId);
             }
 
-            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setPcActivityNo(dto.getPcActivityNo());
             pettyCash.setDate(dto.getDate());
             pettyCash.setActivityDescription(dto.getActivityDescription());
             pettyCash.setActivityCategory(dto.getActivityCategory());
@@ -181,12 +181,12 @@ public class PettyCashServiceImpl implements PettyCashService {
         } else {
             // CREATE NEW PETTY CASH
 
-            pettyCash = new PettyCash();
+            pettyCash = new PettyCashActivity();
 
             Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             pettyCash.setFund(manageFund);
 
-            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setPcActivityNo(dto.getPcActivityNo());
             pettyCash.setDate(dto.getDate());
             pettyCash.setActivityDescription(dto.getActivityDescription());
             pettyCash.setActivityCategory(dto.getActivityCategory());
@@ -216,17 +216,17 @@ public class PettyCashServiceImpl implements PettyCashService {
             logger.info("Successfully created new petty cash: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
-        pettyCashRepository.save(pettyCash);
+        pettyCashActivityRepository.save(pettyCash);
     }
 
     @Override
-    public void saveAdminPettyCash(PettyCashDto dto, String username) {
-        PettyCash pettyCash;
+    public void saveAdminPettyCash(PettyCashActivityDto dto, String username) {
+        PettyCashActivity pettyCash;
 
-        if (dto.getPettyCashId() != null) {
+        if (dto.getPcActivityId() != null) {
             // UPDATE PETTY CASH
-            pettyCash = pettyCashRepository.findById(dto.getPettyCashId())
-                    .orElse(new PettyCash());
+            pettyCash = pettyCashActivityRepository.findById(dto.getPcActivityId())
+                    .orElse(new PettyCashActivity());
 
             //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             if (dto.getFund() != null) {
@@ -235,7 +235,7 @@ public class PettyCashServiceImpl implements PettyCashService {
                 pettyCash.setFund(fundId);
             }
 
-            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setPcActivityNo(dto.getPcActivityNo());
             pettyCash.setDate(dto.getDate());
             pettyCash.setActivityDescription(dto.getActivityDescription());
             pettyCash.setActivityCategory(dto.getActivityCategory());
@@ -267,12 +267,12 @@ public class PettyCashServiceImpl implements PettyCashService {
         } else {
             // CREATE NEW PETTY CASH
 
-            pettyCash = new PettyCash();
+            pettyCash = new PettyCashActivity();
 
             Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             pettyCash.setFund(manageFund);
 
-            pettyCash.setVoucherNo(dto.getVoucherNo());
+            pettyCash.setPcActivityNo(dto.getPcActivityNo());
             pettyCash.setDate(dto.getDate());
             pettyCash.setActivityDescription(dto.getActivityDescription());
             pettyCash.setActivityCategory(dto.getActivityCategory());
@@ -300,18 +300,18 @@ public class PettyCashServiceImpl implements PettyCashService {
             logger.info("Successfully created new petty cash admin works: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
-        pettyCashRepository.save(pettyCash);
+        pettyCashActivityRepository.save(pettyCash);
     }
 
     @Override
-    public void save(PettyCash pettyCash) {
+    public void save(PettyCashActivity pettyCash) {
         logger.info("Saving... " + pettyCash);
-        pettyCashRepository.save(pettyCash);
+        pettyCashActivityRepository.save(pettyCash);
     }
 
     @Override
     public void deletePettyCashRecordById(Long id) {
         System.out.println("Delete request for id: " + id);
-        pettyCashRepository.deleteById(id);
+        pettyCashActivityRepository.deleteById(id);
     }
 }

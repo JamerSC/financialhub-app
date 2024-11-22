@@ -55,7 +55,7 @@
                         <td th:text="${tempCase.caseAccount.status.displayStatus()}"></td>
                         <td th:text="${tempCase.caseAccount.stage}"></td>
                         <td>-</td>
-                        <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'MM/dd/yyyy')}"></td>
+                        <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'MMM. d, yyyy')}"></td>
                         <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                             <!--<a th:href="@{/client-account/case-summary}" class="btn btn-secondary btn-sm" title="view">
                                 <i class="lni lni-eye"></i>

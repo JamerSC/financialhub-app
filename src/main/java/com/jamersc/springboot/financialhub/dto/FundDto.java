@@ -14,7 +14,7 @@ import java.util.List;
 public class FundDto {
 
     private Long fundId;
-    private List<PettyCashDto> pettyCash;
+    private List<PettyCashActivityDto> pettyCash;
     private Double fundBalance;
     private Long createdBy;
     private Date createdAt;

@@ -42,7 +42,7 @@
                         <tr th:each="tempCheck : ${checks}">
                             <td th:text="${tempCheck.cvNumber}"></td>
                             <td th:text="${tempCheck.payeeName}"></td>
-                            <td th:text="${#dates.format(tempCheck.date, 'MM/dd/yyyy')}"></td>
+                            <td th:text="${#dates.format(tempCheck.date, 'MMM. d, yyyy')}"></td>
                             <td th:text="${#numbers.formatDecimal(tempCheck.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td th:text="${tempCheck.bank}"></td>
                             <td th:text="${tempCheck.checkNumber}"></td>

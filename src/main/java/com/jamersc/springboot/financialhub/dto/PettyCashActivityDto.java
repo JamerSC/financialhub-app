@@ -12,11 +12,11 @@ import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class PettyCashDto {
+public class PettyCashActivityDto {
 
-    private Long pettyCashId;
+    private Long pcActivityId;
     private FundDto fund;
-    private String voucherNo;
+    private String pcActivityNo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String activityDescription;

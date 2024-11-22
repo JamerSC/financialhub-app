@@ -17,8 +17,8 @@
             <div class="row justify-content-center">
                 <div class="col-md-6">
                     <!-- Insert form-->
-                    <form action="#" th:action="@{/petty-cash/petty-cash-form}" th:object="${pettyCashDto}" method="POST">
-                        <input type="hidden" th:value="${pettyCashDto.fund.id}" th:field="*{fund.id}"/>
+                    <form action="#" th:action="@{/petty-cash/petty-cash-form}" th:object="${pettyCashActivityDto}" method="POST">
+                        <input type="hidden" th:value="${pettyCashActivityDto.fund.id}" th:field="*{fund.id}"/>
                         <div class="mb-3">
                             <label for="pcvNumber" class="form-label">Cash Voucher Number</label>
                             <input type="text"

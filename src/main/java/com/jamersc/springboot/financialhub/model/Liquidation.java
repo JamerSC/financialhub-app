@@ -2,7 +2,6 @@ package com.jamersc.springboot.financialhub.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -24,7 +23,7 @@ public class Liquidation {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "petty_cash_id")
-    private PettyCash pettyCash;
+    private PettyCashActivity pettyCash;
 
     @Column(name = "date")
     private Date date;

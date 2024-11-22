@@ -1,6 +1,6 @@
-package com.jamersc.springboot.financialhub.service.pettycash;
+package com.jamersc.springboot.financialhub.service.petty_cash_activity;
 
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.Rectangle;
@@ -18,7 +18,7 @@ import java.text.SimpleDateFormat;
 @Service
 public class PettyCashVoucherService {
 
-    public ByteArrayInputStream generatePettyCashVoucher(PettyCashDto pettyCashDto) {
+    public ByteArrayInputStream generatePettyCashVoucher(PettyCashActivityDto pettyCashActivityDto) {
         Document document = new Document();
         ByteArrayOutputStream out = new ByteArrayOutputStream();
 
@@ -47,7 +47,7 @@ public class PettyCashVoucherService {
                     leftTitleCell.setHorizontalAlignment(Element.ALIGN_LEFT);
 
                     // Right-aligned title
-                    PdfPCell rightTitleCell = new PdfPCell(new Phrase("No. " + pettyCashDto.getVoucherNo(), titleFont));
+                    PdfPCell rightTitleCell = new PdfPCell(new Phrase("No. " + pettyCashActivityDto.getPcActivityNo(), titleFont));
                     rightTitleCell.setBorder(Rectangle.NO_BORDER); // No border
                     rightTitleCell.setHorizontalAlignment(Element.ALIGN_RIGHT);
 
@@ -69,14 +69,14 @@ public class PettyCashVoucherService {
                     receiverDateTable.setWidths(new float[]{1f, 1f});
 
                     // Receiver name
-                    PdfPCell receiverNameCell = new PdfPCell(new Phrase("To: " + pettyCashDto.getReceivedBy(), regularFont));
+                    PdfPCell receiverNameCell = new PdfPCell(new Phrase("To: " + pettyCashActivityDto.getReceivedBy(), regularFont));
                     receiverNameCell.setBorder(Rectangle.BOX); // Border added
                     receiverNameCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     receiverNameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
                     // Received date
                     SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM dd, yyyy");
-                    String formattedDate = dateFormat.format(pettyCashDto.getDate());
+                    String formattedDate = dateFormat.format(pettyCashActivityDto.getDate());
                     PdfPCell receivedDateCell = new PdfPCell(new Phrase("Date: " + formattedDate, regularFont));
                     receivedDateCell.setBorder(Rectangle.BOX); // Border added
                     receivedDateCell.setHorizontalAlignment(Element.ALIGN_LEFT); // Align to left
@@ -123,14 +123,14 @@ public class PettyCashVoucherService {
                     particularsDetailTable.setWidths(new float[]{7f, 3f}); // 70% and 30% widths
 
                     // Particulars details
-                    PdfPCell particularsDetailCell = new PdfPCell(new Phrase(pettyCashDto.getActivityDescription(), regularFont));
+                    PdfPCell particularsDetailCell = new PdfPCell(new Phrase(pettyCashActivityDto.getActivityDescription(), regularFont));
                     particularsDetailCell.setBorder(Rectangle.BOX); // Border added
                     particularsDetailCell.setHorizontalAlignment(Element.ALIGN_LEFT); // Align to left
                     particularsDetailCell.setVerticalAlignment(Element.ALIGN_TOP); // Align to top
                     particularsDetailCell.setFixedHeight(200f); // Fixed height
 
                     // Amount details
-                    String formattedAmount = String.format("%.2f", pettyCashDto.getTotalAmount());
+                    String formattedAmount = String.format("%.2f", pettyCashActivityDto.getTotalAmount());
                     PdfPCell amountDetailCell = new PdfPCell(new Phrase(formattedAmount, regularFont));
                     amountDetailCell.setBorder(Rectangle.BOX); // Border added
                     amountDetailCell.setHorizontalAlignment(Element.ALIGN_CENTER); // Centered
@@ -178,13 +178,13 @@ public class PettyCashVoucherService {
                     approvalTable.setWidths(new float[]{1f, 1f}); // Equal column widths
 
                     // Approved by
-                    PdfPCell approvedByCell = new PdfPCell(new Phrase("Approved By: " + pettyCashDto.getApprovedBy(), regularFont));
+                    PdfPCell approvedByCell = new PdfPCell(new Phrase("Approved By: " + pettyCashActivityDto.getApprovedBy(), regularFont));
                     approvedByCell.setBorder(Rectangle.BOX); // Border added
                     approvedByCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     approvedByCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
                     // Received by
-                    PdfPCell receivedByCell = new PdfPCell(new Phrase("Received By: " + pettyCashDto.getReceivedBy(), regularFont));
+                    PdfPCell receivedByCell = new PdfPCell(new Phrase("Received By: " + pettyCashActivityDto.getReceivedBy(), regularFont));
                     receivedByCell.setBorder(Rectangle.BOX); // Border added
                     receivedByCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     receivedByCell.setVerticalAlignment(Element.ALIGN_MIDDLE);

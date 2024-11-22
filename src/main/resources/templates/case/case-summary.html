@@ -79,7 +79,7 @@
                             <td colspan="4" class="text-center">No case activities...</td>
                         </tr>
                         <tr th:each="activity : ${listOfCaseActivities}" th:unless="${#lists.isEmpty(listOfCaseActivities)}">
-                            <td th:text="${#dates.format(activity.date, 'MM-dd-yyyy')}"></td>
+                            <td th:text="${#dates.format(activity.date, 'MMM. d, yyyy')}"></td>
                             <td th:text="${activity.activityDescription}"></td>
                             <td th:text="${activity.activityCategory}"></td>
                             <td th:text="${activity.receivedBy.fullName}"></td>

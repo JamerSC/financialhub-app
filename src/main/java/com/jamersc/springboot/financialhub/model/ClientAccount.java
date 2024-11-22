@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -48,7 +47,7 @@ public class ClientAccount {
     private RetainerAccount retainerAccount;
 
     @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
-    private Set<PettyCash> pettyCash;
+    private Set<PettyCashActivity> pettyCashActivity;
 
     @Column(name = "created_by")
     private Long createdBy;

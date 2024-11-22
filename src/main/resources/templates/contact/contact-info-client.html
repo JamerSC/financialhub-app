@@ -37,7 +37,8 @@
                         <p><strong>Contact Type:</strong> <span th:text="${contact.contactType.displayContactType()}"></span></p>
                         <p><strong>Category Type:</strong> <span th:text="${contact.contactCategoryType.displayContactCategoryType()}"></span></p>
                         <p><strong>Best Channel to Contact:</strong> <span th:if="${contact?.bestChannelToContact}" th:text="${contact.bestChannelToContact}"></span></p>
-                        <p><strong>Engagement Date:</strong> <span th:if="${#dates.format(contact?.engagementDate, 'yyyy-MM-dd')}" th:text="${#dates.format(contact.engagementDate, 'yyyy-MM-dd')}"></span></p>
+                        <p><strong>Engagement Date:</strong> <span th:if="${#dates.format(contact?.engagementDate, 'MMMM d, yyyy')}"
+                                                                   th:text="${#dates.format(contact.engagementDate, 'MMMM d, yyyy')}"></span></p>
                         <br>
                         <h5>Internal Additional Details</h5>
                         <p><strong>Designation/For:</strong> <span th:if="${contact?.additionalDetails?.designationFor}" th:text="${contact.additionalDetails.designationFor}"></span></p>
@@ -50,7 +51,6 @@
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
                     <tr>
-                        <td>Acc. ID</td>
                         <th>Account Title</th>
                         <th>Account Type</th>
                         <th>Status</th>
@@ -61,7 +61,6 @@
                         <td colspan="4" class="text-center">No existing cases/projects...</td>
                     </tr>
                     <tr th:each="account : ${contact.clientAccounts}" th:unless="${#lists.isEmpty(contact.clientAccounts)}">
-                        <td th:text="${account.clientAccountId}"></td>
                         <td th:text="${account.accountTitle}"></td>
                         <td th:text="${account.clientAccountType.displayClientAccountType()}"></td>
                         <td th:text="${account.caseAccount != null && account.caseAccount.status != null ?

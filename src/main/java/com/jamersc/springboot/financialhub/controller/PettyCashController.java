@@ -1,13 +1,13 @@
 package com.jamersc.springboot.financialhub.controller;
 
 import com.jamersc.springboot.financialhub.dto.FundDto;
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
+import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
-import com.jamersc.springboot.financialhub.service.pettycash.FundService;
-import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
-import com.jamersc.springboot.financialhub.service.pettycash.PettyCashVoucherService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.FundService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashActivityService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashVoucherService;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class PettyCashController {
     @Autowired
     private FundService fundService;
     @Autowired
-    private PettyCashService pettyCashService;
+    private PettyCashActivityService pettyCashService;
     @Autowired
     private ClientAccountService clientAccountService;
     @Autowired
@@ -55,9 +55,9 @@ public class PettyCashController {
         FundDto fund = fundService.getFundById(id); // fund id# 1
         //List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
         //List<PettyCash> listOfPettyCash = pettyCashService.getPettyCashByUserRole(loggedInUser);
-        List<PettyCash> listOfPettyCash = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
-        model.addAttribute("listOfPettyCash", listOfPettyCash);
-        model.addAttribute("pettyCash", new PettyCashDto());
+        List<PettyCashActivity> listOfPettyCashActivities = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
+        model.addAttribute("listOfPettyCashActivities", listOfPettyCashActivities);
+        model.addAttribute("pettyCash", new PettyCashActivityDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
         model.addAttribute("fund", fund);
         List<User> internalUsers = userService.getAllUsers();
@@ -66,7 +66,7 @@ public class PettyCashController {
     }
 
     @PostMapping("/{id}/add-petty-cash")
-    public String pettyCashForm(@ModelAttribute("pettyCash") PettyCashDto pettyCash,
+    public String pettyCashForm(@ModelAttribute("pettyCash") PettyCashActivityDto pettyCash,
                                 @PathVariable(value = "id") Long id) {
         String createdBy = getSessionUsername();
         FundDto fund = fundService.getFundById(id);
@@ -77,12 +77,12 @@ public class PettyCashController {
 
     @GetMapping("/edit-petty-cash")
     @ResponseBody
-    public PettyCashDto findPettyCashRecordById(Long id) {
+    public PettyCashActivityDto findPettyCashRecordById(Long id) {
         return pettyCashService.getPettyCashById(id);
     }
 
     @PostMapping("/update-petty-cash")
-    public String updatePettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash) {
+    public String updatePettyCash(@ModelAttribute("pettyCash") PettyCashActivityDto pettyCash) {
         String updatedBy = getSessionUsername();
         pettyCashService.savePettyCash(pettyCash, updatedBy);
         return "redirect:/petty-cash/list-of-petty-cash";
@@ -91,7 +91,7 @@ public class PettyCashController {
     // ADMIN SUPPORT PETTY CASH
 
     @PostMapping("/{id}/add-admin-petty-cash")
-    public String addAdminPettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash,
+    public String addAdminPettyCash(@ModelAttribute("pettyCash") PettyCashActivityDto pettyCash,
                                          @PathVariable(value = "id") Long id) {
         String adminCreatedBy = getSessionUsername();
         FundDto fund = fundService.getFundById(id);
@@ -102,12 +102,12 @@ public class PettyCashController {
 
     @GetMapping("/edit-admin-petty-cash")
     @ResponseBody
-    public PettyCashDto findAdminPettyCashRecordById(Long id) {
+    public PettyCashActivityDto findAdminPettyCashRecordById(Long id) {
         return pettyCashService.getPettyCashById(id);
     }
 
     @PostMapping("/update-admin-petty-cash")
-    public String updateAdminPettyCash(@ModelAttribute("pettyCash") PettyCashDto pettyCash) {
+    public String updateAdminPettyCash(@ModelAttribute("pettyCash") PettyCashActivityDto pettyCash) {
         String adminUpdatedBy = getSessionUsername();
         pettyCashService.saveAdminPettyCash(pettyCash, adminUpdatedBy);
         return "redirect:/petty-cash/list-of-petty-cash";
@@ -117,40 +117,40 @@ public class PettyCashController {
     /* ------------------------- */
 
     @PostMapping("/petty-cash-form")
-    public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
+    public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
                                    BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Please complete all required fields!");
             return "petty-cash/petty-cash-form";
         } else {
             String createdBy = getSessionUsername();
-            logger.info("Created petty cash voucher: " + pettyCashDto);
-            pettyCashService.savePettyCash(pettyCashDto, createdBy);
+            logger.info("Created petty cash voucher: " + pettyCashActivityDto);
+            pettyCashService.savePettyCash(pettyCashActivityDto, createdBy);
             return "redirect:/petty-cash/list-of-petty-cash";
         }
     }
 
     @GetMapping("/petty-cash-update-form/{id}")
     public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
-        PettyCashDto pettyCashDto = pettyCashService.getPettyCashById(id);
-        if (pettyCashDto != null) {
-            logger.info("Fetching petty cash form id: " + pettyCashDto.getPettyCashId());
-            model.addAttribute("pettyCashDto", pettyCashDto);
+        PettyCashActivityDto pettyCashActivityDto = pettyCashService.getPettyCashById(id);
+        if (pettyCashActivityDto != null) {
+            logger.info("Fetching petty cash form id: " + pettyCashActivityDto.getPcActivityId());
+            model.addAttribute("pettyCashDto", pettyCashActivityDto);
             return "petty-cash/petty-cash-update-form";
         }
         return "redirect:/petty-cash/list-of-petty-cash";
     }
 
     @PostMapping("/petty-cash-update-form")
-    public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashDto pettyCashDto,
+    public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
                                              BindingResult result, Model model) {
         if (result.hasErrors()) {
             logger.error("Error! Please complete all required fields.");
             return "petty-cash/petty-cash-update-form";
         } else {
             String updatedBy = getSessionUsername();
-            pettyCashService.savePettyCash(pettyCashDto, updatedBy);
-            logger.info("Updated petty cash voucher!\n" + pettyCashDto);
+            pettyCashService.savePettyCash(pettyCashActivityDto, updatedBy);
+            logger.info("Updated petty cash voucher!\n" + pettyCashActivityDto);
             return "redirect:/petty-cash/list-of-petty-cash";
         }
     }
@@ -165,15 +165,15 @@ public class PettyCashController {
 
     @GetMapping("/generate-petty-cash-voucher/{id}")
     public ResponseEntity<byte[]> generatePettyCashVoucher(@PathVariable(value = "id") Long id) {
-        PettyCashDto pettyCashDto = pettyCashService.getPettyCashById(id);
-        if (pettyCashDto == null) {
+        PettyCashActivityDto pettyCashActivityDto = pettyCashService.getPettyCashById(id);
+        if (pettyCashActivityDto == null) {
             return ResponseEntity.notFound().build();
         }
 
-        ByteArrayInputStream stream = pettyCashVoucherService.generatePettyCashVoucher(pettyCashDto);
+        ByteArrayInputStream stream = pettyCashVoucherService.generatePettyCashVoucher(pettyCashActivityDto);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=" + pettyCashDto.getVoucherNo() + ".pdf");
+        headers.add("Content-Disposition", "inline; filename=" + pettyCashActivityDto.getPcActivityNo() + ".pdf");
 
         return ResponseEntity.ok()
                 .headers(headers)

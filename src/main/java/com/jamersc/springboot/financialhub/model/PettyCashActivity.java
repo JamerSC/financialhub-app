@@ -8,25 +8,25 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Table(name = "petty_cash_vouchers")
+@Table(name = "petty_cash_activities")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString(exclude = {"fund", "accounts", "liquidations", "receivedBy"})
-public class PettyCash {
+public class PettyCashActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "petty_cash_id")
-    private Long pettyCashId;
+    @Column(name = "pc_activity_id")
+    private Long pcActivityId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fund_id")
     private Fund fund;
 
-    @Column(name = "pc_voucher_no")
-    private String voucherNo;
+    @Column(name = "pc_activity_no")
+    private String pcActivityNo;
 
     @Column(name = "date")
     private Date date;
@@ -43,7 +43,7 @@ public class PettyCash {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "petty_cash_client_accounts",
-            joinColumns = @JoinColumn(name = "petty_cash_id"),
+            joinColumns = @JoinColumn(name = "pc_activity_id"),
             inverseJoinColumns = @JoinColumn(name = "client_account_id")
     )
     private Set<ClientAccount> accounts;

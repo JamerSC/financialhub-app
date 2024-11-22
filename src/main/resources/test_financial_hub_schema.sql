@@ -647,11 +647,12 @@ CREATE TABLE `fund_transaction_details` (
     PRIMARY KEY (`id`)
 );
 
-DROP TABLE `petty_cash_vouchers`;
-CREATE TABLE `petty_cash_vouchers` (
-	`petty_cash_id` int NOT NULL AUTO_INCREMENT,
+DROP TABLE `petty_cash_activities`;
+CREATE TABLE `petty_cash_activities` (
+	`pc_activity_id` int NOT NULL AUTO_INCREMENT,
     `fund_id` int NOT NULL,
-    `pc_voucher_no` varchar(50) NOT NULL,
+    `pc_activity_no` varchar(50) NOT NULL,
+    `voucher_activity_no` varchar(50) NOT NULL,
     `date` date NOT NULL,
     `activity_description` text NOT NULL,
     `activity_category` varchar(100) NOT NULL,
@@ -665,12 +666,18 @@ CREATE TABLE `petty_cash_vouchers` (
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (`fund_id`) REFERENCES `fund`(`fund_id`) ON DELETE CASCADE,
-    PRIMARY KEY (`petty_cash_id`)
+    PRIMARY KEY (`pc_activity_id`)
 );
 
+# Change Table Name
+# ALTER TABLE `test_financial_hub_db`.`petty_cash_activities`
+# RENAME TO `test_financial_hub_db`.`petty_cash_activities`;
+#ALTER TABLE `petty_cash_activities`
+#RENAME COLUMN `petty_cash_id` TO `pc_activity_id`;
 
-INSERT INTO `petty_cash_vouchers` 
-(`fund_id`, `pc_voucher_no`, `date`, `activity_description`, `activity_category`, `soa_category`, `total_amount`, `approved`, `approved_by`, `received_by`, `created_by`)
+
+INSERT INTO `petty_cash_activities` 
+(`fund_id`, `pc_activity_no`, `date`, `activity_description`, `activity_category`, `soa_category`, `total_amount`, `approved`, `approved_by`, `received_by`, `created_by`)
 VALUES 
 (1, 'PCV-001', '2024-10-01', 'Purchase of office supplies', 'Office Expenses', 'Supplies', 150.00, FALSE, 1, 1, 1),
 
@@ -682,20 +689,19 @@ VALUES
 
 (1, 'PCV-005', '2024-10-15', 'Travel for business development', 'Travel', 'Business Development', 300.00, FALSE, 1, 1, 1);
 
-# ALTER TABLE `petty_cash_vouchers`
-# RENAME COLUMN `pcv_number` TO `petty_cash_no`;
-
 # Junction Table for petty cash & client accounts
 DROP TABLE `petty_cash_client_accounts`;
 CREATE TABLE `petty_cash_client_accounts` (
-    `petty_cash_id` INT,
+    `pc_activity_id` INT,
     `client_account_id` INT,
-    PRIMARY KEY (`petty_cash_id`,`client_account_id`),
-    FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(`petty_cash_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`pc_activity_id`,`client_account_id`),
+    FOREIGN KEY (`pc_activity_id`) REFERENCES `petty_cash_activities`(`pc_activity_id`) ON DELETE CASCADE,
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`) ON DELETE CASCADE
 );
+#ALTER TABLE `petty_cash_client_accounts`
+#RENAME COLUMN `petty_cash_id` TO `pc_activity_id`;
 
-INSERT INTO `petty_cash_client_accounts` (`petty_cash_id`, `client_account_id`)
+INSERT INTO `petty_cash_client_accounts` (`pc_activity_id`, `client_account_id`)
 VALUES 
 (1, 1),
 (1, 2),
@@ -713,12 +719,12 @@ VALUES
 (5, 2),
 (5, 3);
 
-INSERT INTO `petty_cash_client_accounts` (`petty_cash_id`, `client_account_id`)
+INSERT INTO `petty_cash_client_accounts` (`pc_activity_id`, `client_account_id`)
 VALUES (9, 1), (12, 1),(13, 2),(14, 3);
 
 SELECT 
-    pcv.petty_cash_id,
-    pcv.pc_voucher_no AS "PCV Number",
+    pcv.pc_activity_id,
+    pcv.pc_activity_no AS "PC Activty No.",
     pcv.date AS "Date",
     pcv.activity_description AS "Activity Description",
     pcv.activity_category AS "Activity Category",
@@ -729,19 +735,19 @@ SELECT
     pcv.received_by AS "Received By",
     GROUP_CONCAT(ca.account_title ORDER BY ca.account_title ASC SEPARATOR ', ') AS "Account Titles"
 FROM 
-    petty_cash_vouchers pcv
+    petty_cash_activities pcv
 LEFT JOIN 
-    petty_cash_client_accounts pcca ON pcv.petty_cash_id = pcca.petty_cash_id
+    petty_cash_client_accounts pcca ON pcv.pc_activity_id = pcca.pc_activity_id
 LEFT JOIN 
     client_accounts ca ON pcca.client_account_id = ca.client_account_id	
 GROUP BY 
-    pcv.petty_cash_id
+    pcv.pc_activity_id
 ORDER BY 
     pcv.date ASC;
 
 
 # DATE - format: YYYY-MM-DD.
-INSERT INTO `petty_cash_vouchers`(`fund_id`, `pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
+INSERT INTO `petty_cash_activities`(`fund_id`, `pcv_number`, `received_by`, `date`, `particulars`, `total_amount`, `approved_by`, `created_by`, `updated_by`)
 VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000, 'John Doe', 1, 1);
 
 ### PETTY CASH LIQUIDATION
@@ -749,7 +755,7 @@ VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000
 DROP TABLE `petty_cash_liquidation`;
 CREATE TABLE `petty_cash_liquidation` (
 	`liquidation_id` int NOT NULL AUTO_INCREMENT,
-    `petty_cash_id` int NOT NULL,
+    `pc_activity_id` int NOT NULL,
     `contact_id` int NOT NULL,
 	`date` date NOT NULL,
     `particulars` varchar(255) NOT NULL,
@@ -761,14 +767,14 @@ CREATE TABLE `petty_cash_liquidation` (
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`petty_cash_id`) REFERENCES `petty_cash_vouchers`(id) ON DELETE CASCADE,
+    FOREIGN KEY (`pc_activity_id`) REFERENCES `petty_cash_activities`(id) ON DELETE CASCADE,
     FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`) ON DELETE CASCADE,
     PRIMARY KEY (`id`)
 );
 #`charge_to` varchar(250) NOT NULL,
 
 INSERT INTO `petty_cash_liquidation` 
-(`petty_cash_id`, `contact_id`, `date`, `particulars`, `cost`, `receipt_no`, `remarks`, `billed`, `created_by`, `updated_by`)
+(`pc_activity_id`, `contact_id`, `date`, `particulars`, `cost`, `receipt_no`, `remarks`, `billed`, `created_by`, `updated_by`)
 VALUES 
 (1, 1, '2024-09-07', 'Office Supplies', 150.50, '00000001', 'Purchased printer', true, 3, 3),
 (1, 1, '2024-09-07', 'Utility Supplies', 200, '0000212321', null, false, 3, 3),
@@ -778,10 +784,10 @@ VALUES
 SELECT `pcv`.`total_amount`, `pcv`.`received_by`, `pcv`.`date`, `pcl`.`contact_id`, `c`.`contact_type`, `c`.`category_type`,
 concat(`ci`.`first_name`, ' ', `ci`.`middle_name`, ' ', `ci`.`last_name`) AS `Fullname`, `cc`.`company_name`
 FROM `fund` `f`
-LEFT JOIN `petty_cash_vouchers` `pcv`
+LEFT JOIN `petty_cash_activities` `pcv`
 ON `f`.`id` = `pcv`.`fund_id`
 LEFT JOIN `petty_cash_liquidation` `pcl`
-ON `pcv`.`id` = `pcl`.`petty_cash_id`
+ON `pcv`.`id` = `pcl`.`pc_activity_id`
 LEFT JOIN `contacts` `c`
 ON `pcl`.`contact_id` = `c`.`contact_id`
 LEFT JOIN `contact_individual` `ci`

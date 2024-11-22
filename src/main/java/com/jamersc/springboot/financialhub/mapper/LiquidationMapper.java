@@ -2,10 +2,10 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.LiquidationDto;
-import com.jamersc.springboot.financialhub.dto.PettyCashDto;
+import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
 import com.jamersc.springboot.financialhub.model.Contact;
 import com.jamersc.springboot.financialhub.model.Liquidation;
-import com.jamersc.springboot.financialhub.model.PettyCash;
+import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,10 +17,10 @@ public class LiquidationMapper {
             return null;
         }
 
-        PettyCash pettyCash = null;
+        PettyCashActivity pettyCashActivity = null;
         if (liquidationDto.getPettyCash() != null) {
-            pettyCash = new PettyCash(); // Map fields if PettyCash has fields
-            pettyCash.setPettyCashId(liquidationDto.getPettyCash().getPettyCashId());
+            pettyCashActivity = new PettyCashActivity(); // Map fields if PettyCash has fields
+            pettyCashActivity.setPcActivityId(liquidationDto.getPettyCash().getPcActivityId());
             // Add other mappings here if PettyCash has more fields
         }
 
@@ -33,7 +33,7 @@ public class LiquidationMapper {
 
         Liquidation liquidation = new Liquidation();
         liquidation.setLiquidationId(liquidationDto.getLiquidationId());
-        liquidation.setPettyCash(pettyCash);
+        liquidation.setPettyCash(pettyCashActivity);
         liquidation.setDate(liquidationDto.getDate());
         liquidation.setParticulars(liquidationDto.getParticulars());
         liquidation.setCost(liquidationDto.getCost());
@@ -54,10 +54,10 @@ public class LiquidationMapper {
             return null;
         }
 
-        PettyCashDto pettyCashDto = null;
+        PettyCashActivityDto pettyCashActivityDto = null;
         if (liquidation.getPettyCash() != null) {
-            pettyCashDto = new PettyCashDto(); // Map fields if PettyCashDto has fields
-            pettyCashDto.setPettyCashId(liquidation.getPettyCash().getPettyCashId());
+            pettyCashActivityDto = new PettyCashActivityDto(); // Map fields if PettyCashDto has fields
+            pettyCashActivityDto.setPcActivityId(liquidation.getPettyCash().getPcActivityId());
             // Add other mappings here if PettyCashDto has more fields
         }
 
@@ -70,7 +70,7 @@ public class LiquidationMapper {
 
         return new LiquidationDto(
                 liquidation.getLiquidationId(),
-                pettyCashDto,
+                pettyCashActivityDto,
                 liquidation.getDate(),
                 liquidation.getParticulars(),
                 liquidation.getCost(),
