@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.PettyCashDto;
 import com.jamersc.springboot.financialhub.model.PettyCash;
 import com.jamersc.springboot.financialhub.model.User;
 import com.jamersc.springboot.financialhub.service.pettycash.PettyCashService;
@@ -42,8 +43,8 @@ public class MyActivityController {
 
     @GetMapping("/{id}/my-activity-entries")
     public String myActivityEntries(Model model) {
-        //
         model.addAttribute("entries", "Entries of My Activity");
+        model.addAttribute("myActivity", new PettyCashDto());
         return "my-activity/activity-entries";
     }
 }
