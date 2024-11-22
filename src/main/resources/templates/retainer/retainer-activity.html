@@ -39,28 +39,22 @@
                     <table class="table table-striped shadow">
                         <thead class="table-dark">
                         <tr>
-                            <td>Activity Description</td>
-                            <th>Activity Category</th>
+                            <td>Activity Date</td>
+                            <th>Description</th>
+                            <th>Category</th>
                             <th>PIC</th>
-                            <th>Activity Date</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>Secure documents</td>
-                            <td>Certification</td>
-                            <td>Juan Doe</td>
-                            <td>Oct. 25, 2024</td>
+                        <tr th:if="${#lists.isEmpty(listOfRetainerActivities)}">
+                            <td colspan="4" class="text-center">No retainer activities...</td>
                         </tr>
-                        <!-- <tr th:if="${#lists.isEmpty(contact.clientAccounts)}">
-                             <td colspan="4" class="text-center">No existing cases/projects...</td>
-                         </tr>
-                         <tr th:each="account : ${contact.clientAccounts}" th:unless="${#lists.isEmpty(contact.clientAccounts)}">
-                             <td th:text="${account.clientAccountId}"></td>
-                             <td th:text="${account.accountTitle}"></td>
-                             <td th:text="${account.clientAccountType.convertAccountType()}"></td>
-                             <td th:text="${account.caseAccount.status.convertStatus()}"></td>
-                         </tr>-->
+                        <tr th:each="activity : ${listOfRetainerActivities}" th:unless="${#lists.isEmpty(listOfRetainerActivities)}">
+                            <td th:text="${#dates.format(activity.date, 'MM-dd-yyyy')}"></td>
+                            <td th:text="${activity.activityDescription}"></td>
+                            <td th:text="${activity.activityCategory}"></td>
+                            <td th:text="${activity.receivedBy.fullName}"></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

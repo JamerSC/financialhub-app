@@ -67,20 +67,23 @@
                 <h5 class="fw-bold mb-3">Project Activities</h5>
                 <table class="table table-striped shadow">
                     <thead class="table-dark">
-                        <tr>
-                            <td>Activity Description</td>
-                            <th>Activity Category</th>
-                            <th>PIC</th>
-                            <th>Activity Date</th>
-                        </tr>
+                    <tr>
+                        <td>Activity Date</td>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>PIC</th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Secure documents</td>
-                            <td>Certification</td>
-                            <td>Juan Doe</td>
-                            <td>Oct. 25, 2024</td>
-                        </tr>
+                    <tr th:if="${#lists.isEmpty(listOfProjectActivities)}">
+                        <td colspan="4" class="text-center">No project activities...</td>
+                    </tr>
+                    <tr th:each="activity : ${listOfProjectActivities}" th:unless="${#lists.isEmpty(listOfProjectActivities)}">
+                        <td th:text="${#dates.format(activity.date, 'MM-dd-yyyy')}"></td>
+                        <td th:text="${activity.activityDescription}"></td>
+                        <td th:text="${activity.activityCategory}"></td>
+                        <td th:text="${activity.receivedBy.fullName}"></td>
+                    </tr>
                     </tbody>
                 </table>
             </div>

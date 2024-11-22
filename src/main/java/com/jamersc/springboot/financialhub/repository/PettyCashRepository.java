@@ -26,7 +26,8 @@ public interface PettyCashRepository extends JpaRepository <PettyCash, Long> {
     //List<PettyCash> findUnapprovedPettyCashByReceivedBy(@Param("receivedBy") User receivedBy);
 
     // Find all unapproved petty cash entries for a specific receivedBy user desc order by Date
-    @Query("SELECT p FROM PettyCash p WHERE p.approved = false AND p.receivedBy = :receivedBy ORDER BY p.date DESC")
+    @Query("SELECT p FROM PettyCash p WHERE p.approved = false " +
+            "AND p.receivedBy = :receivedBy ORDER BY p.date DESC")
     List<PettyCash> findUnapprovedPettyCashByReceivedByDateDesc(@Param("receivedBy") User receivedBy);
 
     // Find all approved petty cash entries for a specific receivedBy user
@@ -34,6 +35,12 @@ public interface PettyCashRepository extends JpaRepository <PettyCash, Long> {
     //List<PettyCash> findApprovedPettyCashByReceivedBy(@Param("receivedBy") User receivedBy);
 
     // Find all approved petty cash entries for a specific receivedBy user desc order by Date
-    @Query("SELECT p FROM PettyCash p WHERE p.approved = true AND p.receivedBy = :receivedBy ORDER BY p.date DESC")
+    @Query("SELECT p FROM PettyCash p WHERE p.approved = true " +
+            "AND p.receivedBy = :receivedBy ORDER BY p.date DESC")
     List<PettyCash> findApprovedPettyCashByReceivedByDateDesc(@Param("receivedBy") User receivedBy);
+
+    // Find All Petty Cash Approved and Client Account ID in descending order by Date request.
+    @Query("SELECT p FROM PettyCash p JOIN p.accounts a " +
+            "WHERE p.approved = true AND a.clientAccountId = :clientAccountId ORDER BY p.date DESC")
+    List<PettyCash> findByClientAccountId(@Param("clientAccountId") Long clientAccountId);
 }

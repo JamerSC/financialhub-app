@@ -41,11 +41,17 @@
                                 <td th:text="${tempActivity.activityCategory}"></td>
                                 <td>
                                     <div class="mb-2">
-                                        <!-- Loop through accounts and display each in a styled <p> -->
-                                        <p th:each="account : ${tempActivity.accounts}" class="mb-1">
-                                            <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                            <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                        </p>
+                                        <div>
+                                            <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempActivity.pettyCashId}">
+                                                Show Accounts <i class="lni lni-chevron-down"></i>
+                                            </a>
+                                            <div th:id="'collapse-' + ${tempActivity.pettyCashId}" class="collapse mt-2">
+                                                <p th:each="account : ${tempActivity.accounts}" class="mb-1">
+                                                    <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                                    <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                                 <td>

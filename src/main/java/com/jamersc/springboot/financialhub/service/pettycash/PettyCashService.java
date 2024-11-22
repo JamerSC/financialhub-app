@@ -16,6 +16,8 @@ public interface PettyCashService {
     // MyActivity Controller
     List<PettyCash> getApprovedPettyCashByReceivedBy(User user);
 
+    List<PettyCash> getByClientAccountId(Long id);
+
     List<PettyCash> getAllPettyCashWithClientAccounts();
 
     PettyCashDto getPettyCashById(Long id);

@@ -54,8 +54,6 @@ public class PettyCash {
     @Column(name = "approved")
     private Boolean approved;
 
-    //@Column(name = "received_by", updatable = false)
-    //private Long receivedBy;
     @ManyToOne
     @JoinColumn(name = "received_by")
     private User receivedBy;

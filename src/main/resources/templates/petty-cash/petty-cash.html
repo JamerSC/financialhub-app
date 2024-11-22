@@ -74,13 +74,32 @@
                             <td th:text="${#dates.format(tempPettyCash.date, 'MM/dd/yyyy')}"></td> <!-- dd MMMM yyyy -->
                             <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                             <td>
-                                <div class="mb-2">
-                                    <!-- Loop through accounts and display each in a styled <p> -->
-                                    <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
-                                        <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                        <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                    </p>
+                                <!-- ACCORDION -->
+                                <div>
+                                    <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempPettyCash.pettyCashId}">
+                                        Show Accounts <i class="lni lni-chevron-down"></i>
+                                    </a>
+                                    <div th:id="'collapse-' + ${tempPettyCash.pettyCashId}" class="collapse mt-2">
+                                        <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
+                                            <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                            <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                        </p>
+                                    </div>
                                 </div>
+                                <!-- DROPDOWN -->
+                                <!--<div class="dropdown">
+                                    <a href="#" class="btn btn-link dropdown-toggle p-0" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Show Accounts
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li th:each="account : ${tempPettyCash.accounts}">
+                                            <a href="#" class="dropdown-item">
+                                                <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                                <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>-->
                             </td>
                             <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                                 <input type="checkbox" class="form-check-input" th:checked="${tempPettyCash.approved}" disabled/>

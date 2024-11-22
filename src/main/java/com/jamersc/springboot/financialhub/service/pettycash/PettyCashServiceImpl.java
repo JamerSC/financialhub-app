@@ -81,6 +81,11 @@ public class PettyCashServiceImpl implements PettyCashService {
     }
 
     @Override
+    public List<PettyCash> getByClientAccountId(Long id) {
+        return  pettyCashRepository.findByClientAccountId(id);
+    }
+
+    @Override
     public List<PettyCash> getAllPettyCashWithClientAccounts() {
         return pettyCashRepository.findAll();
     }
