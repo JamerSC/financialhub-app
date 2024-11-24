@@ -12,7 +12,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = {"client", "caseAccount", "projectAccount", "retainerAccount", "pettyCash"})
+@ToString(exclude = {"client", "caseAccount", "projectAccount", "retainerAccount", "pettyCashActivity"})
 public class ClientAccount {
 
     @Id
