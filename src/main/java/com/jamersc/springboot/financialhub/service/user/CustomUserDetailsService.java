@@ -24,11 +24,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        logger.info("Attempting to load user by username: {}", username);
+        //logger.info("Attempting to load user by username: {}", username);
 
         User user = userService.getByUsername(username);
         if (user == null) {
-            logger.error("User not found with username: {}", username);
+            //logger.error("User not found with username: {}", username);
             throw new UsernameNotFoundException("Invalid username or password");
         }
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
 
-        logger.info("User roles: {}", grantedAuthorities);
+        //logger.info("User roles: {}", grantedAuthorities);
 
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
