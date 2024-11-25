@@ -27,11 +27,8 @@ import java.util.List;
 @RequestMapping("/check")
 public class CheckController {
 
-    private static final Logger logger = LoggerFactory.getLogger(CheckController.class);
-
     @Autowired
     private CheckService checkService;
-
     @Autowired
     private CheckVoucherService checkVoucherService;
 
@@ -52,12 +49,10 @@ public class CheckController {
     public String processCreateCheckForm(@Valid @ModelAttribute("checkDto") CheckDto checkDto,
                                          BindingResult result, Model model) {
         if (result.hasErrors()) {
-            logger.error("Please complete the required fields!");
             return "check/check-form";
         } else {
             String createdBy = getSessionUsername();
             checkService.saveCheckRecord(checkDto, createdBy);
-            logger.info("Created new check voucher: " + checkDto);
             return "redirect:/check/check-voucher";
         }
     }
@@ -76,21 +71,17 @@ public class CheckController {
     public String processCheckUpdateForm(@Valid @ModelAttribute("checkDto") CheckDto checkDto,
                                          BindingResult result, Model model) {
         if (result.hasErrors()) {
-            logger.warn("Please complete the required fields!");
             return "check/check-update-form";
         } else {
             String updatedBy = getSessionUsername();
             checkService.updateCheckRecord(checkDto, updatedBy);
-            logger.info("Updated successfully! " + checkDto);
             return "redirect:/check/check-voucher";
         }
     }
 
     @GetMapping("/delete-check-record/{id}")
     public String deleteCheckRecord(@PathVariable(value = "id") Long id) {
-        logger.info("Preparing to delete check record no.: " + id);
         checkService.deleteCheckRecordById(id);
-        logger.info("Deleted successfully! Check record no.: " + id);
         return "redirect:/check/check-voucher";
     }
 

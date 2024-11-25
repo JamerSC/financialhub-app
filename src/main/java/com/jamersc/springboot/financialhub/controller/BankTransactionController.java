@@ -27,14 +27,10 @@ import java.util.List;
 @RequestMapping("/bank-transactions")
 public class BankTransactionController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
-
     @Autowired
     private BankService bankService;
-
     @Autowired
     private BankAccountService bankAccountService;
-
     @Autowired
     private BankTransactionService bankTransactionService;
 

@@ -46,7 +46,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
     @Override
     public List<PettyCashActivityDto> getAllPettyCash() {
-        logger.info("Get all petty cash records.");
+        //logger.info("Get all petty cash records.");
         return pettyCashActivityRepository.findAll().stream()
                 .map(PettyCashMapper::toPettyCashDto)
                 .collect(Collectors.toList());
@@ -110,7 +110,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
         FundDto fund = FundMapper.toFundDto(pettyCash.getFund());
         dto.setFund(fund);
 
-        logger.info("Petty Cash: " + dto);
+        //logger.info("Petty Cash: " + dto);
         return dto;
     }
 
@@ -145,8 +145,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-
-
             /*Set<ClientAccount> accounts = dto.getAccounts().stream()
                     .map(ClientAccountDto::getClientAccountId)
                     .map(clientAccountRepository::findById)
@@ -176,7 +174,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setApproved(false);
             }
 
-            logger.info("Successfully updated petty cash: " + pettyCash);
+            //logger.info("Successfully updated petty cash: " + pettyCash);
 
         } else {
             // CREATE NEW PETTY CASH
@@ -213,7 +211,8 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setCreatedBy(createdBy.getUserId()); // created
                 pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }
-            logger.info("Successfully created new petty cash: " + pettyCash);
+
+            //logger.info("Successfully created new petty cash: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashActivityRepository.save(pettyCash);
@@ -262,7 +261,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setUpdatedBy(updatedBy.getUserId());
             }
 
-            logger.info("Successfully updated petty cash cash admin works: " + pettyCash);
+            //logger.info("Successfully updated petty cash cash admin works: " + pettyCash);
 
         } else {
             // CREATE NEW PETTY CASH
@@ -297,7 +296,8 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setCreatedBy(createdBy.getUserId()); // created
                 pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }
-            logger.info("Successfully created new petty cash admin works: " + pettyCash);
+
+            //logger.info("Successfully created new petty cash admin works: " + pettyCash);
         }
         //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashActivityRepository.save(pettyCash);
@@ -305,13 +305,13 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
     @Override
     public void save(PettyCashActivity pettyCash) {
-        logger.info("Saving... " + pettyCash);
+        //logger.info("Saving... " + pettyCash);
         pettyCashActivityRepository.save(pettyCash);
     }
 
     @Override
     public void deletePettyCashRecordById(Long id) {
-        System.out.println("Delete request for id: " + id);
+        //System.out.println("Delete request for id: " + id);
         pettyCashActivityRepository.deleteById(id);
     }
 }

@@ -1,628 +1,643 @@
 <!doctype html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/layouts/base-layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Petty Cash Voucher</title>
+    <title>Petty Cash</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+    <!-- Tagify Library -->
+    <link rel="stylesheet" href="../../static/css/tagify.css" type="text/css" th:href="@{/css/tagify.css}">
+    <script src="../../static/js/tagify.min.js" type="text/javascript" th:src="@{/js/tagify.min.js}"></script>
 </head>
 <body>
 
-    <main class="content px-3 py-4"  layout:fragment="content">
-        <div class="container-fluid">
-            <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="row">
-                <div class="card-group">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title fw-bold fs-4">Fund Details</h5>
-                            <p class="card-text">
-                                <span th:text="'ID: ' + ${fund.fundId}"></span><br/>
-                                <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
-                                #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
-                            </p>
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="row">
+                    <div class="card-group">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title fw-bold fs-4">Fund Details</h5>
+                                <p class="card-text">
+                                    <span th:text="'ID: ' + ${fund.fundId}"></span><br/>
+                                    <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
+                                    #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                    <div class="card">
-                        <div class="card-body">
-                            <p class="card-text">
-                                <span th:text="'ID: ' + ${fund.fundId}"></span><br/>
-                                <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
-                                #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
-                            </p>
+                        <div class="card">
+                            <div class="card-body">
+                                <p class="card-text">
+                                    <span th:text="'ID: ' + ${fund.fundId}"></span><br/>
+                                    <span th:text="'Fund Balance: ' + ${fund.fundBalance != null ?
+                                    #numbers.formatDecimal(fund.fundBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span><br/>
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="d-flex">
-                        <div class="p-1">
-                            <h4 class="fw-bold fs-4">Petty Cash Vouchers</h4>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h4 class="fw-bold fs-4">Petty Cash Vouchers</h4>
+                            </div>
+                            <!-- Petty Cash Btn for ADMIN/MANAGER -->
+                            <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="ms-auto p-1">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#addPettyCashModal" title="Add Voucher">
+                                    <i class="lni lni-plus-circle"></i> Voucher
+                                </button>
+                            </div>
+                            <!-- Petty Cash Btn for Admin Employee -->
+                            <div sec:authorize="hasRole('EMPLOYEE')" class="ms-auto p-1">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#addAdminPettyCashModal" title="Add Voucher">
+                                    <i class="lni lni-plus-circle"></i> Voucher
+                                </button>
+                            </div>
                         </div>
-                        <!-- Petty Cash Btn for ADMIN/MANAGER -->
-                        <div sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="ms-auto p-1">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#addPettyCashModal" title="Add Voucher">
-                                <i class="lni lni-plus-circle"></i> Voucher
-                            </button>
-                        </div>
-                        <!-- Petty Cash Btn for Admin Employee -->
-                        <div sec:authorize="hasRole('EMPLOYEE')" class="ms-auto p-1">
-                            <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#addAdminPettyCashModal" title="Add Voucher">
-                                <i class="lni lni-plus-circle"></i> Voucher
-                            </button>
-                        </div>
-                    </div>
-                    <table class="table table-striped shadow">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>Date</th>
-                            <th>Voucher No.</th>
-                            <th>Total Amount</th>
-                            <th>Account(s)</th>
-                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Approved</th>
-                            <th sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN', 'MANAGER')">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="tempPettyCash : ${listOfPettyCashActivities}">
-                            <td th:text="${#dates.format(tempPettyCash.date, 'MMM. d, yyyy')}"></td>
-                            <td th:text="${tempPettyCash.pcActivityNo}"></td>
-                            <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
-                            <td>
-                                <!-- ACCORDION -->
-                                <div>
-                                    <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempPettyCash.pcActivityId}">
-                                        Show Accounts <i class="lni lni-chevron-down"></i>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>Voucher No.</th>
+                                <th>Total Amount</th>
+                                <th>Account(s)</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Approved</th>
+                                <th sec:authorize="hasAnyRole('EMPLOYEE', 'ADMIN', 'MANAGER')">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tempPettyCash : ${listOfPettyCashActivities}">
+                                <td th:text="${#dates.format(tempPettyCash.date, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${tempPettyCash.pcActivityNo}"></td>
+                                <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                                <td>
+                                    <!-- ACCORDION -->
+                                    <div>
+                                        <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempPettyCash.pcActivityId}">
+                                            Show Accounts <i class="lni lni-chevron-down"></i>
+                                        </a>
+                                        <div th:id="'collapse-' + ${tempPettyCash.pcActivityId}" class="collapse mt-2">
+                                            <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
+                                                <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                                <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <input type="checkbox" class="form-check-input" th:checked="${tempPettyCash.approved}" disabled/>
+                                </td>
+                                <td>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm ePettyCashBtn"
+                                       th:href="@{/petty-cash/edit-petty-cash(id=${tempPettyCash.pcActivityId})}" title="Edit">
+                                        <i class="lni lni-pen-to-square"></i>
                                     </a>
-                                    <div th:id="'collapse-' + ${tempPettyCash.pcActivityId}" class="collapse mt-2">
-                                        <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
-                                            <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                            <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                        </p>
+                                    <a sec:authorize="hasRole('EMPLOYEE')" href="#" class="btn btn-success btn-sm eAdminPettyCashBtn"
+                                       th:href="@{/petty-cash/edit-admin-petty-cash(id=${tempPettyCash.pcActivityId})}" title="Edit">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                    <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
+                                        th:href="@{/liquidation/liquidation-pcv/{id}(id=${tempPettyCash.pcActivityId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>-->
+                                    <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
+                                        th:href="@{/petty-cash/generate-petty-cash-voucher/{id}(id=${tempPettyCash.pcActivityId})}" target="_blank">
+                                        <i class="lni lni-printer"></i>
+                                    </a>-->
+                                    <!--<a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
+                                       th:href="@{/petty-cash/petty-cash-update-form/{id}(id=${tempPettyCash.ppcActivityId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>-->
+                                    <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn" title="Archive"
+                                       th:href="@{/petty-cash/delete-petty-cash-record/{id}(id=${tempPettyCash.pcActivityId})}">
+                                        <!--<i class="lni lni-trash-3"></i>-->
+                                        <i class="lni lni-box-archive-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <!-- Manager/Admin - Petty Cash Form Modal -->
+                        <div class="modal fade" id="addPettyCashModal" tabindex="-1" aria-labelledby="addPettyCashModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-2">
+                                        <h5 class="modal-title" id="addPettyCashModalLabel">Petty Cash Voucher</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="addPettyCashForm" th:action="@{/petty-cash/{id}/add-petty-cash(id=${fund.fundId})}"
+                                              th:object="${pettyCash}" method="POST">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="voucherNo" class="form-label">Voucher No.</label>
+                                                    <input type="text" class="form-control" id="voucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="date" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="date" th:field="*{date}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="activityDescription" class="form-label">Activity Description</label>
+                                                    <textarea class="form-control" id="activityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="activityCategory" class="form-label">Activity Category</label>
+                                                    <input type="text" class="form-control" id="activityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="soaCategory" class="form-label">SOA Category</label>
+                                                    <input type="text" class="form-control" id="soaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <!-- Tagify Textarea Field -->
+                                                <div class="form-group">
+                                                    <label for="accounts">Accounts</label>
+                                                    <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
+                                                    <input type="hidden" id="accountsJson" th:field="*{accounts}" />
+                                                </div>
+                                            </div>
+                                            <!-- <div class="row mb-3">
+
+                                             </div>-->
+                                            <div class="row mb-3">
+                                                <div class="col-md-3">
+                                                    <label for="totalAmount" class="form-label">Amount</label>
+                                                    <input type="number" step="0.01" class="form-control" id="totalAmount" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="receivedBy" class="form-label">Received By</label>
+                                                    <select id="receivedBy" class="form-select" th:field="*{receivedBy}" required>
+                                                        <option value="" selected>Select petty cash receiver...</option>
+                                                        <option th:each="tempUser : ${internalUsers}"
+                                                                th:value="${tempUser.userId}"
+                                                                th:text="${tempUser.fullName}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 d-flex align-items-center mt-4">
+                                                    <input class="form-check-input me-2" th:field="*{approved}" type="checkbox" id="approved">
+                                                    <label class="form-check-label" for="approved">Approved</label>
+                                                </div>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            </td>
-                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                <input type="checkbox" class="form-check-input" th:checked="${tempPettyCash.approved}" disabled/>
-                            </td>
-                            <td>
-                                <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm ePettyCashBtn"
-                                   th:href="@{/petty-cash/edit-petty-cash(id=${tempPettyCash.pcActivityId})}" title="Edit">
-                                    <i class="lni lni-pen-to-square"></i>
-                                </a>
-                                <a sec:authorize="hasRole('EMPLOYEE')" href="#" class="btn btn-success btn-sm eAdminPettyCashBtn"
-                                   th:href="@{/petty-cash/edit-admin-petty-cash(id=${tempPettyCash.pcActivityId})}" title="Edit">
-                                    <i class="lni lni-pen-to-square"></i>
-                                </a>
-                                <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-info btn-sm"
-                                    th:href="@{/liquidation/liquidation-pcv/{id}(id=${tempPettyCash.pcActivityId})}">
-                                    <i class="lni lni-pen-to-square"></i>
-                                </a>-->
-                                <!--<a  sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-secondary btn-sm"
-                                    th:href="@{/petty-cash/generate-petty-cash-voucher/{id}(id=${tempPettyCash.pcActivityId})}" target="_blank">
-                                    <i class="lni lni-printer"></i>
-                                </a>-->
-                                <!--<a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
-                                   th:href="@{/petty-cash/petty-cash-update-form/{id}(id=${tempPettyCash.ppcActivityId})}">
-                                    <i class="lni lni-pen-to-square"></i>
-                                </a>-->
-                                <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn" title="Archive"
-                                   th:href="@{/petty-cash/delete-petty-cash-record/{id}(id=${tempPettyCash.pcActivityId})}">
-                                    <!--<i class="lni lni-trash-3"></i>-->
-                                    <i class="lni lni-box-archive-1"></i>
-                                </a>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </div>
+                        </div>
+                        <!-- Manager/Admin - Update Petty Cash Form Modal -->
+                        <div class="modal fade" id="editPettyCashModal" tabindex="-1" aria-labelledby="editPettyCashModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-2">
+                                        <h5 class="modal-title" id="editPettyCashModalLabel">Petty Cash Voucher (Update)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="editPettyCashForm" th:action="@{/petty-cash/update-petty-cash}"
+                                              th:object="${pettyCash}" method="POST">
+                                            <div><input type="hidden" class="form-control" id="editPettyCashId" th:field="*{pcActivityId}" /></div>
+                                            <div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editVoucherNo" class="form-label">Voucher No.</label>
+                                                    <input type="text" class="form-control" id="editVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editDate" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="editDate" th:field="*{date}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editActivityDescription" class="form-label">Activity Description</label>
+                                                    <textarea class="form-control" id="editActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editActivityCategory" class="form-label">Activity Category</label>
+                                                    <input type="text" class="form-control" id="editActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editSoaCategory" class="form-label">SOA Category</label>
+                                                    <input type="text" class="form-control" id="editSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                                </div>
+                                            </div>
+                                            <!-- Edit Tagify Textarea Field -->
+                                            <div class="row mb-3">
+                                                <div class="form-group">
+                                                    <label for="accounts">Accounts</label>
+                                                    <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." readonly></textarea>
+                                                    <input type="hidden" id="editAccountsJson"/>
+                                                    <!--<input type="hidden" id="editAccountsJson" th:field="*{accounts}"/>-->
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-3">
+                                                    <label for="editTotalAmount" class="form-label">Amount</label>
+                                                    <input type="number" step="0.01" class="form-control" id="editTotalAmount" th:field="*{totalAmount}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editReceivedBy" class="form-label">Received By</label>
+                                                    <select id="editReceivedBy" class="form-select" th:field="*{receivedBy}" required>
+                                                        <option value="" selected>Select petty cash receiver...</option>
+                                                        <option th:each="tempUser : ${internalUsers}"
+                                                                th:value="${tempUser.userId}"
+                                                                th:text="${tempUser.fullName}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-3 d-flex align-items-center mt-4">
+                                                    <input class="form-check-input me-2" th:field="*{approved}" type="checkbox" id="editApproved">
+                                                    <label class="form-check-label" for="editApproved">Approved</label>
+                                                </div>
+                                            </div>
 
-                    <!-- Manager/Admin - Petty Cash Form Modal -->
-                    <div class="modal fade" id="addPettyCashModal" tabindex="-1" aria-labelledby="addPettyCashModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header mb-2">
-                                    <h5 class="modal-title" id="addPettyCashModalLabel">Petty Cash Voucher</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="addPettyCashForm" th:action="@{/petty-cash/{id}/add-petty-cash(id=${fund.fundId})}"
-                                          th:object="${pettyCash}" method="POST">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="voucherNo" class="form-label">Voucher No.</label>
-                                                <input type="text" class="form-control" id="voucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save/Update</button>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="date" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="date" th:field="*{date}" required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="activityDescription" class="form-label">Activity Description</label>
-                                                <textarea class="form-control" id="activityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="activityCategory" class="form-label">Activity Category</label>
-                                                <input type="text" class="form-control" id="activityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="soaCategory" class="form-label">SOA Category</label>
-                                                <input type="text" class="form-control" id="soaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <!-- Tagify Textarea Field -->
-                                            <div class="form-group">
-                                                <label for="accounts">Accounts</label>
-                                                <textarea class="form-control" id="accounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
-                                                <input type="hidden" id="accountsJson" th:field="*{accounts}" />
-                                            </div>
-                                        </div>
-                                        <!-- <div class="row mb-3">
-
-                                         </div>-->
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <label for="totalAmount" class="form-label">Amount</label>
-                                                <input type="number" step="0.01" class="form-control" id="totalAmount" th:field="*{totalAmount}" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="receivedBy" class="form-label">Received By</label>
-                                                <select id="receivedBy" class="form-select" th:field="*{receivedBy}" required>
-                                                    <option value="" selected>Select petty cash receiver...</option>
-                                                    <option th:each="tempUser : ${internalUsers}"
-                                                            th:value="${tempUser.userId}"
-                                                            th:text="${tempUser.fullName}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 d-flex align-items-center mt-4">
-                                                <input class="form-check-input me-2" th:field="*{approved}" type="checkbox" id="approved">
-                                                <label class="form-check-label" for="approved">Approved</label>
-                                            </div>
-                                        </div>
-
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Manager/Admin - Update Petty Cash Form Modal -->
-                    <div class="modal fade" id="editPettyCashModal" tabindex="-1" aria-labelledby="editPettyCashModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header mb-2">
-                                    <h5 class="modal-title" id="editPettyCashModalLabel">Petty Cash Voucher (Update)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="editPettyCashForm" th:action="@{/petty-cash/update-petty-cash}"
-                                          th:object="${pettyCash}" method="POST">
-                                        <div><input type="hidden" class="form-control" id="editPettyCashId" th:field="*{pcActivityId}" /></div>
-                                        <div><input type="hidden" class="form-control" id="editFundId" th:field="*{fund.fundId}" /></div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="editVoucherNo" class="form-label">Voucher No.</label>
-                                                <input type="text" class="form-control" id="editVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                        <!-- ADMIN WORKS -->
+                        <!-- Admin Works - Petty Cash Form Modal -->
+                        <div class="modal fade" id="addAdminPettyCashModal" tabindex="-1" aria-labelledby="addAdminPettyCashModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-2">
+                                        <h5 class="modal-title" id="addAdminPettyCashModalLabel">Petty Cash Voucher</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="addAdminPettyCashForm" th:action="@{/petty-cash/{id}/add-admin-petty-cash(id=${fund.fundId})}"
+                                              th:object="${pettyCash}" method="POST">
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="adminVoucherNo" class="form-label">Voucher No.</label>
+                                                    <input type="text" class="form-control" id="adminVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="adminDate" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="adminDate" th:field="*{date}" required>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="editDate" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="editDate" th:field="*{date}" required>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="adminActivityDescription" class="form-label">Activity Description</label>
+                                                    <textarea class="form-control" id="adminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editActivityDescription" class="form-label">Activity Description</label>
-                                                <textarea class="form-control" id="editActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="adminActivityCategory" class="form-label">Activity Category</label>
+                                                    <input type="text" class="form-control" id="adminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editActivityCategory" class="form-label">Activity Category</label>
-                                                <input type="text" class="form-control" id="editActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="adminSoaCategory" class="form-label">SOA Category</label>
+                                                    <input type="text" class="form-control" id="adminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editSoaCategory" class="form-label">SOA Category</label>
-                                                <input type="text" class="form-control" id="editSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                            <div class="row mb-3">
+                                                <!-- Tagify Textarea Field -->
+                                                <div class="form-group">
+                                                    <label for="adminAccounts">Accounts</label>
+                                                    <textarea class="form-control" id="adminAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
+                                                    <input type="hidden" id="adminAccountsJson" th:field="*{accounts}" />
+                                                </div>
                                             </div>
-                                        </div>
-                                        <!-- Edit Tagify Textarea Field -->
-                                        <div class="row mb-3">
-                                            <div class="form-group">
-                                                <label for="accounts">Accounts</label>
-                                                <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." readonly></textarea>
-                                                <input type="hidden" id="editAccountsJson"/>
-                                                <!--<input type="hidden" id="editAccountsJson" th:field="*{accounts}"/>-->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="adminTotalAmount" class="form-label">Amount</label>
+                                                    <input type="number" step="0.01" class="form-control" id="adminTotalAmount" th:field="*{totalAmount}" required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-3">
-                                                <label for="editTotalAmount" class="form-label">Amount</label>
-                                                <input type="number" step="0.01" class="form-control" id="editTotalAmount" th:field="*{totalAmount}" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="editReceivedBy" class="form-label">Received By</label>
-                                                <select id="editReceivedBy" class="form-select" th:field="*{receivedBy}" required>
-                                                    <option value="" selected>Select petty cash receiver...</option>
-                                                    <option th:each="tempUser : ${internalUsers}"
-                                                            th:value="${tempUser.userId}"
-                                                            th:text="${tempUser.fullName}"></option>
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3 d-flex align-items-center mt-4">
-                                                <input class="form-check-input me-2" th:field="*{approved}" type="checkbox" id="editApproved">
-                                                <label class="form-check-label" for="editApproved">Approved</label>
-                                            </div>
-                                        </div>
 
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save/Update</button>
-                                        </div>
-                                    </form>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- ADMIN WORKS -->
-                    <!-- Admin Works - Petty Cash Form Modal -->
-                    <div class="modal fade" id="addAdminPettyCashModal" tabindex="-1" aria-labelledby="addAdminPettyCashModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header mb-2">
-                                    <h5 class="modal-title" id="addAdminPettyCashModalLabel">Petty Cash Voucher</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="addAdminPettyCashForm" th:action="@{/petty-cash/{id}/add-admin-petty-cash(id=${fund.fundId})}"
-                                          th:object="${pettyCash}" method="POST">
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="adminVoucherNo" class="form-label">Voucher No.</label>
-                                                <input type="text" class="form-control" id="adminVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                        <!-- Update Admin Works - Petty Cash Form Modal -->
+                        <div class="modal fade" id="editAdminPettyCashModal" tabindex="-1" aria-labelledby="editAdminPettyCashModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-lg">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-2">
+                                        <h5 class="modal-title" id="editAdminPettyCashModalLabel">Petty Cash Voucher (Update)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="editAdminPettyCashForm" th:action="@{/petty-cash/update-admin-petty-cash}"
+                                              th:object="${pettyCash}" method="POST">
+                                            <div><input type="hidden" class="form-control" id="editAdminPettyCashId" th:field="*{pcActivityId}" /></div>
+                                            <div><input type="hidden" class="form-control" id="editAdminFundId" th:field="*{fund.fundId}" /></div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editAdminVoucherNo" class="form-label">Voucher No.</label>
+                                                    <input type="text" class="form-control" id="editAdminVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editAdminDate" class="form-label">Date</label>
+                                                    <input type="date" class="form-control" id="editAdminDate" th:field="*{date}" required>
+                                                </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <label for="adminDate" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="adminDate" th:field="*{date}" required>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editAdminActivityDescription" class="form-label">Activity Description</label>
+                                                    <textarea class="form-control" id="editAdminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="adminActivityDescription" class="form-label">Activity Description</label>
-                                                <textarea class="form-control" id="adminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editAdminActivityCategory" class="form-label">Activity Category</label>
+                                                    <input type="text" class="form-control" id="editAdminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="adminActivityCategory" class="form-label">Activity Category</label>
-                                                <input type="text" class="form-control" id="adminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
+                                            <div class="row mb-3">
+                                                <div class="col-md-12">
+                                                    <label for="editAdminSoaCategory" class="form-label">SOA Category</label>
+                                                    <input type="text" class="form-control" id="editAdminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="adminSoaCategory" class="form-label">SOA Category</label>
-                                                <input type="text" class="form-control" id="adminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
+                                            <div class="row mb-3">
+                                                <!-- Tagify Textarea Field -->
+                                                <div class="form-group">
+                                                    <label for="editAdminAccounts">Accounts</label>
+                                                    <textarea class="form-control" id="editAdminAccounts" rows="4" cols="6" placeholder="Add accounts ..." readonly></textarea>
+                                                    <input type="hidden" id="editAdminAccountsJson" />
+                                                    <!--<input type="hidden" id="editAdminAccountsJson" th:field="*{accounts}" />-->
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <!-- Tagify Textarea Field -->
-                                            <div class="form-group">
-                                                <label for="adminAccounts">Accounts</label>
-                                                <textarea class="form-control" id="adminAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
-                                                <input type="hidden" id="adminAccountsJson" th:field="*{accounts}" />
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editAdminTotalAmount" class="form-label">Amount</label>
+                                                    <input type="number" step="0.01" class="form-control" id="editAdminTotalAmount" th:field="*{totalAmount}" required>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="adminTotalAmount" class="form-label">Amount</label>
-                                                <input type="number" step="0.01" class="form-control" id="adminTotalAmount" th:field="*{totalAmount}" required>
-                                            </div>
-                                        </div>
 
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save</button>
-                                        </div>
-                                    </form>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                                            </div>
+                                        </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- Update Admin Works - Petty Cash Form Modal -->
-                    <div class="modal fade" id="editAdminPettyCashModal" tabindex="-1" aria-labelledby="editAdminPettyCashModalLabel" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header mb-2">
-                                    <h5 class="modal-title" id="editAdminPettyCashModalLabel">Petty Cash Voucher (Update)</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form class="row g-3 mb-3" id="editAdminPettyCashForm" th:action="@{/petty-cash/update-admin-petty-cash}"
-                                          th:object="${pettyCash}" method="POST">
-                                        <div><input type="hidden" class="form-control" id="editAdminPettyCashId" th:field="*{pcActivityId}" /></div>
-                                        <div><input type="hidden" class="form-control" id="editAdminFundId" th:field="*{fund.fundId}" /></div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="editAdminVoucherNo" class="form-label">Voucher No.</label>
-                                                <input type="text" class="form-control" id="editAdminVoucherNo" th:field="*{pcActivityNo}" placeholder="Voucher no..." required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <label for="editAdminDate" class="form-label">Date</label>
-                                                <input type="date" class="form-control" id="editAdminDate" th:field="*{date}" required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editAdminActivityDescription" class="form-label">Activity Description</label>
-                                                <textarea class="form-control" id="editAdminActivityDescription" th:field="*{activityDescription}" rows="4" cols="6" placeholder="Add activity description..." required></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editAdminActivityCategory" class="form-label">Activity Category</label>
-                                                <input type="text" class="form-control" id="editAdminActivityCategory" th:field="*{activityCategory}" placeholder="Activity Category ..." required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-12">
-                                                <label for="editAdminSoaCategory" class="form-label">SOA Category</label>
-                                                <input type="text" class="form-control" id="editAdminSoaCategory" th:field="*{soaCategory}" placeholder="Soa description ..." required>
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <!-- Tagify Textarea Field -->
-                                            <div class="form-group">
-                                                <label for="editAdminAccounts">Accounts</label>
-                                                <textarea class="form-control" id="editAdminAccounts" rows="4" cols="6" placeholder="Add accounts ..." readonly></textarea>
-                                                <input type="hidden" id="editAdminAccountsJson" />
-                                                <!--<input type="hidden" id="editAdminAccountsJson" th:field="*{accounts}" />-->
-                                            </div>
-                                        </div>
-                                        <div class="row mb-3">
-                                            <div class="col-md-6">
-                                                <label for="editAdminTotalAmount" class="form-label">Amount</label>
-                                                <input type="number" step="0.01" class="form-control" id="editAdminTotalAmount" th:field="*{totalAmount}" required>
-                                            </div>
-                                        </div>
 
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="submit" class="btn btn-primary">Save/Update</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!--Delete modal popup-->
-                    <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Confirm Delete Record</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <p>Are you sure you want to delete this petty cash voucher record?</p>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <a href="" class="btn btn-danger" id="deleteId">Yes, Delete</a>
+                        <!--Delete modal popup-->
+                        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirm Delete Record</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete this petty cash voucher record?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <a href="" class="btn btn-danger" id="deleteId">Yes, Delete</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <script th:inline="javascript">
+                    $(document).ready(function() {
+                        // Initialize Tagify for "Accounts" field in Add Modal
+                        const accountData = /*[[${listOfAccounts}]]*/ || [];
+                        const formattedAccounts = accountData.map(account => ({
+                            id: account.clientAccountId,
+                            value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`
+                        }));
+
+                        // Initialize Tagify on "accounts" input in Add Modal
+                        const inputAdd = document.querySelector('#accounts');
+                        const tagifyAdd = new Tagify(inputAdd, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0,
+                                maxItems: 10
+                            }
+                        });
+
+                        // Update hidden input field with selected tag IDs for Add Modal
+                        tagifyAdd.on('add', function() {
+                            const values = tagifyAdd.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                            //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
+                        });
+
+                        tagifyAdd.on('remove', function() {
+                            const values = tagifyAdd.value.map(tag => tag.id);
+                            $("#accountsJson").val(JSON.stringify(values));
+                            //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
+                        });
+
+                        // Initialize Tagify on "accounts" input in Add Modal
+                        const inputAddAdmin = document.querySelector('#adminAccounts');
+                        const tagifyAddAdmin = new Tagify(inputAddAdmin, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0,
+                                maxItems: 10
+                            }
+                        });
+
+                        tagifyAddAdmin.on('add', function() {
+                            const values = tagifyAddAdmin.value.map(tag => tag.id);
+                            $("#adminAccountsJson").val(JSON.stringify(values));
+                            //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
+                        });
+
+                        tagifyAddAdmin.on('remove', function() {
+                            const values = tagifyAddAdmin.value.map(tag => tag.id);
+                            $("#adminAccountsJson").val(JSON.stringify(values));
+                            //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
+                        });
+
+                        // Initialize Tagify on "editAccounts" input in Edit Modal
+                        const inputEdit = document.querySelector('#editAccounts');
+                        const tagifyEdit = new Tagify(inputEdit, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0,
+                                maxItems: 10
+                            }
+                        });
+
+                        // UPDATE ADMIN PETTY CASH
+                        $('.table .ePettyCashBtn').on('click', function(event) {
+                            event.preventDefault();
+                            var href = $(this).attr('href');
+
+                            $.get(href, function(tempPettyCash, status) {
+                                console.log(tempPettyCash);
+
+                                $('#editPettyCashForm #editPettyCashId').val(tempPettyCash.pcActivityId);
+
+                                if (tempPettyCash.fund) {
+                                   $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
+                                }
+
+                                if (tempPettyCash.receivedBy) {
+                                   $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy.userId);
+                                }
+
+                                $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.pcActivityNo);
+                                $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
+                                $('#editPettyCashForm #editActivityDescription').val(tempPettyCash.activityDescription);
+                                $('#editPettyCashForm #editActivityCategory').val(tempPettyCash.activityCategory);
+                                $('#editPettyCashForm #editSoaCategory').val(tempPettyCash.soaCategory);
+                                $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
+                                $('#editPettyCashForm #editApproved').prop('checked', tempPettyCash.approved);
+
+                                // Populate accounts in Tagify for Edit Modal
+                                tagifyEdit.removeAllTags();
+                                if (tempPettyCash.accounts) {
+                                    const accountTags = tempPettyCash.accounts.map(account => ({
+                                        id: account.clientAccountId,
+                                        value: `${account.accountTitle} (${account.clientAccountType})`
+                                    }));
+                                    tagifyEdit.addTags(accountTags);
+                                }
+
+                                $('#editPettyCashModal').modal('show');
+                            });
+                        });
+
+                        // Log the accounts value in Edit Modal on add/remove
+                        //tagifyEdit.on('add', function() {
+                        //    const values = tagifyEdit.value.map(tag => tag.id);
+                        //    //console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
+                        //});
+                        //tagifyEdit.on('remove', function() {
+                        //    const values = tagifyEdit.value.map(tag => tag.id);
+                        //    //console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
+                        //});
+
+
+                        // UPDATE ADMIN WORKS PETTY CASH
+
+                        // Initialize Tagify on "editAccounts" input in Edit Modal
+                        const inputEditAdmin = document.querySelector('#editAdminAccounts');
+                        const tagifyEditAdmin = new Tagify(inputEditAdmin, {
+                            enforceWhitelist: true,
+                            whitelist: formattedAccounts,
+                            dropdown: {
+                                enabled: 0,
+                                maxItems: 10
+                            }
+                        });
+
+                        $('.table .eAdminPettyCashBtn').on('click', function(event) {
+                            event.preventDefault();
+                            var href = $(this).attr('href');
+
+                            $.get(href, function(tempPettyCash, status) {
+                                //console.log(tempPettyCash);
+
+                                $('#editAdminPettyCashForm #editAdminPettyCashId').val(tempPettyCash.pcActivityId);
+
+                                if (tempPettyCash.fund) {
+                                   $('#editAdminPettyCashForm #editAdminFundId').val(tempPettyCash.fund.fundId);
+                                }
+
+                                $('#editAdminPettyCashForm #editAdminVoucherNo').val(tempPettyCash.pcActivityNo);
+                                $('#editAdminPettyCashForm #editAdminDate').val(formatDate(tempPettyCash.date));
+                                $('#editAdminPettyCashForm #editAdminActivityDescription').val(tempPettyCash.activityDescription);
+                                $('#editAdminPettyCashForm #editAdminActivityCategory').val(tempPettyCash.activityCategory);
+                                $('#editAdminPettyCashForm #editAdminSoaCategory').val(tempPettyCash.soaCategory);
+                                $('#editAdminPettyCashForm #editAdminTotalAmount').val(tempPettyCash.totalAmount);
+
+                                // Populate accounts in Tagify for Edit Modal
+                                tagifyEditAdmin.removeAllTags();
+                                if (tempPettyCash.accounts) {
+                                    const accountTags = tempPettyCash.accounts.map(account => ({
+                                        id: account.clientAccountId,
+                                        value: `${account.accountTitle} (${account.clientAccountType})`
+                                    }));
+                                    tagifyEditAdmin.addTags(accountTags);
+                                }
+
+                                $('#editAdminPettyCashModal').modal('show');
+                            });
+                        });
+
+                        tagifyEditAdmin.on('add', function() {
+                            const values = tagifyEditAdmin.value.map(tag => tag.id);
+                            console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
+                        });
+                        tagifyEditAdmin.on('remove', function() {
+                            const values = tagifyEditAdmin.value.map(tag => tag.id);
+                            console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
+                        });
+
+                        function formatDate(date) {
+                            if (!date) return '';
+
+                            if (typeof date === 'string') {
+                                date = new Date(date);
+                            } else if (typeof date === 'number') {
+                                date = new Date(date);
+                            }
+
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0');
+                            const day = String(date.getDate()).padStart(2, '0');
+
+                            return `${year}-${month}-${day}`;
+                        }
+                    });
+                </script>
             </div>
-            <script th:inline="javascript">
-                $(document).ready(function() {
-                    // Initialize Tagify for "Accounts" field in Add Modal
-                    const accountData = /*[[${listOfAccounts}]]*/ || [];
-                    const formattedAccounts = accountData.map(account => ({
-                        id: account.clientAccountId,
-                        value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`
-                    }));
+            <div th:replace="~{fragments/footer :: footer}">Footer</div>
+        </main>
+    </div>
 
-                    // Initialize Tagify on "accounts" input in Add Modal
-                    const inputAdd = document.querySelector('#accounts');
-                    const tagifyAdd = new Tagify(inputAdd, {
-                        enforceWhitelist: true,
-                        whitelist: formattedAccounts,
-                        dropdown: {
-                            enabled: 0,
-                            maxItems: 10
-                        }
-                    });
-
-                    // Update hidden input field with selected tag IDs for Add Modal
-                    tagifyAdd.on('add', function() {
-                        const values = tagifyAdd.value.map(tag => tag.id);
-                        $("#accountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
-                    });
-
-                    tagifyAdd.on('remove', function() {
-                        const values = tagifyAdd.value.map(tag => tag.id);
-                        $("#accountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
-                    });
-
-                    // Initialize Tagify on "accounts" input in Add Modal
-                    const inputAddAdmin = document.querySelector('#adminAccounts');
-                    const tagifyAddAdmin = new Tagify(inputAddAdmin, {
-                        enforceWhitelist: true,
-                        whitelist: formattedAccounts,
-                        dropdown: {
-                            enabled: 0,
-                            maxItems: 10
-                        }
-                    });
-
-                    tagifyAddAdmin.on('add', function() {
-                        const values = tagifyAddAdmin.value.map(tag => tag.id);
-                        $("#adminAccountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
-                    });
-
-                    tagifyAddAdmin.on('remove', function() {
-                        const values = tagifyAddAdmin.value.map(tag => tag.id);
-                        $("#adminAccountsJson").val(JSON.stringify(values));
-                        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
-                    });
-
-                    // Initialize Tagify on "editAccounts" input in Edit Modal
-                    const inputEdit = document.querySelector('#editAccounts');
-                    const tagifyEdit = new Tagify(inputEdit, {
-                        enforceWhitelist: true,
-                        whitelist: formattedAccounts,
-                        dropdown: {
-                            enabled: 0,
-                            maxItems: 10
-                        }
-                    });
-
-                    // UPDATE ADMIN PETTY CASH
-                    $('.table .ePettyCashBtn').on('click', function(event) {
-                        event.preventDefault();
-                        var href = $(this).attr('href');
-
-                        $.get(href, function(tempPettyCash, status) {
-                            console.log(tempPettyCash);
-
-                            $('#editPettyCashForm #editPettyCashId').val(tempPettyCash.pcActivityId);
-
-                            if (tempPettyCash.fund) {
-                               $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
-                            }
-
-                            if (tempPettyCash.receivedBy) {
-                               $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy.userId);
-                            }
-
-                            $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.pcActivityNo);
-                            $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
-                            $('#editPettyCashForm #editActivityDescription').val(tempPettyCash.activityDescription);
-                            $('#editPettyCashForm #editActivityCategory').val(tempPettyCash.activityCategory);
-                            $('#editPettyCashForm #editSoaCategory').val(tempPettyCash.soaCategory);
-                            $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
-                            $('#editPettyCashForm #editApproved').prop('checked', tempPettyCash.approved);
-
-                            // Populate accounts in Tagify for Edit Modal
-                            tagifyEdit.removeAllTags();
-                            if (tempPettyCash.accounts) {
-                                const accountTags = tempPettyCash.accounts.map(account => ({
-                                    id: account.clientAccountId,
-                                    value: `${account.accountTitle} (${account.clientAccountType})`
-                                }));
-                                tagifyEdit.addTags(accountTags);
-                            }
-
-                            $('#editPettyCashModal').modal('show');
-                        });
-                    });
-
-                    // Log the accounts value in Edit Modal on add/remove
-                    //tagifyEdit.on('add', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    //console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
-                    //});
-                    //tagifyEdit.on('remove', function() {
-                    //    const values = tagifyEdit.value.map(tag => tag.id);
-                    //    //console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-                    //});
-
-
-                    // UPDATE ADMIN WORKS PETTY CASH
-
-                    // Initialize Tagify on "editAccounts" input in Edit Modal
-                    const inputEditAdmin = document.querySelector('#editAdminAccounts');
-                    const tagifyEditAdmin = new Tagify(inputEditAdmin, {
-                        enforceWhitelist: true,
-                        whitelist: formattedAccounts,
-                        dropdown: {
-                            enabled: 0,
-                            maxItems: 10
-                        }
-                    });
-
-                    $('.table .eAdminPettyCashBtn').on('click', function(event) {
-                        event.preventDefault();
-                        var href = $(this).attr('href');
-
-                        $.get(href, function(tempPettyCash, status) {
-                            //console.log(tempPettyCash);
-
-                            $('#editAdminPettyCashForm #editAdminPettyCashId').val(tempPettyCash.pcActivityId);
-
-                            if (tempPettyCash.fund) {
-                               $('#editAdminPettyCashForm #editAdminFundId').val(tempPettyCash.fund.fundId);
-                            }
-
-                            $('#editAdminPettyCashForm #editAdminVoucherNo').val(tempPettyCash.pcActivityNo);
-                            $('#editAdminPettyCashForm #editAdminDate').val(formatDate(tempPettyCash.date));
-                            $('#editAdminPettyCashForm #editAdminActivityDescription').val(tempPettyCash.activityDescription);
-                            $('#editAdminPettyCashForm #editAdminActivityCategory').val(tempPettyCash.activityCategory);
-                            $('#editAdminPettyCashForm #editAdminSoaCategory').val(tempPettyCash.soaCategory);
-                            $('#editAdminPettyCashForm #editAdminTotalAmount').val(tempPettyCash.totalAmount);
-
-                            // Populate accounts in Tagify for Edit Modal
-                            tagifyEditAdmin.removeAllTags();
-                            if (tempPettyCash.accounts) {
-                                const accountTags = tempPettyCash.accounts.map(account => ({
-                                    id: account.clientAccountId,
-                                    value: `${account.accountTitle} (${account.clientAccountType})`
-                                }));
-                                tagifyEditAdmin.addTags(accountTags);
-                            }
-
-                            $('#editAdminPettyCashModal').modal('show');
-                        });
-                    });
-
-                    tagifyEditAdmin.on('add', function() {
-                        const values = tagifyEditAdmin.value.map(tag => tag.id);
-                        console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
-                    });
-                    tagifyEditAdmin.on('remove', function() {
-                        const values = tagifyEditAdmin.value.map(tag => tag.id);
-                        console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-                    });
-
-                    function formatDate(date) {
-                        if (!date) return '';
-
-                        if (typeof date === 'string') {
-                            date = new Date(date);
-                        } else if (typeof date === 'number') {
-                            date = new Date(date);
-                        }
-
-                        const year = date.getFullYear();
-                        const month = String(date.getMonth() + 1).padStart(2, '0');
-                        const day = String(date.getDate()).padStart(2, '0');
-
-                        return `${year}-${month}-${day}`;
-                    }
-                });
-            </script>
-        </div>
-    </main>
-
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script src="../../static/js/delete-modal.js" type="text/javascript" th:src="@{/js/delete-modal.js}"></script>
 </body>
 </html>

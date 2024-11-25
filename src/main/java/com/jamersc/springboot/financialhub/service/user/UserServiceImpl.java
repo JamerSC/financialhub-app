@@ -98,8 +98,8 @@ public class UserServiceImpl implements UserService {
         if (creator != null) {
             user.setCreatedBy(creator.getUserId());
             user.setUpdatedBy(creator.getUserId());
-            logger.info("Create By: " + creator.getUsername());
-            logger.info("User ID: " + creator.getUserId());
+            //logger.info("Create By: " + creator.getUsername());
+            //logger.info("User ID: " + creator.getUserId());
         } else {
             user.setCreatedBy(1L);
             user.setUpdatedBy(1L);
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
         // BeanUtils.copyProperties(userDto, user, "createdAt");
         BeanUtils.copyProperties(dto, user, "password", "roles");
         userRepository.save(user);
-        logger.info("Successfully created user: " + user.getUsername());
+        //logger.info("Successfully created user: " + user.getUsername());
     }
 
     @Override
@@ -147,7 +147,7 @@ public class UserServiceImpl implements UserService {
                 user.setUpdatedBy(updatedBy.getUserId());
             }
 
-            logger.info("Updated user details successfully!");
+            //logger.info("Updated user details successfully!");
             userRepository.save(user);
         }
 
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(Long id) {
-        logger.info("Successfully deleted user record by id: " + id);
+        //logger.info("Successfully deleted user record by id: " + id);
         userRepository.deleteById(id);
     }
 }

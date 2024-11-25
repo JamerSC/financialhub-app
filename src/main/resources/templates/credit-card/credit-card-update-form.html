@@ -1,111 +1,124 @@
     <!doctype html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/layouts/base-layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Petty Cash Voucher</title>
+    <title>Update Voucher Form</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
 </head>
 <body>
 
-    <main class="content px-3 py-4"  layout:fragment="content">
-        <div class="container-fluid">
-            <h4 class="mb-5 text-center">Petty Cash Voucher Form</h4>
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <!-- Insert form-->
-                    <form action="#" th:action="@{/credit-card/credit-card-update-form}" th:object="${creditCardDto}" method="POST">
-                        <div>
-                            <input type="hidden" th:field="*{id}">
-                        </div>
-                        <div class="mb-3">
-                            <label for="ccvNumber" class="form-label">Credit Card Voucher No.</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="ccvNumber"
-                                   placeholder="Enter your todo title"
-                                   th:field="*{ccvNumber}">
-                            <p th:if="${#fields.hasErrors('ccvNumber')}" th:errors="*{ccvNumber}" class="error">
-                                Credit card voucher number is required.!
-                            </p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="payeeName" class="form-label">Payee Name</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="payeeName"
-                                   placeholder="Payee name..."
-                                   th:field="*{payeeName}">
-                            <p th:if="${#fields.hasErrors('payeeName')}" th:errors="*{payeeName}" class="error">
-                                Payee name is required.!
-                            </p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="requestDate" class="form-label">Date</label>
-                            <input type="date"
-                                   class="form-control"
-                                   id="requestDate"
-                                   th:field="*{date}">
-                            <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="error">
-                                Date is required.!
-                            </p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="totalAmount" class="form-label">Total Amount</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="totalAmount"
-                                   placeholder="Total amount..."
-                                   th:field="*{totalAmount}">
-                            <p th:if="${#fields.hasErrors('totalAmount')}" th:errors="*{totalAmount}" class="error">
-                                Total amount is required.!
-                            </p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="amountInWords" class="form-label">Amount in words</label>
-                            <textarea class="form-control"
-                                      id="amountInWords" rows="3"
-                                      placeholder="Amount in words..."
-                                      th:field="*{amountInWords}">
-                             </textarea>
-                            <p th:if="${#fields.hasErrors('amountInWords')}" th:errors="*{amountInWords}" class="error"></p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="modeOfPayment" class="form-label">Mode of Payment</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="modeOfPayment"
-                                   placeholder="Mode of payment..."
-                                   th:field="*{modeOfPayment}">
-                            <p th:if="${#fields.hasErrors('modeOfPayment')}" th:errors="*{modeOfPayment}" class="error">
-                                Mode of payment is required.!
-                            </p>
-                        </div>
-                        <div class="mb-3">
-                            <label for="bank" class="form-label">Bank</label>
-                            <input type="text"
-                                   class="form-control"
-                                   id="bank"
-                                   placeholder="Bank..."
-                                   th:field="*{bank}">
-                            <p th:if="${#fields.hasErrors('bank')}" th:errors="*{bank}" class="error">
-                                Bank is required.!
-                            </p>
-                        </div>
-                        <div class="d-grid mb-3">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                        <div class="d-grid mb-3">
-                            <a th:href="@{/credit-card/credit-card-voucher}" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </form>
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <h4 class="mb-5 text-center">Update Voucher Form</h4>
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <!-- Insert form-->
+                        <form action="#" th:action="@{/credit-card/credit-card-update-form}" th:object="${creditCardDto}" method="POST">
+                            <div>
+                                <input type="hidden" th:field="*{id}">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ccvNumber" class="form-label">Credit Card Voucher No.</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="ccvNumber"
+                                       placeholder="Enter your todo title"
+                                       th:field="*{ccvNumber}">
+                                <p th:if="${#fields.hasErrors('ccvNumber')}" th:errors="*{ccvNumber}" class="error">
+                                    Credit card voucher number is required.!
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="payeeName" class="form-label">Payee Name</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="payeeName"
+                                       placeholder="Payee name..."
+                                       th:field="*{payeeName}">
+                                <p th:if="${#fields.hasErrors('payeeName')}" th:errors="*{payeeName}" class="error">
+                                    Payee name is required.!
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="requestDate" class="form-label">Date</label>
+                                <input type="date"
+                                       class="form-control"
+                                       id="requestDate"
+                                       th:field="*{date}">
+                                <p th:if="${#fields.hasErrors('date')}" th:errors="*{date}" class="error">
+                                    Date is required.!
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="totalAmount" class="form-label">Total Amount</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="totalAmount"
+                                       placeholder="Total amount..."
+                                       th:field="*{totalAmount}">
+                                <p th:if="${#fields.hasErrors('totalAmount')}" th:errors="*{totalAmount}" class="error">
+                                    Total amount is required.!
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="amountInWords" class="form-label">Amount in words</label>
+                                <textarea class="form-control"
+                                          id="amountInWords" rows="3"
+                                          placeholder="Amount in words..."
+                                          th:field="*{amountInWords}">
+                                 </textarea>
+                                <p th:if="${#fields.hasErrors('amountInWords')}" th:errors="*{amountInWords}" class="error"></p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="modeOfPayment" class="form-label">Mode of Payment</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="modeOfPayment"
+                                       placeholder="Mode of payment..."
+                                       th:field="*{modeOfPayment}">
+                                <p th:if="${#fields.hasErrors('modeOfPayment')}" th:errors="*{modeOfPayment}" class="error">
+                                    Mode of payment is required.!
+                                </p>
+                            </div>
+                            <div class="mb-3">
+                                <label for="bank" class="form-label">Bank</label>
+                                <input type="text"
+                                       class="form-control"
+                                       id="bank"
+                                       placeholder="Bank..."
+                                       th:field="*{bank}">
+                                <p th:if="${#fields.hasErrors('bank')}" th:errors="*{bank}" class="error">
+                                    Bank is required.!
+                                </p>
+                            </div>
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary">Save</button>
+                            </div>
+                            <div class="d-grid mb-3">
+                                <a th:href="@{/credit-card/credit-card-voucher}" class="btn btn-secondary">Cancel</a>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+            <div th:replace="~{fragments/footer :: footer}">Footer</div>
+        </main>
+    </div>
 
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

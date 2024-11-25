@@ -1,413 +1,428 @@
 <!DOCTYPE html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/layouts/base-layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Case</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
 </head>
 <body>
 
-<main class="content px-3 py-4" layout:fragment="content">
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex">
-                    <div class="p-1">
-                        <h4 class="fw-bold fs-4">Case</h4>
-                    </div>
-                    <!-- Contact Option Modal Button -->
-                    <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                        <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                data-bs-target="#addCaseModal" title="Add Account">
-                            <i class="lni lni-plus-circle"></i> Case
-                        </button>
-                    </div>
-                </div>
-                <table class="table table-striped shadow">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>Case Title</th>
-                        <th>Client</th>
-                        <th>Status</th>
-                        <th>Stage</th>
-                        <th>Last Activity</th>
-                        <th>Start Date</th>
-                        <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr th:each="tempCase : ${listOfCases}">
-                        <td>
-                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
-                            <span th:text="${tempCase.accountTitle}"></span>
-                            </a>
-                        </td>
-                        <td>
-                            <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h4 class="fw-bold fs-4">Case</h4>
+                            </div>
+                            <!-- Contact Option Modal Button -->
+                            <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#addCaseModal" title="Add Account">
+                                    <i class="lni lni-plus-circle"></i> Case
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Case Title</th>
+                                <th>Client</th>
+                                <th>Status</th>
+                                <th>Stage</th>
+                                <th>Last Activity</th>
+                                <th>Start Date</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tempCase : ${listOfCases}">
+                                <td>
+                                    <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
+                                        <span th:text="${tempCase.accountTitle}"></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
                             <span th:if="${tempCase.client.individual != null}"
                                   th:text="${tempCase.client.individual.getFullName()}"></span>
-                            <span th:if="${tempCase.client.company != null}"
-                                  th:text="${tempCase.client.company.companyName}"></span>
-                            </a>
-                        </td>
-                        <td th:text="${tempCase.caseAccount.status.displayStatus()}"></td>
-                        <td th:text="${tempCase.caseAccount.stage}"></td>
-                        <td>-</td>
-                        <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'MMM. d, yyyy')}"></td>
-                        <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                            <!--<a th:href="@{/client-account/case-summary}" class="btn btn-secondary btn-sm" title="view">
-                                <i class="lni lni-eye"></i>
-                            </a>-->
-                            <a class="btn btn-success btn-sm editCaseAccountBtn"
-                                th:href="@{/client-account/edit-case-account(id=${tempCase.clientAccountId})}"  title="Edit">
-                                <i class="lni lni-pen-to-square"></i>
-                            </a>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-                <!-- Create Case - Form Modal -->
-                <div class="modal fade" id="addCaseModal" tabindex="-1" aria-labelledby="addCaseModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header mb-2">
-                                <h5 class="modal-title" id="addCaseModalLabel">Case (New Account)</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="row g-3 mb-3" id="addCaseAccountForm" th:action="@{/client-account/add-case-account}" th:object="${caseAccount}" method="POST">
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-5">
-                                            <label for="caseType" class="form-label">Case Type</label>
-                                            <select id="caseType" class="form-select" th:field="*{caseAccount.caseType}" required>
-                                                <option value="" selected>Select case type...</option>
-                                                <option th:each="cases : ${caseType}"
-                                                        th:value="${cases}"
-                                                        th:text="${cases.displayCaseType()}"></option>
-                                            </select>
-                                        </div>
+                                        <span th:if="${tempCase.client.company != null}"
+                                              th:text="${tempCase.client.company.companyName}"></span>
+                                    </a>
+                                </td>
+                                <td th:text="${tempCase.caseAccount.status.displayStatus()}"></td>
+                                <td th:text="${tempCase.caseAccount.stage}"></td>
+                                <td>-</td>
+                                <td th:text="${#dates.format(tempCase.caseAccount.startDate, 'MMM. d, yyyy')}"></td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <!--<a th:href="@{/client-account/case-summary}" class="btn btn-secondary btn-sm" title="view">
+                                        <i class="lni lni-eye"></i>
+                                    </a>-->
+                                    <a class="btn btn-success btn-sm editCaseAccountBtn"
+                                       th:href="@{/client-account/edit-case-account(id=${tempCase.clientAccountId})}"  title="Edit">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- Create Case - Form Modal -->
+                        <div class="modal fade" id="addCaseModal" tabindex="-1" aria-labelledby="addCaseModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-2">
+                                        <h5 class="modal-title" id="addCaseModalLabel">Case (New Account)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="caseTitle" class="form-label">Case Title</label>
-                                            <input type="text" class="form-control" id="caseTitle" placeholder="Case title ..." th:field="*{accountTitle}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="docketNo" class="form-label">Docket No.</label>
-                                            <input type="text" class="form-control" id="docketNo" placeholder="Docket number ..." th:field="*{caseAccount.docketNo}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">.
-                                        <div class="col-md-4">
-                                            <label for="nature" class="form-label">Nature</label>
-                                            <input type="text" class="form-control" id="nature" placeholder="Nature ..." th:field="*{caseAccount.nature}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="court" class="form-label">Court</label>
-                                            <input type="text" class="form-control" id="court" placeholder="Court ..." th:field="*{caseAccount.court}" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="branch" class="form-label">Branch</label>
-                                            <input type="text" class="form-control" id="branch" placeholder="Branch ..." th:field="*{caseAccount.branch}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="judge" class="form-label">Judge</label>
-                                            <input type="text" class="form-control" id="judge" placeholder="Judge ..." th:field="*{caseAccount.judge}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="courtEmail" class="form-label">Court Email</label>
-                                            <input type="email" class="form-control" id="courtEmail" placeholder="Court email ..." th:field="*{caseAccount.courtEmail}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="prosecutor" class="form-label">Prosecutor</label>
-                                            <input type="text" class="form-control" id="prosecutor" placeholder="Prosecutor ..." th:field="*{caseAccount.prosecutor}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="prosecutorOffice" class="form-label">Prosecutor Office</label>
-                                            <input type="text" class="form-control" id="prosecutorOffice" placeholder="Prosecutor Office ..." th:field="*{caseAccount.prosecutorOffice}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="prosecutorEmail" class="form-label">Prosecutor Email</label>
-                                            <input type="email" class="form-control" id="prosecutorEmail" placeholder="Prosecutor Email ..." th:field="*{caseAccount.prosecutorEmail}" required>
-                                        </div>
-                                    </div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-5">
-                                            <label for="client" class="form-label">Client</label>
-                                            <select id="client" class="form-select" th:field="*{client}" required>
-                                                <option value="" selected>Select client...</option>
-                                                <option th:each="tempClient : ${clients}"
-                                                        th:value="${tempClient.contactId}"
-                                                        th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="addCaseAccountForm" th:action="@{/client-account/add-case-account}" th:object="${caseAccount}" method="POST">
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-5">
+                                                    <label for="caseType" class="form-label">Case Type</label>
+                                                    <select id="caseType" class="form-select" th:field="*{caseAccount.caseType}" required>
+                                                        <option value="" selected>Select case type...</option>
+                                                        <option th:each="cases : ${caseType}"
+                                                                th:value="${cases}"
+                                                                th:text="${cases.displayCaseType()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="caseTitle" class="form-label">Case Title</label>
+                                                    <input type="text" class="form-control" id="caseTitle" placeholder="Case title ..." th:field="*{accountTitle}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="docketNo" class="form-label">Docket No.</label>
+                                                    <input type="text" class="form-control" id="docketNo" placeholder="Docket number ..." th:field="*{caseAccount.docketNo}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">.
+                                                <div class="col-md-4">
+                                                    <label for="nature" class="form-label">Nature</label>
+                                                    <input type="text" class="form-control" id="nature" placeholder="Nature ..." th:field="*{caseAccount.nature}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="court" class="form-label">Court</label>
+                                                    <input type="text" class="form-control" id="court" placeholder="Court ..." th:field="*{caseAccount.court}" required>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="branch" class="form-label">Branch</label>
+                                                    <input type="text" class="form-control" id="branch" placeholder="Branch ..." th:field="*{caseAccount.branch}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="judge" class="form-label">Judge</label>
+                                                    <input type="text" class="form-control" id="judge" placeholder="Judge ..." th:field="*{caseAccount.judge}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="courtEmail" class="form-label">Court Email</label>
+                                                    <input type="email" class="form-control" id="courtEmail" placeholder="Court email ..." th:field="*{caseAccount.courtEmail}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="prosecutor" class="form-label">Prosecutor</label>
+                                                    <input type="text" class="form-control" id="prosecutor" placeholder="Prosecutor ..." th:field="*{caseAccount.prosecutor}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="prosecutorOffice" class="form-label">Prosecutor Office</label>
+                                                    <input type="text" class="form-control" id="prosecutorOffice" placeholder="Prosecutor Office ..." th:field="*{caseAccount.prosecutorOffice}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="prosecutorEmail" class="form-label">Prosecutor Email</label>
+                                                    <input type="email" class="form-control" id="prosecutorEmail" placeholder="Prosecutor Email ..." th:field="*{caseAccount.prosecutorEmail}" required>
+                                                </div>
+                                            </div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-5">
+                                                    <label for="client" class="form-label">Client</label>
+                                                    <select id="client" class="form-select" th:field="*{client}" required>
+                                                        <option value="" selected>Select client...</option>
+                                                        <option th:each="tempClient : ${clients}"
+                                                                th:value="${tempClient.contactId}"
+                                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
                                                          (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
                                                          tempClient.contactCategoryType.displayContactCategoryType()))
                                                          : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
                                                          ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
-                                            </select>
-                                        </div>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="opposingParty" class="form-label">Opposing Party</label>
+                                                    <input type="text" class="form-control" id="opposingParty" placeholder="Opposing Party ..." th:field="*{caseAccount.opposingParty}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="opposingCounsel" class="form-label">Opposing Counsel</label>
+                                                    <input type="text" class="form-control" id="opposingCounsel" placeholder="Opposing Counsel ..." th:field="*{caseAccount.opposingCounsel}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="counselEmail" class="form-label">Counsel Email</label>
+                                                    <input type="email" class="form-control" id="counselEmail" placeholder="Counsel Email ..." th:field="*{caseAccount.counselEmail}" required>
+                                                </div>
+                                            </div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="status" class="form-label">Status</label>
+                                                    <select id="status" class="form-select" th:field="*{caseAccount.status}" required>
+                                                        <option value="" selected>Select status...</option>
+                                                        <option th:each="tempStatus : ${status}"
+                                                                th:value="${tempStatus}"
+                                                                th:text="${tempStatus.displayStatus()}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="stage" class="form-label">Stage</label>
+                                                    <input type="text" class="form-control" id="stage" placeholder="Stage ..." th:field="*{caseAccount.stage}" required>
+                                                </div>
+                                            </div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="startDate" class="form-label">Start Date</label>
+                                                    <input type="date" class="form-control" id="startDate" th:field="*{caseAccount.startDate}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="endDate" class="form-label">End Date</label>
+                                                    <input type="date" class="form-control" id="endDate" th:field="*{caseAccount.endDate}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Create Case</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="opposingParty" class="form-label">Opposing Party</label>
-                                            <input type="text" class="form-control" id="opposingParty" placeholder="Opposing Party ..." th:field="*{caseAccount.opposingParty}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="opposingCounsel" class="form-label">Opposing Counsel</label>
-                                            <input type="text" class="form-control" id="opposingCounsel" placeholder="Opposing Counsel ..." th:field="*{caseAccount.opposingCounsel}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="counselEmail" class="form-label">Counsel Email</label>
-                                            <input type="email" class="form-control" id="counselEmail" placeholder="Counsel Email ..." th:field="*{caseAccount.counselEmail}" required>
-                                        </div>
-                                    </div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="status" class="form-label">Status</label>
-                                            <select id="status" class="form-select" th:field="*{caseAccount.status}" required>
-                                                <option value="" selected>Select status...</option>
-                                                <option th:each="tempStatus : ${status}"
-                                                        th:value="${tempStatus}"
-                                                        th:text="${tempStatus.displayStatus()}"></option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="stage" class="form-label">Stage</label>
-                                            <input type="text" class="form-control" id="stage" placeholder="Stage ..." th:field="*{caseAccount.stage}" required>
-                                        </div>
-                                    </div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="startDate" class="form-label">Start Date</label>
-                                            <input type="date" class="form-control" id="startDate" th:field="*{caseAccount.startDate}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="endDate" class="form-label">End Date</label>
-                                            <input type="date" class="form-control" id="endDate" th:field="*{caseAccount.endDate}">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Create Case</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <!-- Edit Case - Form Modal -->
-                <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-xl">
-                        <div class="modal-content">
-                            <div class="modal-header mb-3">
-                                <h5 class="modal-title" id="editCaseModalLabel">Case (Update Account)</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="row g-3 mb-3" id="editCaseAccountForm" th:action="@{/client-account/update-case-account}" th:object="${updateCaseAccount}" method="POST">
-                                    <div><input type="hidden" class="form-control" id="clientAccountId" th:field="*{clientAccountId}" /></div>
-                                    <div><input type="hidden" class="form-control" id="editCaseId" th:field="*{caseAccount.caseId}" /></div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-5">
-                                            <label for="editCaseType" class="form-label">Case Type</label>
-                                            <select id="editCaseType" class="form-select" th:field="*{caseAccount.caseType}" required>
-                                                <option value="" selected>Select case type...</option>
-                                                <option th:each="cases : ${caseType}"
-                                                        th:value="${cases}"
-                                                        th:text="${cases.displayCaseType()}"></option>
-                                            </select>
-                                        </div>
+                        <!-- Edit Case - Form Modal -->
+                        <div class="modal fade" id="editCaseModal" tabindex="-1" aria-labelledby="editCaseModalLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header mb-3">
+                                        <h5 class="modal-title" id="editCaseModalLabel">Case (Update Account)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="editCaseTitle" class="form-label">Case Title</label>
-                                            <input type="text" class="form-control" id="editCaseTitle" th:field="*{accountTitle}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editDocketNo" class="form-label">Docket No.</label>
-                                            <input type="text" class="form-control" id="editDocketNo" placeholder="Docket number ..." th:field="*{caseAccount.docketNo}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">.
-                                        <div class="col-md-4">
-                                            <label for="editNature" class="form-label">Nature</label>
-                                            <input type="text" class="form-control" id="editNature" placeholder="Nature ..." th:field="*{caseAccount.nature}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editCourt" class="form-label">Court</label>
-                                            <input type="text" class="form-control" id="editCourt" placeholder="Court ..." th:field="*{caseAccount.court}" required>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <label for="editBranch" class="form-label">Branch</label>
-                                            <input type="text" class="form-control" id="editBranch" placeholder="Branch ..." th:field="*{caseAccount.branch}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="editJudge" class="form-label">Judge</label>
-                                            <input type="text" class="form-control" id="editJudge" placeholder="Judge ..." th:field="*{caseAccount.judge}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editCourtEmail" class="form-label">Court Email</label>
-                                            <input type="email" class="form-control" id="editCourtEmail" placeholder="Court email ..." th:field="*{caseAccount.courtEmail}" required>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="editProsecutor" class="form-label">Prosecutor</label>
-                                            <input type="text" class="form-control" id="editProsecutor" placeholder="Prosecutor ..." th:field="*{caseAccount.prosecutor}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editProsecutorOffice" class="form-label">Prosecutor Office</label>
-                                            <input type="text" class="form-control" id="editProsecutorOffice" placeholder="Prosecutor Office ..." th:field="*{caseAccount.prosecutorOffice}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editProsecutorEmail" class="form-label">Prosecutor Email</label>
-                                            <input type="email" class="form-control" id="editProsecutorEmail" placeholder="Prosecutor Email ..." th:field="*{caseAccount.prosecutorEmail}" required>
-                                        </div>
-                                    </div>
-                                    <!-- CLIENT DISABLED - NEED TO ADD LOGIC IN CASE IT HAS ONGOING ACTIVITY -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-5">
-                                            <label for="editClient" class="form-label">Client</label>
-                                            <select id="editClient" class="form-select" th:field="*{client}" disabled>
-                                                <option value="" selected>Select client...</option>
-                                                <option th:each="tempClient : ${clients}"
-                                                        th:value="${tempClient.contactId}"
-                                                        th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
+                                    <div class="modal-body">
+                                        <form class="row g-3 mb-3" id="editCaseAccountForm" th:action="@{/client-account/update-case-account}" th:object="${updateCaseAccount}" method="POST">
+                                            <div><input type="hidden" class="form-control" id="clientAccountId" th:field="*{clientAccountId}" /></div>
+                                            <div><input type="hidden" class="form-control" id="editCaseId" th:field="*{caseAccount.caseId}" /></div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-5">
+                                                    <label for="editCaseType" class="form-label">Case Type</label>
+                                                    <select id="editCaseType" class="form-select" th:field="*{caseAccount.caseType}" required>
+                                                        <option value="" selected>Select case type...</option>
+                                                        <option th:each="cases : ${caseType}"
+                                                                th:value="${cases}"
+                                                                th:text="${cases.displayCaseType()}"></option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editCaseTitle" class="form-label">Case Title</label>
+                                                    <input type="text" class="form-control" id="editCaseTitle" th:field="*{accountTitle}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editDocketNo" class="form-label">Docket No.</label>
+                                                    <input type="text" class="form-control" id="editDocketNo" placeholder="Docket number ..." th:field="*{caseAccount.docketNo}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">.
+                                                <div class="col-md-4">
+                                                    <label for="editNature" class="form-label">Nature</label>
+                                                    <input type="text" class="form-control" id="editNature" placeholder="Nature ..." th:field="*{caseAccount.nature}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editCourt" class="form-label">Court</label>
+                                                    <input type="text" class="form-control" id="editCourt" placeholder="Court ..." th:field="*{caseAccount.court}" required>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <label for="editBranch" class="form-label">Branch</label>
+                                                    <input type="text" class="form-control" id="editBranch" placeholder="Branch ..." th:field="*{caseAccount.branch}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editJudge" class="form-label">Judge</label>
+                                                    <input type="text" class="form-control" id="editJudge" placeholder="Judge ..." th:field="*{caseAccount.judge}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editCourtEmail" class="form-label">Court Email</label>
+                                                    <input type="email" class="form-control" id="editCourtEmail" placeholder="Court email ..." th:field="*{caseAccount.courtEmail}" required>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="editProsecutor" class="form-label">Prosecutor</label>
+                                                    <input type="text" class="form-control" id="editProsecutor" placeholder="Prosecutor ..." th:field="*{caseAccount.prosecutor}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editProsecutorOffice" class="form-label">Prosecutor Office</label>
+                                                    <input type="text" class="form-control" id="editProsecutorOffice" placeholder="Prosecutor Office ..." th:field="*{caseAccount.prosecutorOffice}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editProsecutorEmail" class="form-label">Prosecutor Email</label>
+                                                    <input type="email" class="form-control" id="editProsecutorEmail" placeholder="Prosecutor Email ..." th:field="*{caseAccount.prosecutorEmail}" required>
+                                                </div>
+                                            </div>
+                                            <!-- CLIENT DISABLED - NEED TO ADD LOGIC IN CASE IT HAS ONGOING ACTIVITY -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-5">
+                                                    <label for="editClient" class="form-label">Client</label>
+                                                    <select id="editClient" class="form-select" th:field="*{client}" disabled>
+                                                        <option value="" selected>Select client...</option>
+                                                        <option th:each="tempClient : ${clients}"
+                                                                th:value="${tempClient.contactId}"
+                                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
                                                          (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(),
                                                          ' / ', tempClient.contactCategoryType.displayContactCategoryType()))
                                                          : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
                                                          ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}">
-                                                </option>
-                                            </select>
-                                        </div>
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="row mb-3">
+                                                <div class="col-md-4">
+                                                    <label for="editOpposingParty" class="form-label">Opposing Party</label>
+                                                    <input type="text" class="form-control" id="editOpposingParty" placeholder="Opposing Party ..." th:field="*{caseAccount.opposingParty}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editOpposingCounsel" class="form-label">Opposing Counsel</label>
+                                                    <input type="text" class="form-control" id="editOpposingCounsel" placeholder="Opposing Counsel ..." th:field="*{caseAccount.opposingCounsel}" required>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <label for="editCounselEmail" class="form-label">Counsel Email</label>
+                                                    <input type="email" class="form-control" id="editCounselEmail" placeholder="Counsel Email ..." th:field="*{caseAccount.counselEmail}" required>
+                                                </div>
+                                            </div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editStatus" class="form-label">Status</label>
+                                                    <select id="editStatus" class="form-select" th:field="*{caseAccount.status}" required>
+                                                        <option value="" selected>Select status...</option>
+                                                        <option th:each="tempStatus : ${status}"
+                                                                th:value="${tempStatus}"
+                                                                th:text="${tempStatus.displayStatus()}"></option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editStage" class="form-label">Stage</label>
+                                                    <input type="text" class="form-control" id="editStage" placeholder="Stage ..." th:field="*{caseAccount.stage}" required>
+                                                </div>
+                                            </div>
+                                            <!-- One column row for state select option -->
+                                            <div class="row mb-3">
+                                                <div class="col-md-6">
+                                                    <label for="editStartDate" class="form-label">Start Date</label>
+                                                    <input type="date" class="form-control" id="editStartDate"
+                                                           th:field="*{caseAccount.startDate}" required>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label for="editEndDate" class="form-label">End Date</label>
+                                                    <input type="date" class="form-control" id="editEndDate"
+                                                           th:field="*{caseAccount.endDate}">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                                            </div>
+                                        </form>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <label for="editOpposingParty" class="form-label">Opposing Party</label>
-                                            <input type="text" class="form-control" id="editOpposingParty" placeholder="Opposing Party ..." th:field="*{caseAccount.opposingParty}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editOpposingCounsel" class="form-label">Opposing Counsel</label>
-                                            <input type="text" class="form-control" id="editOpposingCounsel" placeholder="Opposing Counsel ..." th:field="*{caseAccount.opposingCounsel}" required>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <label for="editCounselEmail" class="form-label">Counsel Email</label>
-                                            <input type="email" class="form-control" id="editCounselEmail" placeholder="Counsel Email ..." th:field="*{caseAccount.counselEmail}" required>
-                                        </div>
-                                    </div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="editStatus" class="form-label">Status</label>
-                                            <select id="editStatus" class="form-select" th:field="*{caseAccount.status}" required>
-                                                <option value="" selected>Select status...</option>
-                                                <option th:each="tempStatus : ${status}"
-                                                        th:value="${tempStatus}"
-                                                        th:text="${tempStatus.displayStatus()}"></option>
-                                            </select>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editStage" class="form-label">Stage</label>
-                                            <input type="text" class="form-control" id="editStage" placeholder="Stage ..." th:field="*{caseAccount.stage}" required>
-                                        </div>
-                                    </div>
-                                    <!-- One column row for state select option -->
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <label for="editStartDate" class="form-label">Start Date</label>
-                                            <input type="date" class="form-control" id="editStartDate"
-                                                   th:field="*{caseAccount.startDate}" required>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <label for="editEndDate" class="form-label">End Date</label>
-                                            <input type="date" class="form-control" id="editEndDate"
-                                                   th:field="*{caseAccount.endDate}">
-                                        </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                        <button type="submit" class="btn btn-primary">Save/Update</button>
-                                    </div>
-                                </form>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <script th:inline="javascript">
-            $(document).ready(function () {
-                // UPDATE CASE ACCOUNT
-                $('.table .editCaseAccountBtn').on('click', function(event) {
-                    event.preventDefault();  // Prevent the default link behavior
-                    var href = $(this).attr('href');  // Get the URL from the edit button
+                <script th:inline="javascript">
+                    $(document).ready(function () {
+                        // UPDATE CASE ACCOUNT
+                        $('.table .editCaseAccountBtn').on('click', function(event) {
+                            event.preventDefault();  // Prevent the default link behavior
+                            var href = $(this).attr('href');  // Get the URL from the edit button
 
-                    // Make an AJAX GET request to fetch the case data
-                    $.get(href, function(tempCase, status) {
-                        // Populate modal fields with the case data
-                        $('#editCaseAccountForm #clientAccountId').val(tempCase.clientAccountId);
-                        $('#editCaseAccountForm #editCaseTitle').val(tempCase.accountTitle);
-                        if (tempCase.client) {
-                            $('#editCaseAccountForm #editClient').val(tempCase.client.contactId); // Make sure client is not undefined
+                            // Make an AJAX GET request to fetch the case data
+                            $.get(href, function(tempCase, status) {
+                                // Populate modal fields with the case data
+                                $('#editCaseAccountForm #clientAccountId').val(tempCase.clientAccountId);
+                                $('#editCaseAccountForm #editCaseTitle').val(tempCase.accountTitle);
+                                if (tempCase.client) {
+                                    $('#editCaseAccountForm #editClient').val(tempCase.client.contactId); // Make sure client is not undefined
+                                }
+                                if (tempCase.caseAccount) {
+                                    $('#editCaseAccountForm #editCaseId').val(tempCase.caseAccount.caseId);
+                                    $('#editCaseAccountForm #editCaseType').val(tempCase.caseAccount.caseType);
+                                    $('#editCaseAccountForm #editDocketNo').val(tempCase.caseAccount.docketNo);
+                                    $('#editCaseAccountForm #editNature').val(tempCase.caseAccount.nature);
+                                    $('#editCaseAccountForm #editCourt').val(tempCase.caseAccount.court);
+                                    $('#editCaseAccountForm #editBranch').val(tempCase.caseAccount.branch);
+                                    $('#editCaseAccountForm #editJudge').val(tempCase.caseAccount.judge);
+                                    $('#editCaseAccountForm #editCourtEmail').val(tempCase.caseAccount.courtEmail);
+                                    $('#editCaseAccountForm #editProsecutor').val(tempCase.caseAccount.prosecutor);
+                                    $('#editCaseAccountForm #editProsecutorOffice').val(tempCase.caseAccount.prosecutorOffice);
+                                    $('#editCaseAccountForm #editProsecutorEmail').val(tempCase.caseAccount.prosecutorEmail);
+                                    $('#editCaseAccountForm #editOpposingParty').val(tempCase.caseAccount.opposingParty);
+                                    $('#editCaseAccountForm #editOpposingCounsel').val(tempCase.caseAccount.opposingCounsel);
+                                    $('#editCaseAccountForm #editCounselEmail').val(tempCase.caseAccount.counselEmail);
+                                    $('#editCaseAccountForm #editStatus').val(tempCase.caseAccount.status);
+                                    $('#editCaseAccountForm #editStage').val(tempCase.caseAccount.stage);
+                                    // Format startDate and endDate
+                                    $('#editCaseAccountForm #editStartDate').val(formatDate(tempCase.caseAccount.startDate));
+                                    $('#editCaseAccountForm #editEndDate').val(formatDate(tempCase.caseAccount.endDate));
+                                }
+                                // Open the modal after data is set
+                                $('#editCaseModal').modal('show');
+                            });
+                        });
+                        // Function to format date
+                        function formatDate(date) {
+                            if (!date) return ''; // Return empty if no date
+
+                            // If date is a string, try to parse it as a Date object
+                            if (typeof date === 'string') {
+                                date = new Date(date);
+                            } else if (typeof date === 'number') {
+                                date = new Date(date); // Handle timestamps
+                            }
+
+                            // Format date as YYYY-MM-DD
+                            const year = date.getFullYear();
+                            const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+                            const day = String(date.getDate()).padStart(2, '0');
+
+                            return `${year}-${month}-${day}`; // Return formatted date
                         }
-                        if (tempCase.caseAccount) {
-                            $('#editCaseAccountForm #editCaseId').val(tempCase.caseAccount.caseId);
-                            $('#editCaseAccountForm #editCaseType').val(tempCase.caseAccount.caseType);
-                            $('#editCaseAccountForm #editDocketNo').val(tempCase.caseAccount.docketNo);
-                            $('#editCaseAccountForm #editNature').val(tempCase.caseAccount.nature);
-                            $('#editCaseAccountForm #editCourt').val(tempCase.caseAccount.court);
-                            $('#editCaseAccountForm #editBranch').val(tempCase.caseAccount.branch);
-                            $('#editCaseAccountForm #editJudge').val(tempCase.caseAccount.judge);
-                            $('#editCaseAccountForm #editCourtEmail').val(tempCase.caseAccount.courtEmail);
-                            $('#editCaseAccountForm #editProsecutor').val(tempCase.caseAccount.prosecutor);
-                            $('#editCaseAccountForm #editProsecutorOffice').val(tempCase.caseAccount.prosecutorOffice);
-                            $('#editCaseAccountForm #editProsecutorEmail').val(tempCase.caseAccount.prosecutorEmail);
-                            $('#editCaseAccountForm #editOpposingParty').val(tempCase.caseAccount.opposingParty);
-                            $('#editCaseAccountForm #editOpposingCounsel').val(tempCase.caseAccount.opposingCounsel);
-                            $('#editCaseAccountForm #editCounselEmail').val(tempCase.caseAccount.counselEmail);
-                            $('#editCaseAccountForm #editStatus').val(tempCase.caseAccount.status);
-                            $('#editCaseAccountForm #editStage').val(tempCase.caseAccount.stage);
-                            // Format startDate and endDate
-                            $('#editCaseAccountForm #editStartDate').val(formatDate(tempCase.caseAccount.startDate));
-                            $('#editCaseAccountForm #editEndDate').val(formatDate(tempCase.caseAccount.endDate));
-                        }
-                        // Open the modal after data is set
-                        $('#editCaseModal').modal('show');
                     });
-                });
-                // Function to format date
-                function formatDate(date) {
-                    if (!date) return ''; // Return empty if no date
-
-                    // If date is a string, try to parse it as a Date object
-                    if (typeof date === 'string') {
-                        date = new Date(date);
-                    } else if (typeof date === 'number') {
-                        date = new Date(date); // Handle timestamps
-                    }
-
-                    // Format date as YYYY-MM-DD
-                    const year = date.getFullYear();
-                    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
-                    const day = String(date.getDate()).padStart(2, '0');
-
-                    return `${year}-${month}-${day}`; // Return formatted date
-                }
-            });
-        </script>
+                </script>
+            </div>
+            <div th:replace="~{fragments/footer :: footer}">Footer</div>
+        </main>
     </div>
-</main>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

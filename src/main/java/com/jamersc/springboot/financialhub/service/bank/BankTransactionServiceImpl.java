@@ -44,9 +44,8 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     public BankTransactionDto getTransactionById(Long transactionId) {
         BankTransaction bankTransaction = bankTransactionRepository.findById(transactionId).orElse(null);
         if (bankTransaction != null ) {
-            BankTransactionDto bankTransactionDto = bankTransactionMapper.toTransactionDto(bankTransaction);
-            logger.info("Bank transaction Details " + bankTransactionDto);
-            return bankTransactionDto;
+            //logger.info("Bank transaction Details " + bankTransactionDto);
+            return BankTransactionMapper.toTransactionDto(bankTransaction);
         }
         throw new RuntimeException("Bank transaction details not found.");
         //return bankTransactionRepository.findById(transactionId).orElseThrow(()-> new RuntimeException("Transaction ID not found."));
@@ -91,7 +90,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         if (user != null) {
             account.setUpdatedBy(user.getUserId());
         }
-        logger.info("Bank Account details " + account);
+        //logger.info("Bank Account details " + account);
         bankAccountRepository.save(account);
 
         depositTransaction = new BankTransaction();
@@ -104,7 +103,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
             depositTransaction.setCreatedBy(user.getUserId());
             depositTransaction.setUpdatedBy(user.getUserId());
         }
-        logger.info("Deposit account completed to " + depositTransaction);
+        //logger.info("Deposit account completed to " + depositTransaction);
         bankTransactionRepository.save(depositTransaction); // save deposit transaction
     }
 

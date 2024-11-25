@@ -5,8 +5,6 @@ import com.jamersc.springboot.financialhub.service.check.CheckService;
 import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashActivityService;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,11 +21,8 @@ import java.util.List;
 @RequestMapping("/financial-hub")
 public class HubController {
 
-    private static final Logger logger = LoggerFactory.getLogger(HubController.class);
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private PettyCashActivityService pettyCashActivityService;
 
@@ -59,13 +54,11 @@ public class HubController {
 
     @GetMapping("/access-denied")
     public String accessDenied() {
-        logger.warn("Access denied!");
         return "access-denied";
     }
 
     @GetMapping("/error")
     public String error() {
-        logger.error("Error!");
         return "error";
     }
 }

@@ -48,9 +48,8 @@ public class BankAccountServiceImpl implements BankAccountService{
         BankAccount bankAccount = bankAccountRepository.findById(id).orElse(null);
         if (bankAccount != null) {
             // Mapper static method no need for autowired
-            BankAccountDto dto = BankAccountMapper.toBankAccountDto(bankAccount);
-            logger.info("Find Bank account details: " + dto);
-            return dto;
+            //logger.info("Find Bank account details: " + dto);
+            return BankAccountMapper.toBankAccountDto(bankAccount);
         }
         throw new RuntimeException("Bank Account ID not found!");
     }
@@ -72,7 +71,7 @@ public class BankAccountServiceImpl implements BankAccountService{
             if (updatedBy != null) {
                 bankAccount.setUpdatedBy(updatedBy.getUserId());
             }
-            logger.info("Updated Bank ID No. " + bankAccountDto.getBankAccountId());
+            //logger.info("Updated Bank ID No. " + bankAccountDto.getBankAccountId());
         } else {
             bankAccount = new BankAccount();
             User createdBy = userRepository.findByUsername(username);
@@ -87,7 +86,7 @@ public class BankAccountServiceImpl implements BankAccountService{
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
             Double defaultBankAccountBalance = 0.00;
             bankAccount.setAccountBalance(defaultBankAccountBalance);
-            logger.info("New bank account created successfully!!");
+            //logger.info("New bank account created successfully!!");
         }
         bankAccountRepository.save(bankAccount);
     }

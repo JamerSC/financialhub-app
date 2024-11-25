@@ -49,9 +49,8 @@ public class BankServiceImpl implements BankService{
     public BankDto findBankById(Long id) {
         Bank bank = bankRepository.findById(id).orElse(null);
         if (bank != null) {
-            BankDto bankDto = bankMapper.toBankDto(bank);
-            logger.info("Bank Details: " + bankDto);
-            return bankDto;
+            //logger.info("Bank Details: " + bankDto);
+            return BankMapper.toBankDto(bank);
         }
        throw new RuntimeException("Bank ID not found!");
     }
@@ -69,7 +68,7 @@ public class BankServiceImpl implements BankService{
             if (updatedBy != null) {
                 bank.setUpdatedBy(updatedBy.getUserId());
             }
-            logger.info("Updated Bank ID No. " + bank.getBankId());
+            //logger.info("Updated Bank ID No. " + bank.getBankId());
         } else {
             bank = new Bank();
             bank.setName(bankDto.getName());
@@ -80,7 +79,7 @@ public class BankServiceImpl implements BankService{
                 bank.setCreatedBy(createdBy.getUserId());
                 bank.setUpdatedBy(createdBy.getUserId());
             }
-            logger.info("New bank created successfully!");
+            //logger.info("New bank created successfully!");
         }
         bankRepository.save(bank);
     }

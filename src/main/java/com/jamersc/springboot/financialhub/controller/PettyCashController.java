@@ -33,8 +33,6 @@ import java.util.List;
 @RequestMapping("/petty-cash")
 public class PettyCashController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PettyCashController.class);
-
     @Autowired
     private FundService fundService;
     @Autowired
@@ -120,11 +118,9 @@ public class PettyCashController {
     public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
                                    BindingResult result, Model model) {
         if (result.hasErrors()) {
-            logger.error("Please complete all required fields!");
             return "petty-cash/petty-cash-form";
         } else {
             String createdBy = getSessionUsername();
-            logger.info("Created petty cash voucher: " + pettyCashActivityDto);
             pettyCashService.savePettyCash(pettyCashActivityDto, createdBy);
             return "redirect:/petty-cash/list-of-petty-cash";
         }
@@ -134,7 +130,6 @@ public class PettyCashController {
     public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
         PettyCashActivityDto pettyCashActivityDto = pettyCashService.getPettyCashById(id);
         if (pettyCashActivityDto != null) {
-            logger.info("Fetching petty cash form id: " + pettyCashActivityDto.getPcActivityId());
             model.addAttribute("pettyCashDto", pettyCashActivityDto);
             return "petty-cash/petty-cash-update-form";
         }
@@ -145,21 +140,17 @@ public class PettyCashController {
     public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
                                              BindingResult result, Model model) {
         if (result.hasErrors()) {
-            logger.error("Error! Please complete all required fields.");
             return "petty-cash/petty-cash-update-form";
         } else {
             String updatedBy = getSessionUsername();
             pettyCashService.savePettyCash(pettyCashActivityDto, updatedBy);
-            logger.info("Updated petty cash voucher!\n" + pettyCashActivityDto);
             return "redirect:/petty-cash/list-of-petty-cash";
         }
     }
 
     @GetMapping("/delete-petty-cash-record/{id}")
     public String deletePettyCashRecord(@PathVariable(value = "id") Long id) {
-        logger.info("Process deleting petty cash form id: " + id);
         pettyCashService.deletePettyCashRecordById(id);
-        logger.info("Deleted petty cash form id: " + id);
         return "redirect:/petty-cash/list-of-petty-cash";
     }
 

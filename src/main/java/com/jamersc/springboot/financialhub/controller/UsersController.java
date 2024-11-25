@@ -28,8 +28,6 @@ import java.util.List;
 @RequestMapping("/settings")
 public class UsersController {
 
-    private static final Logger logger = LoggerFactory.getLogger(UsersController.class);
-
     @Autowired
     private UserService userService;
     @Autowired
@@ -59,7 +57,6 @@ public class UsersController {
     public String processCreateUsersAccount(@Valid @ModelAttribute("userDto") UserDto userDto,
                                      BindingResult result, Model model) {
         String username = userDto.getUsername();
-        logger.info("Processing registration form for: " + username);
         if (result.hasErrors()) {
             addRolesToModel(model);
             addContactsNewUserToModel(model);
@@ -73,12 +70,10 @@ public class UsersController {
             addRolesToModel(model);
             addContactsNewUserToModel(model);
             model.addAttribute("formHasErrors", true);
-            logger.warn("Username already exists!");
             return "settings/create-user-form";
         }
         String createdBy = getSessionUsername();
         userService.save(userDto, createdBy);
-        logger.info("Successfully created user: " + username);
         return  "redirect:/settings/users";
     }
 
@@ -98,7 +93,6 @@ public class UsersController {
     public String processUpdateUsersAccount(@Valid @ModelAttribute("userDto") UserDto userDto,
                                           BindingResult result, Model model) {
         if (result.hasErrors()) {
-            logger.error("Error! Please complete all required fields.");
             addRolesToModel(model);
             addContactsExistingUserToModel(model);
             return "settings/update-user-form";
@@ -106,7 +100,6 @@ public class UsersController {
         String updatedBy = getSessionUsername();
         UserDto existingUser = userService.findUserById(userDto.getUserId());
         if (existingUser == null) {
-            logger.error("User not found with id: " + userDto.getUserId());
             return "redirect:/settings/users";
         }
         // Check if the username has been updated
@@ -117,7 +110,6 @@ public class UsersController {
                         "Invalid! Username '" + userDto.getUsername() + "' already exists!");
                 addRolesToModel(model);
                 addContactsExistingUserToModel(model);
-                logger.warn("Username already exists!");
                 return "settings/update-user-form";
             }
         }
@@ -127,7 +119,6 @@ public class UsersController {
 
     @GetMapping("/delete-user-record/{id}")
     public String deleteUsersAccountById(@PathVariable(value = "id") Long id) {
-        logger.info("Process deleting user id: " + id);
         userService.deleteUserById(id);
         return "redirect:/settings/users";
     }
@@ -135,7 +126,6 @@ public class UsersController {
     private void addUsersToModel(Model model) {
         List<User> users = userService.getAllUsers();
         model.addAttribute("users", users);
-        logger.info("Get all users:\n" + users);
     }
 
     private void addRolesToModel(Model model) {

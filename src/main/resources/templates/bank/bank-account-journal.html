@@ -1,11 +1,15 @@
 <!doctype html>
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org"
-      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{/fragments/layouts/base-layout}">
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Bank Account Journal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Account Journal</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
     <style>
         .credit { color: green; }
         .debit { color: red; }
@@ -13,48 +17,59 @@
 </head>
 <body>
 
-<main class="content px-3 py-4" layout:fragment="content">
-    <div class="container-fluid">
-        <div class="row">
-            <h1>Account Details</h1>
-            <p>Account Holder: <span th:text="${account.accountHolderName}"></span></p>
-            <p>Account Number: <span th:text="${account.accountNumber}"></span></p>
-            <p>Balance:
-                <span th:text="${account.accountBalance != null ? #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span>
-            </p>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <div class="d-flex">
-                    <div class="p-1">
-                        <h4 class="fw-bold fs-4">Journal Entry</h4>
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <h1>Account Details</h1>
+                    <p>Account Holder: <span th:text="${account.accountHolderName}"></span></p>
+                    <p>Account Number: <span th:text="${account.accountNumber}"></span></p>
+                    <p>Balance:
+                        <span th:text="${account.accountBalance != null ? #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></span>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h4 class="fw-bold fs-4">Journal Entry</h4>
+                            </div>
+                        </div>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Transaction Date</th>
+                                <th>Trans. Type</th>
+                                <th>Debit</th>
+                                <th>Credit</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(transactions)}">
+                                <td colspan="5" class="text-center">No Journal Entry...</td>
+                            </tr>
+                            <tr th:each="tempTransaction : ${transactions}" th:unless="${#lists.isEmpty(transactions)}">
+                                <td th:text="${#dates.format(tempTransaction.transactionDate, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${tempTransaction.transactionType.displayBankTransactionType()}"></td>
+                                <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
+                                <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
-                <table class="table table-striped shadow">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Transaction Date</th>
-                            <th>Trans. Type</th>
-                            <th>Debit</th>
-                            <th>Credit</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:if="${#lists.isEmpty(transactions)}">
-                            <td colspan="5" class="text-center">No Journal Entry...</td>
-                        </tr>
-                        <tr th:each="tempTransaction : ${transactions}" th:unless="${#lists.isEmpty(transactions)}">
-                            <td th:text="${#dates.format(tempTransaction.transactionDate, 'MMM. d, yyyy')}"></td>
-                            <td th:text="${tempTransaction.transactionType.displayBankTransactionType()}"></td>
-                            <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
-                            <td th:text="${#numbers.formatDecimal(tempTransaction.transactionAmount, 1, 'COMMA', 2, 'POINT')}">Transaction Amount (Debug)</td>
-                        </tr>
-                    </tbody>
-                </table>
             </div>
-        </div>
+            <div th:replace="~{fragments/footer :: footer}">Footer</div>
+        </main>
     </div>
-</main>
 
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
 </body>
 </html>

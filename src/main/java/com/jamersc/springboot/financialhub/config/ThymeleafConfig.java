@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.config;
 
-import nz.net.ultraq.thymeleaf.layoutdialect.LayoutDialect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -32,7 +31,6 @@ public class ThymeleafConfig implements WebMvcConfigurer {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
         templateEngine.setTemplateResolver(templateResolver);
         templateEngine.addDialect(new SpringSecurityDialect()); // Enable Spring Security dialect
-        templateEngine.addDialect(new LayoutDialect()); // Enable Thymeleaf Layout dialect
         return templateEngine;
     }
 
