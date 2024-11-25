@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
+    //private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -150,39 +150,6 @@ public class UserServiceImpl implements UserService {
             //logger.info("Updated user details successfully!");
             userRepository.save(user);
         }
-
-
-
-        /*User user = userRepository.findById(userDto.getUserId()).orElse(null);
-        if (user != null) {
-            // Update user details except password and roles
-            BeanUtils.copyProperties(userDto, user, "password", "roles", "createdBy", "createdAt");
-            // Update password if provided
-            if (userDto.getPassword() != null && !userDto.getPassword().isEmpty()) {
-                String encodedPassword = passwordEncoder.encode(userDto.getPassword());
-                user.setPassword(encodedPassword);
-            }
-
-            // Update roles
-            Set<Role> roles = userDto.getRoleIds().stream()
-                    .map(roleRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            user.setRoles(roles);
-
-            User updater = userRepository.findByUsername(updatedBy);
-            if (updater != null) {
-                user.setUpdatedBy(updater.getUserId());
-            } else {
-                user.setUpdatedBy(1L);
-            }
-
-            userRepository.save(user);
-            logger.info("Successfully updated user: " + user.getUsername());
-        } else {
-            logger.warn("User with ID " + userDto.getUserId() + " not found.");
-        }*/
     }
 
     @Override

@@ -10,10 +10,7 @@ import java.util.List;
 public interface BankAccountService {
 
     List<BankAccount> getAllBankAccounts();
-
     Page<BankAccount> findAll(Pageable pageable);
-
     BankAccountDto getBankAccountById(Long id);
-
     void saveBankAccount(BankAccountDto bankAccountDto, String username);
 }

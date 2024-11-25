@@ -6,8 +6,6 @@ import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +18,7 @@ import java.util.stream.Collectors;
 @Service
 public class ContactServiceImpl implements ContactService {
 
-    private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
+    //private static final Logger logger = LoggerFactory.getLogger(ContactServiceImpl.class);
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -43,7 +41,7 @@ public class ContactServiceImpl implements ContactService {
     public ContactDto getContactById(Long contactId) {
         Contact contact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new RuntimeException("Contact ID not found!"));
-        logger.info("Contact ID Details: " + contact);
+        //logger.info("Contact ID Details: " + contact);
         return ContactMapper.toContactDto(contact);
     }
 
@@ -96,7 +94,7 @@ public class ContactServiceImpl implements ContactService {
             contact.setUpdatedBy(createdBy.getUserId());
         }
 
-        logger.info("Saving new contact individual: " + contact);
+        //logger.info("Saving new contact individual: " + contact);
         contactRepository.save(contact);
 
         if (contactIndividual.getIndividual() != null){
@@ -110,7 +108,7 @@ public class ContactServiceImpl implements ContactService {
             individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
             individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
             individual.setAddress(contactIndividual.getIndividual().getAddress());
-            logger.info("Saving contact individual: " + individual);
+            //logger.info("Saving contact individual: " + individual);
             contactIndividualRepository.save(individual);
         }
 
@@ -120,7 +118,7 @@ public class ContactServiceImpl implements ContactService {
             details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
             details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
             details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
-            logger.info("Saving individual other details: " + details);
+            //logger.info("Saving individual other details: " + details);
             contactDetailsRepository.save(details);
         }
     }
@@ -141,7 +139,7 @@ public class ContactServiceImpl implements ContactService {
                 contact.setUpdatedBy(updatedBy.getUserId());
             }
 
-            logger.info("Updating contact: " + contact);
+            //logger.info("Updating contact: " + contact);
             contactRepository.save(contact);
 
             // Track if any updates are made to the individual or details
@@ -161,7 +159,7 @@ public class ContactServiceImpl implements ContactService {
                 individual.setMobileNumber(contactIndividual.getIndividual().getMobileNumber());
                 individual.setEmailAddress(contactIndividual.getIndividual().getEmailAddress());
                 individual.setAddress(contactIndividual.getIndividual().getAddress());
-                logger.info("Updating contact individual: " + individual);
+                //logger.info("Updating contact individual: " + individual);
                 contactIndividualRepository.save(individual);
 
                 individualUpdated = true; // Track that an update was made
@@ -174,7 +172,7 @@ public class ContactServiceImpl implements ContactService {
                 details.setDesignationFor(contactIndividual.getAdditionalDetails().getDesignationFor());
                 details.setBankName(contactIndividual.getAdditionalDetails().getBankName());
                 details.setAccountNo(contactIndividual.getAdditionalDetails().getAccountNo());
-                logger.info("Updating individual details: " + details);
+                //logger.info("Updating individual details: " + details);
                 contactDetailsRepository.save(details);
 
                 detailsUpdated = true; // Track that an update was made
@@ -206,7 +204,7 @@ public class ContactServiceImpl implements ContactService {
             contact.setUpdatedBy(createdBy.getUserId());
         }
 
-        logger.info("Saving new contact company: " + contact);
+        //logger.info("Saving new contact company: " + contact);
         contactRepository.save(contact);
 
         if (contactCompany.getCompany() != null) {
@@ -219,7 +217,7 @@ public class ContactServiceImpl implements ContactService {
             company.setMobileNumber(contactCompany.getCompany().getMobileNumber());
             company.setEmailAddress(contactCompany.getCompany().getEmailAddress());
             company.setAddress(contactCompany.getCompany().getAddress());
-            logger.info("Saving contact company: " + company);
+            //logger.info("Saving contact company: " + company);
             contactCompanyRepository.save(company);
         }
         if (contactCompany.getAdditionalDetails() != null) {
@@ -228,7 +226,7 @@ public class ContactServiceImpl implements ContactService {
             details.setDesignationFor(contactCompany.getAdditionalDetails().getDesignationFor());
             details.setBankName(contactCompany.getAdditionalDetails().getBankName());
             details.setAccountNo(contactCompany.getAdditionalDetails().getAccountNo());
-            logger.info("Saving company other details: " + details);
+            //logger.info("Saving company other details: " + details);
             contactDetailsRepository.save(details);
         }
     }
@@ -248,7 +246,7 @@ public class ContactServiceImpl implements ContactService {
                 contact.setUpdatedBy(updatedBy.getUserId());
             }
 
-            logger.info("Updating contact: " + contact);
+            //logger.info("Updating contact: " + contact);
             contactRepository.save(contact);
 
             // Track if any updates are made to the company or details
@@ -267,7 +265,7 @@ public class ContactServiceImpl implements ContactService {
                 company.setEmailAddress(contactCompany.getCompany().getEmailAddress());
                 company.setAddress(contactCompany.getCompany().getAddress());
 
-                logger.info("Updating contact company " + company);
+                //logger.info("Updating contact company " + company);
                 contactCompanyRepository.save(company);
                 companyUpdated = true;
             }
@@ -279,7 +277,7 @@ public class ContactServiceImpl implements ContactService {
                 details.setDesignationFor(contactCompany.getAdditionalDetails().getDesignationFor());
                 details.setBankName(contactCompany.getAdditionalDetails().getBankName());
                 details.setAccountNo(contactCompany.getAdditionalDetails().getAccountNo());
-                logger.info("Updating company details: " + details);
+                //logger.info("Updating company details: " + details);
                 contactDetailsRepository.save(details);
 
                 detailsUpdated = true; // Track that an update was made

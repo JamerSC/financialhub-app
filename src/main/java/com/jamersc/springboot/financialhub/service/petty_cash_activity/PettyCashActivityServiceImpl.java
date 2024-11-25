@@ -19,8 +19,6 @@ import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +32,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
-    private static final Logger logger = LoggerFactory.getLogger(PettyCashActivityServiceImpl.class);
+    //private static final Logger logger = LoggerFactory.getLogger(PettyCashActivityServiceImpl.class);
     @Autowired
     private PettyCashActivityRepository pettyCashActivityRepository;
     @Autowired
@@ -119,7 +117,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
         PettyCashActivity pettyCash = pettyCashActivityRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Petty Cash not found"));
         Hibernate.initialize(pettyCash.getLiquidations());
-        //pettyCash.getLiquidations().size();
         return pettyCash;
     }
 
@@ -214,7 +211,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             //logger.info("Successfully created new petty cash: " + pettyCash);
         }
-        //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashActivityRepository.save(pettyCash);
     }
 
@@ -249,8 +245,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setAccounts(accounts);*/
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
-            //pettyCash.setApproved(dto.getApproved());
-            //pettyCash.setApprovedBy(dto.getApprovedBy());
 
             if (dto.getReceivedBy() != null) {
                 pettyCash.setReceivedBy(UserMapper.toUserEntity(dto.getReceivedBy()));
@@ -299,7 +293,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             //logger.info("Successfully created new petty cash admin works: " + pettyCash);
         }
-        //BeanUtils.copyProperties(pettyCash, pettyCashDto, "createdAt");
         pettyCashActivityRepository.save(pettyCash);
     }
 
@@ -311,7 +304,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
     @Override
     public void deletePettyCashRecordById(Long id) {
-        //System.out.println("Delete request for id: " + id);
         pettyCashActivityRepository.deleteById(id);
     }
 }

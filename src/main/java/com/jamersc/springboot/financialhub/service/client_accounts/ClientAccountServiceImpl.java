@@ -7,8 +7,6 @@ import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +19,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class ClientAccountServiceImpl implements ClientAccountService{
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientAccountServiceImpl.class);
+    //private static final Logger logger = LoggerFactory.getLogger(ClientAccountServiceImpl.class);
     @Autowired
     private ClientAccountRepository clientAccountRepository;
     @Autowired

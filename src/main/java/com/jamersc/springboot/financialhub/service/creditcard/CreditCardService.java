@@ -8,11 +8,7 @@ import java.util.List;
 public interface CreditCardService {
 
     List<CreditCard> findAllCreditCardRecord();
-
     CreditCardDto findCreditCardRecordById(Long id);
-
     void saveCreditCardRecord(CreditCardDto creditCardDto, String username);
-
     void deleteCreditCardRecordById(Long id);
-
 }
