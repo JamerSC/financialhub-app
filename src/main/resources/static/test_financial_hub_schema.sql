@@ -8,7 +8,7 @@ DROP TABLE `contact_users`;
 CREATE TABLE `contact_users` (
 	`user_id` int NOT NULL AUTO_INCREMENT,
     `contact_id` int NOT NULL,
-    `fullname` varchar(255) NOT NULL,
+    `full_name` varchar(255) NOT NULL,
     `username` varchar(255) NOT NULL UNIQUE,
     `password` char(80) NOT NULL,
     `enabled` boolean NOT NULL,
@@ -123,9 +123,9 @@ VALUES
 ### ROLES
 DROP TABLE `roles`;
 CREATE TABLE roles (
-	`id` int NOT NULL AUTO_INCREMENT,
+	`role_id` int NOT NULL AUTO_INCREMENT,
     `name` varchar(255) NOT NULL,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`role_id`)
 );
 
 -- Insert roles
@@ -141,8 +141,8 @@ CREATE TABLE users_roles (
 	`user_id` int NOT NULL,
     `role_id` int NOT NULL,
     PRIMARY KEY (`user_id`,`role_id`),
-    FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-    FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
+    FOREIGN KEY (`user_id`) REFERENCES `contact_users` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+    FOREIGN KEY (`role_id`) REFERENCES `roles` (`role_id`) ON DELETE NO ACTION ON UPDATE NO ACTION
 );
 
 -- Assign roles to users
@@ -163,7 +163,7 @@ SELECT u.user_id AS user_id, u.first_name, u.last_name, u.middle_name,
 u.email, u.username, r.id AS role_id, r.name AS role_name
 FROM contact_users u
 JOIN users_roles ur ON u.user_id = ur.user_id
-JOIN roles r ON ur.role_id = r.id;
+JOIN roles r ON ur.role_id = r.role_id;
 
 -- Table to store all contact types (Individual/Company)
 DROP TABLE `contacts`;
