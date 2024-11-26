@@ -12,6 +12,8 @@ import com.jamersc.springboot.financialhub.repository.BankTransactionRepository;
 import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +25,7 @@ import java.util.List;
 @Service
 public class BankTransactionServiceImpl implements BankTransactionService {
 
-    //private static final Logger logger = LoggerFactory.getLogger(BankTransactionServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(BankTransactionServiceImpl.class);
     @Autowired
     private BankTransactionRepository bankTransactionRepository;
     @Autowired
@@ -88,7 +90,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         if (user != null) {
             account.setUpdatedBy(user.getUserId());
         }
-        //logger.info("Bank Account details " + account);
+        logger.info("PROCESS DEPOSIT: Bank Account Info: " + account);
         bankAccountRepository.save(account);
 
         depositTransaction = new BankTransaction();
@@ -101,14 +103,14 @@ public class BankTransactionServiceImpl implements BankTransactionService {
             depositTransaction.setCreatedBy(user.getUserId());
             depositTransaction.setUpdatedBy(user.getUserId());
         }
-        //logger.info("Deposit account completed to " + depositTransaction);
+        logger.info("PROCESS DEPOSIT: Bank Account Transaction: "+ depositTransaction);
         bankTransactionRepository.save(depositTransaction); // save deposit transaction
     }
 
     @Override
     public void processWithdrawal(BankTransactionDto withdraw, String username) {
-        User user = userRepository.findByUsername(username);
         BankTransaction withdrawTransaction;
+        User user = userRepository.findByUsername(username);
 
         BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount()
                         .getBankAccountId()).orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
@@ -122,6 +124,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         if (user != null) {
             account.setUpdatedBy(user.getUserId());
         }
+        logger.info("PROCESS WITHDRAWAL: Bank Account Info: " + account);
         bankAccountRepository.save(account);
 
         withdrawTransaction = new BankTransaction();
@@ -134,6 +137,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
             withdrawTransaction.setCreatedBy(user.getUserId());
             withdrawTransaction.setUpdatedBy(user.getUserId());
         }
+        logger.info("PROCESS WITHDRAWAL: Bank Account Transaction: " + withdrawTransaction);
         bankTransactionRepository.save(withdrawTransaction); // save deposit transaction
     }
 

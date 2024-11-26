@@ -104,8 +104,8 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addWithdrawForm" action="#" th:action="@{/bank-transactions/save-account-withdrawal}" th:object="${withdraw}" method="POST">
-                                            <input type="hidden" th:value="${bankAccount.bankAccountId}" th:field="*{bankAccount.bankAccountId}"/>
+                                        <form id="addWithdrawForm" th:object="${withdraw}" method="POST"
+                                              th:action="@{/bank-transactions/{id}/save-account-withdrawal(id=${bankAccount.bankAccountId})}">
                                             <div class="mb-3">
                                                 <label for="withdrawDate" class="form-label">Date of Withdrawal</label>
                                                 <input type="date" class="form-control" id="withdrawDate" th:field="*{transactionDate}">

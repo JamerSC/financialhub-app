@@ -104,8 +104,8 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <form id="addDepositForm" action="#" th:action="@{/bank-transactions/save-account-deposit}" th:object="${deposit}" method="POST">
-                                            <input type="hidden" th:value="${bankAccount.bankAccountId}" th:field="*{bankAccount.bankAccountId}"/>
+                                        <form id="addDepositForm"  th:object="${deposit}" method="POST"
+                                              th:action="@{/bank-transactions/{id}/save-account-deposit(id=${bankAccount.bankAccountId})}">
                                             <div class="mb-3">
                                                 <label for="depositDate" class="f  orm-label">Date of Deposit</label>
                                                 <input type="date" class="form-control" id="depositDate" th:field="*{transactionDate}">
