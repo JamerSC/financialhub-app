@@ -38,38 +38,42 @@
                         </div>
                         <table class="table table-striped shadow">
                             <thead class="table-dark">
-                            <tr>
-                                <th>Date</th>
-                                <th>Description</th>
-                                <th>Category</th>
-                                <th>Account(s)</th>
-                                <th>PIC</th>
-                            </tr>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Description</th>
+                                    <th>Category</th>
+                                    <th>Account(s)</th>
+                                    <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">PIC</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempActivity : ${myActivities}">
-                                <td th:text="${#dates.format(tempActivity.date, 'MMM. d, yyyy')}"></td>
-                                <td th:text="${tempActivity.activityDescription}"></td>
-                                <td th:text="${tempActivity.activityCategory}"></td>
-                                <td>
-                                    <div class="mb-2">
-                                        <div>
-                                            <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempActivity.pcActivityId}">
-                                                Show Accounts <i class="lni lni-chevron-down"></i>
-                                            </a>
-                                            <div th:id="'collapse-' + ${tempActivity.pcActivityId}" class="collapse mt-2">
-                                                <p th:each="account : ${tempActivity.accounts}" class="mb-1">
-                                                    <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                                    <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                                </p>
+                                <tr th:if="${#lists.isEmpty(myActivities)}">
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="5" class="text-center">No existing activities...</td>
+                                    <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="4" class="text-center">No existing activities...</td>
+                                </tr>
+                                <tr th:each="tempActivity : ${myActivities}" th:unless="${#lists.isEmpty(myActivities)}">
+                                    <td th:text="${#dates.format(tempActivity.date, 'MMM. d, yyyy')}"></td>
+                                    <td th:text="${tempActivity.activityDescription}"></td>
+                                    <td th:text="${tempActivity.activityCategory}"></td>
+                                    <td>
+                                        <div class="mb-2">
+                                            <div>
+                                                <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempActivity.pcActivityId}">
+                                                    Show Accounts <i class="lni lni-chevron-down"></i>
+                                                </a>
+                                                <div th:id="'collapse-' + ${tempActivity.pcActivityId}" class="collapse mt-2">
+                                                    <p th:each="account : ${tempActivity.accounts}" class="mb-1">
+                                                        <span class="fw-bold" th:text="${account.accountTitle}"></span>
+                                                        <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </td>
-                                <td>
-                                        <span th:if="${tempActivity.receivedBy != null}"
-                                              th:text="${tempActivity.receivedBy.fullName}">
-                                        </span>
+                                    </td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <span th:if="${tempActivity.receivedBy != null}"
+                                          th:text="${tempActivity.receivedBy.fullName}">
+                                    </span>
                                 </td>
                             </tr>
                             </tbody>

@@ -35,11 +35,13 @@
                                     <option th:each="tempContact : ${internalContactsWithUserAccess}"
                                             th:value="${tempContact.contactId}"
                                             th:text="${tempContact.contactType != null && tempContact.contactType.name() == 'INDIVIDUAL' ?
-                                                                 (#strings.concat(tempContact.individual.getFullName(),
-                                                                 ' (', tempContact.contactType.displayContactType(), '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))
-                                                                 : (#strings.concat(tempContact.company?.companyName, ' (', tempContact.contactType.displayContactType(),
-                                                                 '/', tempContact.contactCategoryType.displayContactCategoryType(), ')'))}">
-                                        <!--th:selected="${tempContact.contactId}"-->
+                                                      (#strings.concat(tempContact.individual?.getFullName() ?: 'Unknown Individual',
+                                                      ' (', tempContact.contactType?.displayContactType() ?: 'Unknown Type', '/',
+                                                      tempContact.contactCategoryType?.displayContactCategoryType() ?: 'Unknown Category', ')'))
+                                                      : (#strings.concat(tempContact.company?.companyName ?: 'Unknown Company',
+                                                      ' (', tempContact.contactType?.displayContactType() ?: 'Unknown Type', '/',
+                                                      tempContact.contactCategoryType?.displayContactCategoryType() ?: 'Unknown Category', ')'))}">
+                                            <!--th:selected="${tempContact.contactId}"-->
                                     </option>
                                 </select>
                             </div>

@@ -47,7 +47,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempCase : ${listOfCases}">
+                            <tr th:if="${#lists.isEmpty(listOfCases)}">
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="7" class="text-center">No existing case accounts...</td>
+                                <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="6" class="text-center">No existing case accounts...</td>
+                            </tr>
+                            <tr th:each="tempCase : ${listOfCases}" th:unless="${#lists.isEmpty(listOfCases)}">
                                 <td>
                                     <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
                                         <span th:text="${tempCase.accountTitle}"></span>
@@ -55,8 +59,8 @@
                                 </td>
                                 <td>
                                     <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
-                            <span th:if="${tempCase.client.individual != null}"
-                                  th:text="${tempCase.client.individual.getFullName()}"></span>
+                                        <span th:if="${tempCase.client.individual != null}"
+                                              th:text="${tempCase.client.individual.getFullName()}"></span>
                                         <span th:if="${tempCase.client.company != null}"
                                               th:text="${tempCase.client.company.companyName}"></span>
                                     </a>
@@ -155,11 +159,22 @@
                                                         <option value="" selected>Select client...</option>
                                                         <option th:each="tempClient : ${clients}"
                                                                 th:value="${tempClient.contactId}"
-                                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
-                                                         tempClient.contactCategoryType.displayContactCategoryType()))
-                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
-                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"></option>
+                                                                th:text="${tempClient.contactType?.name() == 'INDIVIDUAL' ?
+                                                                            (#strings.concat(
+                                                                                tempClient.individual?.getFullName() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            )) :
+                                                                            (#strings.concat(
+                                                                                tempClient.company?.companyName ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            ))}">
+                                                        </option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -293,11 +308,21 @@
                                                         <option value="" selected>Select client...</option>
                                                         <option th:each="tempClient : ${clients}"
                                                                 th:value="${tempClient.contactId}"
-                                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                         (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(),
-                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))
-                                                         : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
-                                                         ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}">
+                                                                th:text="${tempClient.contactType?.name() == 'INDIVIDUAL' ?
+                                                                            (#strings.concat(
+                                                                                tempClient.individual?.getFullName() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            )) :
+                                                                            (#strings.concat(
+                                                                                tempClient.company?.companyName ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            ))}">
                                                         </option>
                                                     </select>
                                                 </div>

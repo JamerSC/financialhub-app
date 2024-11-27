@@ -49,10 +49,12 @@
                             <tr th:each="tempContact : ${contacts}">
                                 <td>
                                     <a th:href="@{/contacts/{id}/contact-info(id=${tempContact.contactId})}" class="text-dark" title="view">
-                                <span th:if="${tempContact.individual != null}"
-                                      th:text="${tempContact.individual.getFullName()}"></span>
+                                        <span th:if="${tempContact.individual != null}"
+                                              th:text="${tempContact.individual.getFullName()}">
+                                        </span>
                                         <span th:if="${tempContact.company != null}"
-                                              th:text="${tempContact.company.companyName}"></span>
+                                              th:text="${tempContact.company.companyName}">
+                                        </span>
                                     </a>
                                 </td>
                                 <td th:text="${tempContact.contactType.displayContactType()}"></td>

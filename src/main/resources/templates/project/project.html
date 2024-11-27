@@ -47,7 +47,11 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempProject : ${listOfProjects}">
+                            <tr th:if="${#lists.isEmpty(listOfProjects)}">
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="5" class="text-center">No existing project accounts...</td>
+                                <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="4" class="text-center">No existing project accounts...</td>
+                            </tr>
+                            <tr th:each="tempProject : ${listOfProjects}" th:unless="${#lists.isEmpty(listOfProjects)}">
                                 <td>
                                     <a th:href="@{/client-account/{id}/project-summary(id=${tempProject.clientAccountId})}"
                                        class="text-dark" title="View Summary">

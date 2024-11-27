@@ -45,7 +45,12 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempRetainer : ${listOfRetainers}">
+                            <tr>
+                            <tr th:if="${#lists.isEmpty(listOfRetainers)}">
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="5" class="text-center">No existing retainer accounts...</td>
+                                <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="4" class="text-center">No existing retainer accounts...</td>
+                            </tr>
+                            <tr th:each="tempRetainer : ${listOfRetainers}" th:unless="${#lists.isEmpty(listOfRetainers)}">
                                 <td>
                                     <a th:href="@{/client-account/{id}/retainer-activity(id=${tempRetainer.clientAccountId})}"
                                        class="text-dark" title="View Summary">
@@ -86,11 +91,21 @@
                                                         <option value="" selected>Select client...</option>
                                                         <option th:each="tempClient : ${clients}"
                                                                 th:value="${tempClient.contactId}"
-                                                                th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                             (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
-                                                             tempClient.contactCategoryType.displayContactCategoryType()))
-                                                             : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
-                                                             ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}"
+                                                                th:text="${tempClient.contactType?.name() == 'INDIVIDUAL' ?
+                                                                            (#strings.concat(
+                                                                                tempClient.individual?.getFullName() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            )) :
+                                                                            (#strings.concat(
+                                                                                tempClient.company?.companyName ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                                ' / ',
+                                                                                tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                            ))}"
                                                                 th:if="${!clientsWithRetainers.contains(tempClient.contactId)}">
                                                             <!-- th:attr="disabled=${clientsWithRetainers.contains(tempClient.contactId) ? 'disabled' : null}" -->
                                                         </option>
@@ -145,11 +160,21 @@
                                                     <option value="" selected>Select client...</option>
                                                     <option th:each="tempClient : ${clients}"
                                                             th:value="${tempClient.contactId}"
-                                                            th:text="${tempClient.contactType != null && tempClient.contactType.name() == 'INDIVIDUAL' ?
-                                                             (#strings.concat(tempClient.individual.getFullName(),' / ', tempClient.contactType.displayContactType(), ' / ',
-                                                             tempClient.contactCategoryType.displayContactCategoryType()))
-                                                             : (#strings.concat(tempClient.company?.companyName, ' / ', tempClient.contactType.displayContactType(),
-                                                             ' / ', tempClient.contactCategoryType.displayContactCategoryType()))}">
+                                                            th:text="${tempClient.contactType?.name() == 'INDIVIDUAL' ?
+                                                                        (#strings.concat(
+                                                                            tempClient.individual?.getFullName() ?: 'Unknown',
+                                                                            ' / ',
+                                                                            tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                            ' / ',
+                                                                            tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                        )) :
+                                                                        (#strings.concat(
+                                                                            tempClient.company?.companyName ?: 'Unknown',
+                                                                            ' / ',
+                                                                            tempClient.contactType?.displayContactType() ?: 'Unknown',
+                                                                            ' / ',
+                                                                            tempClient.contactCategoryType?.displayContactCategoryType() ?: 'Unknown'
+                                                                        ))}">
                                                         <!-- th:if="${!clientsWithRetainers.contains(tempClient.contactId)}"  or  th:attr="disabled=${clientsWithRetainers.contains(tempClient.contactId) ? 'disabled' : null}" -->
                                                     </option>
                                                 </select>

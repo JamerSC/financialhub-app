@@ -102,16 +102,16 @@
                     <span>Settings</span>
                 </a>
                 <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a th:href="@{/settings/user-profile}" class="sidebar-link">
+                            <i class="lni lni-user-4"></i>
+                            My Profile
+                        </a>
+                    </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                         <a th:href="@{/settings/users}" class="sidebar-link">
                             <i class="lni lni-user-4"></i>
                             Users
-                        </a>
-                    </li>
-                    <li sec:authorize="hasRole('EMPLOYEE')" class="sidebar-item">
-                        <a th:href="@{/settings/user-profile}" class="sidebar-link">
-                            <i class="lni lni-user-4"></i>
-                            User Profile
                         </a>
                     </li>
                     <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">

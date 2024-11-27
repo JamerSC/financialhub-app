@@ -21,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @AllArgsConstructor
@@ -115,6 +116,14 @@ public class UsersController {
         }
         userService.update(userDto, updatedBy);
         return "redirect:/settings/users";
+    }
+
+    @GetMapping("/user-profile")
+    public String loggedInUserProfile(Model model, Principal principal) {
+        User loggedInUser = userService.getByUsername(principal.getName());
+        UserDto profileInfo = userService.findUserById(loggedInUser.getUserId());
+        model.addAttribute("profileInfo", profileInfo);
+        return "settings/user-profile";
     }
 
     @GetMapping("/delete-user-record/{id}")
