@@ -22,51 +22,45 @@
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="d-flex">
-                            <div class="p-1">
-                                <h4 class="fw-bold fs-4">Retainer Summary</h4>
-                            </div>
-                        </div>
-                        <div class="row mb-4">
-                            <!-- Client Account Information -->
-                            <div class="col-md-6 p-3">
-                                <h6 class="fw-bold">Retainer Account Information</h6>
+                        <h4 class="fw-bold fs-4 mb-4">Retainer Summary</h4>
+                        <div class="card shadow">
+                            <div class="card-body">
                                 <div th:if="${retainer.client?.individual != null}">
-                                    <p><strong>Full Name:</strong> <span  th:text="${retainer.client.individual.getFullName()}"></span></p>
+                                    <p><strong>Full Name:</strong> <span th:text="${retainer.client.individual.getFullName()}"></span></p>
                                 </div>
                                 <div th:if="${retainer.client?.company != null}">
-                                    <p><strong>Company Name:</strong> <span  th:text="${retainer.client.company.companyName}"></span></p>
+                                    <p><strong>Company Name:</strong> <span th:text="${retainer.client.company.companyName}"></span></p>
                                 </div>
                                 <p><strong>Account Type:</strong> <span th:text="${retainer.clientAccountType.displayClientAccountType()}"></span></p>
-                                <p><strong>Account Title</strong> <span th:text="${retainer.accountTitle}"></span></p>
-                                <p><strong>Retainer Title</strong> <span th:text="${retainer.retainerAccount.retainerTitle}"></span></p>
+                                <p><strong>Account Title:</strong> <span th:text="${retainer.accountTitle}"></span></p>
                                 <p><strong>Status:</strong> <span th:text="${retainer.retainerAccount.status.displayStatus()}"></span></p>
                                 <p><strong>Start Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.startDate, 'dd MMMM yyyy')}"></span></p>
                                 <p><strong>End Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.endDate, 'dd MMMM yyyy')}"></span></p>
                             </div>
-                            <h5 class="fw-bold mb-3">Retainer Activities</h5>
-                            <table class="table table-striped shadow">
-                                <thead class="table-dark">
-                                <tr>
-                                    <td>Activity Date</td>
-                                    <th>Description</th>
-                                    <th>Category</th>
-                                    <th>PIC</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:if="${#lists.isEmpty(listOfRetainerActivities)}">
-                                    <td colspan="4" class="text-center">No retainer activities...</td>
-                                </tr>
-                                <tr th:each="activity : ${listOfRetainerActivities}" th:unless="${#lists.isEmpty(listOfRetainerActivities)}">
-                                    <td th:text="${#dates.format(activity.date, 'MMM. d, yyyy')}"></td>
-                                    <td th:text="${activity.activityDescription}"></td>
-                                    <td th:text="${activity.activityCategory}"></td>
-                                    <td th:text="${activity.receivedBy.fullName}"></td>
-                                </tr>
-                                </tbody>
-                            </table>
                         </div>
+                        <h5 class="fw-bold mb-3">Retainer Activities</h5>
+                        <!-- Retainer Activities Table -->
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                            <tr>
+                                <td>Activity Date</td>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>PIC</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(listOfRetainerActivities)}">
+                                <td colspan="4" class="text-center">No retainer activities...</td>
+                            </tr>
+                            <tr th:each="activity : ${listOfRetainerActivities}" th:unless="${#lists.isEmpty(listOfRetainerActivities)}">
+                                <td th:text="${#dates.format(activity.date, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${activity.activityDescription}"></td>
+                                <td th:text="${activity.activityCategory}"></td>
+                                <td th:text="${activity.receivedBy.fullName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>

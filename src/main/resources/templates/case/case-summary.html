@@ -14,76 +14,74 @@
 <body>
 
     <div class="wrapper">
-        <!--navigation fragment-->
+        <!-- Navigation fragment -->
         <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
         <main class="content px-3 py-4">
-            <!--header fragment-->
+            <!-- Header fragment -->
             <div th:replace="~{fragments/header :: header}">Header</div>
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
-                        <div class="d-flex">
-                            <div class="p-1">
-                                <h5 class="fw-bold fs-4">Case Summary</h5>
+                        <h5 class="fw-bold fs-4 mb-4">Case Summary</h5>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Client and Case Information -->
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Client Account Information</h6>
+                                        <div th:if="${caseSummary.client?.individual != null}">
+                                            <p><strong>Full Name:</strong> <span th:text="${caseSummary.client.individual.getFullName()}"></span></p>
+                                        </div>
+                                        <div th:if="${caseSummary.client?.company != null}">
+                                            <p><strong>Company Name:</strong> <span th:text="${caseSummary.client.company.companyName}"></span></p>
+                                        </div>
+                                        <p><strong>Account Type:</strong> <span th:text="${caseSummary.clientAccountType.displayClientAccountType()}"></span></p>
+                                        <br>
+                                        <h6 class="fw-bold">Case Information</h6>
+                                        <p><strong>Case Title:</strong> <span th:text="${caseSummary.caseAccount.caseTitle}"></span></p>
+                                        <p><strong>Case Type:</strong> <span th:text="${caseSummary.caseAccount.caseType.displayCaseType()}"></span></p>
+                                        <p><strong>Docket No:</strong> <span th:text="${caseSummary.caseAccount.docketNo}"></span></p>
+                                        <p><strong>Nature:</strong> <span th:text="${caseSummary.caseAccount.nature}"></span></p>
+                                        <h6 class="fw-bold">Court's info</h6>
+                                        <p><strong>Court:</strong> <span th:text="${caseSummary.caseAccount.court}"></span></p>
+                                        <p><strong>Branch:</strong> <span th:text="${caseSummary.caseAccount.branch}"></span></p>
+                                        <p><strong>Judge:</strong> <span th:text="${caseSummary.caseAccount.judge}"></span></p>
+                                        <p><strong>Court Email:</strong> <span th:text="${caseSummary.caseAccount.courtEmail}"></span></p>
+                                    </div>
+
+                                    <!-- Prosecutor and Opposing Party Information -->
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Prosecutor's info</h6>
+                                        <p><strong>Prosecutor:</strong> <span th:text="${caseSummary.caseAccount.prosecutor}"></span></p>
+                                        <p><strong>Prosecutor's Office:</strong> <span th:text="${caseSummary.caseAccount.prosecutorOffice}"></span></p>
+                                        <p><strong>Prosecutor Email:</strong> <span th:text="${caseSummary.caseAccount.prosecutorEmail}"></span></p>
+                                        <h6 class="fw-bold">Opposing Party info</h6>
+                                        <p><strong>Opposing Party:</strong> <span th:text="${caseSummary.caseAccount.opposingParty}"></span></p>
+                                        <p><strong>Opposing Counsel:</strong> <span th:text="${caseSummary.caseAccount.opposingCounsel}"></span></p>
+                                        <p><strong>Counsel Email:</strong> <span th:text="${caseSummary.caseAccount.counselEmail}"></span></p>
+                                        <br>
+                                        <p><strong>Status:</strong> <span th:text="${caseSummary.caseAccount.status.displayStatus()}"></span></p>
+                                        <p><strong>Stage:</strong> <span th:text="${caseSummary.caseAccount.stage}"></span></p>
+                                        <br>
+                                        <p><strong>Start Date:</strong> <span th:text="${#dates.format(caseSummary.caseAccount.startDate, 'dd MMMM yyyy')}"></span></p>
+                                        <p><strong>End Date:</strong> <span th:text="${#dates.format(caseSummary.caseAccount.endDate, 'dd MMMM yyyy')}"></span></p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="row mb-4">
-                            <!-- Client Account Information -->
-                            <div class="col-md-6 p-3">
-                                <h6 class="fw-bold">Client Account Information</h6>
-                                <div th:if="${caseSummary.client?.individual != null}">
-                                    <p><strong>Full Name:</strong> <span  th:text="${caseSummary.client.individual.getFullName()}"></span></p>
-                                </div>
-                                <div th:if="${caseSummary.client?.company != null}">
-                                    <p><strong>Company Name:</strong> <span  th:text="${caseSummary.client.company.companyName}"></span></p>
-                                </div>
-                                <p><strong>Account Type:</strong> <span th:text="${caseSummary.clientAccountType.displayClientAccountType()}"></span></p>
-                                <br>
-                                <h6 class="fw-bold">Case Information</h6>
-                                <p><strong>Case Title:</strong> <span th:text="${caseSummary.caseAccount.caseTitle}"></span></p>
-                                <p><strong>Case Type:</strong> <span th:text="${caseSummary.caseAccount.caseType.displayCaseType()}"></span></p>
-                                <p><strong>Docket No:</strong> <span th:text="${caseSummary.caseAccount.docketNo}"></span></p>
-                                <p><strong>Nature:</strong> <span th:text="${caseSummary.caseAccount.nature}"></span></p>
-                                <h6 class="fw-bold">Court's info</h6>
-                                <p><strong>Court:</strong> <span th:text="${caseSummary.caseAccount.court}"></span></p>
-                                <p><strong>Branch:</strong> <span th:text="${caseSummary.caseAccount.branch}"></span></p>
-                                <p><strong>Judge:</strong> <span th:text="${caseSummary.caseAccount.judge}"></span></p>
-                                <p><strong>Court Email:</strong> <span th:text="${caseSummary.caseAccount.courtEmail}"></span></p>
-                            </div>
-                            <div class="col-md-6 p-3">
-                                <h6 class="fw-bold">Prosecutor's info</h6>
-                                <p><strong>Prosecutor:</strong> <span th:text="${caseSummary.caseAccount.prosecutor}"></span></p>
-                                <p><strong>Prosecutor's Office:</strong> <span th:text="${caseSummary.caseAccount.prosecutorOffice}"></span></p>
-                                <p><strong>Prosecutor Email:</strong> <span th:text="${caseSummary.caseAccount.prosecutorEmail}"></span></p>
-                                <h6 class="fw-bold">Opposing Party info</h6>
-                                <p><strong>Opposing Party:</strong> <span th:text="${caseSummary.caseAccount.opposingParty}"></span></p>
-                                <p><strong>Opposing Counsel:</strong> <span th:text="${caseSummary.caseAccount.opposingCounsel}"></span></p>
-                                <p><strong>Counsel Email:</strong> <span th:text="${caseSummary.caseAccount.counselEmail}"></span></p>
-                                <br>
-                                <p><strong>Status:</strong> <span th:text="${caseSummary.caseAccount.status.displayStatus()}"></span></p>
-                                <p><strong>Stage:</strong> <span th:text="${caseSummary.caseAccount.stage}"></span></p>
-                                <br>
-                                <p><strong>Start Date:</strong> <span th:text="${#dates.format(caseSummary.caseAccount.startDate, 'dd MMMM yyyy')}"></span></p>
-                                <p><strong>End Date:</strong> <span th:text="${#dates.format(caseSummary.caseAccount.endDate, 'dd MMMM yyyy')}"></span></p>
-                            </div>
-                        </div>
+
+                        <!-- Case Activities Table -->
                         <h5 class="fw-bold mb-3">Case Activities</h5>
-                        <table class="table table-striped shadow">
+                        <table class="table table-striped">
                             <thead class="table-dark">
                             <tr>
-                                <td>Activity Date</td>
+                                <th>Activity Date</th>
                                 <th>Description</th>
                                 <th>Category</th>
                                 <th>PIC</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <!--<tr>
-                                <td>Secure documents</td>
-                                <td>Certification</td>
-                                <td>Juan Doe</td>
-                                <td>Oct. 25, 2024</td>
-                            </tr>-->
                             <tr th:if="${#lists.isEmpty(listOfCaseActivities)}">
                                 <td colspan="4" class="text-center">No case activities...</td>
                             </tr>
@@ -101,6 +99,7 @@
         </main>
     </div>
     <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
 
     <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
