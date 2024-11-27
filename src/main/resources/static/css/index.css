@@ -28,6 +28,7 @@ li {
 /* Wrapper Class for Whole Content*/
 .wrapper {
     display: flex;
+    min-height: 100vh;
 }
 
 /* Main Class for Content */
@@ -221,11 +222,6 @@ tr.highlight th {
     flex: 1 1 auto;
 }
 
-.footer {
-    background-color: var(--bs-light);
-    padding: 16px 14px;
-}
-
 /* Media Queries */
 
 @media (min-width: 768px) {
@@ -259,5 +255,4 @@ tr.highlight th {
     .navbar-expand .navbar-nav .dropdown-menu {
         box-shadow:  0 .1rem .2rem rgba(0, 0, 0, .05);
     }
-
 }

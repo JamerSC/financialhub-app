@@ -7,6 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Date;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -37,6 +38,14 @@ public class UserDto {
     private String confirmPassword;
 
     private Boolean enabled = true;
+
+    private Long createdBy;
+
+    private Date createdAt;
+
+    private Long updatedBy;
+
+    private Date updatedAt;
 
     @RoleIdsNotEmpty(message = "At least one role must be selected")
     private Set<Long> roleIds;

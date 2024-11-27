@@ -118,12 +118,12 @@ public class UsersController {
         return "redirect:/settings/users";
     }
 
-    @GetMapping("/user-profile")
-    public String loggedInUserProfile(Model model, Principal principal) {
+    @GetMapping("/my-profile")
+    public String loggedInUserMyProfile(Model model, Principal principal) {
         User loggedInUser = userService.getByUsername(principal.getName());
-        UserDto profileInfo = userService.findUserById(loggedInUser.getUserId());
-        model.addAttribute("profileInfo", profileInfo);
-        return "settings/user-profile";
+        UserDto myProfileInfo = userService.findUserById(loggedInUser.getUserId());
+        model.addAttribute("profileInfo", myProfileInfo);
+        return "settings/my-profile";
     }
 
     @GetMapping("/delete-user-record/{id}")

@@ -33,7 +33,7 @@
                                     Total of Users
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    <span th:text="${#lists.size(totalOfUsers)}"></span>
+                                    <span th:text="${totalOfUsers != null ? #lists.size(totalOfUsers) : 0}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->
@@ -55,7 +55,7 @@
                                     Pending Liquidations
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    <span th:text="${#lists.size(totalOfPettyCash)}"></span>
+                                    <span th:text="${totalOfPettyCash != null ? #lists.size(totalOfPettyCash) : 0}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->
@@ -77,7 +77,7 @@
                                     Total Checks
                                 </h5>
                                 <p class="mb-2 fw-bold">
-                                    <span th:text="${#lists.size(totalOfChecks)}"></span>
+                                    <span th:text="${totalOfChecks != null ? #lists.size(totalOfChecks) : 0}"></span>
                                 </p>
                                 <div class="mb-0">
                                     <!-- margin end me-2 -->
@@ -158,10 +158,9 @@
                 </div>
             </div>
             <!--footer fragment-->
-            <div th:replace="~{fragments/footer :: footer}">Footer</div>
         </main>
     </div>
-
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
 
     <!-- External Bootstrap JS -->
     <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
