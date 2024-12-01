@@ -1281,8 +1281,18 @@ public class ClientAccountServiceImpl implements ClientAccountService{
 
         account= new ClientAccount();
         account.setClient(ContactMapper.toContactEntity(dto.getClient()));
-        account.setAccountTitle(dto.getClient().getIndividual().getFullName());
+
+        if (account.getClient() != null) {
+            if (account.getClient().getIndividual() != null) {
+                account.setAccountTitle(account.getClient().getIndividual().getFullName());
+            }
+            else if (account.getClient().getCompany() != null) {
+                account.setAccountTitle(account.getClient().getCompany().getCompanyName());
+            }
+        }
+
         account.setClientAccountType(ClientAccountType.RETAINER);
+
         if (createdBy != null) {
             account.setCreatedBy(createdBy.getUserId());
             account.setUpdatedBy(createdBy.getUserId());
@@ -1293,7 +1303,14 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         if (dto.getRetainerAccount() != null) {
             retainerAccount = new RetainerAccount();
             retainerAccount.setClientAccount(account);
-            retainerAccount.setRetainerTitle(account.getClient().getIndividual().getFullName());
+            if (account.getClient() != null) {
+                if (account.getClient().getIndividual() != null) {
+                    retainerAccount.setRetainerTitle(account.getClient().getIndividual().getFullName());
+                }
+                else if (account.getClient().getCompany() != null) {
+                    retainerAccount.setRetainerTitle(account.getClient().getCompany().getCompanyName());
+                }
+            }
             retainerAccount.setStatus(dto.getRetainerAccount().getStatus());
             retainerAccount.setStartDate(dto.getRetainerAccount().getStartDate());
             retainerAccount.setEndDate(dto.getRetainerAccount().getEndDate());
