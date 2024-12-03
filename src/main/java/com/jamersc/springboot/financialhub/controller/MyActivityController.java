@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
@@ -36,10 +37,12 @@ public class MyActivityController {
         return "my-activity/my-activity";
     }
 
-    @GetMapping("/{id}/my-activity-entries")
-    public String myActivityEntries(Model model) {
-        model.addAttribute("entries", "Entries of My Activity");
-        model.addAttribute("myActivity", new PettyCashActivityDto());
-        return "my-activity/activity-entries";
+    @GetMapping("/{id}/my-activity")
+    public String myActivityEntries(@PathVariable(value = "id") Long id, Model model) {
+        PettyCashActivityDto myActivity = pettyCashActivityService.getPettyCashById(id);
+        model.addAttribute("myActivity", myActivity);
+        /*model.addAttribute("entries", "Entries of My Activity");
+        model.addAttribute("myActivity", new PettyCashActivityDto());*/
+        return "my-activity/activity-entry-form";
     }
 }
