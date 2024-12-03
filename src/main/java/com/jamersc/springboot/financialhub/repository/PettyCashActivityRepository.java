@@ -17,6 +17,9 @@ public interface PettyCashActivityRepository extends JpaRepository <PettyCashAct
     @Query("SELECT p FROM PettyCashActivity p ORDER BY p.date DESC")
     List<PettyCashActivity> fillAllPettyCashDateDesc();
 
+    @Query("SELECT p FROM PettyCashActivity p WHERE p.approved = true ORDER BY p.date DESC")
+    List<PettyCashActivity> findAllApprovedPettyCashDateDesc();
+
     // Find by both createdBy and receivedBy
     //@Query("SELECT p FROM PettyCashActivity p WHERE p.createdBy = :createdBy AND p.receivedBy = :receivedBy")
     //List<PettyCash> findByCreatedByAndReceivedBy(@Param("createdBy") Long createdBy, @Param("receivedBy") User receivedBy);
