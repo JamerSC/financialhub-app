@@ -50,12 +50,14 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 .collect(Collectors.toList());
     }
 
+    /*** Petty Cash  ****/
+
     @Override
     public List<PettyCashActivity> getUnapprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
-                .anyMatch(role -> role.getName()
-                        .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
+                .anyMatch(role ->
+                        role.getName().equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
             return pettyCashActivityRepository.fillAllPettyCashDateDesc();
         } else  {
@@ -64,6 +66,8 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
         }
     }
 
+    /****  My Activity ****/
+
     @Override
     public List<PettyCashActivity> getApprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
@@ -71,7 +75,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashActivityRepository.fillAllPettyCashDateDesc();
+            return pettyCashActivityRepository.findAllApprovedPettyCashDateDesc();
         } else  {
             //
             return pettyCashActivityRepository.findApprovedPettyCashByReceivedByDateDesc(user);
