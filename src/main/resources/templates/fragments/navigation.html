@@ -25,27 +25,35 @@
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/contacts/contact-list}" class="sidebar-link">
-                    <i class="lni lni-user-multiple-4"></i>
+                    <i class="lni lni-telephone-1"></i>
                     <span>Contacts</span>
                 </a>
             </li>
             <li class="sidebar-item">
-                <a th:href="@{/client-account/list-of-cases}" class="sidebar-link">
-                    <i class="lni lni-briefcase-2"></i>
-                    <span>Case</span>
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#accounts" aria-expanded="false" aria-controls="accounts">
+                    <i class="lni lni-user-multiple-4"></i>
+                    <span>Accounts</span>
                 </a>
-            </li>
-            <li class="sidebar-item">
-                <a th:href="@{/client-account/list-of-projects}" class="sidebar-link">
-                    <i class="lni lni-layout-9"></i>
-                    <span>Project</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a th:href="@{/client-account/list-of-retainers}" class="sidebar-link">
-                    <i class="lni lni-hand-shake"></i>
-                    <span>Retainer</span>
-                </a>
+                <ul id="accounts" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a th:href="@{/client-account/list-of-cases}" class="sidebar-link">
+                            <i class="lni lni-briefcase-2"></i>
+                            Case
+                        </a>
+                    </li>
+                    <li th:href="@{/client-account/list-of-projects}"  class="sidebar-item">
+                        <a th:href="@{/settings/users}" class="sidebar-link">
+                            <i class="lni lni-layout-9"></i>
+                            Project
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a th:href="@{/client-account/list-of-retainers}" class="sidebar-link">
+                            <i class="lni lni-hand-shake"></i>
+                            Retainer
+                        </a>
+                    </li>
+                </ul>
             </li>
             <li class="sidebar-item">
                 <a th:href="@{/my-activity/list-of-activities}" class="sidebar-link">
@@ -59,7 +67,39 @@
                     <span>Petty Cash</span>
                 </a>
             </li>
-            <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
+            <li class="sidebar-item" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  >
+                <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#transactions" aria-expanded="false" aria-controls="transactions">
+                    <i class="lni lni-buildings-1"></i>
+                    <span>Bank Transactions</span>
+                </a>
+                <ul id="transactions" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                    <li class="sidebar-item">
+                        <a th:href="@{/credit-card/credit-card-voucher}" class="sidebar-link">
+                            <i class="lni lni-credit-card-multiple"></i>
+                            Credit Card
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a th:href="@{/check/check-voucher}" class="sidebar-link">
+                            <i class="lni lni-file-pencil"></i>
+                            Checks
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a th:href="@{/bank-transactions/deposit-accounts}" class="sidebar-link">
+                            <i class="lni lni-hand-taking-dollar"></i>
+                            Deposits
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a th:href="@{/bank-transactions/withdrawal-accounts}" class="sidebar-link">
+                            <i class="lni lni-wallet-1"></i>
+                            Withdrawals
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <!--<li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
                 <a th:href="@{/credit-card/credit-card-voucher}" class="sidebar-link">
                     <i class="lni lni-credit-card-multiple"></i>
                     <span>Credit Card</span>
@@ -82,7 +122,7 @@
                     <i class="lni lni-wallet-1"></i>
                     <span>Withdrawals</span>
                 </a>
-            </li>
+            </li>-->
             <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
                 <a th:href="@{/bank/bank-statements}" class="sidebar-link">
                     <i class="lni lni-text-paragraph"></i>
@@ -95,31 +135,37 @@
                     <span>Bank Accounts</span>
                 </a>
             </li>
-            <!--2 Nested Unordered List - Dropdown  -->
             <li class="sidebar-item">
+                <a th:href="@{/settings/my-profile}" class="sidebar-link">
+                    <i class="lni lni-user-4"></i>
+                    <span>My Profile</span>
+                </a>
+            </li>
+            <!--2 Nested Unordered List - Dropdown  -->
+            <li class="sidebar-item" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  >
                 <a href="#" class="sidebar-link has-dropdown collapsed" data-bs-toggle="collapse" data-bs-target="#setting" aria-expanded="false" aria-controls="setting">
                     <i class="lni lni-gears-3"></i>
                     <span>Settings</span>
                 </a>
                 <ul id="setting" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                    <li class="sidebar-item">
+                    <!--<li class="sidebar-item">
                         <a th:href="@{/settings/my-profile}" class="sidebar-link">
                             <i class="lni lni-user-4"></i>
                             My Profile
                         </a>
-                    </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  class="sidebar-item">
+                    </li>-->
+                    <li class="sidebar-item">
                         <a th:href="@{/settings/users}" class="sidebar-link">
                             <i class="lni lni-user-4"></i>
                             Users
                         </a>
                     </li>
-                    <li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
+                    <!--<li sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="sidebar-item">
                         <a href="#" class="sidebar-link">
                             <i class="lni lni-gear-1"></i>
                             Maintenance
                         </a>
-                    </li>
+                    </li>-->
                 </ul>
             </li>
         </ul>
