@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.jamersc.springboot</groupId>
 	<artifactId>financialhub</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.1.2</version>
 	<name>financialhub</name>
 	<description>A Financial Hub is a central point or platform that facilitates various financial activities, transactions, and services.</description>
 	<url/>
@@ -99,7 +99,7 @@
     </dependencies>
 
 	<build>
-		<finalName>financialhub-beta-v1.1.1-app</finalName>
+		<finalName>financialhub-beta-v${project.version}-app</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
