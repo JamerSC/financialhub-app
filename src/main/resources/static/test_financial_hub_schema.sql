@@ -2,6 +2,10 @@
 #CREATE DATABASE IF NOT EXISTS `test_financial_hub_db`;
 #USE `test_financial_hub_db`;
 
+DROP DATABASE IF EXISTS `test_financial_hub_db`;
+CREATE DATABASE `test_financial_hub_db`;
+USE `test_financial_hub_db`;
+
 ### USERS
 
 DROP TABLE `contact_users`;
