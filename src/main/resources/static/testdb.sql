@@ -7,6 +7,13 @@ DROP DATABASE testdb;
 INSERT INTO `contacts` (`contact_type`, `category_type`, `engagement_date`, `best_channel_to_contact`) 
 VALUES ('INDIVIDUAL', 'INTERNAL', null, null);
 
+INSERT INTO `contact_individual` (`contact_id`, `title`, `last_name`, `first_name`, `middle_name`, `suffix`, `mobile_number`, `email_address`, `address`) 
+VALUES (1, '', 'Administrator', 'GL', '', 'J', '000000000', 'admin@mail.com', 'Lorem ipsum');
+
+-- Insert additional details for a Company/Vendor/Internal (using the contact_id from the previous insert)
+INSERT INTO `contact_additional_details` (`contact_id`, `designation_for`, `bank_name`, `account_no`) 
+VALUES (1, '', '', '');
+
 INSERT INTO `roles` (`name`) VALUES ('ROLE_SUPER');
 INSERT INTO `roles` (`name`) VALUES ('ROLE_ADMIN');
 INSERT INTO `roles` (`name`) VALUES ('ROLE_MANAGER');

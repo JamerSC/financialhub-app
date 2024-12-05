@@ -42,7 +42,7 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="fullName" class="col-form-label">First name:</label>
+                                <label for="fullName" class="col-form-label">Full Name:</label>
                                 <input type="text" class="form-control" id="fullName" th:field="*{fullName}" placeholder="Enter full name...">
                                 <div th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}" class="error">
                                     Full name is required!

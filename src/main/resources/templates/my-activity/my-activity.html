@@ -49,7 +49,7 @@
                             </thead>
                             <tbody>
                                 <tr th:if="${#lists.isEmpty(myActivities)}">
-                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="5" class="text-center">No existing activities...</td>
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="6" class="text-center">No existing activities...</td>
                                     <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="4" class="text-center">No existing activities...</td>
                                 </tr>
                                 <tr th:each="tempActivity : ${myActivities}" th:unless="${#lists.isEmpty(myActivities)}">
