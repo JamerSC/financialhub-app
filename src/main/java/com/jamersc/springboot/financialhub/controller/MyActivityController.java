@@ -1,8 +1,13 @@
 package com.jamersc.springboot.financialhub.controller;
 
+import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
+import com.jamersc.springboot.financialhub.dto.LiquidationDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
+import com.jamersc.springboot.financialhub.model.Liquidation;
 import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import com.jamersc.springboot.financialhub.model.User;
+import com.jamersc.springboot.financialhub.service.client_accounts.ClientAccountService;
+import com.jamersc.springboot.financialhub.service.petty_cash_activity.LiquidationService;
 import com.jamersc.springboot.financialhub.service.petty_cash_activity.PettyCashActivityService;
 import com.jamersc.springboot.financialhub.service.user.UserService;
 import lombok.AllArgsConstructor;
@@ -25,6 +30,10 @@ public class MyActivityController {
     private UserService userService;
     @Autowired
     private PettyCashActivityService pettyCashActivityService;
+    @Autowired
+    private LiquidationService liquidationService;
+    @Autowired
+    private ClientAccountService clientAccountService;
 
     @GetMapping("/list-of-activities")
     public String listOfActivities(Model model, Principal principal) {
@@ -41,8 +50,18 @@ public class MyActivityController {
     public String myActivityEntries(@PathVariable(value = "id") Long id, Model model) {
         PettyCashActivityDto myActivity = pettyCashActivityService.getPettyCashById(id);
         model.addAttribute("myActivity", myActivity);
-        /*model.addAttribute("entries", "Entries of My Activity");
-        model.addAttribute("myActivity", new PettyCashActivityDto());*/
+        List<Liquidation> liquidations = liquidationService.getAllActivityEntriesByPettyCashActivityId(myActivity.getPcActivityId());
+        Double totalLiquidationAmount = liquidations.stream().mapToDouble(Liquidation::getCost).sum();
+        Double remainingBalance = myActivity.getTotalAmount() - totalLiquidationAmount;
+        LiquidationDto newLiquidation = new LiquidationDto();
+        List<ClientAccountDto> listOfChargeTo = clientAccountService.getAllClientAccounts(); //
+        newLiquidation.setActivity(myActivity);
+        model.addAttribute("pettyCash", myActivity); // display petty cash info
+        model.addAttribute("liquidations", liquidations); // display liquidations
+        model.addAttribute("totalLiquidationAmount", totalLiquidationAmount); // sum total liquidation
+        model.addAttribute("remainingBalance", remainingBalance);
+        model.addAttribute("listOfChargeTo", listOfChargeTo); //
+        model.addAttribute("newLiquidation", newLiquidation); // create new item
         return "my-activity/activity-entry-form";
     }
 }

@@ -26,7 +26,6 @@
                         <div class="d-flex">
                             <div class="p-1">
                                 <h4 class="fw-bold fs-4">My Activity Entries</h4>
-                                <p th:text="${myActivity.pcActivityId}"></p>
                             </div>
                             <!-- Create Item Modal Button -->
                             <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
@@ -35,7 +34,7 @@
                                 </button>
                             </div>
                         </div>
-                        <!--<table class="table table-striped shadow">
+                        <table class="table table-striped shadow">
                             <thead class="table-dark">
                             <tr>
                                 <th>Date</th>
@@ -53,7 +52,7 @@
                                 <td th:text="${liquidation.particulars}"></td>
                                 <td th:text="${#numbers.formatDecimal(liquidation.cost, 1, 'COMMA', 2, 'POINT')}"></td>
                                 <td th:text="${liquidation.receiptNo}"></td>
-                                &lt;!&ndash;<td th:text="${liquidation.chargeTo.individual} + ' '+ ${liquidation.chargeTo.contactCategoryType} "></td>&ndash;&gt;
+                                <!--<td th:text="${liquidation.chargeTo.individual} + ' '+ ${liquidation.chargeTo.contactCategoryType} "></td>-->
                                 <td>
                                     <span th:if="${liquidation.chargeTo.individual != null}"
                                           th:text="${liquidation.chargeTo.individual.getFullName()} + ' / '
@@ -62,7 +61,7 @@
                                           th:text="${liquidation.chargeTo.company.companyName} + ' / '
                                           + ${liquidation.chargeTo.contactType.displayContactType()} + ' / ' + ${liquidation.chargeTo.contactCategoryType.displayContactCategoryType()}"></span>
                                 </td>
-                                &lt;!&ndash;<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>&ndash;&gt;
+                                <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
                                 <td><input type="checkbox" th:checked="${liquidation.billed}" disabled/></td>
                                 <td>
                                     <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
@@ -85,7 +84,7 @@
                             </tr>
                             <tr>
                                 <td colspan="2" class="text-end"><strong>Total Petty Cash Received:</strong></td>
-                                <td><strong th:text="${#numbers.formatDecimal(pettyCashActivity.totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                                <td><strong th:text="${#numbers.formatDecimal(myActivity.totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
@@ -106,9 +105,9 @@
                                 <td></td>
                             </tr>
                             </tbody>
-                        </table>-->
-                        <!-- Add New Item Modal -->
-                        <!--<div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+                        </table>
+                        Add New Item Modal
+                        <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -117,7 +116,7 @@
                                     </div>
                                     <div class="modal-body">
                                         <form id="addItemForm" action="#" th:action="@{/liquidation/add-item}" th:object="${newLiquidation}" method="post">
-                                            <input type="hidden" th:value="${pettyCashActivity.id}" th:field="*{pettyCashActivity.id}"/>
+                                            <input type="hidden" th:value="${myActivity.pcActivityId}" th:field="*{activity.pcActivityId}"/>
 
                                             <div class="mb-3">
                                                 <label for="date" class="f  orm-label">Date</label>
@@ -143,38 +142,25 @@
                                                 <div class="invalid-feedback">Please provide a receipt number.</div>
                                             </div>
 
-                                            &lt;!&ndash; New Field: Remarks &ndash;&gt;
+                                            <!-- New Field: Remarks -->
                                             <div class="mb-3">
                                                 <label for="remarks" class="form-label">Remarks</label>
                                                 <textarea class="form-control" id="remarks" th:field="*{remarks}" rows="2"></textarea>
                                                 <div class="invalid-feedback">Please provide remarks.</div>
                                             </div>
 
-                                            &lt;!&ndash; New Field: Charge To &ndash;&gt;
+                                            <!-- New Field: Charge To -->
                                             <div class="mb-3">
                                                 <label for="chargeTo" class="form-label">Charge To</label>
                                                 <select class="form-select" id="chargeTo" th:field="*{chargeTo}">
                                                     <option value="" selected>Select a charge to</option>
-                                                    &lt;!&ndash; Loop through listOfChargeTo &ndash;&gt;
-                                                    <option th:each="contact : ${listOfChargeTo}"
-                                                            th:value="${contact.contactId}"
-                                                            th:text="${contact.contactType != null && contact.contactType.name() == 'INDIVIDUAL' ?
-                                                             (#strings.concat(contact.individual.getFullName(),
-                                                             ' (', contact.contactType.displayContactType(), '/', contact.contactCategoryType.displayContactCategoryType(), ')'))
-                                                             : (#strings.concat(contact.company?.companyName, ' (', contact.contactType.displayContactType(),
-                                                             '/', contact.contactCategoryType.displayContactCategoryType(), ')'))}">
+                                                    <!-- Loop through listOfChargeTo -->
+                                                    <option th:each="chargeTo : ${listOfChargeTo}"
+                                                            th:value="${chargeTo.clientAccountId}"
+                                                            th:text="${chargeTo.accountTitle}">
                                                     </option>
                                                 </select>
                                                 <div class="invalid-feedback">Please select charge to.</div>
-                                            </div>
-
-
-                                            &lt;!&ndash; New Field: Billed &ndash;&gt;
-                                            <div class="form-check mb-3">
-                                                <input class="form-check-input" type="checkbox" id="billed" th:field="*{billed}">
-                                                <label class="form-check-label" for="billed">
-                                                    Billed
-                                                </label>
                                             </div>
 
                                             <div class="modal-footer">
@@ -185,9 +171,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
-                        <!--Delete modal popup-->
-                        <!--<div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                        </div>
+                        Delete modal popup
+                        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -203,8 +189,8 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>-->
-                       <!-- <script>
+                        </div>
+                        <script>
                             $(document).ready(function () {
                                 $('#addItemForm').on('submit', function (event) {
                                     var isValid = true;
@@ -266,7 +252,7 @@
                                     }
                                 });
                             });
-                        </script>-->
+                        </script>
                     </div>
                 </div>
             </div>

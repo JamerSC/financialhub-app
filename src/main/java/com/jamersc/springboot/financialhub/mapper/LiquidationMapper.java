@@ -12,7 +12,7 @@ public class LiquidationMapper {
 
         LiquidationDto dto = new LiquidationDto();
         dto.setActivityId(liquidation.getActivityId());
-        dto.setPettyCash(PettyCashMapper.toPettyCashDto(liquidation.getActivity()));
+        dto.setActivity(PettyCashMapper.toPettyCashDto(liquidation.getActivity()));
         dto.setDate(liquidation.getDate());
         dto.setParticulars(liquidation.getParticulars());
         dto.setCost(liquidation.getCost());
