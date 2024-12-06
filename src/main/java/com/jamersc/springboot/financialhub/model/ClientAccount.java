@@ -49,6 +49,11 @@ public class ClientAccount {
     @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
     private Set<PettyCashActivity> pettyCashActivity;
 
+    @OneToOne(mappedBy = "chargeTo", fetch = FetchType.EAGER, orphanRemoval = true, cascade = {
+            CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    private Liquidation activity;
+
     @Column(name = "created_by")
     private Long createdBy;
 

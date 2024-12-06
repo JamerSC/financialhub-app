@@ -21,6 +21,7 @@ public class ClientAccountDto {
         private ProjectAccountDto projectAccount; // one to one client account
         private RetainerAccountDto retainerAccount; // one to one client account
         private Set<PettyCashActivityDto> pettyCash;
+        private LiquidationDto activity;
         private Long createdBy;
         private Date createdAt;
         private Long updatedBy;

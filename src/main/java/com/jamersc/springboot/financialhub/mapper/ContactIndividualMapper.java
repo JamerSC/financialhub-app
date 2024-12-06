@@ -6,6 +6,26 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContactIndividualMapper {
+    // Entity to DTO
+    public static ContactIndividualDto toContactIndividualDto(ContactIndividual contactIndividual) {
+        if (contactIndividual == null) {
+            return null;
+        }
+
+        ContactIndividualDto contactIndividualDto = new ContactIndividualDto();
+        contactIndividualDto.setIndividualId(contactIndividual.getIndividualId());
+        //contactIndividualDto.setContact(ContactMapper.toContactDto(contactIndividual.getContact()));
+        contactIndividualDto.setTitle(contactIndividual.getTitle());
+        contactIndividualDto.setLastName(contactIndividual.getLastName());
+        contactIndividualDto.setFirstName(contactIndividual.getFirstName());
+        contactIndividualDto.setMiddleName(contactIndividual.getMiddleName());
+        contactIndividualDto.setSuffix(contactIndividual.getSuffix());
+        contactIndividualDto.setMobileNumber(contactIndividual.getMobileNumber());
+        contactIndividualDto.setEmailAddress(contactIndividual.getEmailAddress());
+        contactIndividualDto.setAddress(contactIndividual.getAddress());
+
+        return contactIndividualDto;
+    }
 
     public static ContactIndividual toContactIndividualEntity(ContactIndividualDto contactIndividualDto) {
         if (contactIndividualDto == null) {
@@ -25,25 +45,5 @@ public class ContactIndividualMapper {
         contactIndividual.setAddress(contactIndividualDto.getAddress());
 
         return contactIndividual;
-    }
-
-    public static ContactIndividualDto toContactIndividualDto(ContactIndividual contactIndividual) {
-        if (contactIndividual == null) {
-            return null;
-        }
-
-        ContactIndividualDto contactIndividualDto = new ContactIndividualDto();
-        contactIndividualDto.setIndividualId(contactIndividual.getIndividualId());
-        //contactIndividualDto.setContact(ContactMapper.toContactDto(contactIndividual.getContact()));
-        contactIndividualDto.setTitle(contactIndividual.getTitle());
-        contactIndividualDto.setLastName(contactIndividual.getLastName());
-        contactIndividualDto.setFirstName(contactIndividual.getFirstName());
-        contactIndividualDto.setMiddleName(contactIndividual.getMiddleName());
-        contactIndividualDto.setSuffix(contactIndividual.getSuffix());
-        contactIndividualDto.setMobileNumber(contactIndividual.getMobileNumber());
-        contactIndividualDto.setEmailAddress(contactIndividual.getEmailAddress());
-        contactIndividualDto.setAddress(contactIndividual.getAddress());
-
-        return contactIndividualDto;
     }
 }

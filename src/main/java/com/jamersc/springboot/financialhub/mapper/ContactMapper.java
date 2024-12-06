@@ -11,31 +11,6 @@ import java.util.stream.Collectors;
 
 @Component
 public class ContactMapper {
-
-    // DTO to Entity conversion
-    public static Contact toContactEntity(ContactDto contactDto) {
-        if (contactDto == null) {
-            return null;
-        }
-
-        Contact contact = new Contact();
-        contact.setContactId(contactDto.getContactId());
-        contact.setContactType(contactDto.getContactType());
-        contact.setContactCategoryType(contactDto.getContactCategoryType());
-        contact.setEngagementDate(contactDto.getEngagementDate());
-        contact.setBestChannelToContact(contactDto.getBestChannelToContact());
-        contact.setIndividual(ContactIndividualMapper.toContactIndividualEntity(contactDto.getIndividual()));
-        contact.setCompany(ContactCompanyMapper.toContactCompanyEntity(contactDto.getCompany()));
-        contact.setAdditionalDetails(ContactDetailsMapper.toContactDetailsEntity(contactDto.getAdditionalDetails()));
-        //contact.setClientAccounts(ClientAccountMapper.toClientAccountEntities(contactDto.getClientAccounts())); // Assuming ClientAccount is mapped as it is.
-        contact.setCreatedBy(contactDto.getCreatedBy());
-        contact.setCreatedAt(contactDto.getCreatedAt());
-        contact.setUpdatedBy(contactDto.getUpdatedBy());
-        contact.setUpdatedAt(contactDto.getUpdatedAt());
-
-        return contact;
-    }
-
     // Entity to DTO conversion
     public static ContactDto toContactDto(Contact contact) {
         if (contact == null) {
@@ -58,5 +33,28 @@ public class ContactMapper {
         contactDto.setUpdatedAt(contact.getUpdatedAt());
 
         return contactDto;
+    }
+    // DTO to Entity conversion
+    public static Contact toContactEntity(ContactDto contactDto) {
+        if (contactDto == null) {
+            return null;
+        }
+
+        Contact contact = new Contact();
+        contact.setContactId(contactDto.getContactId());
+        contact.setContactType(contactDto.getContactType());
+        contact.setContactCategoryType(contactDto.getContactCategoryType());
+        contact.setEngagementDate(contactDto.getEngagementDate());
+        contact.setBestChannelToContact(contactDto.getBestChannelToContact());
+        contact.setIndividual(ContactIndividualMapper.toContactIndividualEntity(contactDto.getIndividual()));
+        contact.setCompany(ContactCompanyMapper.toContactCompanyEntity(contactDto.getCompany()));
+        contact.setAdditionalDetails(ContactDetailsMapper.toContactDetailsEntity(contactDto.getAdditionalDetails()));
+        //contact.setClientAccounts(ClientAccountMapper.toClientAccountEntities(contactDto.getClientAccounts())); // Assuming ClientAccount is mapped as it is.
+        contact.setCreatedBy(contactDto.getCreatedBy());
+        contact.setCreatedAt(contactDto.getCreatedAt());
+        contact.setUpdatedBy(contactDto.getUpdatedBy());
+        contact.setUpdatedAt(contactDto.getUpdatedAt());
+
+        return contact;
     }
 }

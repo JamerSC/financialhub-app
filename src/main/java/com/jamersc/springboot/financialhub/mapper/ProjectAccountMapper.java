@@ -8,6 +8,37 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ProjectAccountMapper {
+    // Convert Entity to DTO
+    public static ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount) {
+        if (projectAccount == null) {
+            return null;
+        }
+
+        ProjectAccountDto projectAccountDto = new ProjectAccountDto();
+        projectAccountDto.setProjectId(projectAccount.getProjectId());
+        //projectAccountDto.setClientAccount(ClientAccountMapper.toClientAccountDto(projectAccount.getClientAccount())); // Pass the related entity
+        projectAccountDto.setProjectType(projectAccount.getProjectType());
+        projectAccountDto.setPropertySubType(projectAccount.getPropertySubType());
+        projectAccountDto.setBusinessSubType(projectAccount.getBusinessSubType());
+        projectAccountDto.setSecSubType(projectAccount.getSecSubType());
+        projectAccountDto.setProjectTitle(projectAccount.getProjectTitle());
+        projectAccountDto.setTitleNo(projectAccount.getTitleNo());
+        projectAccountDto.setTaxDecNo(projectAccount.getTaxDecNo());
+        projectAccountDto.setLotNo(projectAccount.getLotNo());
+        projectAccountDto.setLotArea(projectAccount.getLotArea());
+        projectAccountDto.setLocation(projectAccount.getLocation());
+        projectAccountDto.setBir(projectAccount.getBir());
+        projectAccountDto.setRd(projectAccount.getRd());
+        projectAccountDto.setZonalValue(projectAccount.getZonalValue());
+        projectAccountDto.setPurchasePrice(projectAccount.getPurchasePrice());
+        projectAccountDto.setRemarks(projectAccount.getRemarks());
+        projectAccountDto.setDeceased(projectAccount.getDeceased());
+        projectAccountDto.setHeirs(projectAccount.getHeirs());
+        projectAccountDto.setAddress(projectAccount.getAddress());
+        projectAccountDto.setStatus(projectAccount.getStatus());
+
+        return projectAccountDto;
+    }
 
     // Convert DTO to Entity
     public static ProjectAccount toProjectAccountEntity(ProjectAccountDto projectAccountDto) {
@@ -39,37 +70,5 @@ public class ProjectAccountMapper {
         projectAccount.setStatus(projectAccountDto.getStatus());
 
         return projectAccount;
-    }
-
-    // Convert Entity to DTO
-    public static ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount) {
-        if (projectAccount == null) {
-            return null;
-        }
-
-        ProjectAccountDto projectAccountDto = new ProjectAccountDto();
-        projectAccountDto.setProjectId(projectAccount.getProjectId());
-        //projectAccountDto.setClientAccount(ClientAccountMapper.toClientAccountDto(projectAccount.getClientAccount())); // Pass the related entity
-        projectAccountDto.setProjectType(projectAccount.getProjectType());
-        projectAccountDto.setPropertySubType(projectAccount.getPropertySubType());
-        projectAccountDto.setBusinessSubType(projectAccount.getBusinessSubType());
-        projectAccountDto.setSecSubType(projectAccount.getSecSubType());
-        projectAccountDto.setProjectTitle(projectAccount.getProjectTitle());
-        projectAccountDto.setTitleNo(projectAccount.getTitleNo());
-        projectAccountDto.setTaxDecNo(projectAccount.getTaxDecNo());
-        projectAccountDto.setLotNo(projectAccount.getLotNo());
-        projectAccountDto.setLotArea(projectAccount.getLotArea());
-        projectAccountDto.setLocation(projectAccount.getLocation());
-        projectAccountDto.setBir(projectAccount.getBir());
-        projectAccountDto.setRd(projectAccount.getRd());
-        projectAccountDto.setZonalValue(projectAccount.getZonalValue());
-        projectAccountDto.setPurchasePrice(projectAccount.getPurchasePrice());
-        projectAccountDto.setRemarks(projectAccount.getRemarks());
-        projectAccountDto.setDeceased(projectAccount.getDeceased());
-        projectAccountDto.setHeirs(projectAccount.getHeirs());
-        projectAccountDto.setAddress(projectAccount.getAddress());
-        projectAccountDto.setStatus(projectAccount.getStatus());
-
-        return projectAccountDto;
     }
 }

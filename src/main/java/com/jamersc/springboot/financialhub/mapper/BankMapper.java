@@ -7,24 +7,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BankMapper {
-
-    public static Bank toBankEntity(BankDto bankDto) {
-        if (bankDto == null) {
-            return null;
-        }
-
-        Bank bank = new Bank();
-        bank.setBankId(bankDto.getBankId());
-        bank.setName(bankDto.getName());
-        bank.setAbbreviation(bankDto.getAbbreviation());
-        bank.setBranch(bankDto.getBranch());
-        bank.setCreatedBy(bankDto.getCreatedBy());
-        bank.setCreatedAt(bankDto.getCreatedAt());
-        bank.setUpdatedBy(bankDto.getUpdatedBy());
-        bank.setUpdatedAt(bankDto.getUpdatedAt());
-        return bank;
-    }
-
+    // Entity to DTO
     public static BankDto toBankDto(Bank bank) {
         if (bank == null) {
             return null;
@@ -41,5 +24,20 @@ public class BankMapper {
         bankDto.setUpdatedAt(bank.getUpdatedAt());
         return bankDto;
     }
+    public static Bank toBankEntity(BankDto bankDto) {
+        if (bankDto == null) {
+            return null;
+        }
 
+        Bank bank = new Bank();
+        bank.setBankId(bankDto.getBankId());
+        bank.setName(bankDto.getName());
+        bank.setAbbreviation(bankDto.getAbbreviation());
+        bank.setBranch(bankDto.getBranch());
+        bank.setCreatedBy(bankDto.getCreatedBy());
+        bank.setCreatedAt(bankDto.getCreatedAt());
+        bank.setUpdatedBy(bankDto.getUpdatedBy());
+        bank.setUpdatedAt(bankDto.getUpdatedAt());
+        return bank;
+    }
 }

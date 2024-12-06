@@ -756,24 +756,24 @@ VALUE (1, 'PCV-2024001', 'Juan Dela Cruz', '2024-07-21', 'Utility expense', 1000
 
 ### PETTY CASH LIQUIDATION
 
-DROP TABLE `petty_cash_liquidation`;
-CREATE TABLE `petty_cash_liquidation` (
-	`liquidation_id` int NOT NULL AUTO_INCREMENT,
+DROP TABLE `petty_cash_activity_entries`;
+CREATE TABLE `petty_cash_activity_entries` (
+	`activity_id` int NOT NULL AUTO_INCREMENT,
     `pc_activity_id` int NOT NULL,
-    `contact_id` int NOT NULL,
+    `client_account_id` int NOT NULL,
 	`date` date NOT NULL,
     `particulars` varchar(255) NOT NULL,
     `cost` decimal(10, 2) NOT NULL,
     `receipt_no` varchar(50) NULL,
     `remarks` varchar(255) NULL,
-    `billed` boolean NULL,
+    #`billed` boolean NULL,
     `created_by` int,
     `created_at`timestamp DEFAULT CURRENT_TIMESTAMP,
     `updated_by` int,	
     `updated_at` timestamp DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (`pc_activity_id`) REFERENCES `petty_cash_activities`(id) ON DELETE CASCADE,
-    FOREIGN KEY (`contact_id`) REFERENCES `contacts`(`contact_id`) ON DELETE CASCADE,
-    PRIMARY KEY (`id`)
+    FOREIGN KEY (`pc_activity_id`) REFERENCES `petty_cash_activities`(`pc_activity_id`) ON DELETE CASCADE,
+    FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`) ON DELETE CASCADE,
+    PRIMARY KEY (`activity_id`)
 );
 #`charge_to` varchar(250) NOT NULL,
 

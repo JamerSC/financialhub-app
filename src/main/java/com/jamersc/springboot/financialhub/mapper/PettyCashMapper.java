@@ -12,6 +12,41 @@ import java.util.stream.Collectors;
 @Component
 public class PettyCashMapper {
 
+    public static PettyCashActivityDto toPettyCashDto(PettyCashActivity pettyCashActivity) {
+        if (pettyCashActivity == null) {
+            return null;
+        }
+
+        PettyCashActivityDto dto = new PettyCashActivityDto();
+        dto.setPcActivityId(pettyCashActivity.getPcActivityId());
+        //dto.setFund(FundMapper.toFundDto(pettyCash.getFund()));
+        dto.setPcActivityNo(pettyCashActivity.getPcActivityNo());
+        dto.setDate(pettyCashActivity.getDate());
+        dto.setActivityDescription(pettyCashActivity.getActivityDescription());
+        dto.setActivityCategory(pettyCashActivity.getActivityCategory());
+        dto.setSoaCategory(pettyCashActivity.getSoaCategory());
+        Set<ClientAccountDto> accounts = pettyCashActivity.getAccounts().stream()
+                .map(account -> new ClientAccountDto(
+                        account.getClientAccountId(),
+                        account.getAccountTitle(),
+                        account.getClientAccountType()
+                ))
+                .collect(Collectors.toSet());
+        dto.setAccounts(accounts);
+        // pettyCash.setLiquidations(dto.getLiquidations());
+        dto.setTotalAmount(pettyCashActivity.getTotalAmount());
+        dto.setApproved(pettyCashActivity.getApproved());
+        dto.setReceivedBy(UserMapper.toUserDto(pettyCashActivity.getReceivedBy()));
+        dto.setApprovedBy(pettyCashActivity.getApprovedBy());
+        dto.setCreatedBy(pettyCashActivity.getCreatedBy());
+        dto.setCreatedAt(pettyCashActivity.getCreatedAt());
+        dto.setUpdatedBy(pettyCashActivity.getUpdatedBy());
+        dto.setUpdatedAt(pettyCashActivity.getUpdatedAt());
+
+        return dto;
+    }
+
+    //
     public static PettyCashActivity toPettyCashEntity(PettyCashActivityDto dto) {
         if (dto == null) {
             return null;
@@ -46,39 +81,5 @@ public class PettyCashMapper {
         pettyCashActivity.setUpdatedAt(dto.getUpdatedAt());
 
         return pettyCashActivity;
-    }
-
-    public static PettyCashActivityDto toPettyCashDto(PettyCashActivity pettyCashActivity) {
-        if (pettyCashActivity == null) {
-            return null;
-        }
-
-        PettyCashActivityDto dto = new PettyCashActivityDto();
-        dto.setPcActivityId(pettyCashActivity.getPcActivityId());
-        //dto.setFund(FundMapper.toFundDto(pettyCash.getFund()));
-        dto.setPcActivityNo(pettyCashActivity.getPcActivityNo());
-        dto.setDate(pettyCashActivity.getDate());
-        dto.setActivityDescription(pettyCashActivity.getActivityDescription());
-        dto.setActivityCategory(pettyCashActivity.getActivityCategory());
-        dto.setSoaCategory(pettyCashActivity.getSoaCategory());
-        Set<ClientAccountDto> accounts = pettyCashActivity.getAccounts().stream()
-                .map(account -> new ClientAccountDto(
-                        account.getClientAccountId(),
-                        account.getAccountTitle(),
-                        account.getClientAccountType()
-                ))
-                .collect(Collectors.toSet());
-        dto.setAccounts(accounts);
-        // pettyCash.setLiquidations(dto.getLiquidations());
-        dto.setTotalAmount(pettyCashActivity.getTotalAmount());
-        dto.setApproved(pettyCashActivity.getApproved());
-        dto.setReceivedBy(UserMapper.toUserDto(pettyCashActivity.getReceivedBy()));
-        dto.setApprovedBy(pettyCashActivity.getApprovedBy());
-        dto.setCreatedBy(pettyCashActivity.getCreatedBy());
-        dto.setCreatedAt(pettyCashActivity.getCreatedAt());
-        dto.setUpdatedBy(pettyCashActivity.getUpdatedBy());
-        dto.setUpdatedAt(pettyCashActivity.getUpdatedAt());
-
-        return dto;
     }
 }

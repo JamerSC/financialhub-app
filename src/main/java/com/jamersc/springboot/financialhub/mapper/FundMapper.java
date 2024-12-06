@@ -11,6 +11,26 @@ import java.util.stream.Collectors;
 
 @Component
 public class FundMapper {
+    // Convert Entity to DTO
+    public static FundDto toFundDto(Fund fund) {
+        if (fund == null) {
+            return null;
+        }
+
+        List<PettyCashActivityDto> pettyCashActivityDtos = fund.getPettyCash() != null
+                ? fund.getPettyCash().stream().map(PettyCashMapper::toPettyCashDto).collect(Collectors.toList())
+                : null;
+
+        return new FundDto(
+                fund.getFundId(),
+                pettyCashActivityDtos,
+                fund.getFundBalance(),
+                fund.getCreatedBy(),
+                fund.getCreatedAt(),
+                fund.getUpdatedBy(),
+                fund.getUpdatedAt()
+        );
+    }
 
     // Convert DTO to Entity
     public static Fund toFundEntity(FundDto fundDto) {
@@ -32,25 +52,5 @@ public class FundMapper {
         fund.setUpdatedAt(fundDto.getUpdatedAt());
 
         return fund;
-    }
-    // Convert Entity to DTO
-    public static FundDto toFundDto(Fund fund) {
-        if (fund == null) {
-            return null;
-        }
-
-        List<PettyCashActivityDto> pettyCashActivityDtos = fund.getPettyCash() != null
-                ? fund.getPettyCash().stream().map(PettyCashMapper::toPettyCashDto).collect(Collectors.toList())
-                : null;
-
-        return new FundDto(
-                fund.getFundId(),
-                pettyCashActivityDtos,
-                fund.getFundBalance(),
-                fund.getCreatedBy(),
-                fund.getCreatedAt(),
-                fund.getUpdatedBy(),
-                fund.getUpdatedAt()
-        );
     }
 }

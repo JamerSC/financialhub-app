@@ -6,6 +6,29 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class BankAccountMapper {
+    // Entity to DTO
+    public static BankAccountDto toBankAccountDto(BankAccount bankAccount) {
+
+        if (bankAccount == null) {
+            return null;
+        }
+
+        BankAccountDto bankAccountDto = new BankAccountDto();
+        bankAccountDto.setBankAccountId(bankAccount.getBankAccountId());
+        // static method no need for @Autowired or new bean avoid circular dependency resolution
+        bankAccountDto.setBank(BankMapper.toBankDto(bankAccount.getBank())); // change DTO to Entity
+        bankAccountDto.setAccountHolderName(bankAccount.getAccountHolderName());
+        bankAccountDto.setAccountNumber(bankAccount.getAccountNumber());
+        bankAccountDto.setAccountBalance(bankAccount.getAccountBalance());
+        /*bankAccountDto.setTransactions(bankTransactionMapper
+                .toBankTransactionDtoList(bankAccount.getBankTransactions()));*/
+        bankAccountDto.setCreatedBy(bankAccount.getCreatedBy());
+        bankAccountDto.setCreatedAt(bankAccount.getCreatedAt());
+        bankAccountDto.setUpdatedBy(bankAccount.getUpdatedBy());
+        bankAccountDto.setUpdatedAt(bankAccount.getUpdatedAt());
+
+        return bankAccountDto;
+    }
 
     public static BankAccount toBankEntity(BankAccountDto bankAccountDto) {
 
@@ -28,28 +51,5 @@ public class BankAccountMapper {
         bankAccount.setUpdatedAt(bankAccountDto.getUpdatedAt());
 
         return bankAccount;
-    }
-
-    public static BankAccountDto toBankAccountDto(BankAccount bankAccount) {
-
-        if (bankAccount == null) {
-            return null;
-        }
-
-        BankAccountDto bankAccountDto = new BankAccountDto();
-        bankAccountDto.setBankAccountId(bankAccount.getBankAccountId());
-        // static method no need for @Autowired or new bean avoid circular dependency resolution
-        bankAccountDto.setBank(BankMapper.toBankDto(bankAccount.getBank())); // change DTO to Entity
-        bankAccountDto.setAccountHolderName(bankAccount.getAccountHolderName());
-        bankAccountDto.setAccountNumber(bankAccount.getAccountNumber());
-        bankAccountDto.setAccountBalance(bankAccount.getAccountBalance());
-        /*bankAccountDto.setTransactions(bankTransactionMapper
-                .toBankTransactionDtoList(bankAccount.getBankTransactions()));*/
-        bankAccountDto.setCreatedBy(bankAccount.getCreatedBy());
-        bankAccountDto.setCreatedAt(bankAccount.getCreatedAt());
-        bankAccountDto.setUpdatedBy(bankAccount.getUpdatedBy());
-        bankAccountDto.setUpdatedAt(bankAccount.getUpdatedAt());
-
-        return bankAccountDto;
     }
 }

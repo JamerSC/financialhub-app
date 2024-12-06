@@ -6,22 +6,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ContactDetailsMapper {
-
-    public static ContactDetails toContactDetailsEntity(ContactDetailsDto contactDetailsDto) {
-        if (contactDetailsDto == null) {
-            return null;
-        }
-
-        ContactDetails contactDetails = new ContactDetails();
-        contactDetails.setDetailId(contactDetailsDto.getDetailId());
-        //contactDetails.setContact(ContactMapper.toContactEntity(contactDetailsDto.getContact()));
-        contactDetails.setDesignationFor(contactDetailsDto.getDesignationFor());
-        contactDetails.setBankName(contactDetailsDto.getBankName());
-        contactDetails.setAccountNo(contactDetailsDto.getAccountNo());
-
-        return contactDetails;
-    }
-
+    // Entity to DTO
     public static ContactDetailsDto toContactDetailsDto(ContactDetails contactDetails) {
         if (contactDetails == null) {
             return null;
@@ -36,6 +21,18 @@ public class ContactDetailsMapper {
 
         return contactDetailsDto;
     }
+    public static ContactDetails toContactDetailsEntity(ContactDetailsDto contactDetailsDto) {
+        if (contactDetailsDto == null) {
+            return null;
+        }
 
+        ContactDetails contactDetails = new ContactDetails();
+        contactDetails.setDetailId(contactDetailsDto.getDetailId());
+        //contactDetails.setContact(ContactMapper.toContactEntity(contactDetailsDto.getContact()));
+        contactDetails.setDesignationFor(contactDetailsDto.getDesignationFor());
+        contactDetails.setBankName(contactDetailsDto.getBankName());
+        contactDetails.setAccountNo(contactDetailsDto.getAccountNo());
 
+        return contactDetails;
+    }
 }

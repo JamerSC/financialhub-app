@@ -6,38 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class CaseAccountMapper {
-
-    // Convert DTO to Entity
-    public static CaseAccount toCaseAccountEntity(CaseAccountDto caseAccountDto) {
-        if (caseAccountDto == null) {
-            return null;
-        }
-
-        CaseAccount caseAccount = new CaseAccount();
-        caseAccount.setCaseId(caseAccountDto.getCaseId());
-        //caseAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(caseAccountDto.getClientAccount())); // Pass the related entity
-        caseAccount.setCaseType(caseAccountDto.getCaseType()); // Set the CaseType enum based on the DTO
-        caseAccount.setCaseTitle(caseAccountDto.getCaseTitle());
-        caseAccount.setDocketNo(caseAccountDto.getDocketNo());
-        caseAccount.setNature(caseAccountDto.getNature());
-        caseAccount.setCourt(caseAccountDto.getCourt());
-        caseAccount.setBranch(caseAccountDto.getBranch());
-        caseAccount.setJudge(caseAccountDto.getJudge());
-        caseAccount.setCourtEmail(caseAccountDto.getCourtEmail());
-        caseAccount.setProsecutor(caseAccountDto.getProsecutor());
-        caseAccount.setProsecutorOffice(caseAccountDto.getProsecutorOffice());
-        caseAccount.setProsecutorEmail(caseAccountDto.getProsecutorEmail());
-        caseAccount.setOpposingParty(caseAccountDto.getOpposingParty());
-        caseAccount.setOpposingCounsel(caseAccountDto.getOpposingCounsel());
-        caseAccount.setCounselEmail(caseAccountDto.getCounselEmail());
-        caseAccount.setStatus(caseAccountDto.getStatus()); // Set the Status enum based on the DTO
-        caseAccount.setStage(caseAccountDto.getStage());
-        caseAccount.setStartDate(caseAccountDto.getStartDate());
-        caseAccount.setEndDate(caseAccountDto.getEndDate());
-
-        return caseAccount;
-    }
-
     // Convert Entity to DTO
     public static CaseAccountDto toCaseAccountDto(CaseAccount caseAccount) {
         if (caseAccount == null) {
@@ -67,5 +35,35 @@ public class CaseAccountMapper {
         caseAccountDto.setEndDate(caseAccount.getEndDate());
 
         return caseAccountDto;
+    }
+    // Convert DTO to Entity
+    public static CaseAccount toCaseAccountEntity(CaseAccountDto caseAccountDto) {
+        if (caseAccountDto == null) {
+            return null;
+        }
+
+        CaseAccount caseAccount = new CaseAccount();
+        caseAccount.setCaseId(caseAccountDto.getCaseId());
+        //caseAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(caseAccountDto.getClientAccount())); // Pass the related entity
+        caseAccount.setCaseType(caseAccountDto.getCaseType()); // Set the CaseType enum based on the DTO
+        caseAccount.setCaseTitle(caseAccountDto.getCaseTitle());
+        caseAccount.setDocketNo(caseAccountDto.getDocketNo());
+        caseAccount.setNature(caseAccountDto.getNature());
+        caseAccount.setCourt(caseAccountDto.getCourt());
+        caseAccount.setBranch(caseAccountDto.getBranch());
+        caseAccount.setJudge(caseAccountDto.getJudge());
+        caseAccount.setCourtEmail(caseAccountDto.getCourtEmail());
+        caseAccount.setProsecutor(caseAccountDto.getProsecutor());
+        caseAccount.setProsecutorOffice(caseAccountDto.getProsecutorOffice());
+        caseAccount.setProsecutorEmail(caseAccountDto.getProsecutorEmail());
+        caseAccount.setOpposingParty(caseAccountDto.getOpposingParty());
+        caseAccount.setOpposingCounsel(caseAccountDto.getOpposingCounsel());
+        caseAccount.setCounselEmail(caseAccountDto.getCounselEmail());
+        caseAccount.setStatus(caseAccountDto.getStatus()); // Set the Status enum based on the DTO
+        caseAccount.setStage(caseAccountDto.getStage());
+        caseAccount.setStartDate(caseAccountDto.getStartDate());
+        caseAccount.setEndDate(caseAccountDto.getEndDate());
+
+        return caseAccount;
     }
 }
