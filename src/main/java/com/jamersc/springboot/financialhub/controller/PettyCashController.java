@@ -51,8 +51,7 @@ public class PettyCashController {
         User loggedInUser = userService.getByUsername(principal.getName());
 
         FundDto fund = fundService.getFundById(id); // fund id# 1
-        //List<PettyCash> listOfPettyCash = pettyCashService.getAllPettyCashWithClientAccounts();
-        //List<PettyCash> listOfPettyCash = pettyCashService.getPettyCashByUserRole(loggedInUser);
+
         List<PettyCashActivity> listOfPettyCashActivities = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
         model.addAttribute("listOfPettyCashActivities", listOfPettyCashActivities);
         model.addAttribute("pettyCash", new PettyCashActivityDto());
@@ -109,43 +108,6 @@ public class PettyCashController {
         String adminUpdatedBy = getSessionUsername();
         pettyCashService.saveAdminPettyCash(pettyCash, adminUpdatedBy);
         return "redirect:/petty-cash/list-of-petty-cash";
-    }
-
-
-    /* ------------------------- */
-
-    @PostMapping("/petty-cash-form")
-    public String processCreatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
-                                   BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "petty-cash/petty-cash-form";
-        } else {
-            String createdBy = getSessionUsername();
-            pettyCashService.savePettyCash(pettyCashActivityDto, createdBy);
-            return "redirect:/petty-cash/list-of-petty-cash";
-        }
-    }
-
-    @GetMapping("/petty-cash-update-form/{id}")
-    public String pettyCashUpdateForm(@PathVariable(value = "id") Long id, Model model) {
-        PettyCashActivityDto pettyCashActivityDto = pettyCashService.getPettyCashById(id);
-        if (pettyCashActivityDto != null) {
-            model.addAttribute("pettyCashDto", pettyCashActivityDto);
-            return "petty-cash/petty-cash-update-form";
-        }
-        return "redirect:/petty-cash/list-of-petty-cash";
-    }
-
-    @PostMapping("/petty-cash-update-form")
-    public String processUpdatePettyCashForm(@Valid @ModelAttribute("pettyCashDto") PettyCashActivityDto pettyCashActivityDto,
-                                             BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "petty-cash/petty-cash-update-form";
-        } else {
-            String updatedBy = getSessionUsername();
-            pettyCashService.savePettyCash(pettyCashActivityDto, updatedBy);
-            return "redirect:/petty-cash/list-of-petty-cash";
-        }
     }
 
     @GetMapping("/delete-petty-cash-record/{id}")

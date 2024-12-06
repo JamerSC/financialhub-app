@@ -7,25 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class ContactCompanyMapper {
 
-    public static ContactCompany toContactCompanyEntity(ContactCompanyDto contactCompanyDto) {
-        if (contactCompanyDto == null) {
-            return null;
-        }
-
-        ContactCompany contactCompany = new ContactCompany();
-        contactCompany.setCompanyId(contactCompanyDto.getCompanyId());
-        //contactCompany.setContact(ContactMapper.toContactEntity(contactCompanyDto.getContact()));
-        contactCompany.setCompanyName(contactCompanyDto.getCompanyName());
-        contactCompany.setRegistrationType(contactCompanyDto.getRegistrationType());
-        contactCompany.setRepresentativeName(contactCompanyDto.getRepresentativeName());
-        contactCompany.setRepresentativeDesignation(contactCompanyDto.getRepresentativeDesignation());
-        contactCompany.setMobileNumber(contactCompanyDto.getMobileNumber());
-        contactCompany.setEmailAddress(contactCompanyDto.getEmailAddress());
-        contactCompany.setAddress(contactCompanyDto.getAddress());
-
-        return contactCompany;
-    }
-
     public static ContactCompanyDto toContactCompanyDto(ContactCompany contactCompany) {
         if (contactCompany == null) {
             return null;
@@ -45,5 +26,23 @@ public class ContactCompanyMapper {
         return contactCompanyDto;
     }
 
+    public static ContactCompany toContactCompanyEntity(ContactCompanyDto contactCompanyDto) {
+        if (contactCompanyDto == null) {
+            return null;
+        }
+
+        ContactCompany contactCompany = new ContactCompany();
+        contactCompany.setCompanyId(contactCompanyDto.getCompanyId());
+        //contactCompany.setContact(ContactMapper.toContactEntity(contactCompanyDto.getContact()));
+        contactCompany.setCompanyName(contactCompanyDto.getCompanyName());
+        contactCompany.setRegistrationType(contactCompanyDto.getRegistrationType());
+        contactCompany.setRepresentativeName(contactCompanyDto.getRepresentativeName());
+        contactCompany.setRepresentativeDesignation(contactCompanyDto.getRepresentativeDesignation());
+        contactCompany.setMobileNumber(contactCompanyDto.getMobileNumber());
+        contactCompany.setEmailAddress(contactCompanyDto.getEmailAddress());
+        contactCompany.setAddress(contactCompanyDto.getAddress());
+
+        return contactCompany;
+    }
 }
 

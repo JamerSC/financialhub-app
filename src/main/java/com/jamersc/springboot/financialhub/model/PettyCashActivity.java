@@ -75,7 +75,7 @@ public class PettyCashActivity {
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "pettyCash",
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "activity",
             cascade={CascadeType.PERSIST, CascadeType.MERGE,
                     CascadeType.DETACH, CascadeType.REFRESH},
             orphanRemoval = true)

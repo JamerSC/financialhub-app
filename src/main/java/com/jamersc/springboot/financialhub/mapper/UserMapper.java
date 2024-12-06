@@ -13,28 +13,6 @@ import java.util.stream.Collectors;
 @Component
 public class UserMapper {
 
-    public static User toUserEntity(UserDto userDto) {
-        if (userDto == null) {
-            return null;
-        }
-
-        User user = new User();
-        user.setUserId(userDto.getUserId());
-        //user.setContact(contact);
-        user.setFullName(userDto.getFullName());
-        user.setUsername(userDto.getUsername());
-        user.setPassword(userDto.getPassword()); // Ideally, password should be hashed
-        user.setEnabled(userDto.getEnabled());
-        user.setCreatedBy(userDto.getCreatedBy());
-        user.setCreatedAt(userDto.getCreatedAt());
-        user.setUpdatedBy(userDto.getUpdatedBy());
-        user.setUpdatedAt(userDto.getUpdatedAt());
-        //user.setRoles(roles);
-        user.setCreatedAt(new Date());
-
-        return user;
-    }
-
     public static UserDto toUserDto(User user) {
         if (user == null) {
             return null;
@@ -58,5 +36,27 @@ public class UserMapper {
         );
 
         return userDto;
+    }
+
+    public static User toUserEntity(UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
+
+        User user = new User();
+        user.setUserId(userDto.getUserId());
+        //user.setContact(contact);
+        user.setFullName(userDto.getFullName());
+        user.setUsername(userDto.getUsername());
+        user.setPassword(userDto.getPassword()); // Ideally, password should be hashed
+        user.setEnabled(userDto.getEnabled());
+        user.setCreatedBy(userDto.getCreatedBy());
+        user.setCreatedAt(userDto.getCreatedAt());
+        user.setUpdatedBy(userDto.getUpdatedBy());
+        user.setUpdatedAt(userDto.getUpdatedAt());
+        //user.setRoles(roles);
+        user.setCreatedAt(new Date());
+
+        return user;
     }
 }

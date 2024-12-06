@@ -61,4 +61,4 @@ INSERT INTO users_roles (user_id, role_id) VALUES (1, 3); -- Manager
 INSERT INTO users_roles (user_id, role_id) VALUES (1, 4); -- Legal
 INSERT INTO users_roles (user_id, role_id) VALUES (1, 5); -- Employee
 
-INSERT INTO `fund`(`fund_balance`, `created_by`, `updated_by` ) VALUE (5000.00, 1, 1);
+INSERT INTO `fund`(`fund_balance`, `created_by`, `updated_by` ) VALUE (0.00, 1, 1);

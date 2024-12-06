@@ -7,23 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class RetainerAccountMapper {
 
-    // Convert DTO to Entity
-    public static RetainerAccount toRetainerAccountEntity(RetainerAccountDto retainerAccountDto) {
-        if (retainerAccountDto == null) {
-            return null;
-        }
-
-        RetainerAccount retainerAccount = new RetainerAccount();
-        retainerAccount.setRetainerId(retainerAccountDto.getRetainerId());
-        //retainerAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(retainerAccountDto.getClientAccount())); // Pass the related entity
-        retainerAccount.setRetainerTitle(retainerAccountDto.getClientAccount().getAccountTitle());
-        retainerAccount.setStatus(retainerAccountDto.getStatus());
-        retainerAccount.setStartDate(retainerAccountDto.getStartDate());
-        retainerAccount.setEndDate(retainerAccountDto.getEndDate());
-
-        return retainerAccount;
-    }
-
     // Convert Entity to DTO
     public static RetainerAccountDto toRetainerAccountDto(RetainerAccount retainerAccount) {
         if (retainerAccount == null) {
@@ -39,5 +22,22 @@ public class RetainerAccountMapper {
         retainerAccountDto.setEndDate(retainerAccount.getEndDate());
 
         return retainerAccountDto;
+    }
+
+    // Convert DTO to Entity
+    public static RetainerAccount toRetainerAccountEntity(RetainerAccountDto retainerAccountDto) {
+        if (retainerAccountDto == null) {
+            return null;
+        }
+
+        RetainerAccount retainerAccount = new RetainerAccount();
+        retainerAccount.setRetainerId(retainerAccountDto.getRetainerId());
+        //retainerAccount.setClientAccount(ClientAccountMapper.toClientAccountEntity(retainerAccountDto.getClientAccount())); // Pass the related entity
+        retainerAccount.setRetainerTitle(retainerAccountDto.getClientAccount().getAccountTitle());
+        retainerAccount.setStatus(retainerAccountDto.getStatus());
+        retainerAccount.setStartDate(retainerAccountDto.getStartDate());
+        retainerAccount.setEndDate(retainerAccountDto.getEndDate());
+
+        return retainerAccount;
     }
 }

@@ -6,24 +6,25 @@ import lombok.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "petty_cash_liquidation")
+@Table(name = "petty_cash_activity_entries")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString(exclude = "pettyCash")
+@ToString(exclude = {"activity", "chargeTo"})
 public class Liquidation {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "liquidation_id")
-    private Long liquidationId;
+    @Column(name = "activity_id")
+    private Long activityId;
 
+    // Reference to PettyCashActivity Entity
     @ManyToOne(fetch = FetchType.LAZY, cascade={
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JoinColumn(name = "petty_cash_id")
-    private PettyCashActivity pettyCash;
+    @JoinColumn(name = "pc_activity_id")
+    private PettyCashActivity activity;
 
     @Column(name = "date")
     private Date date;
@@ -40,10 +41,10 @@ public class Liquidation {
     @Column(name = "remarks")
     private String remarks;
 
-    // Change chargeTo to reference Contact entity
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_id")
-    private Contact chargeTo;
+    // Reference to ClientAccount Entity
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "client_account_id")
+    private ClientAccount chargeTo;
 
     @Column(name = "created_by")
     private Long createdBy;
