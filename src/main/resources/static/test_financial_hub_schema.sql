@@ -440,9 +440,26 @@ CREATE TABLE `client_retainer_details` (
     PRIMARY KEY (`retainer_id`)
 );
 
+CREATE TABLE `client_accounts` (
+  `client_account_id` bigint NOT NULL AUTO_INCREMENT,
+  `account_title` varchar(255) DEFAULT NULL,
+  `account_type` enum('CASE','PROJECT','RETAINER') DEFAULT NULL,
+  `created_at` datetime(6) DEFAULT NULL,
+  `created_by` bigint DEFAULT NULL,
+  `updated_at` datetime(6) DEFAULT NULL,
+  `updated_by` bigint DEFAULT NULL,
+  `contact_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`client_account_id`),
+  KEY `FK3rubps95nj06rs5xweuauy87u` (`contact_id`),
+  CONSTRAINT `FK3rubps95nj06rs5xweuauy87u` FOREIGN KEY (`contact_id`) REFERENCES `contacts` (`contact_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
 # NEW CLIENT ACCOUNT FOR RETAINER
 INSERT INTO `client_accounts`(`contact_id`, `account_title`, `account_type`, `created_by`, `updated_by`) 
 VALUES (1, 'John  Doe Sr.', 'RETAINER', 1, 1), (2, 'Tech Solutions', 'RETAINER', 1, 1) ;
+
+SHOW CREATE TABLE client_accounts;
 
 # CREATE NEW RETAINER DETAILS
 INSERT INTO `test_financial_hub_db`.`client_retainer_details` (`client_account_id`, `status`)
@@ -535,6 +552,36 @@ CREATE TABLE `client_project_details` (
     FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts`(`client_account_id`),
     PRIMARY KEY (`project_id`)
 );
+
+SHOW CREATE TABLE client_project_details;
+
+CREATE TABLE `client_project_details` (
+  `project_id` bigint NOT NULL AUTO_INCREMENT,
+  `address` varchar(255) DEFAULT NULL,
+  `bir` varchar(255) DEFAULT NULL,
+  `business_sub_type` enum('BUSINESS_CLOSURE','BUSINESS_REGISTRATION','BUSINESS_RENEWAL','OTHERS') DEFAULT NULL,
+  `deceased` varchar(255) DEFAULT NULL,
+  `heirs` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `lot_area` varchar(255) DEFAULT NULL,
+  `lot_no` varchar(255) DEFAULT NULL,
+  `project_title` varchar(255) DEFAULT NULL,
+  `project_type` enum('BUSINESS','PROPERTIES','SEC') DEFAULT NULL,
+  `property_sub_type` enum('ANNOTATION','OTHERS','SETTLEMENT_OF_ESTATE','TRANSFER_OF_TITLE') DEFAULT NULL,
+  `purchase_price` varchar(255) DEFAULT NULL,
+  `rd` varchar(255) DEFAULT NULL,
+  `remarks` varchar(255) DEFAULT NULL,
+  `sec_sub_type` enum('AMENDMENT_OF_ARTICLES_OF_INCORPORATION','INCREASE_IN_AUTHORIZED_CAPITAL_STOCK','SEC_REGISTRATION') DEFAULT NULL,
+  `status` enum('CLOSED','COMPLETED','IN_PROGRESS','OPEN','PENDING') DEFAULT NULL,
+  `tax_dec_no` varchar(255) DEFAULT NULL,
+  `title_no` varchar(255) DEFAULT NULL,
+  `zonal_value` varchar(255) DEFAULT NULL,
+  `client_account_id` bigint DEFAULT NULL,
+  PRIMARY KEY (`project_id`),
+  UNIQUE KEY `UKahc0dbjgcyds4nonguxxl8p6d` (`client_account_id`),
+  CONSTRAINT `FKhbwyl5pu47x0nomdyf2sw39u2` FOREIGN KEY (`client_account_id`) REFERENCES `client_accounts` (`client_account_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 # ADD NEW COLUMN
 # ALTER TABLE `client_project_details`

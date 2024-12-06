@@ -7,7 +7,7 @@ $(document).ready(function() {
     }));
 
     // Initialize Tagify on "accounts" input in Add Modal
-    const inputAdd = document.querySelector('#accounts');
+    const inputAdd = document.querySelector('#clientAccounts');
     const tagifyAdd = new Tagify(inputAdd, {
         enforceWhitelist: true,
         whitelist: formattedAccounts,
@@ -20,13 +20,13 @@ $(document).ready(function() {
     // Update hidden input field with selected tag IDs for Add Modal
     tagifyAdd.on('add', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
-        $("#accountsJson").val(JSON.stringify(values));
+        $("#clientAccountsJson").val(JSON.stringify(values));
         //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
     });
 
     tagifyAdd.on('remove', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
-        $("#accountsJson").val(JSON.stringify(values));
+        $("#clientAccountsJson").val(JSON.stringify(values));
         //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
     });
 

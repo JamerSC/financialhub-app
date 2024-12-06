@@ -383,7 +383,7 @@ public class ClientAccountController {
         model.addAttribute("retainer", retainer);
         List<PettyCashActivity> listOfRetainerActivities = pettyCashService.getByClientAccountId(retainer.getClientAccountId());
         model.addAttribute("listOfRetainerActivities", listOfRetainerActivities);
-        return "retainer/retainer-activity";
+        return "retainer/retainer-summary";
     }
 
     private String getSessionUserName() {
