@@ -29,47 +29,50 @@
                         </div>
                         <table class="table table-striped shadow">
                             <thead class="table-dark">
-                            <tr>
-                                <!--<th>ID</th>-->
-                                <th>Bank</th>
-                                <th>Branch</th>
-                                <th>Accounts</th>
-                            </tr>
+                                <tr>
+                                    <!--<th>ID</th>-->
+                                    <th>Bank</th>
+                                    <th>Branch</th>
+                                    <th>Accounts</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="bank : ${listOfBankAccounts}">
-                                <!--<td th:text="${bank.bankId}"></td>-->
-                                <td th:text="${bank.name} + ' (' + ${bank.abbreviation} + ')'"></td>
-                                <td th:text="${bank.branch}"></td>
-                                <td>
-                                    <table class="table table-striped shadow">
-                                        <thead class="table-info">
-                                        <tr>
-                                            <!--<th>Bank ID</th>-->
-                                            <th>Acc. Name</th>
-                                            <th>Account No.</th>
-                                            <th>Balance</th>
-                                            <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        <tr th:each="account : ${bank.accounts}">
-                                            <!--<td th:text="${account.bank.bankId}"></td>-->
-                                            <td th:text="${account.accountHolderName}"></td>
-                                            <td th:text="${account.accountNumber}"></td>
-                                            <td th:text="${account.accountBalance != null ?
-                                            #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
-                                            <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  >
-                                                <a title="Withdraw" href="#" class="btn btn-primary btn-sm"
-                                                   th:href="@{/bank-transactions/{id}/withdrawal-transaction(id=${account.bankAccountId})}"    >
-                                                    <i class="lni lni-file-pencil"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
+                                <tr th:if="${#lists.isEmpty(listOfBankAccounts)}">
+                                    <td colspan="3" class="text-center">No existing bank accounts...</td>
+                                </tr>
+                                <tr th:each="bank : ${listOfBankAccounts}" th:unless="${#lists.isEmpty(listOfBankAccounts)}">
+                                    <!--<td th:text="${bank.bankId}"></td>-->
+                                    <td th:text="${bank.name} + ' (' + ${bank.abbreviation} + ')'"></td>
+                                    <td th:text="${bank.branch}"></td>
+                                    <td>
+                                        <table class="table table-striped shadow">
+                                            <thead class="table-info">
+                                            <tr>
+                                                <!--<th>Bank ID</th>-->
+                                                <th>Acc. Name</th>
+                                                <th>Account No.</th>
+                                                <th>Balance</th>
+                                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr th:each="account : ${bank.accounts}">
+                                                <!--<td th:text="${account.bank.bankId}"></td>-->
+                                                <td th:text="${account.accountHolderName}"></td>
+                                                <td th:text="${account.accountNumber}"></td>
+                                                <td th:text="${account.accountBalance != null ?
+                                                #numbers.formatDecimal(account.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
+                                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')"  >
+                                                    <a title="Withdraw" href="#" class="btn btn-primary btn-sm"
+                                                       th:href="@{/bank-transactions/{id}/withdrawal-transaction(id=${account.bankAccountId})}"    >
+                                                        <i class="lni lni-file-pencil"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

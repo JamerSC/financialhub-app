@@ -29,29 +29,32 @@
                         </div>
                         <table class="table table-striped shadow">
                             <thead class="table-dark">
-                            <tr>
-                                <!--<th>Acc. ID</th>-->
-                                <th>Account Name</th>
-                                <th>Account Number</th>
-                                <th>Balance</th>
-                                <th>Bank Name</th>
-                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Action</th>
-                            </tr>
+                                <tr>
+                                    <!--<th>Acc. ID</th>-->
+                                    <th>Account Name</th>
+                                    <th>Account Number</th>
+                                    <th>Balance</th>
+                                    <th>Bank Name</th>
+                                    <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Action</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                                <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
-                                <td th:text="${tempAccount.accountHolderName}"></td>
-                                <td th:text="${tempAccount.accountNumber}"></td>
-                                <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
-                                <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                    <a href="#" class="btn btn-info btn-sm"
-                                       th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="View Journal">
-                                        <i class="lni lni-books-2"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                <tr th:if="${#lists.isEmpty(listOfAllBankAccounts)}">
+                                    <td colspan="5" class="text-center">No existing bank accounts...</td>
+                                </tr>
+                                <tr th:each="tempAccount : ${listOfAllBankAccounts}" th:unless="${#lists.isEmpty(listOfAllBankAccounts)}">
+                                    <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
+                                    <td th:text="${tempAccount.accountHolderName}"></td>
+                                    <td th:text="${tempAccount.accountNumber}"></td>
+                                    <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
+                                    <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                        <a href="#" class="btn btn-info btn-sm"
+                                           th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="View Journal">
+                                            <i class="lni lni-books-2"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>

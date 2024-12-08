@@ -58,30 +58,33 @@
                     <div class="col-12">
                         <table class="table table-striped shadow">
                             <thead class="table-dark">
-                            <tr>
-                                <!--<th>Acc. ID</th>-->
-                                <th>Account Name</th>
-                                <th>Account Number</th>
-                                <th>Bank Name</th>
-                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
-                            </tr>
+                                <tr>
+                                    <!--<th>Acc. ID</th>-->
+                                    <th>Account Name</th>
+                                    <th>Account Number</th>
+                                    <th>Bank Name</th>
+                                    <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempAccount : ${listOfAllBankAccounts}">
-                                <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
-                                <td th:text="${tempAccount.accountHolderName}"></td>
-                                <td th:text="${tempAccount.accountNumber}"></td>
-                                <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
-                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                    <!--<a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
-                                        <i class="lni lni-eye"></i>
-                                    </a>-->
-                                    <a class="btn btn-success btn-sm editBankAccountBtn"
-                                       th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="Edit">
-                                        <i class="lni lni-pen-to-square"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                <tr th:if="${#lists.isEmpty(listOfAllBankAccounts)}">
+                                    <td colspan="4" class="text-center">No existing bank accounts...</td>
+                                </tr>
+                                <tr th:each="tempAccount : ${listOfAllBankAccounts}" th:unless="${#lists.isEmpty(listOfAllBankAccounts)}">
+                                    <!--<td th:text="${tempAccount.bankAccountId}"></td>-->
+                                    <td th:text="${tempAccount.accountHolderName}"></td>
+                                    <td th:text="${tempAccount.accountNumber}"></td>
+                                    <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                        <!--<a href="#" class="btn btn-secondary btn-sm viewBankAccountBtn" title="view">
+                                            <i class="lni lni-eye"></i>
+                                        </a>-->
+                                        <a class="btn btn-success btn-sm editBankAccountBtn"
+                                           th:href="@{/bank/edit-bank-account(id=${tempAccount.bankAccountId})}" title="Edit">
+                                            <i class="lni lni-pen-to-square"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <!-- Bank Account Pagination Controls -->
@@ -140,8 +143,8 @@
                                                 <div class="invalid-feedback">Please provide an account number.</div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Create Account</button>
                                             </div>
                                         </form>
                                     </div>
@@ -181,8 +184,8 @@
                                                 <div class="invalid-feedback">Please provide an account number.</div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Save & Update</button>
                                             </div>
                                         </form>
                                     </div>
@@ -226,30 +229,33 @@
                         <!-- Bank Table -->
                         <table class="table table-striped shadow">
                             <thead class="table-dark">
-                            <tr>
-                                <!--<th>ID</th>-->
-                                <th>Bank Name</th>
-                                <th>Abbreviation</th>
-                                <th>Branch</th>
-                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
-                            </tr>
+                                <tr>
+                                    <!--<th>ID</th>-->
+                                    <th>Bank Name</th>
+                                    <th>Abbreviation</th>
+                                    <th>Branch</th>
+                                    <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                                </tr>
                             </thead>
                             <tbody>
-                            <tr th:each="tempBank : ${listOfAllBanks}">
-                                <!--<td th:text="${tempBank.bankId}"></td>-->
-                                <td th:text="${tempBank.name}"></td>
-                                <td th:text="${tempBank.abbreviation}"></td>
-                                <td th:text="${tempBank.branch}"></td>
-                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                    <!--<a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
-                                        <i class="lni lni-eye"></i>
-                                    </a>-->
-                                    <a class="btn btn-success btn-sm editBankBtn"
-                                       th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
-                                        <i class="lni lni-pen-to-square"></i>
-                                    </a>
-                                </td>
-                            </tr>
+                                <tr th:if="${#lists.isEmpty(listOfAllBanks)}">
+                                    <td colspan="4" class="text-center">No existing bank...</td>
+                                </tr>
+                                <tr th:each="tempBank : ${listOfAllBanks}" th:unless="${#lists.isEmpty(listOfAllBanks)}">
+                                    <!--<td th:text="${tempBank.bankId}"></td>-->
+                                    <td th:text="${tempBank.name}"></td>
+                                    <td th:text="${tempBank.abbreviation}"></td>
+                                    <td th:text="${tempBank.branch}"></td>
+                                    <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                        <!--<a href="#" class="btn btn-secondary btn-sm viewBankBtn" title="view">
+                                            <i class="lni lni-eye"></i>
+                                        </a>-->
+                                        <a class="btn btn-success btn-sm editBankBtn"
+                                           th:href="@{/bank/edit-bank(id=${tempBank.bankId})}" title="edit">
+                                            <i class="lni lni-pen-to-square"></i>
+                                        </a>
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                         <!-- Bank Pagination Controls -->
@@ -304,8 +310,8 @@
                                                 <div class="invalid-feedback">Please provide a branch.</div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Create Bank</button>
                                             </div>
                                         </form>
                                     </div>
@@ -339,8 +345,8 @@
                                                 <div class="invalid-feedback">Please provide a branch.</div>
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                <button type="submit" class="btn btn-primary">Save/Update</button>
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                                <button type="submit" class="btn btn-primary">Save & Update</button>
                                             </div>
                                         </form>
                                     </div>
