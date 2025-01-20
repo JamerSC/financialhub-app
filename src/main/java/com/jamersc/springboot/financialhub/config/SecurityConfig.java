@@ -25,6 +25,9 @@ public class SecurityConfig {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    // Spring Security Configuration
+    // Class Method Configuration for Authentication of User
+
     @Bean
     public AuthenticationManager authenticationManager() {
         DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
@@ -37,6 +40,7 @@ public class SecurityConfig {
         return providerManager;
     }
 
+    // After the User Authentication/Logout/Error/Access Denied the User will be redirect Security Filter Chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
