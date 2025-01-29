@@ -1,8 +1,3 @@
-<<<<<<< HEAD
-# Financial Hub
-# Description: A Financial Hub is a central point or platform that facilitates various financial activities,
-# transactions, and services. (For checks, credit cards, and petty cash vouchers.)
-=======
 **Financial Hub: Streamlined Financial Management for Law Offices**
 
 **Credentials**
@@ -24,4 +19,3 @@ Financial Hub is a comprehensive financial management system tailored for law of
 - **Settings Module**: Customize system configurations to align with your law office’s specific operational needs.
 
 Financial Hub simplifies financial workflows and ensures accurate and transparent management of resources, empowering law offices to focus on delivering exceptional legal services.
->>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
