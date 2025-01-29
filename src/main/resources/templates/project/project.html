@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Projects</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h4 class="fw-bold fs-4">Projects</h4>
+                            </div>
+                            <!-- Contact Option Modal Button -->
+                            <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                        data-bs-target="#projectTypeModal" title="Add Account">
+                                    <i class="lni lni-plus-circle"></i> Project
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Project Forms  -->
+                        <th:block th:replace="~{project/project-forms :: project-forms}"></th:block>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Project Title</th>
+                                <th>Project Type</th>
+                                <th>Business/Property/SEC Sub Type</th>
+                                <th>Status</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(listOfProjects)}">
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" colspan="5" class="text-center">No existing project accounts...</td>
+                                <td sec:authorize="hasAnyRole('EMPLOYEE')" colspan="4" class="text-center">No existing project accounts...</td>
+                            </tr>
+                            <tr th:each="tempProject : ${listOfProjects}" th:unless="${#lists.isEmpty(listOfProjects)}">
+                                <td>
+                                    <a th:href="@{/client-account/{id}/project-summary(id=${tempProject.clientAccountId})}"
+                                       class="text-dark" title="View Summary">
+                                        <span th:text="${tempProject.accountTitle}"></span>
+                                    </a>
+                                </td>
+                                <td th:text="${tempProject.projectAccount.projectType?.displayProjectType()}"></td>
+                                <td th:text="${tempProject.projectAccount.secSubType != null ?
+                                           tempProject.projectAccount.secSubType.displaySecSubType() :
+                                           (tempProject.projectAccount.propertySubType != null ?
+                                           tempProject.projectAccount.propertySubType.displayPropertySubType() :
+                                           tempProject.projectAccount.businessSubType.displayBusinessSubType())}"></td>
+                                <td th:text="${tempProject.projectAccount.status?.displayStatus()}"></td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'TRANSFER_OF_TITLE'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTransferOfTitleBtn" title="Edit"
+                                       th:href="@{/client-account/edit-transfer-of-title-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'SETTLEMENT_OF_ESTATE'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSettlementOfEstateBtn" title="Edit"
+                                       th:href="@{/client-account/edit-settlement-of-estate-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'ANNOTATION'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTitleAnnotationBtn" title="Edit"
+                                       th:href="@{/client-account/edit-title-annotation-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.propertySubType?.name() == 'OTHERS'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editTitleOtherBtn" title="Edit"
+                                       th:href="@{/client-account/edit-title-other-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <!-- Conditional Edit Button for BusinessSubType -->
+                                    <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_REGISTRATION'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessRegistrationBtn" title="Edit"
+                                       th:href="@{/client-account/edit-business-registration-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_RENEWAL'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessRenewalBtn" title="Edit"
+                                       th:href="@{/client-account/edit-business-renewal-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'BUSINESS_CLOSURE'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessClosureBtn" title="Edit"
+                                       th:href="@{/client-account/edit-business-closure-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.businessSubType?.name() == 'OTHERS'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editBusinessOtherBtn" title="Edit"
+                                       th:href="@{/client-account/edit-business-other-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <!-- Conditional Edit Button for SecSubType -->
+                                    <a th:if="${tempProject.projectAccount.secSubType?.name() == 'SEC_REGISTRATION'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecRegistrationBtn" title="Edit"
+                                       th:href="@{/client-account/edit-sec-registration-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.secSubType?.name() == 'AMENDMENT_OF_ARTICLES_OF_INCORPORATION'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecAmendmentBtn" title="Edit"
+                                       th:href="@{/client-account/edit-sec-amendment-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+
+                                    <a th:if="${tempProject.projectAccount.secSubType?.name() == 'INCREASE_IN_AUTHORIZED_CAPITAL_STOCK'}"
+                                       sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" class="btn btn-success btn-sm editSecStockIncreaseBtn" title="Edit"
+                                       th:href="@{/client-account/edit-sec-stock-increase-account(id=${tempProject.clientAccountId})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <script src="../../static/js/project.js" type="text/javascript" th:src="@{/js/project.js}"></script>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+    <script src="../../static/js/delete-modal.js" type="text/javascript" th:src="@{/js/delete-modal.js}"></script>
+</body>
+</html>

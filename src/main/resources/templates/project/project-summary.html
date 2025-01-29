@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Summary</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="fw-bold fs-4 mb-4">Project Summary</h4>
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Client Account Information</h6>
+                                        <div th:if="${projectSummary.client?.individual != null}">
+                                            <p><strong>Full Name:</strong> <span th:text="${projectSummary.client.individual.getFullName()}"></span></p>
+                                        </div>
+                                        <div th:if="${projectSummary.client?.company != null}">
+                                            <p><strong>Company Name:</strong> <span th:text="${projectSummary.client.company.companyName}"></span></p>
+                                        </div>
+                                        <p th:if="${projectSummary.clientAccountType != null}"><strong>Account Type:</strong> <span th:text="${projectSummary.clientAccountType.displayClientAccountType()}"></span></p>
+                                        <p th:if="${projectSummary.accountTitle != null}"><strong>Account Title:</strong> <span th:text="${projectSummary.accountTitle}"></span></p>
+
+                                        <br>
+                                        <h6 class="fw-bold">Project Information</h6>
+                                        <p th:if="${projectSummary.projectAccount.projectTitle != null}"><strong>Project Title:</strong> <span th:text="${projectSummary.projectAccount.projectTitle}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.projectType != null}"><strong>Project Type:</strong> <span th:text="${projectSummary.projectAccount.projectType.displayProjectType()}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.secSubType != null || projectSummary.projectAccount.propertySubType != null || projectSummary.projectAccount.businessSubType != null}">
+                                            <strong>Business/Property/SEC Sub Type:</strong>
+                                            <span th:text="${projectSummary.projectAccount.secSubType != null ?
+                                        projectSummary.projectAccount.secSubType.displaySecSubType() :
+                                        (projectSummary.projectAccount.propertySubType != null ?
+                                        projectSummary.projectAccount.propertySubType.displayPropertySubType() :
+                                        projectSummary.projectAccount.businessSubType.displayBusinessSubType())}"></span>
+                                        </p>
+                                        <p th:if="${projectSummary.projectAccount.status != null}"><strong>Status:</strong> <span th:text="${projectSummary.projectAccount.status.displayStatus()}"></span></p>
+                                    </div>
+
+                                    <!-- Right Column -->
+                                    <div class="col-md-6">
+                                        <h6 class="fw-bold">Other Details</h6>
+                                        <p th:if="${projectSummary.projectAccount.titleNo != null}"><strong>Title No:</strong> <span th:text="${projectSummary.projectAccount.titleNo}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.taxDecNo != null}"><strong>Tax Declaration No:</strong> <span th:text="${projectSummary.projectAccount.taxDecNo}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.lotNo != null}"><strong>Lot No:</strong> <span th:text="${projectSummary.projectAccount.lotNo}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.lotArea != null}"><strong>Lot Area:</strong> <span th:text="${projectSummary.projectAccount.lotArea}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.location != null}"><strong>Location:</strong> <span th:text="${projectSummary.projectAccount.location}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.bir != null}"><strong>BIR:</strong> <span th:text="${projectSummary.projectAccount.bir}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.rd != null}"><strong>RD:</strong> <span th:text="${projectSummary.projectAccount.rd}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.zonalValue != null}"><strong>Zonal Value:</strong> <span th:text="${projectSummary.projectAccount.zonalValue}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.purchasePrice != null}"><strong>Purchase Price:</strong> <span th:text="${projectSummary.projectAccount.purchasePrice}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.remarks != null}"><strong>Remarks:</strong> <span th:text="${projectSummary.projectAccount.remarks}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.deceased != null}"><strong>Deceased:</strong> <span th:text="${projectSummary.projectAccount.deceased}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.heirs != null}"><strong>Heirs:</strong> <span th:text="${projectSummary.projectAccount.heirs}"></span></p>
+                                        <p th:if="${projectSummary.projectAccount.address != null}"><strong>Address:</strong> <span th:text="${projectSummary.projectAccount.address}"></span></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="fw-bold mb-3 mt-4">Project Activities</h5>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <td>Date</td>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>PIC</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(listOfProjectActivities)}">
+                                <td colspan="4" class="text-center">No project activities...</td>
+                            </tr>
+                            <tr th:each="activity : ${listOfProjectActivities}" th:unless="${#lists.isEmpty(listOfProjectActivities)}">
+                                <td th:text="${#dates.format(activity.date, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${activity.activityDescription}"></td>
+                                <td th:text="${activity.activityCategory}"></td>
+                                <td th:text="${activity.receivedBy.fullName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+</body>
+</html>

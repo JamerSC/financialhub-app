@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Credit Card Voucher</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h3 class="fw-bold fs-4">Credit Card Vouchers</h3>
+                            </div>
+                            <!-- Create User Modal Button -->
+                            <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <a href="#" class="btn btn-primary btn-sm" th:href="@{/credit-card/credit-card-form}" title="Add Voucher">
+                                    <i class="lni lni-plus"></i> Add Voucher
+                                </a>
+                            </div>
+                        </div>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>CV Number</th>
+                                <th>Payee Name</th>
+                                <th>Date</th>
+                                <th>Total Amount</th>
+                                <th>Bank</th>
+                                <th>Check Number</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="tempCreditCard : ${creditCards}">
+                                <td th:text="${tempCreditCard.ccvNumber}"></td>
+                                <td th:text="${tempCreditCard.payeeName}"></td>
+                                <td th:text="${#dates.format(tempCreditCard.date, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${#numbers.formatDecimal(tempCreditCard.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
+                                <td th:text="${tempCreditCard.bank}"></td>
+                                <td th:text="${tempCreditCard.modeOfPayment}"></td>
+                                <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                    <a href="#" class="btn btn-secondary btn-sm"
+                                       th:href="@{/credit-card/generate-credit-card-voucher/{id}(id=${tempCreditCard.id})}" target="_blank" title="Print">
+                                        <i class="lni lni-printer"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-success btn-sm"
+                                       th:href="@{/credit-card/credit-card-update-form/{id}(id=${tempCreditCard.id})}" title="Edit">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                    <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                       th:href="@{/credit-card/delete-credit-card-record/{id}(id=${tempCreditCard.id})}" title="Archive">
+                                        <i class="lni lni-box-archive-1"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!--Delete modal popup-->
+                        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirm Delete Record</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete this credit card voucher record?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <a href="" class="btn btn-danger" id="deleteId">Yes, Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+</body>
+</html>

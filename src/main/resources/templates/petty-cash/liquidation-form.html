@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Activity Entries (Liquidation)</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <h3 class="fw-bold fs-4">Liquidation Details</h3>
+                <div class="row">
+                    <div class="col-12">
+                        <div class="d-flex">
+                            <div class="p-1">
+                                <h4 class="fw-bold fs-4">Petty Cash Vouchers <span th:text="${pettyCashActivity.pcvNumber}"></span>  </h4>
+                            </div>
+                            <!-- Create Item Modal Button -->
+                            <div class="ms-auto p-1" sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
+                                <button type="button" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addItemModal">
+                                    <i class="lni lni-plus"></i> Add New Item
+                                </button>
+                            </div>
+                        </div>
+                        <table class="table table-striped shadow">
+                            <thead class="table-dark">
+                            <tr>
+                                <th>Date</th>
+                                <th>Particulars</th>
+                                <th>Amount</th>
+                                <th>Receipt</th>
+                                <th>Charge to</th>
+                                <th>Billed</th>
+                                <th sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="liquidation : ${liquidations}">
+                                <td th:text="${#dates.format(liquidation.date, 'dd MMMM yyyy')}"></td>
+                                <td th:text="${liquidation.particulars}"></td>
+                                <td th:text="${#numbers.formatDecimal(liquidation.cost, 1, 'COMMA', 2, 'POINT')}"></td>
+                                <td th:text="${liquidation.receiptNo}"></td>
+                                <!--<td th:text="${liquidation.chargeTo.individual} + ' '+ ${liquidation.chargeTo.contactCategoryType} "></td>-->
+                                <td>
+                                    <span th:if="${liquidation.chargeTo.individual != null}"
+                                          th:text="${liquidation.chargeTo.individual.getFullName()} + ' / '
+                                          + ${liquidation.chargeTo.contactType.displayContactType()} + ' / ' + ${liquidation.chargeTo.contactCategoryType.displayContactCategoryType()}"></span>
+                                    <span th:if="${liquidation.chargeTo.company != null}"
+                                          th:text="${liquidation.chargeTo.company.companyName} + ' / '
+                                          + ${liquidation.chargeTo.contactType.displayContactType()} + ' / ' + ${liquidation.chargeTo.contactCategoryType.displayContactCategoryType()}"></span>
+                                </td>
+                                <!--<td th:text="${liquidation.billed ? 'Yes' : 'No'}"></td>-->
+                                <td><input type="checkbox" th:checked="${liquidation.billed}" disabled/></td>
+                                <td>
+                                    <a sec:authorize="hasAnyRole('ADMIN', 'MANAGER')" href="#" class="btn btn-success btn-sm"
+                                       th:href="@{/liquidation/update-item/{id}(id=${liquidation.id})}">
+                                        <i class="lni lni-pen-to-square"></i>
+                                    </a>
+                                    <a sec:authorize="hasRole('ADMIN')" href="#" class="btn btn-danger btn-sm deleteRecordBtn"
+                                       th:href="@{/liquidation/delete-item/{id}(id=${liquidation.id})}">
+                                        <i class="lni lni-trash-3"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-end"><strong>Total Amount of Liquidation:</strong></td>
+                                <td><strong th:text="${#numbers.formatDecimal(totalLiquidationAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-end"><strong>Total Petty Cash Received:</strong></td>
+                                <td><strong th:text="${#numbers.formatDecimal(pettyCashActivity.totalAmount, 1, 'COMMA', 2, 'POINT')}"></strong></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td colspan="2" class="text-end">
+                                    <strong>Remaining Balance:</strong>
+                                </td>
+                                <td>
+                                    <strong th:text="${#numbers.formatDecimal(remainingBalance, 1, 'COMMA', 2, 'POINT')}"></strong>
+                                </td>
+                                <td><span th:if="${remainingBalance < 0}" class="text-danger" title="Negative Balance">
+                                        (<i class="lni lni-warning"></i> Over/For Reimbursement)
+                                </span></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <!-- Add New Item Modal -->
+                        <div class="modal fade" id="addItemModal" tabindex="-1" aria-labelledby="addItemModalLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="addItemModalLabel">Add New Item</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form id="addItemForm" action="#" th:action="@{/liquidation/add-item}" th:object="${newLiquidation}" method="post">
+                                            <input type="hidden" th:value="${pettyCashActivity.id}" th:field="*{pettyCashActivity.id}"/>
+
+                                            <div class="mb-3">
+                                                <label for="date" class="f  orm-label">Date</label>
+                                                <input type="date" class="form-control" id="date" th:field="*{date}">
+                                                <div class="invalid-feedback">Please select a date.</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="particulars" class="form-label">Particulars</label>
+                                                <input type="text" class="form-control" id="particulars" th:field="*{particulars}">
+                                                <div class="invalid-feedback">Please provide an account name.</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="cost" class="form-label">Cost/Expense</label>
+                                                <input type="number" step="0.01" class="form-control" id="cost" th:field="*{cost}">
+                                                <div class="invalid-feedback">Please enter a valid cost/expense.</div>
+                                            </div>
+
+                                            <div class="mb-3">
+                                                <label for="receiptNo" class="form-label">OR/Invoice No.</label>
+                                                <input type="text" class="form-control" id="receiptNo" th:field="*{receiptNo}">
+                                                <div class="invalid-feedback">Please provide a receipt number.</div>
+                                            </div>
+
+                                            <!-- New Field: Remarks -->
+                                            <div class="mb-3">
+                                                <label for="remarks" class="form-label">Remarks</label>
+                                                <textarea class="form-control" id="remarks" th:field="*{remarks}" rows="2"></textarea>
+                                                <div class="invalid-feedback">Please provide remarks.</div>
+                                            </div>
+
+                                            <!-- New Field: Charge To -->
+                                            <div class="mb-3">
+                                                <label for="chargeTo" class="form-label">Charge To</label>
+                                                <select class="form-select" id="chargeTo" th:field="*{chargeTo}">
+                                                    <option value="" selected>Select a charge to</option>
+                                                    <!-- Loop through listOfChargeTo -->
+                                                    <option th:each="contact : ${listOfChargeTo}"
+                                                            th:value="${contact.contactId}"
+                                                            th:text="${contact.contactType != null && contact.contactType.name() == 'INDIVIDUAL' ?
+                                                             (#strings.concat(contact.individual.getFullName(),
+                                                             ' (', contact.contactType.displayContactType(), '/', contact.contactCategoryType.displayContactCategoryType(), ')'))
+                                                             : (#strings.concat(contact.company?.companyName, ' (', contact.contactType.displayContactType(),
+                                                             '/', contact.contactCategoryType.displayContactCategoryType(), ')'))}">
+                                                    </option>
+                                                </select>
+                                                <div class="invalid-feedback">Please select charge to.</div>
+                                            </div>
+
+
+                                            <!-- New Field: Billed -->
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" type="checkbox" id="billed" th:field="*{billed}">
+                                                <label class="form-check-label" for="billed">
+                                                    Billed
+                                                </label>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-primary">Save</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--Delete modal popup-->
+                        <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Confirm Delete Record</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Are you sure you want to delete this liquidation item?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <a href="" class="btn btn-danger" id="deleteId">Yes, Delete</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script>
+                            $(document).ready(function () {
+                                $('#addItemForm').on('submit', function (event) {
+                                    var isValid = true;
+
+                                    // Validate Date
+                                    if ($('#date').val() === '') {
+                                        $('#date').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#date').removeClass('is-invalid');
+                                    }
+
+                                    // Validate Account Name
+                                    if ($('#particulars').val().trim() === '') {
+                                        $('#particulars').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#particulars').removeClass('is-invalid');
+                                    }
+
+                                    // Validate Amount
+                                    var costValue = $('#cost').val();
+                                    if (costValue === '' || isNaN(costValue) || parseFloat(costValue) <= 0) {
+                                        $('#cost').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#cost').removeClass('is-invalid');
+                                    }
+
+                                    // Validate Account Name
+                                    if ($('#receiptNo').val().trim() === '') {
+                                        $('#receiptNo').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#receiptNo').removeClass('is-invalid');
+                                    }
+
+                                    // Validate Remarks
+                                    if ($('#remarks').val().trim() === '') {
+                                        $('#remarks').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#remarks').removeClass('is-invalid');
+                                    }
+
+                                    // Validate Charge To
+                                    if ($('#chargeTo').val() === '' || $('#chargeTo').val() == null) {
+                                        $('#chargeTo').addClass('is-invalid');
+                                        isValid = false;
+                                    } else {
+                                        $('#chargeTo').removeClass('is-invalid');
+                                    }
+
+                                    // No need to validate 'billed' as it's a checkbox
+
+                                    // Prevent form submission if any field is invalid
+                                    if (!isValid) {
+                                        event.preventDefault();
+                                    }
+                                });
+                            });
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Profile</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="fw-bold fs-4 mb-4">My Profile</h4>
+                        <!-- Profile Card -->
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6">
+                                        <h5 class="fw-bold">User Details</h5>
+                                        <p><strong>Full Name:</strong> <span th:text="${profileInfo.fullName}"></span></p>
+                                        <p><strong>Username:</strong> <span th:text="${profileInfo.username}"></span></p>
+                                        <p><strong>Created Date:</strong> <span th:text="${#dates.format(profileInfo.createdAt, 'MMMM d, yyyy')}"></span></p>
+                                        <p><strong>Updated Date:</strong> <span th:text="${#dates.format(profileInfo.updatedAt, 'MMMM d, yyyy')}"></span></p>
+                                    </div>
+                                    <!-- Right Column -->
+                                    <div class="col-md-6">
+                                        <h5 class="fw-bold">Contact Information</h5>
+                                        <p><strong>Contact Type:</strong> <span th:text="${profileInfo.contact.contactType.displayContactType()}"></span></p>
+                                        <p><strong>Category Type:</strong> <span th:text="${profileInfo.contact.contactCategoryType.displayContactCategoryType()}"></span></p>
+                                        <p><strong>Best Channel to Contact:</strong> <span th:text="${profileInfo.contact.bestChannelToContact}"></span></p>
+                                        <p><strong>Engagement Date:</strong> <span th:text="${#dates.format(profileInfo.contact.engagementDate, 'MMMM d, yyyy')}"></span></p>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-3">
+                                    <!-- Left Column -->
+                                    <div class="col-md-6" th:if="${profileInfo.contact.individual != null}">
+                                        <h5 class="fw-bold">Individual Details</h5>
+                                        <p th:if="${profileInfo.contact.individual != null}">
+                                            <strong>Full Name:</strong> <span th:text="${profileInfo.contact.individual.getFullName()}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.individual != null}">
+                                            <strong>Email Address:</strong> <span th:text="${profileInfo.contact.individual.emailAddress}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.individual != null}">
+                                            <strong>Mobile Number:</strong> <span th:text="${profileInfo.contact.individual.mobileNumber}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.individual != null}">
+                                            <strong>Address:</strong> <span th:text="${profileInfo.contact.individual.address}"></span>
+                                        </p>
+                                    </div>
+                                    <!-- Right Column -->
+                                    <div class="col-md-6"  th:if="${profileInfo.contact.company != null}">
+                                        <h5 class="fw-bold">Company Details</h5>
+                                        <p th:if="${profileInfo.contact.company != null}">
+                                            <strong>Company Name:</strong> <span th:text="${profileInfo.contact.company.companyName}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.company != null}">
+                                            <strong>Registration Type:</strong> <span th:text="${profileInfo.contact.company.registrationType.displayRegistrationType()}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.company != null}">
+                                            <strong>Representative Name:</strong> <span th:text="${profileInfo.contact.company.representativeName}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.company != null}">
+                                            <strong>Representative Designation:</strong> <span th:text="${profileInfo.contact.company.representativeDesignation}"></span>
+                                        </p>
+                                    </div>
+                                    <!-- Left Column -->
+                                    <div class="col-md-6" th:if="${profileInfo.contact.additionalDetails != null}">
+                                        <h5 class="fw-bold">Additional Details</h5>
+                                        <p th:if="${profileInfo.contact.additionalDetails != null}">
+                                            <strong>Designation:</strong> <span th:text="${profileInfo.contact.additionalDetails.designationFor}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.additionalDetails != null}">
+                                            <strong>Bank:</strong> <span th:text="${profileInfo.contact.additionalDetails.bankName}"></span>
+                                        </p>
+                                        <p th:if="${profileInfo.contact.additionalDetails != null}">
+                                            <strong>Account No.:</strong> <span th:text="${profileInfo.contact.additionalDetails.accountNo}"></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+</body>
+</html>

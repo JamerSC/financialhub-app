@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Retainer Activity</title>
+    <link href="../../static/css/node_modules/lineicons/dist/lineicons.css" rel="stylesheet" th:href="@{/css/node_modules/lineicons/dist/lineicons.css}"/>
+    <link  rel="stylesheet" href="../../static/css/bootstrap.min.css" type="text/css" th:href="@{/css/bootstrap.min.css}">
+    <script src="../../static/js/jquery-3.7.1.min.js" type="text/javascript" th:src="@{/js/jquery-3.7.1.min.js}"></script>
+    <link rel="stylesheet" href="../../static/css/index.css" type="text/css" th:href="@{/css/index.css}">
+</head>
+<body>
+
+    <div class="wrapper">
+        <!--navigation fragment-->
+        <div th:replace="~{fragments/navigation :: navigation}">Navigation</div>
+        <main class="content px-3 py-4">
+            <!--header fragment-->
+            <div th:replace="~{fragments/header :: header}">Header</div>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <h4 class="fw-bold fs-4 mb-4">Retainer Summary</h4>
+                        <div class="card shadow">
+                            <div class="card-body">
+                                <div th:if="${retainer.client?.individual != null}">
+                                    <p><strong>Full Name:</strong> <span th:text="${retainer.client.individual.getFullName()}"></span></p>
+                                </div>
+                                <div th:if="${retainer.client?.company != null}">
+                                    <p><strong>Company Name:</strong> <span th:text="${retainer.client.company.companyName}"></span></p>
+                                </div>
+                                <p><strong>Account Type:</strong> <span th:text="${retainer.clientAccountType.displayClientAccountType()}"></span></p>
+                                <p><strong>Account Title:</strong> <span th:text="${retainer.accountTitle}"></span></p>
+                                <p><strong>Status:</strong> <span th:text="${retainer.retainerAccount.status.displayStatus()}"></span></p>
+                                <p><strong>Start Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.startDate, 'dd MMMM yyyy')}"></span></p>
+                                <p><strong>End Date:</strong> <span th:text="${#dates.format(retainer.retainerAccount.endDate, 'dd MMMM yyyy')}"></span></p>
+                            </div>
+                        </div>
+                        <h5 class="fw-bold mb-3">Retainer Activities</h5>
+                        <!-- Retainer Activities Table -->
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                            <tr>
+                                <td>Date</td>
+                                <th>Description</th>
+                                <th>Category</th>
+                                <th>PIC</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:if="${#lists.isEmpty(listOfRetainerActivities)}">
+                                <td colspan="4" class="text-center">No retainer activities...</td>
+                            </tr>
+                            <tr th:each="activity : ${listOfRetainerActivities}" th:unless="${#lists.isEmpty(listOfRetainerActivities)}">
+                                <td th:text="${#dates.format(activity.date, 'MMM. d, yyyy')}"></td>
+                                <td th:text="${activity.activityDescription}"></td>
+                                <td th:text="${activity.activityCategory}"></td>
+                                <td th:text="${activity.receivedBy.fullName}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <div th:replace="~{fragments/footer :: footer}">Footer</div>
+
+    <script src="../../static/js/bootstrap.bundle.min.js" type="text/javascript" th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <script src="../../static/js/popper.min.js" type="text/javascript" th:src="@{/js/popper.min.js}"></script>
+    <script src="../../static/js/script.js" type="text/javascript" th:src="@{/js/script.js}"></script>
+</body>
+</html>
