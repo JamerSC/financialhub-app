@@ -15,7 +15,10 @@ import org.thymeleaf.templatemode.TemplateMode;
 @EnableWebMvc
 public class ThymeleafConfig implements WebMvcConfigurer {
 
+<<<<<<< HEAD
+=======
     // Class method for template resolver
+>>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
     @Bean
     public SpringResourceTemplateResolver templateResolver() {
         SpringResourceTemplateResolver templateResolver = new SpringResourceTemplateResolver();
@@ -27,7 +30,10 @@ public class ThymeleafConfig implements WebMvcConfigurer {
         return templateResolver;
     }
 
+<<<<<<< HEAD
+=======
     // Class Method Template engine for adding thymeleaf spring security
+>>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
     @Bean
     public SpringTemplateEngine templateEngine(SpringResourceTemplateResolver templateResolver) {
         SpringTemplateEngine templateEngine = new SpringTemplateEngine();
@@ -36,7 +42,10 @@ public class ThymeleafConfig implements WebMvcConfigurer {
         return templateEngine;
     }
 
+<<<<<<< HEAD
+=======
     // Class Method Thymeleaf View Resolver
+>>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
     @Bean
     public ThymeleafViewResolver viewResolver(SpringTemplateEngine templateEngine) {
         ThymeleafViewResolver viewResolver = new ThymeleafViewResolver();
@@ -45,7 +54,10 @@ public class ThymeleafConfig implements WebMvcConfigurer {
         return viewResolver;
     }
 
+<<<<<<< HEAD
+=======
     // Class Method Resource Handler registering other file & its location
+>>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/css/**").addResourceLocations("classpath:/static/css/");
