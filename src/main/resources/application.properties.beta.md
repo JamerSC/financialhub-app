@@ -10,7 +10,3 @@ spring.jpa.hibernate.ddl-auto=update
 
 # Performance tuning (optional)
 spring.jpa.open-in-view=false
-
-# NOTICE
-# As of Jan. 27, 2025 - Destroyed financial-hub-beta droplet at Digital Ocean
-# Not accessible on web
