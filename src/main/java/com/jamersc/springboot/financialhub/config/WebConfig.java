@@ -11,6 +11,11 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+<<<<<<< HEAD
+=======
+    // Custom Class Web Configuration use to format class objects
+
+>>>>>>> 8723a7db6bbf6f331c4b2199efc44cd7c212925d
     private final BankDtoConverter bankDtoConverter;
     private final ContactDtoConverter contactDtoConverter;
     private final StringToClientAccountDtoSetConverter stringToClientAccountDtoSetConverter;
