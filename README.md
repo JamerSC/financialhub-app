@@ -1,11 +1,6 @@
-**Financial Hub: Streamlined Financial Management for Law Offices**
+**Financial Hub: Streamlined Financial Management for Service Businesses**
 
-**Credentials**
-URL: http://144.126.242.115:8080/financial-hub
-username: admin
-password: 123123
-
-Financial Hub is a comprehensive financial management system tailored for law offices, providing efficient tools to handle transactions, employee activities, and account tracking seamlessly.
+Financial Hub is a comprehensive financial management system tailored for law offices, bookkeeping etc., providing efficient tools to handle transactions, employee activities, and account tracking seamlessly.
 
 ### Key Features:
 - **Dashboard Module**: A centralized interface for real-time tracking of transactions, employees, and overall financial performance.
