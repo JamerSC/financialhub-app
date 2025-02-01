@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component
-public class BankDtoConverter implements Converter<String, BankDto> {
+//@Component
+public class BankDtoConverter { //implements Converter<String, BankDto> {
 
-    @Autowired
+/*    @Autowired
     private BankService bankService;
 
     @Override
@@ -20,5 +20,5 @@ public class BankDtoConverter implements Converter<String, BankDto> {
 
         Long bankId = Long.valueOf(source);
         return bankService.findBankById(bankId);
-    }
+    }*/
 }

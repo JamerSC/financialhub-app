@@ -11,10 +11,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Component
-public class StringToClientAccountDtoSetConverter implements Converter<String, Set<ClientAccountDto>> {
+//@Component
+public class StringToClientAccountDtoSetConverter { // implements Converter<String, Set<ClientAccountDto>> {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+ /*   private final ObjectMapper objectMapper = new ObjectMapper();
 
     @Override
     public Set<ClientAccountDto> convert(@NonNull String source) {
@@ -30,5 +30,5 @@ public class StringToClientAccountDtoSetConverter implements Converter<String, S
         } catch (Exception e) {
             throw new RuntimeException("Failed to convert JSON string to Set<ClientAccountDto>", e);
         }
-    }
+    }*/
 }

@@ -18,6 +18,8 @@ public class FundServiceImpl implements FundService{
 
     @Autowired
     private FundRepository fundRepository;
+    @Autowired
+    private FundMapper fundMapper;
 
     @Override
     public List<Fund> getAllFund() {
@@ -28,7 +30,7 @@ public class FundServiceImpl implements FundService{
     public FundDto getFundById(Long id) {
         Fund fund = fundRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Fund id not found."));
-        return FundMapper.toFundDto(fund);
+        return fundMapper.toFundDto(fund);
     }
 
     @Override

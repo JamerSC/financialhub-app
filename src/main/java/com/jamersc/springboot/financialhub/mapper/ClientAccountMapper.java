@@ -2,15 +2,38 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.model.ClientAccount;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.Named;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class ClientAccountMapper {
+//@Component
+@Mapper
+public interface ClientAccountMapper {
+
+    ClientAccountMapper INSTANCE = Mappers.getMapper(ClientAccountMapper.class);
+
+    // Convert to DTO
+
+    @Mapping(target = "pettyCash", source = "pettyCashActivity")
+    ClientAccountDto toClientAccountDto(ClientAccount clientAccount);
+
+    // Convert to entity
+
+    @Mapping(target = "pettyCashActivity", source = "pettyCash")
+    ClientAccount toClientAccountEntity(ClientAccountDto clientAccountDto);
+
+    // List conversion methods
+    List<ClientAccountDto> toClientAccountDtos(List<ClientAccount> clientAccounts);
+
+    List<ClientAccount> toClientAccountEntities(List<ClientAccountDto> clientAccountDtos);
+
     // Convert to Dto
-    public static ClientAccountDto toClientAccountDto(ClientAccount clientAccount) {
+   /* public static ClientAccountDto toClientAccountDto(ClientAccount clientAccount) {
         if (clientAccount == null) {
             return null;
         }
@@ -66,5 +89,5 @@ public class ClientAccountMapper {
         return clientAccounts.stream()
                 .map(ClientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toList());
-    }
+    }*/
 }

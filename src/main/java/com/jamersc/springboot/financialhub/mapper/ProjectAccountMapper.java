@@ -4,12 +4,27 @@ import com.jamersc.springboot.financialhub.dto.ProjectAccountDto;
 import com.jamersc.springboot.financialhub.dto.RetainerAccountDto;
 import com.jamersc.springboot.financialhub.model.ProjectAccount;
 import com.jamersc.springboot.financialhub.model.RetainerAccount;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ProjectAccountMapper {
+//@Component
+@Mapper(uses = { ClientAccountMapper.class })
+public interface ProjectAccountMapper {
+
+    ProjectAccountMapper INSTANCE = Mappers.getMapper(ProjectAccountMapper.class);
+
+    @Mapping(source = "clientAccount", target = "clientAccount")
+    ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount);
+
+    @Mapping(source = "clientAccount", target = "clientAccount")
+    ProjectAccount toProjectAccountEntity(ProjectAccountDto projectAccountDto);
+
+
+
     // Convert Entity to DTO
-    public static ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount) {
+   /* public static ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount) {
         if (projectAccount == null) {
             return null;
         }
@@ -70,5 +85,5 @@ public class ProjectAccountMapper {
         projectAccount.setStatus(projectAccountDto.getStatus());
 
         return projectAccount;
-    }
+    }*/
 }

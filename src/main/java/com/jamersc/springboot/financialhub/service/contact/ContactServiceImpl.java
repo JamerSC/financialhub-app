@@ -29,11 +29,13 @@ public class ContactServiceImpl implements ContactService {
     private ContactCompanyRepository contactCompanyRepository;
     @Autowired
     private ContactDetailsRepository contactDetailsRepository;
+    @Autowired
+    private ContactMapper contactMapper;
 
     @Override
     public List<ContactDto> getAllContacts() {
         return contactRepository.findAll().stream()
-                .map(ContactMapper::toContactDto)
+                .map(contactMapper::toContactDto)
                 .collect(Collectors.toList());
     }
 
@@ -42,14 +44,14 @@ public class ContactServiceImpl implements ContactService {
         Contact contact = contactRepository.findById(contactId)
                 .orElseThrow(() -> new RuntimeException("Contact ID not found!"));
         //logger.info("Contact ID Details: " + contact);
-        return ContactMapper.toContactDto(contact);
+        return contactMapper.toContactDto(contact);
     }
 
     @Override
     public List<ContactDto> getContactsWithInternalCategory() {
         return contactRepository.findContactsWithInternalCategory()
                 .stream()
-                .map(ContactMapper::toContactDto)
+                .map(contactMapper::toContactDto)
                 .collect(Collectors.toList());
     }
 
@@ -57,7 +59,7 @@ public class ContactServiceImpl implements ContactService {
     public List<ContactDto> findContactsWithInternalCategoryAndNullUser() {
         return contactRepository.findContactsWithInternalCategoryAndNullUser()
                 .stream()
-                .map(ContactMapper::toContactDto)
+                .map(contactMapper::toContactDto)
                 .collect(Collectors.toList());
     }
 
@@ -65,7 +67,7 @@ public class ContactServiceImpl implements ContactService {
     public List<ContactDto> findContactsWithInternalCategoryAndNotNullUser() {
         return contactRepository.findContactsWithInternalCategoryAndNotNullUser()
                 .stream()
-                .map(ContactMapper::toContactDto)
+                .map(contactMapper::toContactDto)
                 .collect(Collectors.toList());
     }
 

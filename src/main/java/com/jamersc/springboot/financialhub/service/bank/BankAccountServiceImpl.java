@@ -30,6 +30,10 @@ public class BankAccountServiceImpl implements BankAccountService{
     private UserRepository userRepository;
     @Autowired
     private BankRepository bankRepository;
+    @Autowired
+    private BankMapper bankMapper;
+    @Autowired
+    private BankAccountMapper bankAccountMapper;
 
     @Override
     public List<BankAccount> getAllBankAccounts() {
@@ -47,7 +51,7 @@ public class BankAccountServiceImpl implements BankAccountService{
         if (bankAccount != null) {
             // Mapper static method no need for autowired
             //logger.info("Find Bank account details: " + dto);
-            return BankAccountMapper.toBankAccountDto(bankAccount);
+            return bankAccountMapper.toBankAccountDto(bankAccount);
         }
         throw new RuntimeException("Bank Account ID not found!");
     }
@@ -61,7 +65,7 @@ public class BankAccountServiceImpl implements BankAccountService{
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
             if (bankAccountDto.getBank() != null) {
                 // Mapper static method no need for autowired
-                Bank bank = BankMapper.toBankEntity(bankAccountDto.getBank());
+                Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
                 Bank bankId = bankRepository.findById(bank.getBankId()).orElse(null);
                 bankAccount.setBank(bankId);
             }
@@ -78,7 +82,7 @@ public class BankAccountServiceImpl implements BankAccountService{
                 bankAccount.setUpdatedBy(createdBy.getUserId());
             }
             // Mapper static method no need for autowired
-            Bank bankId = BankMapper.toBankEntity(bankAccountDto.getBank());
+            Bank bankId = bankMapper.toBankEntity(bankAccountDto.getBank());
             bankAccount.setBank(bankId);
             bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
             bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());

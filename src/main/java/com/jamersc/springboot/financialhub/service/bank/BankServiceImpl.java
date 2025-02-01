@@ -48,7 +48,7 @@ public class BankServiceImpl implements BankService{
         Bank bank = bankRepository.findById(id).orElse(null);
         if (bank != null) {
             //logger.info("Bank Details: " + bankDto);
-            return BankMapper.toBankDto(bank);
+            return bankMapper.toBankDto(bank);
         }
        throw new RuntimeException("Bank ID not found!");
     }

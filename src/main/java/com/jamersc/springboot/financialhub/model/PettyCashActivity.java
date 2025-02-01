@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,6 +24,7 @@ public class PettyCashActivity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fund_id")
+    @JsonBackReference
     private Fund fund;
 
     @Column(name = "pc_activity_no")

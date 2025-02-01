@@ -2,13 +2,30 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.RetainerAccountDto;
 import com.jamersc.springboot.financialhub.model.RetainerAccount;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 
-@Component
-public class RetainerAccountMapper {
+@Mapper(uses = { ClientAccountMapper.class })
+//@Component
+public interface RetainerAccountMapper {
+
+    RetainerAccountMapper INSTANCE = Mappers.getMapper(RetainerAccountMapper.class);
+
+    @Mapping(source = "clientAccount", target = "clientAccount")
+    @Mapping(source = "clientAccount.accountTitle", target = "retainerTitle")
+    RetainerAccountDto toRetainerAccountDto(RetainerAccount retainerAccount);
+
+    @Mapping(source = "clientAccount", target = "clientAccount")
+    @Mapping(source = "clientAccount.accountTitle", target = "retainerTitle")
+    RetainerAccount toRetainerAccountEntity(RetainerAccountDto retainerAccountDto);
+
+
+
+
 
     // Convert Entity to DTO
-    public static RetainerAccountDto toRetainerAccountDto(RetainerAccount retainerAccount) {
+/*    public static RetainerAccountDto toRetainerAccountDto(RetainerAccount retainerAccount) {
         if (retainerAccount == null) {
             return null;
         }
@@ -39,5 +56,5 @@ public class RetainerAccountMapper {
         retainerAccount.setEndDate(retainerAccountDto.getEndDate());
 
         return retainerAccount;
-    }
+    }*/
 }

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebConfig implements WebMvcConfigurer {
 
     // Custom Class Web Configuration use to format class objects
-
+/*
     private final BankDtoConverter bankDtoConverter;
     private final ContactDtoConverter contactDtoConverter;
     private final StringToClientAccountDtoSetConverter stringToClientAccountDtoSetConverter;
@@ -33,5 +33,5 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addConverter(contactDtoConverter);
         registry.addConverter(stringToClientAccountDtoSetConverter);
         registry.addConverter(userDtoConverter);
-    }
+    }*/
 }
