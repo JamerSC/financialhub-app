@@ -32,12 +32,16 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     private ProjectAccountRepository projectAccountRepository;
     @Autowired
     private RetainerAccountRepository retainerAccountRepository;
+    @Autowired
+    private ClientAccountMapper clientAccountMapper;
+    @Autowired
+    private ContactMapper contactMapper;
 
     @Override
     public List<ClientAccountDto> getAllClientAccounts() {
         //logger.info("Find all client accounts");
         return clientAccountRepository.findAll().stream()
-                .map(ClientAccountMapper::toClientAccountDto)
+                .map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -46,7 +50,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     public List<ClientAccountDto> getAllCaseAccounts() {
         //logger.info("Get all client case accounts");
         return clientAccountRepository.findByClientAccountType(ClientAccountType.CASE)
-                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .stream().map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -54,7 +58,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     public List<ClientAccountDto> getAllRetainerAccounts() {
         //logger.info("Get all client retainer accounts");
         return clientAccountRepository.findByClientAccountType(ClientAccountType.RETAINER)
-                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .stream().map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -67,7 +71,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     public List<ClientAccountDto> getAllProjectAccounts() {
         //logger.info("Get all client project accounts");
         return clientAccountRepository.findByClientAccountType(ClientAccountType.PROJECT)
-                .stream().map(ClientAccountMapper::toClientAccountDto)
+                .stream().map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toList());
     }
 
@@ -76,7 +80,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         ClientAccount clientAccount = clientAccountRepository.findById(id).orElse(null);
         if (clientAccount != null) {
             //logger.info("Finding Client Account ID: " + clientAccountDto);
-            return ClientAccountMapper.toClientAccountDto(clientAccount);
+            return clientAccountMapper.toClientAccountDto(clientAccount);
         }
         throw new RuntimeException("Client Account ID not found!");
     }
@@ -91,7 +95,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
         if (createdBy != null) {
@@ -139,7 +143,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId()).orElse(null);
                 account.setClient(contactId);
             }
@@ -202,7 +206,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -251,7 +255,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -306,7 +310,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -355,7 +359,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -407,7 +411,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -456,7 +460,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -511,7 +515,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -560,7 +564,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -615,7 +619,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -664,7 +668,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -710,7 +714,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -759,7 +763,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -805,7 +809,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -854,7 +858,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -900,7 +904,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -949,7 +953,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -995,7 +999,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -1044,7 +1048,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -1090,7 +1094,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -1139,7 +1143,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -1185,7 +1189,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account = new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.PROJECT);
         if (createdBy != null) {
@@ -1234,7 +1238,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact client = ContactMapper.toContactEntity(dto.getClient());
+                Contact client = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(client.getContactId())
                         .orElse(null);
                 account.setClient(contactId);
@@ -1280,7 +1284,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
-        account.setClient(ContactMapper.toContactEntity(dto.getClient()));
+        account.setClient(contactMapper.toContactEntity(dto.getClient()));
 
         if (account.getClient() != null) {
             if (account.getClient().getIndividual() != null) {
@@ -1330,7 +1334,7 @@ public class ClientAccountServiceImpl implements ClientAccountService{
             account = clientAccountRepository.findById(dto.getClientAccountId())
                     .orElse(new ClientAccount());
             if (dto.getClient() != null) {
-                Contact contact = ContactMapper.toContactEntity(dto.getClient());
+                Contact contact = contactMapper.toContactEntity(dto.getClient());
                 Contact contactId = contactRepository.findById(contact.getContactId()).orElse(null);
                 account.setClient(contactId);
 

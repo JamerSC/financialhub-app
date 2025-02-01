@@ -1,5 +1,6 @@
 package com.jamersc.springboot.financialhub.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-@ToString
+@ToString(exclude = {"pettyCash"})
 public class Fund {
 
     @Id
@@ -24,6 +25,7 @@ public class Fund {
     @OneToMany(mappedBy = "fund", fetch = FetchType.LAZY,  orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonManagedReference
     private List<PettyCashActivity> pettyCash;
 
     @Column(name = "fund_balance")

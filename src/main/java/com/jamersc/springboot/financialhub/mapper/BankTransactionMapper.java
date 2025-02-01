@@ -2,14 +2,32 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.BankTransactionDto;
 import com.jamersc.springboot.financialhub.model.BankTransaction;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
-public class BankTransactionMapper {
-    public static BankTransactionDto toTransactionDto(BankTransaction bankTransaction) {
+@Mapper(uses = {BankAccountMapper.class})
+//@Component
+public interface BankTransactionMapper {
+    //class BankTransactionMapper {
+
+    BankTransactionMapper INSTANCE = Mappers.getMapper(BankTransactionMapper.class);
+
+    @Mapping(target = "bankAccount", source = "bankAccount")
+    BankTransactionDto toTransactionDto(BankTransaction bankTransaction);
+
+    @Mapping(target = "bankAccount", source = "bankAccount")
+    BankTransaction toTransactionEntity(BankTransactionDto bankTransactionDto);
+
+    List<BankTransactionDto> toBankTransactionDtoList(List<BankTransaction> bankTransactionList);
+
+    List<BankTransaction> toBankTransactionEntityList(List<BankTransactionDto> bankTransactionDtoList);
+
+    /*public static BankTransactionDto toTransactionDto(BankTransaction bankTransaction) {
         if (bankTransaction == null) {
             return null;
         }
@@ -63,5 +81,5 @@ public class BankTransactionMapper {
         return bankTransactionList.stream()
                 .map(BankTransactionMapper::toTransactionDto)
                 .collect(Collectors.toList());
-    }
+    }*/
 }

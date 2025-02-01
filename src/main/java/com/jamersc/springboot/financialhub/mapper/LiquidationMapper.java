@@ -2,10 +2,22 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.LiquidationDto;
 import com.jamersc.springboot.financialhub.model.Liquidation;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
-public class LiquidationMapper {
+@Mapper(uses = {PettyCashMapper.class, ClientAccountMapper.class})
+//@Component
+public interface LiquidationMapper {
+    // class LiquidationMapper {
 
-    public static LiquidationDto liquidationToDto(Liquidation liquidation) {
+    LiquidationMapper INSTANCE = Mappers.getMapper(LiquidationMapper.class);
+
+    LiquidationDto toLiquidationDto(Liquidation liquidation);
+
+    Liquidation toLiquidationEntity(LiquidationDto liquidationDto);
+
+    /*public static LiquidationDto liquidationToDto(Liquidation liquidation) {
         if (liquidation == null) {
             return null;
         }
@@ -45,5 +57,5 @@ public class LiquidationMapper {
         liquidation.setUpdatedBy(dto.getUpdatedBy());
         liquidation.setUpdatedAt(dto.getUpdatedAt());
         return liquidation;
-    }
+    }*/
 }

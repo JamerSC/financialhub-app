@@ -45,6 +45,10 @@ public class UserServiceImpl implements UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private ContactRepository contactRepository;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private ContactMapper contactMapper;
 
     @Override
     public User getByUsername(String username) {
@@ -65,9 +69,9 @@ public class UserServiceImpl implements UserService {
     public UserDto findUserById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
-            UserDto dto= UserMapper.toUserDto(user);
+            UserDto dto= userMapper.toUserDto(user);
 
-            ContactDto contact = ContactMapper.toContactDto(user.getContact());
+            ContactDto contact = contactMapper.toContactDto(user.getContact());
             dto.setContact(contact);
             // Populate roleIds
             Set<Long> roleIds = user.getRoles().stream()
@@ -86,7 +90,7 @@ public class UserServiceImpl implements UserService {
         User creator = userRepository.findByUsername(username);
 
         if (dto.getContact() != null) {
-            Contact contact = ContactMapper.toContactEntity(dto.getContact());
+            Contact contact = contactMapper.toContactEntity(dto.getContact());
             user.setContact(contact);
         }
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
@@ -125,7 +129,7 @@ public class UserServiceImpl implements UserService {
             user = userRepository.findById(dto.getUserId()).orElse(new User());
 
             if (dto.getContact()  != null) {
-                Contact contact = ContactMapper.toContactEntity(dto.getContact());
+                Contact contact = contactMapper.toContactEntity(dto.getContact());
                 user.setContact(contact);
             }
 

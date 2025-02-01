@@ -31,9 +31,9 @@ public class BankTransactionServiceImpl implements BankTransactionService {
     @Autowired
     private BankAccountRepository bankAccountRepository;
     @Autowired
-    private BankTransactionMapper bankTransactionMapper;
-    @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private BankTransactionMapper bankTransactionMapper;
 
     @Override
     public List<BankTransaction> getAllTransactions() {
@@ -45,7 +45,7 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         BankTransaction bankTransaction = bankTransactionRepository.findById(transactionId).orElse(null);
         if (bankTransaction != null ) {
             //logger.info("Bank transaction Details " + bankTransactionDto);
-            return BankTransactionMapper.toTransactionDto(bankTransaction);
+            return bankTransactionMapper.toTransactionDto(bankTransaction);
         }
         throw new RuntimeException("Bank transaction details not found.");
         //return bankTransactionRepository.findById(transactionId).orElseThrow(()-> new RuntimeException("Transaction ID not found."));

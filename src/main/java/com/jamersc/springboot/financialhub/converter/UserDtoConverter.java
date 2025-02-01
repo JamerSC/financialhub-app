@@ -6,9 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component
-public class UserDtoConverter implements Converter <String, UserDto> {
-    @Autowired
+//@Component
+public class UserDtoConverter { // implements Converter <String, UserDto> {
+    /*@Autowired
     private UserService userService;
 
     @Override
@@ -19,5 +19,5 @@ public class UserDtoConverter implements Converter <String, UserDto> {
 
         Long userId = Long.valueOf(source);
         return userService.findUserById(userId);
-    }
+    }*/
 }

@@ -32,4 +32,6 @@ public class PettyCashActivityDto {
     private Date createdAt;
     private Long updatedBy;
     private Date updatedAt;
+    private Set<Long> accountIds; // Custom mapping to store account IDs'
+    private Set<String> accountDetails; // Add a new field to store account details (Project title & Type)
 }

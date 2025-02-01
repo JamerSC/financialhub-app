@@ -2,12 +2,21 @@ package com.jamersc.springboot.financialhub.mapper;
 
 import com.jamersc.springboot.financialhub.dto.ContactCompanyDto;
 import com.jamersc.springboot.financialhub.model.ContactCompany;
+import org.mapstruct.Mapper;
+import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ContactCompanyMapper {
+//@Component
+@Mapper
+public interface ContactCompanyMapper {
 
-    public static ContactCompanyDto toContactCompanyDto(ContactCompany contactCompany) {
+    ContactCompanyMapper INSTANCE = Mappers.getMapper(ContactCompanyMapper.class);
+
+    ContactCompanyDto toContactCompanyDto(ContactCompany contactCompany);
+
+    ContactCompany toContactCompanyEntity(ContactCompanyDto contactCompanyDto);
+
+  /*  public static ContactCompanyDto toContactCompanyDto(ContactCompany contactCompany) {
         if (contactCompany == null) {
             return null;
         }
@@ -43,6 +52,6 @@ public class ContactCompanyMapper {
         contactCompany.setAddress(contactCompanyDto.getAddress());
 
         return contactCompany;
-    }
+    }*/
 }
 

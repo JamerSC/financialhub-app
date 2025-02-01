@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
-@Component
-public class ContactDtoConverter implements Converter<String, ContactDto> {
+//@Component
+public class ContactDtoConverter { // implements Converter<String, ContactDto> {
 
-    @Autowired
+   /* @Autowired
     private ContactService contactService;
 
     @Override
@@ -20,5 +20,5 @@ public class ContactDtoConverter implements Converter<String, ContactDto> {
 
         Long contactId = Long.valueOf(source);
         return contactService.getContactById(contactId);
-    }
+    }*/
 }

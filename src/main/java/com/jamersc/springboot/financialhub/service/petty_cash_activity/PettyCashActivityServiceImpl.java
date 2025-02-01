@@ -41,12 +41,20 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
     private UserRepository userRepository;
     @Autowired
     private FundRepository fundRepository;
+    @Autowired
+    private PettyCashMapper pettyCashMapper;
+    @Autowired
+    private ClientAccountMapper clientAccountMapper;
+    @Autowired
+    private UserMapper userMapper;
+    @Autowired
+    private FundMapper fundMapper;
 
     @Override
     public List<PettyCashActivityDto> getAllPettyCash() {
         //logger.info("Get all petty cash records.");
         return pettyCashActivityRepository.findAll().stream()
-                .map(PettyCashMapper::toPettyCashDto)
+                .map(pettyCashMapper::toPettyCashActivityDto)
                 .collect(Collectors.toList());
     }
 
@@ -98,18 +106,18 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 .orElseThrow(() -> new RuntimeException("Petty Cash ID not found!"));
         // Convert to Dto Accounts, Petty Cash, & Fund
 
-        PettyCashActivityDto dto = PettyCashMapper.toPettyCashDto(pettyCash);
+        PettyCashActivityDto dto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
 
         Set<ClientAccountDto> accounts = pettyCash.getAccounts()
                 .stream().
-                map(ClientAccountMapper::toClientAccountDto)
+                map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toSet());
         dto.setAccounts(accounts);
 
-        UserDto user = UserMapper.toUserDto(pettyCash.getReceivedBy());
+        UserDto user = userMapper.toUserDto(pettyCash.getReceivedBy());
         dto.setReceivedBy(user);
 
-        FundDto fund = FundMapper.toFundDto(pettyCash.getFund());
+        FundDto fund = fundMapper.toFundDto(pettyCash.getFund());
         dto.setFund(fund);
 
         //logger.info("Petty Cash: " + dto);
@@ -135,7 +143,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             if (dto.getFund() != null) {
-                Fund fund = FundMapper.toFundEntity(dto.getFund());
+                Fund fund = fundMapper.toFundEntity(dto.getFund());
                 Fund fundId = fundRepository.findById(fund.getFundId()).orElse(null);
                 pettyCash.setFund(fundId);
             }
@@ -158,7 +166,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             /* USER Received By */
             if (dto.getReceivedBy() != null) {
-                pettyCash.setReceivedBy(UserMapper.toUserEntity(dto.getReceivedBy()));
+                pettyCash.setReceivedBy(userMapper.toUserEntity(dto.getReceivedBy()));
             }
 
             User updatedBy = userRepository.findByUsername(username);
@@ -203,7 +211,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setApproved(dto.getApproved());
 
             /* USER Received By */
-            User user = UserMapper.toUserEntity(dto.getReceivedBy());
+            User user = userMapper.toUserEntity(dto.getReceivedBy());
             pettyCash.setReceivedBy(user);
 
             User createdBy = userRepository.findByUsername(username);
@@ -229,7 +237,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             //Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             if (dto.getFund() != null) {
-                Fund fund = FundMapper.toFundEntity(dto.getFund());
+                Fund fund = fundMapper.toFundEntity(dto.getFund());
                 Fund fundId = fundRepository.findById(fund.getFundId()).orElse(null);
                 pettyCash.setFund(fundId);
             }
@@ -251,7 +259,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setTotalAmount(dto.getTotalAmount());
 
             if (dto.getReceivedBy() != null) {
-                pettyCash.setReceivedBy(UserMapper.toUserEntity(dto.getReceivedBy()));
+                pettyCash.setReceivedBy(userMapper.toUserEntity(dto.getReceivedBy()));
             }
 
             User updatedBy = userRepository.findByUsername(username);
