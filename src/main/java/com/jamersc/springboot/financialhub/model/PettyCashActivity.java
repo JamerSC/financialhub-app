@@ -24,7 +24,6 @@ public class PettyCashActivity {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fund_id")
-    @JsonBackReference
     private Fund fund;
 
     @Column(name = "pc_activity_no")
