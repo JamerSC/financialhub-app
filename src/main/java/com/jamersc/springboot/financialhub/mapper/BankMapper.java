@@ -6,14 +6,11 @@ import com.jamersc.springboot.financialhub.model.Bank;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
 @Mapper
-//@Component
 public interface BankMapper {
-    //class BankMapper {
 
     BankMapper INSTANCE = Mappers.getMapper(BankMapper.class);
 

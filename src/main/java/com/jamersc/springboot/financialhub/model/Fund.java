@@ -25,7 +25,6 @@ public class Fund {
     @OneToMany(mappedBy = "fund", fetch = FetchType.LAZY,  orphanRemoval = true, cascade = {
             CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
-    @JsonManagedReference
     private List<PettyCashActivity> pettyCash;
 
     @Column(name = "fund_balance")
