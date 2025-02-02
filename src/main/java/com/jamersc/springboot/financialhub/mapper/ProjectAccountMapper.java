@@ -11,9 +11,9 @@ public interface ProjectAccountMapper {
 
     ProjectAccountMapper INSTANCE = Mappers.getMapper(ProjectAccountMapper.class);
 
-    @Mapping(source = "clientAccount", target = "clientAccount")
+    @Mapping(target = "clientAccount", source = "clientAccount")
     ProjectAccountDto toProjectAccountDto(ProjectAccount projectAccount);
 
-    @Mapping(source = "clientAccount", target = "clientAccount")
+    @Mapping(target = "clientAccount", source = "clientAccount")
     ProjectAccount toProjectAccountEntity(ProjectAccountDto projectAccountDto);
 }

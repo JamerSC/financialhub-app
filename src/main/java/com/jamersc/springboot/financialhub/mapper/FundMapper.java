@@ -18,10 +18,10 @@ public interface FundMapper {
 
     FundMapper INSTANCE = Mappers.getMapper(FundMapper.class);
 
-    @Mapping(source = "pettyCash", target = "pettyCash")
+    @Mapping(target = "pettyCash", source = "pettyCash")
     FundDto toFundDto(Fund fund);
 
-    @Mapping(source = "pettyCash", target = "pettyCash")
+    @Mapping(target = "pettyCash", source = "pettyCash")
     Fund toFundEntity(FundDto fundDto);
 
     default List<PettyCashActivityDto> mapPettyCashToDto(List<PettyCashActivity> pettyCash) {

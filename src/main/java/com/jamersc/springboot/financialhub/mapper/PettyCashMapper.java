@@ -15,18 +15,18 @@ public interface PettyCashMapper {
 
     PettyCashMapper INSTANCE = Mappers.getMapper(PettyCashMapper.class);
 
-    @Mapping(source = "fund", target = "fund")
-    @Mapping(source = "receivedBy", target = "receivedBy")
-    @Mapping(source = "accounts", target = "accounts")
-    @Mapping(source = "liquidations", target = "liquidations")
+    @Mapping(target = "fund", source = "fund")
+    @Mapping(target = "receivedBy", source = "receivedBy")
+    @Mapping(target = "accounts", source = "accounts")
+    @Mapping(target = "liquidations", source = "liquidations")
     @Mapping(target = "accountIds", expression = "java(mapAccountIds(pettyCashActivity.getAccounts()))")
     @Mapping(target = "accountDetails", expression = "java(mapAccountDetails(pettyCashActivity.getAccounts()))")
     PettyCashActivityDto toPettyCashActivityDto(PettyCashActivity pettyCashActivity);
 
-    @Mapping(source = "fund", target = "fund")
-    @Mapping(source = "receivedBy", target = "receivedBy")
-    @Mapping(source = "accounts", target = "accounts")
-    @Mapping(source = "liquidations", target = "liquidations")
+    @Mapping(target = "fund", source = "fund")
+    @Mapping(target = "receivedBy", source = "receivedBy")
+    @Mapping(target = "accounts", source = "accounts")
+    @Mapping(target = "liquidations", source = "liquidations")
     PettyCashActivity toPettyCashActivityEntity(PettyCashActivityDto pettyCashActivityDto);
 
     default Set<Long> mapAccountIds(Set<ClientAccount> accounts) {
