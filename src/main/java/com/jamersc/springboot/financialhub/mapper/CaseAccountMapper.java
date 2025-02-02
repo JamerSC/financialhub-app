@@ -10,20 +10,6 @@ import org.mapstruct.factory.Mappers;
 public interface CaseAccountMapper {
 
     CaseAccountMapper INSTANCE = Mappers.getMapper(CaseAccountMapper.class);
-
-    // Convert Entity to DTO
-    @Mapping(source = "clientAccount", target = "clientAccount") // Maps the related ClientAccount entity
-    @Mapping(source = "caseType", target = "caseType")
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "startDate", target = "startDate")
-    @Mapping(source = "endDate", target = "endDate")
     CaseAccountDto toCaseAccountDto(CaseAccount caseAccount);
-
-    // Convert DTO to Entity
-    @Mapping(source = "clientAccount", target = "clientAccount") // Maps the related ClientAccount DTO
-    @Mapping(source = "caseType", target = "caseType")
-    @Mapping(source = "status", target = "status")
-    @Mapping(source = "startDate", target = "startDate")
-    @Mapping(source = "endDate", target = "endDate")
     CaseAccount toCaseAccountEntity(CaseAccountDto caseAccountDto);
 }

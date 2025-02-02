@@ -16,12 +16,9 @@ public interface ClientAccountMapper {
 
     @Mapping(target = "pettyCash", source = "pettyCashActivity")
     ClientAccountDto toClientAccountDto(ClientAccount clientAccount);
-
     @Mapping(target = "pettyCashActivity", source = "pettyCash")
     ClientAccount toClientAccountEntity(ClientAccountDto clientAccountDto);
-
     // List conversion methods
     List<ClientAccountDto> toClientAccountDtos(List<ClientAccount> clientAccounts);
-
     List<ClientAccount> toClientAccountEntities(List<ClientAccountDto> clientAccountDtos);
 }
