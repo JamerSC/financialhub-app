@@ -10,7 +10,9 @@ import lombok.*;
 public class ContactIndividualDto {
 
     private Long individualId;
-    private ContactDto contact; // @OneToOne contact id
+    //private ContactDto contact; // @OneToOne contact id
+    private Long contactId; // Instead of ContactDto reference
+
     private String title;
     private String lastName;
     private String firstName;

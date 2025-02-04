@@ -14,7 +14,8 @@ import java.util.Date;
 public class RetainerAccountDto {
 
     private Long retainerId;
-    private ClientAccountDto clientAccount;
+    //private ClientAccountDto clientAccount;
+    private Long clientAccountId; // ID
     private String retainerTitle;
     private Status status;
     @DateTimeFormat(pattern = "yyyy-MM-dd")

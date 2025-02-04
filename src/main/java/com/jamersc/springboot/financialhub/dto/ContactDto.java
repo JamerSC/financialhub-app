@@ -26,7 +26,8 @@ public class ContactDto {
     private ContactIndividualDto individual; // one to one
     private ContactCompanyDto company; // one to one
     private ContactDetailsDto additionalDetails; //one to one
-    private List<ClientAccountDto> clientAccounts = new ArrayList<>(); // one to many
+    private List<ClientAccountDto> clientAccounts; // one to many
+
     private Long createdBy;
     private Date createdAt;
     private Long updatedBy;

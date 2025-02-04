@@ -13,7 +13,8 @@ import java.util.Date;
 public class LiquidationDto {
 
     private Long activityId;
-    private PettyCashActivityDto activity;
+    // private PettyCashActivityDto activity;
+    private Long pettyCashActivityId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String particulars;

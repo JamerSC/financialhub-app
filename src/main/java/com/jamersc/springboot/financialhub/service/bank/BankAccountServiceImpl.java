@@ -59,37 +59,35 @@ public class BankAccountServiceImpl implements BankAccountService{
     @Override
     public void saveBankAccount(BankAccountDto bankAccountDto, String username) {
         BankAccount bankAccount;
+
         if (bankAccountDto.getBankAccountId() != null) {
             bankAccount = bankAccountRepository.findById(bankAccountDto.getBankAccountId()).orElse(new BankAccount());
-            bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
-            bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
-            if (bankAccountDto.getBank() != null) {
-                // Mapper static method no need for autowired
-                Bank bank = bankMapper.toBankEntity(bankAccountDto.getBank());
-                Bank bankId = bankRepository.findById(bank.getBankId()).orElse(null);
-                bankAccount.setBank(bankId);
-            }
-            User updatedBy = userRepository.findByUsername(username);
-            if (updatedBy != null) {
-                bankAccount.setUpdatedBy(updatedBy.getUserId());
-            }
-            //logger.info("Updated Bank ID No. " + bankAccountDto.getBankAccountId());
         } else {
             bankAccount = new BankAccount();
-            User createdBy = userRepository.findByUsername(username);
-            if (createdBy != null) {
-                bankAccount.setCreatedBy(createdBy.getUserId());
-                bankAccount.setUpdatedBy(createdBy.getUserId());
-            }
-            // Mapper static method no need for autowired
-            Bank bankId = bankMapper.toBankEntity(bankAccountDto.getBank());
-            bankAccount.setBank(bankId);
-            bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
-            bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
-            Double defaultBankAccountBalance = 0.00;
-            bankAccount.setAccountBalance(defaultBankAccountBalance);
-            //logger.info("New bank account created successfully!!");
+            bankAccount.setAccountBalance(0.00); // Default balance
         }
+
+        // Set Bank
+        if (bankAccountDto.getBankId() != null) {
+            Bank bank = bankRepository.findById(bankAccountDto.getBankId()).orElseThrow(null);
+            if (bank != null) {
+                bankAccount.setBank(bank);
+            }
+        }
+
+        // Set Account Details
+        bankAccount.setAccountHolderName(bankAccountDto.getAccountHolderName());
+        bankAccount.setAccountNumber(bankAccountDto.getAccountNumber());
+
+        // Set Created/Updated By
+        User user = userRepository.findByUsername(username);
+        if (user != null) {
+            if (bankAccountDto.getBankAccountId() == null) {
+                bankAccount.setCreatedBy(user.getUserId());
+            }
+            bankAccount.setUpdatedBy(user.getUserId());
+        }
+
         bankAccountRepository.save(bankAccount);
     }
 }

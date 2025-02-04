@@ -15,15 +15,21 @@ import java.util.Set;
 public class PettyCashActivityDto {
 
     private Long pcActivityId;
-    private FundDto fund;
+
+    // private FundDto fund;
+    private Long fundId; // ID
+
     private String pcActivityNo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date;
     private String activityDescription;
     private String activityCategory;
     private String soaCategory;
-    private Set<ClientAccountDto> accounts; // Many to Many Rel.
-    private List<LiquidationDto> liquidations; // One to Many
+
+    //private Set<ClientAccountDto> accounts; // Many to Many Rel.
+    //private List<LiquidationDto> liquidations; // One to Many
+    private List<Long> activityId; // Liquidation Activity ID
+
     private Double totalAmount;
     private Boolean approved;
     private UserDto receivedBy; // Many to One (user)
@@ -32,6 +38,7 @@ public class PettyCashActivityDto {
     private Date createdAt;
     private Long updatedBy;
     private Date updatedAt;
+
     private Set<Long> accountIds; // Custom mapping to store account IDs'
     private Set<String> accountDetails; // Add a new field to store account details (Project title & Type)
 }

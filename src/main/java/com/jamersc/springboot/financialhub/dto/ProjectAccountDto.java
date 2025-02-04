@@ -11,7 +11,8 @@ import lombok.*;
 public class ProjectAccountDto {
 
     private Long projectId;
-    private ClientAccountDto clientAccount;
+    //private ClientAccountDto clientAccount;
+    private Long clientAccountId; // ID
     private ProjectType projectType;
     private PropertySubType propertySubType;
     private BusinessSubType businessSubType;

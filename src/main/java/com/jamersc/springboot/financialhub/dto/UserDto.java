@@ -20,8 +20,6 @@ public class UserDto {
 
     private Long userId;
 
-    private ContactDto contact;
-
     @NotNull(message = "Full name is required!")
     @Size(min = 1, max = 50, message = "Full name must be between 1 and 50 characters!")
     private String fullName;
@@ -46,6 +44,9 @@ public class UserDto {
     private Long updatedBy;
 
     private Date updatedAt;
+
+    //private ContactDto contact;
+    private Long contactId; // Instead of ContactDto reference
 
     @RoleIdsNotEmpty(message = "At least one role must be selected")
     private Set<Long> roleIds;
