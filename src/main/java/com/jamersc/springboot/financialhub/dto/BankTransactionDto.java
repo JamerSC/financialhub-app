@@ -14,7 +14,8 @@ import java.util.Date;
 public class BankTransactionDto {
 
     private Long id;
-    private BankAccountDto bankAccount;  // @ManyToOne - Nested BankAccountDto
+    //private BankAccountDto bankAccount;  // @ManyToOne - Nested BankAccountDto
+    private Long bankAccountId;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date transactionDate;
     private BankTransactionType transactionType;

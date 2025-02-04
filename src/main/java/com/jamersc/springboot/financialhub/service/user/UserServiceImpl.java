@@ -71,8 +71,13 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             UserDto dto= userMapper.toUserDto(user);
 
-            ContactDto contact = contactMapper.toContactDto(user.getContact());
-            dto.setContact(contact);
+            if (dto.getContactId() != null) {
+                Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+                if (contact != null) {
+                    user.setContact(contact);
+                }
+            }
+
             // Populate roleIds
             Set<Long> roleIds = user.getRoles().stream()
                     .map(Role::getId).
@@ -89,10 +94,13 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         User creator = userRepository.findByUsername(username);
 
-        if (dto.getContact() != null) {
-            Contact contact = contactMapper.toContactEntity(dto.getContact());
-            user.setContact(contact);
+        if (dto.getContactId() != null) {
+            Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+            if (contact != null) {
+                user.setContact(contact);
+            }
         }
+
         String encodedPassword = passwordEncoder.encode(dto.getPassword());
         user.setPassword(encodedPassword);
         user.setEnabled(true);
@@ -128,9 +136,11 @@ public class UserServiceImpl implements UserService {
         if (dto.getUserId() != null) {
             user = userRepository.findById(dto.getUserId()).orElse(new User());
 
-            if (dto.getContact()  != null) {
-                Contact contact = contactMapper.toContactEntity(dto.getContact());
-                user.setContact(contact);
+            if (dto.getContactId() != null) {
+                Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+                if (contact != null) {
+                    user.setContact(contact);
+                }
             }
 
             user.setFullName(dto.getFullName());

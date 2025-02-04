@@ -8,15 +8,18 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper(uses = {BankMapper.class})
+@Mapper(uses = {BankMapper.class, BankTransactionMapper.class})
 public interface BankAccountMapper {
 
     BankAccountMapper INSTANCE = Mappers.getMapper(BankAccountMapper.class);
 
+    @Mapping(target = "bankId", source = "bank.bankId") // Correct mapping for bank -> bankId
     @Mapping(target = "transactions", source = "bankTransactions")
+    @Mapping(target = "bankAccountId", source = "bankAccountId") // Add this line to map bankAccountId properly
     BankAccountDto toBankAccountDto(BankAccount bankAccount);
     @Mapping(target = "bankTransactions", source = "transactions")
-    @Mapping(target = "bank", source = "bank")
+    @Mapping(target = "bank", source = "bankId")
+    @Mapping(target = "bankAccountId", ignore = true)  // Add ignore to prevent issues with ID mapping
     BankAccount toBankAccountEntity(BankAccountDto bankAccountDto);
     List<BankAccountDto> toBankAccountDtoList(List<BankAccount> bankAccounts);
     List<BankAccount> toBankAccountEntityList(List<BankAccountDto> bankAccountDtos);

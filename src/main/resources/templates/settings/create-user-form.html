@@ -30,7 +30,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="internalContact" class="form-label">Internal Contacts</label>
-                                <select id="internalContact" class="form-select" th:field="*{contact}" required>
+                                <select id="internalContact" class="form-select" th:field="*{contactId}" required>
                                     <option value="" selected>Select a new user...</option>
                                     <option th:each="tempContact : ${internalContactsNewUser}"
                                             th:value="${tempContact.contactId}"
@@ -51,7 +51,9 @@
                             <div class="mb-3">
                                 <label class="col-form-label">Roles:</label>
                                 <div th:each="role : ${roles}">
-                                    <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" />
+                                    <label>
+                                        <input type="checkbox" th:field="*{roleIds}" th:value="${role.id}" th:id="${role.id}" />
+                                    </label>
                                     <label th:for="${role.id}" th:text="'Select ' + ${#strings.substringAfter(role.name, 'ROLE_')} + ' role'"></label>
                                 </div>
                                 <div th:if="${#fields.hasErrors('roleIds')}" th:errors="*{roleIds}" class="error">

@@ -17,11 +17,18 @@ public class ClientAccountDto {
         private ContactDto client; // one to many contact id
         private String accountTitle;
         private ClientAccountType clientAccountType;
+
         private CaseAccountDto caseAccount; // one to one client account
+        //private Long caseAccountId;
         private ProjectAccountDto projectAccount; // one to one client account
+        //private Long projectAccountId;
         private RetainerAccountDto retainerAccount; // one to one client account
+        private Long retainerAccountId;
         private Set<PettyCashActivityDto> pettyCash;
+        //private Set<Long> pettyCashActivityId;
         private LiquidationDto activity;
+        //private Long ActivityId;
+
         private Long createdBy;
         private Date createdAt;
         private Long updatedBy;

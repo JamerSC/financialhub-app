@@ -20,11 +20,13 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
+    @Mapping(target = "contactId", source = "contact")
     @Mapping(target = "confirmPassword", ignore = true)
     @Mapping(target = "contact", source = "contact", qualifiedByName = "toContactDto")
     @Mapping(target = "roleIds", source = "roles", qualifiedByName = "mapRolesToRoleIds")
     UserDto toUserDto(User user);
 
+    @Mapping(target = "contact", source = "contactId")
     @Mapping(target = "pettyCash", ignore = true)
     @Mapping(target = "roles", source = "roleIds",  qualifiedByName = "mapRoleIdsToRoles")
     @Mapping(target = "createdAt", expression = "java(new java.util.Date())")

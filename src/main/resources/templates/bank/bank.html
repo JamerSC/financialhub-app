@@ -125,7 +125,7 @@
                                         <form id="addAccountForm" action="#" th:action="@{/bank/save-account}" th:object="${account}" method="POST">
                                             <div class="mb-3">
                                                 <label for="bank" class="form-label">Select Bank</label>
-                                                <select class="form-select" id="bank" th:field="*{bank}">
+                                                <select class="form-select" id="bank" th:field="*{bankId}">
                                                     <option value="" selected>Select a bank</option>
                                                     <option th:each="bank : ${allBanks}"  th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                     </option>
