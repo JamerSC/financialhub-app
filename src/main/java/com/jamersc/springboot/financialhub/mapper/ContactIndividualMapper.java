@@ -12,9 +12,9 @@ public interface ContactIndividualMapper {
 
     ContactIndividualMapper INSTANCE = Mappers.getMapper(ContactIndividualMapper.class);
 
-    @Mapping(target = "contactId", source = "contact")
+    @Mapping(target = "contactId", source = "contact.contactId")
     ContactIndividualDto toContactIndividualDto(ContactIndividual contactIndividual);
 
-    @Mapping(target = "contact", source = "contactId") // Uncomment if ContactMapper is available
+    @Mapping(target = "contact.contactId", source = "contactId") // Uncomment if ContactMapper is available
     ContactIndividual toContactIndividualEntity(ContactIndividualDto contactIndividualDto);
 }

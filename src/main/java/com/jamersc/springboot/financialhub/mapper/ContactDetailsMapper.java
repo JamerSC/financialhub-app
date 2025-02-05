@@ -12,11 +12,11 @@ public interface ContactDetailsMapper {
 
     ContactDetailsMapper INSTANCE = Mappers.getMapper(ContactDetailsMapper.class);
 
-    @Mapping(target = "contact", source = "contact")
         // Uncomment if ContactMapper is available
-    ContactDetailsDto toContactDetailsDto(ContactDetails contactDetails);
+        @Mapping(target = "contactId", source = "contact.contactId")
+        ContactDetailsDto toContactDetailsDto(ContactDetails contactDetails);
 
-    @Mapping(target = "contact", source = "contact")
+    @Mapping(target = "contact", ignore = true) //source = "contact"
         // Uncomment if ContactMapper is available
     ContactDetails toContactDetailsEntity(ContactDetailsDto contactDetailsDto);
 }

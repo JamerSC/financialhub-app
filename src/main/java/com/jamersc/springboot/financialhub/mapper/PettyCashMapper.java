@@ -15,10 +15,10 @@ public interface PettyCashMapper {
 
     PettyCashMapper INSTANCE = Mappers.getMapper(PettyCashMapper.class);
 
-    @Mapping(target = "fund", source = "fund")
+    @Mapping(target = "fundId", source = "fund.fundId")
+    @Mapping(target = "activityId", source = "liquidations.activityId")
     @Mapping(target = "receivedBy", source = "receivedBy")
     @Mapping(target = "accounts", source = "accounts")
-    @Mapping(target = "liquidations", source = "liquidations")
     @Mapping(target = "accountIds", expression = "java(mapAccountIds(pettyCashActivity.getAccounts()))")
     @Mapping(target = "accountDetails", expression = "java(mapAccountDetails(pettyCashActivity.getAccounts()))")
     PettyCashActivityDto toPettyCashActivityDto(PettyCashActivity pettyCashActivity);

@@ -15,7 +15,7 @@ public class FundDto {
 
     private Long fundId;
     // private List<PettyCashActivityDto> pettyCash;
-    private List<Long> pettyCashActivityId; // ID
+    private List<Long> pcActivityId; // ID
     private Double fundBalance;
     private Long createdBy;
     private Date createdAt;
