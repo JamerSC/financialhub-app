@@ -20,17 +20,23 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "contactId", source = "contact")
+    @Mapping(target = "contactId", source = "contact.contactId")
     @Mapping(target = "confirmPassword", ignore = true)
-    @Mapping(target = "contact", source = "contact", qualifiedByName = "toContactDto")
     @Mapping(target = "roleIds", source = "roles", qualifiedByName = "mapRolesToRoleIds")
     UserDto toUserDto(User user);
 
-    @Mapping(target = "contact", source = "contactId")
+    @Mapping(target = "contact", source = "contactId", qualifiedByName = "mapContactIdToContact")
     @Mapping(target = "pettyCash", ignore = true)
     @Mapping(target = "roles", source = "roleIds",  qualifiedByName = "mapRoleIdsToRoles")
-    @Mapping(target = "createdAt", expression = "java(new java.util.Date())")
     User toUserEntity(UserDto userDto);
+
+    @Named("mapContactIdToContact")
+    default Contact mapContactIdToContact(Long contactId) {
+        if (contactId == null) return null;
+        Contact contact = new Contact();
+        contact.setContactId(contactId);
+        return contact;
+    }
 
     @Named("mapRolesToRoleIds")
     default Set<Long> mapRolesToRoleIds(Set<Role> roles) {
@@ -44,27 +50,6 @@ public interface UserMapper {
             role.setId(id);
             return role;
         }).collect(Collectors.toSet()) : null;
-    }
-
-    @Named("toContactDto")
-    @Mapping(target = "clientAccounts", source = "clientAccounts", qualifiedByName = "toClientAccountDto")
-    @Mapping(target = "user", ignore = true) // FIX: Ignore unmapped 'user' field
-    default ContactDto toContactDto(Contact contact) {
-        if (contact == null) return null;
-        ContactDto dto;
-        dto = new ContactDto();
-        // Map other fields
-        return dto;
-    }
-
-    @Named("toContact")
-    @Mapping(target = "clientAccounts", source = "clientAccounts", qualifiedByName = "toClientAccount")
-    default Contact toContact(ContactDto dto) {
-        if (dto == null) return null;
-        Contact contact;
-        contact = new Contact();
-        // Map other fields
-        return contact;
     }
 
     @Named("toClientAccountDto")

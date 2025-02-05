@@ -14,20 +14,22 @@ import java.util.Set;
 public class ClientAccountDto {
 
         private Long clientAccountId;
-        private ContactDto client; // one to many contact id
+        //private ContactDto client; // one to many contact id
+        private Long contactId;
+
         private String accountTitle;
         private ClientAccountType clientAccountType;
 
-        private CaseAccountDto caseAccount; // one to one client account
-        //private Long caseAccountId;
-        private ProjectAccountDto projectAccount; // one to one client account
-        //private Long projectAccountId;
-        private RetainerAccountDto retainerAccount; // one to one client account
-        private Long retainerAccountId;
-        private Set<PettyCashActivityDto> pettyCash;
-        //private Set<Long> pettyCashActivityId;
-        private LiquidationDto activity;
-        //private Long ActivityId;
+        //private CaseAccountDto caseAccount; // one to one client account
+        private Long caseId;
+        //private ProjectAccountDto projectAccount; // one to one client account
+        private Long projectId;
+        //private RetainerAccountDto retainerAccount; // one to one client account
+        private Long retainerId;
+        //private Set<PettyCashActivityDto> pettyCash;
+        private Set<Long> pcActivityId;
+        //private LiquidationDto activity;
+        private Long ActivityId;
 
         private Long createdBy;
         private Date createdAt;
