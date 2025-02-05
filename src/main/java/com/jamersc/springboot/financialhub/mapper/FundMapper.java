@@ -12,23 +12,28 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Mapper(uses = {PettyCashMapper.class})
-//@Component
 public interface FundMapper {
-    //class FundMapper {
 
     FundMapper INSTANCE = Mappers.getMapper(FundMapper.class);
 
-    @Mapping(target = "pettyCash", source = "pettyCash")
+    @Mapping(target = "pcActivityId", expression = "java(mapPettyCashToIds(fund.getPettyCash()))")
+    //@Mapping(target = "pcActivityId", source = "pettyCash")
     FundDto toFundDto(Fund fund);
 
-    @Mapping(target = "pettyCash", source = "pettyCash")
+    @Mapping(target = "pettyCash", expression = "java(mapIdsToPettyCash(fundDto.getPcActivityId()))")
+    //@Mapping(target = "pettyCash", ignore = true) // source = "pcActivityId"
     Fund toFundEntity(FundDto fundDto);
 
-    default List<PettyCashActivityDto> mapPettyCashToDto(List<PettyCashActivity> pettyCash) {
-        return pettyCash != null ? pettyCash.stream().map(PettyCashMapper.INSTANCE::toPettyCashActivityDto).collect(Collectors.toList()) : null;
+    default List<Long> mapPettyCashToIds(List<PettyCashActivity> pettyCash) {
+        return pettyCash != null ? pettyCash.stream().map(PettyCashActivity::getPcActivityId).collect(Collectors.toList()) : null;
     }
 
-    default List<PettyCashActivity> mapDtoToPettyCash(List<PettyCashActivityDto> pettyCashDtos) {
-        return pettyCashDtos != null ? pettyCashDtos.stream().map(PettyCashMapper.INSTANCE::toPettyCashActivityEntity).collect(Collectors.toList()) : null;
+    default List<PettyCashActivity> mapIdsToPettyCash(List<Long> ids) {
+        // You need to fetch PettyCashActivity from the database using IDs
+        return ids != null ? ids.stream().map(id -> {
+            PettyCashActivity pca = new PettyCashActivity();
+            pca.setPcActivityId(id);
+            return pca;
+        }).collect(Collectors.toList()) : null;
     }
 }
