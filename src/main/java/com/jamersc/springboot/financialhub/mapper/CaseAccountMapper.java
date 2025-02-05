@@ -10,6 +10,8 @@ import org.mapstruct.factory.Mappers;
 public interface CaseAccountMapper {
 
     CaseAccountMapper INSTANCE = Mappers.getMapper(CaseAccountMapper.class);
+    @Mapping(target = "clientAccountId", source = "clientAccount.clientAccountId")
     CaseAccountDto toCaseAccountDto(CaseAccount caseAccount);
+    @Mapping(target = "clientAccount", ignore = true)
     CaseAccount toCaseAccountEntity(CaseAccountDto caseAccountDto);
 }

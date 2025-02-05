@@ -16,7 +16,7 @@ public interface BankTransactionMapper {
     @Mapping(target = "bankAccountId", source = "bankAccount.bankAccountId")
     BankTransactionDto toTransactionDto(BankTransaction bankTransaction);
 
-    @Mapping(target = "bankAccount", source = "bankAccountId")
+    @Mapping(target = "bankAccount", ignore = true)
     BankTransaction toTransactionEntity(BankTransactionDto bankTransactionDto);
 
     List<BankTransactionDto> toBankTransactionDtoList(List<BankTransaction> bankTransactionList);

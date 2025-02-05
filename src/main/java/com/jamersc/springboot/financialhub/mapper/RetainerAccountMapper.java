@@ -11,11 +11,11 @@ public interface RetainerAccountMapper {
 
     RetainerAccountMapper INSTANCE = Mappers.getMapper(RetainerAccountMapper.class);
 
-    @Mapping(target = "clientAccount", source = "clientAccount")
-    @Mapping(target = "retainerTitle", source = "clientAccount.accountTitle")
+
+    @Mapping(target = "clientAccountId", source = "clientAccount.clientAccountId")
     RetainerAccountDto toRetainerAccountDto(RetainerAccount retainerAccount);
 
-    @Mapping(target = "clientAccount", source = "clientAccount")
-    @Mapping(target = "retainerTitle", source = "clientAccount.accountTitle")
+
+    @Mapping(target = "clientAccount", ignore = true)
     RetainerAccount toRetainerAccountEntity(RetainerAccountDto retainerAccountDto);
 }
