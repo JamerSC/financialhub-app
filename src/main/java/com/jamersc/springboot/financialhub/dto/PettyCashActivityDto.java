@@ -16,8 +16,8 @@ public class PettyCashActivityDto {
 
     private Long pcActivityId;
 
-    // private FundDto fund;
-    private Long fundId; // ID
+    private FundDto fund;
+    //private Long fundId; // ID
 
     private String pcActivityNo;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -27,8 +27,8 @@ public class PettyCashActivityDto {
     private String soaCategory;
 
     //private Set<ClientAccountDto> accounts; // Many to Many Rel.
-    //private List<LiquidationDto> liquidations; // One to Many
-    private List<Long> activityId; // Liquidation Activity ID
+    private List<LiquidationDto> liquidations; // One to Many
+    //private List<Long> activityId; // Liquidation Activity ID
 
     private Double totalAmount;
     private Boolean approved;

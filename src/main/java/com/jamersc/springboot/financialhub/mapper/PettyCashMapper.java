@@ -20,8 +20,9 @@ public interface PettyCashMapper {
 
 
 
-    @Mapping(target = "fundId", source = "fund.fundId")
-    @Mapping(target = "activityId", expression = "java(mapActivityIds(pettyCashActivity.getLiquidations()))")
+    @Mapping(target = "fund", source = "fund")
+    //@Mapping(target = "liquidations", expression = "java(mapActivityIds(pettyCashActivity.getLiquidations()))")
+    @Mapping(target = "liquidations", source = "liquidations")
     @Mapping(target = "accountIds", expression = "java(mapAccountIds(pettyCashActivity.getAccounts()))")
     @Mapping(target = "accountDetails", expression = "java(mapAccountDetails(pettyCashActivity.getAccounts()))")
     PettyCashActivityDto toPettyCashActivityDto(PettyCashActivity pettyCashActivity);
@@ -32,11 +33,11 @@ public interface PettyCashMapper {
     @Mapping(target = "accounts", ignore = true)
     PettyCashActivity toPettyCashActivityEntity(PettyCashActivityDto pettyCashActivityDto);
 
-    default List<Long> mapActivityIds(List<Liquidation> liquidations) {
+   /* default List<Long> mapActivityIds(List<Liquidation> liquidations) {
         return liquidations != null ? liquidations.stream()
                 .map(Liquidation::getActivityId)
                 .collect(Collectors.toList()) : Collections.emptyList();
-    }
+    }*/
 
     default Set<Long> mapAccountIds(Set<ClientAccount> accounts) {
         return accounts != null ? accounts.stream().map(ClientAccount::getClientAccountId).collect(Collectors.toSet()) : null;

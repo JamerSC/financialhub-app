@@ -55,7 +55,7 @@ public class MyActivityController {
         Double remainingBalance = myActivity.getTotalAmount() - totalLiquidationAmount;
         LiquidationDto newLiquidation = new LiquidationDto();
         List<ClientAccountDto> listOfChargeTo = clientAccountService.getAllClientAccounts(); //
-        newLiquidation.setActivity(myActivity);
+        newLiquidation.setActivityId(myActivity.getPcActivityId());
         model.addAttribute("pettyCash", myActivity); // display petty cash info
         model.addAttribute("liquidations", liquidations); // display liquidations
         model.addAttribute("totalLiquidationAmount", totalLiquidationAmount); // sum total liquidation
