@@ -107,12 +107,12 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
         // Convert to Dto Accounts, Petty Cash, & Fund
 
         PettyCashActivityDto dto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
-
+/*
         Set<ClientAccountDto> accounts = pettyCash.getAccounts()
                 .stream().
                 map(clientAccountMapper::toClientAccountDto)
                 .collect(Collectors.toSet());
-        dto.setAccounts(accounts);
+        dto.setAccounts(accounts);*/
 
         UserDto user = userMapper.toUserDto(pettyCash.getReceivedBy());
         dto.setReceivedBy(user);
@@ -199,13 +199,13 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-            Set<ClientAccount> accounts = dto.getAccounts().stream()
+            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
                     .map(ClientAccountDto::getClientAccountId)
                     .map(clientAccountRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);
+            pettyCash.setAccounts(accounts);*/
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
             pettyCash.setApproved(dto.getApproved());
@@ -248,14 +248,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
-                    .map(ClientAccountDto::getClientAccountId)
-                    .map(clientAccountRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);*/
-
             pettyCash.setTotalAmount(dto.getTotalAmount());
 
             if (dto.getReceivedBy() != null) {
@@ -283,13 +275,13 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-            Set<ClientAccount> accounts = dto.getAccounts().stream()
+            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
                     .map(ClientAccountDto::getClientAccountId)
                     .map(clientAccountRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);
+            pettyCash.setAccounts(accounts);*/
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
             pettyCash.setApproved(false);

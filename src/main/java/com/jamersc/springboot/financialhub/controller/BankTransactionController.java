@@ -46,7 +46,7 @@ public class BankTransactionController {
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
         List<BankTransaction> listOfDeposits = bankTransactionService.findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.DEPOSIT);
         BankTransactionDto deposit = new BankTransactionDto();
-        deposit.setBankAccount(bankAccount);
+        deposit.setBankAccountId(bankAccount.getBankAccountId());
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("listOfDeposits", listOfDeposits);
         model.addAttribute("deposit", deposit);
@@ -58,16 +58,16 @@ public class BankTransactionController {
                              @PathVariable(value = "id") Long id) {
         String username = getSessionUsername();
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
-        deposit.setBankAccount(bankAccount);
+        deposit.setBankAccountId(bankAccount.getBankAccountId());
         bankTransactionService.processDeposit(deposit, username);
-        return "redirect:/bank-transactions/"+ deposit.getBankAccount().getBankAccountId() + "/deposit-transaction";
+        return "redirect:/bank-transactions/"+ deposit.getBankAccountId() + "/deposit-transaction";
     }
 
     @GetMapping("/{id}/delete-deposit-transaction")
     public String deleteDeposit(@PathVariable(value = "id") Long id) {
         BankTransactionDto bankTransaction = bankTransactionService.getTransactionById(id);
         bankTransactionService.deleteTransactionById(bankTransaction.getId());
-        return "redirect:/bank-transactions/"+ bankTransaction.getBankAccount().getBankAccountId() +"/deposit-transaction";
+        return "redirect:/bank-transactions/"+ bankTransaction.getBankAccountId() +"/deposit-transaction";
     }
 
     @GetMapping("/withdrawal-accounts")
@@ -84,7 +84,7 @@ public class BankTransactionController {
         List<BankTransaction> listOfWithdrawals = bankTransactionService
                 .findTransactionsByBankAccountAndType(bankAccount.getBankAccountId(), BankTransactionType.WITHDRAWAL);
         BankTransactionDto withdraw = new BankTransactionDto();
-        withdraw.setBankAccount(bankAccount);
+        withdraw.setBankAccountId(bankAccount.getBankAccountId());
         model.addAttribute("bankAccount", bankAccount);
         model.addAttribute("listOfWithdrawals", listOfWithdrawals);
         model.addAttribute("withdraw", withdraw);
@@ -96,9 +96,9 @@ public class BankTransactionController {
                                 @PathVariable(value = "id") Long id) {
         String username = getSessionUsername();
         BankAccountDto bankAccount = bankAccountService.getBankAccountById(id);
-        withdraw.setBankAccount(bankAccount);
+        withdraw.setBankAccountId(bankAccount.getBankAccountId());
         bankTransactionService.processWithdrawal(withdraw, username);
-        return "redirect:/bank-transactions/"+ withdraw.getBankAccount().getBankAccountId() +"/withdrawal-transaction";
+        return "redirect:/bank-transactions/"+ withdraw.getBankAccountId() +"/withdrawal-transaction";
     }
 
     @GetMapping("/{id}/delete-transaction")
@@ -119,7 +119,7 @@ public class BankTransactionController {
         // Delete the bank transaction
         bankTransactionService.deleteTransactionById(bankTransaction.getId());
 
-        return "redirect:/bank-transactions/" + bankTransaction.getBankAccount().getBankAccountId() + "/withdrawal-transaction";
+        return "redirect:/bank-transactions/" + bankTransaction.getBankAccountId() + "/withdrawal-transaction";
     }
 
     public String getSessionUsername() {

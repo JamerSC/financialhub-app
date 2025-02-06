@@ -17,29 +17,22 @@ public interface ClientAccountMapper {
 
     ClientAccountMapper INSTANCE = Mappers.getMapper(ClientAccountMapper.class);
 
-
-
-    @Mapping(target = "contactId", source = "client.contactId")
-    @Mapping(target = "pcActivityId", source = "pettyCashActivity", qualifiedByName = "mapPettyCashActivityIds")
-    @Mapping(target = "retainerId", source = "retainerAccount.retainerId")
-    @Mapping(target = "projectId", source = "projectAccount.projectId")
-    @Mapping(target = "caseId", source = "caseAccount.caseId")
-    @Mapping(target = "activityId", source = "activity.activityId")
+    @Mapping(target = "client", source = "client")
+    @Mapping(target = "caseAccount", source = "caseAccount")
+    @Mapping(target = "projectAccount", source = "projectAccount")
+    @Mapping(target = "retainerAccount", source = "retainerAccount")
+    @Mapping(target = "pettyCash", source = "pettyCashActivity")
+    @Mapping(target = "activity", source = "activity")
     ClientAccountDto toClientAccountDto(ClientAccount clientAccount);
+
     @Mapping(target = "client", ignore = true)
-    @Mapping(target = "retainerAccount", ignore = true)
-    @Mapping(target = "projectAccount", ignore = true)
-    @Mapping(target = "pettyCashActivity", ignore = true)
     @Mapping(target = "caseAccount", ignore = true)
+    @Mapping(target = "projectAccount", ignore = true)
+    @Mapping(target = "retainerAccount", ignore = true)
+    @Mapping(target = "pettyCashActivity", ignore = true)
     @Mapping(target = "activity", ignore = true)
     ClientAccount toClientAccountEntity(ClientAccountDto clientAccountDto);
     // List conversion methods
     List<ClientAccountDto> toClientAccountDtos(List<ClientAccount> clientAccounts);
     List<ClientAccount> toClientAccountEntities(List<ClientAccountDto> clientAccountDtos);
-    @Named("mapPettyCashActivityIds")
-    static Set<Long> mapPettyCashActivityIds(Set<PettyCashActivity> activities) {
-        return activities != null ? activities.stream()
-                .map(PettyCashActivity::getPcActivityId)
-                .collect(Collectors.toSet()) : null;
-    }
 }

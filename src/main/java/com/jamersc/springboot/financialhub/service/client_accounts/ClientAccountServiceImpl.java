@@ -1,8 +1,7 @@
 package com.jamersc.springboot.financialhub.service.client_accounts;
 
 import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
-import com.jamersc.springboot.financialhub.mapper.ClientAccountMapper;
-import com.jamersc.springboot.financialhub.mapper.ContactMapper;
+import com.jamersc.springboot.financialhub.mapper.*;
 import com.jamersc.springboot.financialhub.model.*;
 import com.jamersc.springboot.financialhub.repository.*;
 import jakarta.transaction.Transactional;
@@ -36,6 +35,12 @@ public class ClientAccountServiceImpl implements ClientAccountService{
     private ClientAccountMapper clientAccountMapper;
     @Autowired
     private ContactMapper contactMapper;
+    @Autowired
+    private CaseAccountMapper caseAccountMapper;
+    @Autowired
+    private ProjectAccountMapper projectAccountMapper;
+    @Autowired
+    private RetainerAccountMapper retainerAccountMapper;
 
     @Override
     public List<ClientAccountDto> getAllClientAccounts() {
@@ -95,7 +100,8 @@ public class ClientAccountServiceImpl implements ClientAccountService{
         User createdBy = userRepository.findByUsername(username);
 
         account= new ClientAccount();
-        account.setClient(contactMapper.toContactEntity(dto.getClient()));
+        //account.setClient(contactMapper.toContactEntity(dto.getClientAccountId()));
+        account.setClientAccountId(dto.getClientAccountId());
         account.setAccountTitle(dto.getAccountTitle());
         account.setClientAccountType(ClientAccountType.CASE);
         if (createdBy != null) {

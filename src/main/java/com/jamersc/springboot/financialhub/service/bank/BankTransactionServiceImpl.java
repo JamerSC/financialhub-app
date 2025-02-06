@@ -78,8 +78,8 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         User user = userRepository.findByUsername(username);
         BankTransaction depositTransaction;
 
-        BankAccount account = bankAccountRepository.findById(deposit.getBankAccount()
-                .getBankAccountId()).orElseThrow(() -> new RuntimeException("Bank account ID not found."));
+        BankAccount account = bankAccountRepository.findById(deposit.getBankAccountId())
+                .orElseThrow(() -> new RuntimeException("Bank account ID not found."));
         Double currentBalance = account.getAccountBalance();
 
         if (currentBalance == null) {
@@ -112,8 +112,8 @@ public class BankTransactionServiceImpl implements BankTransactionService {
         BankTransaction withdrawTransaction;
         User user = userRepository.findByUsername(username);
 
-        BankAccount account = bankAccountRepository.findById(withdraw.getBankAccount()
-                        .getBankAccountId()).orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
+        BankAccount account = bankAccountRepository.findById(withdraw.getBankAccountId())
+                .orElseThrow(() -> new RuntimeException("Bank Account ID not found."));
 
         Double currentBalance = account.getAccountBalance();
         if (currentBalance < withdraw.getTransactionAmount()) {
