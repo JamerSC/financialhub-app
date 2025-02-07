@@ -71,8 +71,8 @@ public class UserServiceImpl implements UserService {
         if (user != null) {
             UserDto dto= userMapper.toUserDto(user);
 
-            if (dto.getContactId() != null) {
-                Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+            if (dto.getContact() != null) {
+                Contact contact = contactRepository.findById(dto.getContact().getContactId()).orElseThrow(null);
                 if (contact != null) {
                     user.setContact(contact);
                 }
@@ -94,8 +94,8 @@ public class UserServiceImpl implements UserService {
         User user = new User();
         User creator = userRepository.findByUsername(username);
 
-        if (dto.getContactId() != null) {
-            Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+        if (dto.getContact() != null) {
+            Contact contact = contactRepository.findById(dto.getContact().getContactId()).orElseThrow(null);
             if (contact != null) {
                 user.setContact(contact);
             }
@@ -136,8 +136,8 @@ public class UserServiceImpl implements UserService {
         if (dto.getUserId() != null) {
             user = userRepository.findById(dto.getUserId()).orElse(new User());
 
-            if (dto.getContactId() != null) {
-                Contact contact = contactRepository.findById(dto.getContactId()).orElseThrow(null);
+            if (dto.getContact() != null) {
+                Contact contact = contactRepository.findById(dto.getContact().getContactId()).orElseThrow(null);
                 if (contact != null) {
                     user.setContact(contact);
                 }

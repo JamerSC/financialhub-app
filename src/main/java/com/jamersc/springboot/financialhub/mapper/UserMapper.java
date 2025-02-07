@@ -20,12 +20,12 @@ public interface UserMapper {
 
     UserMapper INSTANCE = Mappers.getMapper(UserMapper.class);
 
-    @Mapping(target = "contactId", source = "contact.contactId")
+    @Mapping(target = "contact", source = "contact")
     @Mapping(target = "confirmPassword", ignore = true)
     @Mapping(target = "roleIds", source = "roles", qualifiedByName = "mapRolesToRoleIds")
     UserDto toUserDto(User user);
 
-    @Mapping(target = "contact", source = "contactId", qualifiedByName = "mapContactIdToContact")
+    @Mapping(target = "contact", ignore = true)// source = "contactId", qualifiedByName = "mapContactIdToContact")
     @Mapping(target = "pettyCash", ignore = true)
     @Mapping(target = "roles", source = "roleIds",  qualifiedByName = "mapRoleIdsToRoles")
     User toUserEntity(UserDto userDto);
