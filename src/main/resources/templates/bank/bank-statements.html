@@ -47,7 +47,7 @@
                                     <td th:text="${tempAccount.accountHolderName}"></td>
                                     <td th:text="${tempAccount.accountNumber}"></td>
                                     <td th:text="${tempAccount.accountBalance != null ? #numbers.formatDecimal(tempAccount.accountBalance, 1, 'COMMA', 2, 'POINT') : '0.00'}"></td>
-                                    <td th:text="${tempAccount.bank.name} + ' (' + ${tempAccount.bank.abbreviation} + ') - ' + ${tempAccount.bank.branch}"></td>
+                                    <td th:text="${tempAccount.bank?.name} + ' (' + ${tempAccount.bank?.abbreviation} + ') - ' + ${tempAccount.bank?.branch}"></td>
                                     <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
                                         <a href="#" class="btn btn-info btn-sm"
                                            th:href="@{/bank/bank-account-journal/{id}(id=${tempAccount.bankAccountId})}" title="View Journal">

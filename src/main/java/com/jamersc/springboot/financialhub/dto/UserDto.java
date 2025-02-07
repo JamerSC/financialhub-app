@@ -45,8 +45,8 @@ public class UserDto {
 
     private Date updatedAt;
 
-    //private ContactDto contact;
-    private Long contactId; // Instead of ContactDto reference
+    private ContactDto contact;
+    //private Long contactId; // Instead of ContactDto reference
 
     @RoleIdsNotEmpty(message = "At least one role must be selected")
     private Set<Long> roleIds;
