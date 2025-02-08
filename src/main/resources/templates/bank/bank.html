@@ -125,9 +125,11 @@
                                         <form id="addAccountForm" action="#" th:action="@{/bank/save-account}" th:object="${account}" method="POST">
                                             <div class="mb-3">
                                                 <label for="bank" class="form-label">Select Bank</label>
-                                                <select class="form-select" id="bank" th:field="*{bank}">
+                                                <select class="form-select" id="bank" th:field="*{bankId}">
                                                     <option value="" selected>Select a bank</option>
-                                                    <option th:each="bank : ${allBanks}"  th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
+                                                    <option th:each="bank : ${allBanks}"
+                                                            th:value="${bank.bankId}"
+                                                            th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">
                                                     </option>
                                                 </select>
                                                 <div class="invalid-feedback">Please select a bank.</div>
@@ -165,7 +167,7 @@
                                             <div><input type="hidden" class="form-control" id="bankAccountId" th:field="*{bankAccountId}" /></div>
                                             <div class="mb-3">
                                                 <label for="editBank" class="form-label">Select Bank</label>
-                                                <select class="form-select" id="editBank" th:field="*{bank}">
+                                                <select class="form-select" id="editBank" th:field="*{bankId}">
                                                     <option value="" selected>Choose a bank</option>
                                                     <option th:each="bank : ${allBanks}"
                                                             th:value="${bank.bankId}" th:text="${bank.name} + ' (' + ${bank.abbreviation} + ') - ' + ${bank.branch}">

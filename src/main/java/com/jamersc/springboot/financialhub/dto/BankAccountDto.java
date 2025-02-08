@@ -13,8 +13,7 @@ import java.util.List;
 public class BankAccountDto {
 
     private Long bankAccountId;
-    private BankDto bank;  // @ManyToOne Nested BankDto
-    //private Long bankId;
+    private Long bankId;
     private String accountHolderName;
     private String accountNumber;
     private Double accountBalance;

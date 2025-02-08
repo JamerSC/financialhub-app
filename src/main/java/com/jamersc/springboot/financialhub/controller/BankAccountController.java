@@ -49,8 +49,8 @@ public class BankAccountController {
         // create/update bank account
         List<Bank> allBanks = bankService.getAllBanks();
         model.addAttribute("allBanks", allBanks);
-        model.addAttribute("account", new BankAccount());
-        model.addAttribute("updateAccount", new BankAccount());
+        model.addAttribute("account", new BankAccountDto()); // replaced the new bank account entity to dto
+        model.addAttribute("updateAccount", new BankAccountDto()); //
 
         // Banks
         Page<Bank> bankListPage = bankService.findAll(PageRequest.of(bankPage, bankSize));
