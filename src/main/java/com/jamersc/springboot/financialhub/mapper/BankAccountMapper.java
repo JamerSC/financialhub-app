@@ -13,7 +13,7 @@ public interface BankAccountMapper {
 
     BankAccountMapper INSTANCE = Mappers.getMapper(BankAccountMapper.class);
 
-    @Mapping(target = "bank", source = "bank") // Correct mapping for bank -> bankId
+    @Mapping(target = "bankId", source = "bank.bankId")
     @Mapping(target = "transactions", source = "bankTransactions")
     @Mapping(target = "bankAccountId", source = "bankAccountId") // Add this line to map bankAccountId properly
     BankAccountDto toBankAccountDto(BankAccount bankAccount);

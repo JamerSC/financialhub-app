@@ -68,8 +68,8 @@ public class BankAccountServiceImpl implements BankAccountService{
         }
 
         // Set Bank
-        if (bankAccountDto.getBank() != null) {
-            Bank bank = bankRepository.findById(bankAccountDto.getBank().getBankId()).orElseThrow(null);
+        if (bankAccountDto.getBankId() != null) {
+            Bank bank = bankRepository.findById(bankAccountDto.getBankId()).orElseThrow(null);
             if (bank != null) {
                 bankAccount.setBank(bank);
             }
