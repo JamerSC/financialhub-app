@@ -17,7 +17,7 @@ public interface ClientAccountMapper {
 
     ClientAccountMapper INSTANCE = Mappers.getMapper(ClientAccountMapper.class);
 
-    @Mapping(target = "client", source = "client")
+    @Mapping(target = "client", ignore = true)  // Prevent recursion
     @Mapping(target = "caseAccount", source = "caseAccount")
     @Mapping(target = "projectAccount", source = "projectAccount")
     @Mapping(target = "retainerAccount", source = "retainerAccount")
@@ -25,7 +25,7 @@ public interface ClientAccountMapper {
     @Mapping(target = "activity", source = "activity")
     ClientAccountDto toClientAccountDto(ClientAccount clientAccount);
 
-    @Mapping(target = "client", ignore = true)
+    @Mapping(target = "client", ignore = true)  // Prevent recursion
     @Mapping(target = "caseAccount", ignore = true)
     @Mapping(target = "projectAccount", ignore = true)
     @Mapping(target = "retainerAccount", ignore = true)

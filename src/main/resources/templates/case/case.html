@@ -59,9 +59,9 @@
                                     </td>
                                     <td>
                                         <a th:href="@{/client-account/{id}/case-summary(id=${tempCase.clientAccountId})}" class="text-dark" title="View Summary">
-                                            <span th:if="${tempCase.client.individual != null}"
+                                            <span th:if="${tempCase.client?.individual != null}"
                                                   th:text="${tempCase.client.individual.getFullName()}"></span>
-                                            <span th:if="${tempCase.client.company != null}"
+                                            <span th:if="${tempCase.client?.company != null}"
                                                   th:text="${tempCase.client.company.companyName}"></span>
                                         </a>
                                     </td>
