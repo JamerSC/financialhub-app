@@ -347,7 +347,24 @@ public class ClientAccountController {
 
     @GetMapping("/list-of-retainers")
     public String listOfRetainers(Model model) {
-        model.addAttribute("listOfRetainers", clientAccountService.getAllRetainerAccounts());
+        List<ClientAccountDto> listOfRetainers = clientAccountService.getAllRetainerAccounts();
+        model.addAttribute("listOfRetainers", listOfRetainers);
+
+        // Debugging output
+        /*listOfRetainers.forEach(retainer -> {
+            System.out.println("ClientAccountId: " + retainer.getClientAccountId());
+            if (retainer.getClient() != null) {
+                System.out.println("Client Type: " + retainer.getClient().getContactType());
+                if (retainer.getClient().getIndividual() != null) {
+                    System.out.println("Individual Name: " + retainer.getClient().getIndividual().getFullName());
+                } else if (retainer.getClient().getCompany() != null) {
+                    System.out.println("Company Name: " + retainer.getClient().getCompany().getCompanyName());
+                }
+            } else {
+                System.out.println("Client is NULL");
+            }
+        });*/
+
         model.addAttribute("retainerAccount", new ClientAccountDto());
         model.addAttribute("updateRetainerAccount", new ClientAccountDto());
         List<Long> clientsWithRetainers = clientAccountService.getClientsWithRetainers();

@@ -54,10 +54,8 @@
                                 <td>
                                     <a th:href="@{/client-account/{id}/retainer-activity(id=${tempRetainer.clientAccountId})}"
                                        class="text-dark" title="View Summary">
-                                <span th:if="${tempRetainer.client.individual != null}"
-                                      th:text="${tempRetainer.client.individual.getFullName()}"></span>
-                                        <span th:if="${tempRetainer.client.company != null}"
-                                              th:text="${tempRetainer.client.company.companyName}"></span>
+                                        <span th:text="${tempRetainer.retainerAccount?.retainerTitle ?: 'N/A'}"></span>
+                                        <!--<span th:text="${tempRetainer.client?.individual?.fullName ?: tempRetainer.client?.company?.companyName ?: 'N/A'}"></span>-->
                                     </a>
                                 </td>
                                 <td th:text="${tempRetainer.retainerAccount.status.displayStatus()}"></td>
