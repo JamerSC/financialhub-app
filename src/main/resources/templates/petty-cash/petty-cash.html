@@ -79,16 +79,16 @@
                                     <td th:text="${tempPettyCash.pcActivityNo}"></td>
                                     <td th:text="${#numbers.formatDecimal(tempPettyCash.totalAmount, 1, 'COMMA', 2, 'POINT')}"></td>
                                     <td>
-                                        <!-- ACCORDION -->
-                                        <div>
-                                            <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempPettyCash.pcActivityId}">
-                                                Show Accounts <i class="lni lni-chevron-down"></i>
-                                            </a>
-                                            <div th:id="'collapse-' + ${tempPettyCash.pcActivityId}" class="collapse mt-2">
-                                                <p th:each="account : ${tempPettyCash.accounts}" class="mb-1">
-                                                    <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                                    <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                                </p>
+                                        <div class="mb-2">
+                                            <div>
+                                                <a href="#" class="btn btn-link p-0 text-decoration-none" data-bs-toggle="collapse" th:href="'#collapse-' + ${tempPettyCash.pcActivityId}">
+                                                    Show Accounts <i class="lni lni-chevron-down"></i>
+                                                </a>
+                                                <div th:id="'collapse-' + ${tempPettyCash.pcActivityId}" class="collapse mt-2">
+                                                    <div th:each="accountDetail : ${tempPettyCash.accountDetails}" class="mb-1">
+                                                        <span th:text="${accountDetail}"></span>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
@@ -170,7 +170,7 @@
                                                 <div class="form-group">
                                                     <label for="clientAccounts">Accounts</label>
                                                     <textarea class="form-control" id="clientAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
-                                                    <input type="hidden" id="clientAccountsJson" th:field="*{accounts}" />
+                                                    <input type="hidden" id="clientAccountsJson" th:field="*{accountIds}" />
                                                 </div>
                                             </div>
                                             <!-- <div class="row mb-3">
@@ -329,7 +329,7 @@
                                                 <div class="form-group">
                                                     <label for="adminAccounts">Accounts</label>
                                                     <textarea class="form-control" id="adminAccounts" rows="4" cols="6" placeholder="Add accounts ..." required></textarea>
-                                                    <input type="hidden" id="adminAccountsJson" th:field="*{accounts}" />
+                                                    <input type="hidden" id="adminAccountsJson" th:field="*{accountIds}" />
                                                 </div>
                                             </div>
                                             <div class="row mb-3">

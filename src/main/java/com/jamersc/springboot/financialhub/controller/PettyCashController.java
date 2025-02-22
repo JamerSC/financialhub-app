@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.ByteArrayInputStream;
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @AllArgsConstructor
 @Controller
@@ -52,7 +53,7 @@ public class PettyCashController {
 
         FundDto fund = fundService.getFundById(id); // fund id# 1
 
-        List<PettyCashActivity> listOfPettyCashActivities = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
+        Set<PettyCashActivityDto> listOfPettyCashActivities = pettyCashService.getUnapprovedPettyCashByReceivedBy(loggedInUser);
         model.addAttribute("listOfPettyCashActivities", listOfPettyCashActivities);
         model.addAttribute("pettyCash", new PettyCashActivityDto());
         model.addAttribute("listOfAccounts", clientAccountService.getAllClientAccounts());
