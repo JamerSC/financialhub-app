@@ -23,8 +23,8 @@ public interface PettyCashMapper {
     @Mapping(target = "fund", source = "fund")
     //@Mapping(target = "liquidations", expression = "java(mapActivityIds(pettyCashActivity.getLiquidations()))")
     @Mapping(target = "liquidations", source = "liquidations")
-    @Mapping(target = "accountIds", expression = "java(mapAccountIds(pettyCashActivity.getAccounts()))")
-    @Mapping(target = "accountDetails", expression = "java(mapAccountDetails(pettyCashActivity.getAccounts()))")
+    @Mapping(target = "accountIds", expression = "java(mapAccountsToIds(pettyCashActivity.getAccounts()))")
+    @Mapping(target = "accountDetails", expression = "java(mapAccountsToDetails(pettyCashActivity.getAccounts()))")
     PettyCashActivityDto toPettyCashActivityDto(PettyCashActivity pettyCashActivity);
 
 
@@ -33,16 +33,24 @@ public interface PettyCashMapper {
     @Mapping(target = "accounts", ignore = true)
     PettyCashActivity toPettyCashActivityEntity(PettyCashActivityDto pettyCashActivityDto);
 
-   /* default List<Long> mapActivityIds(List<Liquidation> liquidations) {
-        return liquidations != null ? liquidations.stream()
-                .map(Liquidation::getActivityId)
-                .collect(Collectors.toList()) : Collections.emptyList();
-    }*/
-
-    default Set<Long> mapAccountIds(Set<ClientAccount> accounts) {
-        return accounts != null ? accounts.stream().map(ClientAccount::getClientAccountId).collect(Collectors.toSet()) : null;
+    default Set<Long> mapAccountsToIds(Set<ClientAccount> accounts) {
+        if(accounts == null) {
+            return null;
+        }
+        // stream & map all client accounts id used link used in petty cash
+        return accounts.stream()
+                .map(ClientAccount::getClientAccountId)
+                .collect(Collectors.toSet());
     }
 
+    default Set<String> mapAccountsToDetails(Set<ClientAccount> accounts) {
+        if(accounts == null) {
+            return null;
+        }
+        return accounts.stream()
+                .map(account -> account.getAccountTitle() + " (" + account.getClientAccountType() + ")")
+                .collect(Collectors.toSet());
+    }
     default Set<String> mapAccountDetails(Set<ClientAccount> accounts) {
         return accounts != null ? accounts.stream().map(a -> a.getAccountTitle() + " - " + a.getClientAccountType()).collect(Collectors.toSet()) : null;
     }

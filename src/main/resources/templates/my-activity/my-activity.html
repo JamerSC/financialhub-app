@@ -63,10 +63,9 @@
                                                         Show Accounts <i class="lni lni-chevron-down"></i>
                                                     </a>
                                                     <div th:id="'collapse-' + ${tempActivity.pcActivityId}" class="collapse mt-2">
-                                                        <p th:each="account : ${tempActivity.accounts}" class="mb-1">
-                                                            <span class="fw-bold" th:text="${account.accountTitle}"></span>
-                                                            <span class="text-muted" th:text="'(' + ${account.clientAccountType.displayClientAccountType()} + ')'"></span>
-                                                        </p>
+                                                        <div th:each="accountDetail : ${tempActivity.accountDetails}" class="mb-1">
+                                                            <span th:text="${accountDetail}"></span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>

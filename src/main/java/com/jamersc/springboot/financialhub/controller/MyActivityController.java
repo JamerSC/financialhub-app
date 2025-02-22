@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 @Controller
 @AllArgsConstructor
@@ -40,7 +41,7 @@ public class MyActivityController {
 
         User loggedInUser = userService.getByUsername(principal.getName());
 
-        List<PettyCashActivity> myActivities = pettyCashActivityService.getApprovedPettyCashByReceivedBy(loggedInUser);
+        Set<PettyCashActivityDto> myActivities = pettyCashActivityService.getApprovedPettyCashByReceivedBy(loggedInUser);
         model.addAttribute("myActivities", myActivities);
 
         return "my-activity/my-activity";

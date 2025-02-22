@@ -5,14 +5,15 @@ import com.jamersc.springboot.financialhub.model.PettyCashActivity;
 import com.jamersc.springboot.financialhub.model.User;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PettyCashActivityService {
 
     List<PettyCashActivityDto> getAllPettyCash();
     // Petty Cash Controller
-    List<PettyCashActivity> getUnapprovedPettyCashByReceivedBy(User user);
+    Set<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user);
     // MyActivity Controller
-    List<PettyCashActivity> getApprovedPettyCashByReceivedBy(User user);
+    Set<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user);
     List<PettyCashActivity> getByClientAccountId(Long id);
     List<PettyCashActivity> getAllPettyCashWithClientAccounts();
     PettyCashActivityDto getPettyCashById(Long id);

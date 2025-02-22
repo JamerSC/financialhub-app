@@ -1,6 +1,5 @@
 package com.jamersc.springboot.financialhub.service.petty_cash_activity;
 
-import com.jamersc.springboot.financialhub.dto.ClientAccountDto;
 import com.jamersc.springboot.financialhub.dto.FundDto;
 import com.jamersc.springboot.financialhub.dto.PettyCashActivityDto;
 import com.jamersc.springboot.financialhub.dto.UserDto;
@@ -23,7 +22,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -52,7 +50,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
     @Override
     public List<PettyCashActivityDto> getAllPettyCash() {
-        //logger.info("Get all petty cash records.");
+        // this method used for dashboard total count of petty cash
         return pettyCashActivityRepository.findAll().stream()
                 .map(pettyCashMapper::toPettyCashActivityDto)
                 .collect(Collectors.toList());
@@ -61,32 +59,125 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
     /*** Petty Cash  ****/
 
     @Override
-    public List<PettyCashActivity> getUnapprovedPettyCashByReceivedBy(User user) {
+    public Set<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role ->
                         role.getName().equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashActivityRepository.fillAllPettyCashDateDesc();
+            List<PettyCashActivity> pettyCashActivityList = pettyCashActivityRepository.fillAllPettyCashDateDesc();
+
+            return pettyCashActivityList
+                    .stream()
+                    .map(pettyCash -> {
+                        // convert petty cash entity to dto using lambda expression
+                        PettyCashActivityDto pettyCashDto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
+
+                        // fetch client accounts id
+                        Set<Long> accountIds = pettyCashDto.getAccountIds();
+                        // fetch accounts by their ids
+                        List<ClientAccount> accounts = clientAccountRepository.findAllById(accountIds);
+
+                        // get tha account details
+                        Set<String> accountDetails = accounts.stream()
+                                .map(account -> account.getAccountTitle() + " (" + account.getClientAccountType().displayClientAccountType() + ")")
+                                .collect(Collectors.toSet());
+
+                        // set petty cash dto client account details
+                        pettyCashDto.setAccountDetails(accountDetails);
+
+                        return pettyCashDto;
+                    })
+                    .collect(Collectors.toSet());
         } else  {
-            //
-            return pettyCashActivityRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
+            // Employee User View
+            List<PettyCashActivity> pettyCashActivityList = pettyCashActivityRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
+
+            return pettyCashActivityList
+                    .stream()
+                    .map(pettyCash -> {
+                        // convert petty cash entity to dto using lambda expression
+                        PettyCashActivityDto pettyCashDto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
+
+                        // fetch client accounts id
+                        Set<Long> accountIds = pettyCashDto.getAccountIds();
+                        // fetch accounts by their ids
+                        List<ClientAccount> accounts = clientAccountRepository.findAllById(accountIds);
+
+                        // get tha account details
+                        Set<String> accountDetails = accounts.stream()
+                                .map(account -> account.getAccountTitle() + " (" + account.getClientAccountType().displayClientAccountType() + ")")
+                                .collect(Collectors.toSet());
+
+                        // set petty cash dto client account details
+                        pettyCashDto.setAccountDetails(accountDetails);
+
+                        return pettyCashDto;
+                    })
+                    .collect(Collectors.toSet());
         }
     }
 
     /****  My Activity ****/
 
     @Override
-    public List<PettyCashActivity> getApprovedPettyCashByReceivedBy(User user) {
+    public Set<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role -> role.getName()
                         .equals("ROLE_MANAGER") || role.getName().equals("ROLE_ADMIN"))) {
             // Admin & Manager View Petty Cash
-            return pettyCashActivityRepository.findAllApprovedPettyCashDateDesc();
+            List<PettyCashActivity> pettyCashActivityList = pettyCashActivityRepository.findAllApprovedPettyCashDateDesc();
+            //return pettyCashActivityRepository.findAllApprovedPettyCashDateDesc();
+            return pettyCashActivityList
+                    .stream()
+                    .map(pettyCash -> {
+                        // convert petty cash entity to dto using lambda expression
+                        PettyCashActivityDto pettyCashDto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
+
+                        // fetch client accounts id
+                        Set<Long> accountIds = pettyCashDto.getAccountIds();
+                        // fetch accounts by their ids
+                        List<ClientAccount> accounts = clientAccountRepository.findAllById(accountIds);
+
+                        // get tha account details
+                        Set<String> accountDetails = accounts.stream()
+                                .map(account -> account.getAccountTitle() + " (" + account.getClientAccountType().displayClientAccountType() + ")")
+                                .collect(Collectors.toSet());
+
+                        // set petty cash dto client account details
+                        pettyCashDto.setAccountDetails(accountDetails);
+
+                        return pettyCashDto;
+                    })
+                    .collect(Collectors.toSet());
+
+
         } else  {
-            //
-            return pettyCashActivityRepository.findApprovedPettyCashByReceivedByDateDesc(user);
+            // Employee User View
+            List<PettyCashActivity> pettyCashActivityList = pettyCashActivityRepository.findApprovedPettyCashByReceivedByDateDesc(user);
+            return pettyCashActivityList
+                    .stream()
+                    .map(pettyCash -> {
+                        // convert petty cash entity to dto using lambda expression
+                        PettyCashActivityDto pettyCashDto = pettyCashMapper.toPettyCashActivityDto(pettyCash);
+
+                        // fetch client accounts id
+                        Set<Long> accountIds = pettyCashDto.getAccountIds();
+                        // fetch accounts by their ids
+                        List<ClientAccount> accounts = clientAccountRepository.findAllById(accountIds);
+
+                        // get tha account details
+                        Set<String> accountDetails = accounts.stream()
+                                .map(account -> account.getAccountTitle() + " (" + account.getClientAccountType().displayClientAccountType() + ")")
+                                .collect(Collectors.toSet());
+
+                        // set petty cash dto client account details
+                        pettyCashDto.setAccountDetails(accountDetails);
+
+                        return pettyCashDto;
+                    })
+                    .collect(Collectors.toSet());
         }
     }
 
@@ -153,14 +244,6 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityDescription(dto.getActivityDescription());
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
-
-            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
-                    .map(ClientAccountDto::getClientAccountId)
-                    .map(clientAccountRepository::findById)
-                    .filter(Optional::isPresent)
-                    .map(Optional::get)
-                    .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);*/
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
 
