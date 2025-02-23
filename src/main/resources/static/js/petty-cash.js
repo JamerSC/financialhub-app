@@ -104,27 +104,17 @@ $(document).ready(function() {
         });
     });
 
-    // Log the accounts value in Edit Modal on add/remove
-    //tagifyEdit.on('add', function() {
-    //    const values = tagifyEdit.value.map(tag => tag.id);
-    //    //console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
-    //});
-    //tagifyEdit.on('remove', function() {
-    //    const values = tagifyEdit.value.map(tag => tag.id);
-    //    //console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-    //});
-
-
     // UPDATE ADMIN WORKS PETTY CASH
 
     // Initialize Tagify on "editAccounts" input in Edit Modal
     const inputEditAdmin = document.querySelector('#editAdminAccounts');
+    //const inputEditAdmin =$('#editAdminAccounts')[0];
     const tagifyEditAdmin = new Tagify(inputEditAdmin, {
         enforceWhitelist: true,
         whitelist: formattedAccounts,
         dropdown: {
-            enabled: 0,
-            maxItems: 10
+            enabled: 0, // show suggestions on focus
+            maxItems: 10 // max items to display in dropdown
         }
     });
 
@@ -148,6 +138,8 @@ $(document).ready(function() {
             $('#editAdminPettyCashForm #editAdminSoaCategory').val(tempPettyCash.soaCategory);
             $('#editAdminPettyCashForm #editAdminTotalAmount').val(tempPettyCash.totalAmount);
 
+
+
             // Populate accounts in Tagify for Edit Modal
             tagifyEditAdmin.removeAllTags();
             if (tempPettyCash.accounts) {
@@ -158,10 +150,18 @@ $(document).ready(function() {
                 tagifyEditAdmin.addTags(accountTags);
             }
 
+            /*if (tempPettyCash.accountIds) {
+                const selectedAccountIds = tempPettyCash.accountIds;
+                const selectAccounts = formattedAccounts.filter(account =>
+                    selectedAccountIds.includes(account.clientAccountId))
+                tagifyEditAdmin.addTags(selectAccounts);
+            }*/
+
             $('#editAdminPettyCashModal').modal('show');
         });
     });
 
+    /*
     tagifyEditAdmin.on('add', function() {
         const values = tagifyEditAdmin.value.map(tag => tag.id);
         console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
@@ -169,7 +169,7 @@ $(document).ready(function() {
     tagifyEditAdmin.on('remove', function() {
         const values = tagifyEditAdmin.value.map(tag => tag.id);
         console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-    });
+    });*/
 
 
     function formatDate(date) {
