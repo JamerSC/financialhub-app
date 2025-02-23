@@ -127,6 +127,7 @@
                         </table>
 
                         <!-- Manager/Admin - Petty Cash Form Modal -->
+
                         <div class="modal fade" id="addPettyCashModal" tabindex="-1" aria-labelledby="addPettyCashModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -205,7 +206,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Manager/Admin - Update Petty Cash Form Modal -->
+
                         <div class="modal fade" id="editPettyCashModal" tabindex="-1" aria-labelledby="editPettyCashModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -249,7 +252,7 @@
                                             <!-- Edit Tagify Textarea Field -->
                                             <div class="row mb-3">
                                                 <div class="form-group">
-                                                    <label for="accounts">Accounts</label>
+                                                    <label for="editAccounts">Accounts</label>
                                                     <textarea class="form-control" id="editAccounts" rows="4" cols="6" placeholder="Update accounts ..." readonly></textarea>
                                                     <input type="hidden" id="editAccountsJson"/>
                                                     <!--<input type="hidden" id="editAccountsJson" th:field="*{accounts}"/>-->
@@ -284,8 +287,10 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- ADMIN WORKS -->
                         <!-- Admin Works - Petty Cash Form Modal -->
+
                         <div class="modal fade" id="addAdminPettyCashModal" tabindex="-1" aria-labelledby="addAdminPettyCashModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -348,7 +353,9 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Update Admin Works - Petty Cash Form Modal -->
+
                         <div class="modal fade" id="editAdminPettyCashModal" tabindex="-1" aria-labelledby="editAdminPettyCashModalLabel" aria-hidden="true">
                             <div class="modal-dialog modal-lg">
                                 <div class="modal-content">
@@ -394,7 +401,7 @@
                                                 <div class="form-group">
                                                     <label for="editAdminAccounts">Accounts</label>
                                                     <textarea class="form-control" id="editAdminAccounts" rows="4" cols="6" placeholder="Add accounts ..." readonly></textarea>
-                                                    <input type="hidden" id="editAdminAccountsJson" />
+                                                    <input type="hidden" id="editAdminAccountsJson" th:field="*{accountIds}" />
                                                     <!--<input type="hidden" id="editAdminAccountsJson" th:field="*{accounts}" />-->
                                                 </div>
                                             </div>
@@ -416,6 +423,7 @@
                         </div>
 
                         <!--Delete modal popup-->
+
                         <div class="modal" id="deleteModal" tabindex="-1" role="dialog">
                             <div class="modal-dialog">
                                 <div class="modal-content">
