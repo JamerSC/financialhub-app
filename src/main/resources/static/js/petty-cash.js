@@ -54,7 +54,8 @@ $(document).ready(function() {
     });
 
     // Initialize Tagify on "editAccounts" input in Edit Modal
-    const inputEdit = document.querySelector('#editAccounts');
+    //const inputEdit = document.querySelector('#editAccounts');
+    const inputEdit = $('#editAccounts')[0];
     const tagifyEdit = new Tagify(inputEdit, {
         enforceWhitelist: true,
         whitelist: formattedAccounts,
@@ -90,14 +91,13 @@ $(document).ready(function() {
             $('#editPettyCashForm #editTotalAmount').val(tempPettyCash.totalAmount);
             $('#editPettyCashForm #editApproved').prop('checked', tempPettyCash.approved);
 
-            // Populate accounts in Tagify for Edit Modal
-            tagifyEdit.removeAllTags();
-            if (tempPettyCash.accounts) {
-                const accountTags = tempPettyCash.accounts.map(account => ({
-                    id: account.clientAccountId,
-                    value: `${account.accountTitle} (${account.clientAccountType})`
-                }));
-                tagifyEdit.addTags(accountTags);
+            tagifyEdit.removeAllTags(); // Ensure no previous data is carried over
+
+            if (tempPettyCash.accountIds) {
+                const selectedAccounts = formattedAccounts.filter(account =>
+                    tempPettyCash.accountIds.includes(account.id) // Ensure ID matches correctly
+                );
+                tagifyEdit.addTags(selectedAccounts);
             }
 
             $('#editPettyCashModal').modal('show');
@@ -138,30 +138,19 @@ $(document).ready(function() {
             $('#editAdminPettyCashForm #editAdminSoaCategory').val(tempPettyCash.soaCategory);
             $('#editAdminPettyCashForm #editAdminTotalAmount').val(tempPettyCash.totalAmount);
 
+            tagifyEdit.removeAllTags(); // Ensure no previous data is carried over
 
-
-            // Populate accounts in Tagify for Edit Modal
-            tagifyEditAdmin.removeAllTags();
-            if (tempPettyCash.accounts) {
-                const accountTags = tempPettyCash.accounts.map(account => ({
-                    id: account.clientAccountId,
-                    value: `${account.accountTitle} (${account.clientAccountType})`
-                }));
-                tagifyEditAdmin.addTags(accountTags);
+            if (tempPettyCash.accountIds) {
+                const selectedAccounts = formattedAccounts.filter(account =>
+                    tempPettyCash.accountIds.includes(account.id) // Ensure ID matches correctly
+                );
+                tagifyEdit.addTags(selectedAccounts);
             }
-
-            /*if (tempPettyCash.accountIds) {
-                const selectedAccountIds = tempPettyCash.accountIds;
-                const selectAccounts = formattedAccounts.filter(account =>
-                    selectedAccountIds.includes(account.clientAccountId))
-                tagifyEditAdmin.addTags(selectAccounts);
-            }*/
 
             $('#editAdminPettyCashModal').modal('show');
         });
     });
 
-    /*
     tagifyEditAdmin.on('add', function() {
         const values = tagifyEditAdmin.value.map(tag => tag.id);
         console.log("Accounts added in Edit Modal:", JSON.stringify(values)); // Log added accounts
@@ -169,7 +158,7 @@ $(document).ready(function() {
     tagifyEditAdmin.on('remove', function() {
         const values = tagifyEditAdmin.value.map(tag => tag.id);
         console.log("Accounts removed in Edit Modal:", JSON.stringify(values)); // Log removed accounts
-    });*/
+    });
 
 
     function formatDate(date) {
