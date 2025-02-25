@@ -6,8 +6,11 @@ $(document).ready(function() {
         value: `${account.accountTitle || ''} (${account.clientAccountType || ''})`
     }));
 
+    /*** ADD CLIENT ACCOUNTS ***/
+
     // Initialize Tagify on "accounts" input in Add Modal
-    const inputAdd = document.querySelector('#clientAccounts');
+    //const inputAdd = document.querySelector('#clientAccounts');
+    const inputAdd = $('#clientAccounts')[0];
     const tagifyAdd = new Tagify(inputAdd, {
         enforceWhitelist: true,
         whitelist: formattedAccounts,
@@ -18,39 +21,27 @@ $(document).ready(function() {
     });
 
     // Update hidden input field with selected tag IDs for Add Modal
-    tagifyAdd.on('add', function() {
+    /*tagifyAdd.on('add', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(JSON.stringify(values));
         //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
+    });*/
+
+    tagify.on('add', function() {
+        const values = tagify.value.map(tag => tag.id);
+        $("#clientAccountsJson").val(values.join(','));
+        console.log("Accounts added in Add Modal:", values.join(','));
     });
 
-    tagifyAdd.on('remove', function() {
+    /*tagifyAdd.on('remove', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(JSON.stringify(values));
         //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
-    });
-
-    // Initialize Tagify on "accounts" input in Add Modal
-    const inputAddAdmin = document.querySelector('#adminAccounts');
-    const tagifyAddAdmin = new Tagify(inputAddAdmin, {
-        enforceWhitelist: true,
-        whitelist: formattedAccounts,
-        dropdown: {
-            enabled: 0,
-            maxItems: 10
-        }
-    });
-
-    tagifyAddAdmin.on('add', function() {
-        const values = tagifyAddAdmin.value.map(tag => tag.id);
-        $("#adminAccountsJson").val(JSON.stringify(values));
-        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
-    });
-
-    tagifyAddAdmin.on('remove', function() {
-        const values = tagifyAddAdmin.value.map(tag => tag.id);
-        $("#adminAccountsJson").val(JSON.stringify(values));
-        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
+    });*/
+    tagify.on('remove', function() {
+        const values = tagify.value.map(tag => tag.id);
+        $("#clientAccountsJson").val(values.join(','));
+        console.log("Accounts added in Remove Modal:", values.join(','));
     });
 
     // Initialize Tagify on "editAccounts" input in Edit Modal
@@ -104,7 +95,34 @@ $(document).ready(function() {
         });
     });
 
-    // UPDATE ADMIN WORKS PETTY CASH
+    /*** ADMIN WORKS - ADD ACCOUNTS ***/
+
+    // Initialize Tagify on "accounts" input in Add Modal
+    //const inputAddAdmin = document.querySelector('#adminAccounts');
+    const inputAddAdmin = $('#adminAccounts');
+    const tagifyAddAdmin = new Tagify(inputAddAdmin, {
+        enforceWhitelist: true,
+        whitelist: formattedAccounts,
+        dropdown: {
+            enabled: 0,
+            maxItems: 10
+        }
+    });
+
+    tagifyAddAdmin.on('add', function() {
+        const values = tagifyAddAdmin.value.map(tag => tag.id);
+        $("#adminAccountsJson").val(JSON.stringify(values));
+        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
+    });
+
+    tagifyAddAdmin.on('remove', function() {
+        const values = tagifyAddAdmin.value.map(tag => tag.id);
+        $("#adminAccountsJson").val(JSON.stringify(values));
+        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
+    });
+
+
+    // UPDATE ADMIN WORKS - PETTY CASH
 
     // Initialize Tagify on "editAccounts" input in Edit Modal
     const inputEditAdmin = document.querySelector('#editAdminAccounts');
