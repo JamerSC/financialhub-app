@@ -69,7 +69,7 @@ public class PettyCashVoucherService {
                     receiverDateTable.setWidths(new float[]{1f, 1f});
 
                     // Receiver name
-                    PdfPCell receiverNameCell = new PdfPCell(new Phrase("To: " + pettyCashActivityDto.getReceivedBy(), regularFont));
+                    PdfPCell receiverNameCell = new PdfPCell(new Phrase("To: " + pettyCashActivityDto.getReceivedById(), regularFont));
                     receiverNameCell.setBorder(Rectangle.BOX); // Border added
                     receiverNameCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     receiverNameCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
@@ -184,7 +184,7 @@ public class PettyCashVoucherService {
                     approvedByCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
 
                     // Received by
-                    PdfPCell receivedByCell = new PdfPCell(new Phrase("Received By: " + pettyCashActivityDto.getReceivedBy(), regularFont));
+                    PdfPCell receivedByCell = new PdfPCell(new Phrase("Received By: " + pettyCashActivityDto.getReceivedById(), regularFont));
                     receivedByCell.setBorder(Rectangle.BOX); // Border added
                     receivedByCell.setHorizontalAlignment(Element.ALIGN_LEFT);
                     receivedByCell.setVerticalAlignment(Element.ALIGN_MIDDLE);

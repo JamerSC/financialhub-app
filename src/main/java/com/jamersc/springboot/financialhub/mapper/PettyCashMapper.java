@@ -19,8 +19,7 @@ public interface PettyCashMapper {
     PettyCashMapper INSTANCE = Mappers.getMapper(PettyCashMapper.class);
 
 
-
-    //@Mapping(target = "receivedBy", source = "receivedBy")
+    @Mapping(target = "receivedById", source = "receivedBy.userId")
     @Mapping(target = "fund", source = "fund")
     //@Mapping(target = "liquidations", expression = "java(mapActivityIds(pettyCashActivity.getLiquidations()))")
     @Mapping(target = "liquidations", source = "liquidations")

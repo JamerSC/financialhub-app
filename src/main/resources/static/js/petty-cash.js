@@ -27,8 +27,8 @@ $(document).ready(function() {
         //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
     });*/
 
-    tagify.on('add', function() {
-        const values = tagify.value.map(tag => tag.id);
+    tagifyAdd.on('add', function() {
+        const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(values.join(','));
         console.log("Accounts added in Add Modal:", values.join(','));
     });
@@ -38,8 +38,8 @@ $(document).ready(function() {
         $("#clientAccountsJson").val(JSON.stringify(values));
         //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
     });*/
-    tagify.on('remove', function() {
-        const values = tagify.value.map(tag => tag.id);
+    tagifyAdd.on('remove', function() {
+        const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(values.join(','));
         console.log("Accounts added in Remove Modal:", values.join(','));
     });
@@ -70,10 +70,10 @@ $(document).ready(function() {
                $('#editPettyCashForm #editFundId').val(tempPettyCash.fund.fundId);
             }
 
-            if (tempPettyCash.receivedBy) {
+           /* if (tempPettyCash.receivedBy) {
                $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedBy.userId);
-            }
-
+            }*/
+            $('#editPettyCashForm #editReceivedBy').val(tempPettyCash.receivedById);
             $('#editPettyCashForm #editVoucherNo').val(tempPettyCash.pcActivityNo);
             $('#editPettyCashForm #editDate').val(formatDate(tempPettyCash.date));
             $('#editPettyCashForm #editActivityDescription').val(tempPettyCash.activityDescription);
