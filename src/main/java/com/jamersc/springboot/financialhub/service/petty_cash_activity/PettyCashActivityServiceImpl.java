@@ -18,10 +18,13 @@ import com.jamersc.springboot.financialhub.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.hibernate.Hibernate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -30,7 +33,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
-    //private static final Logger logger = LoggerFactory.getLogger(PettyCashActivityServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(PettyCashActivityServiceImpl.class);
     @Autowired
     private PettyCashActivityRepository pettyCashActivityRepository;
     @Autowired
@@ -205,8 +208,8 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 .collect(Collectors.toSet());
         dto.setAccounts(accounts);*/
 
-        UserDto user = userMapper.toUserDto(pettyCash.getReceivedBy());
-        dto.setReceivedBy(user);
+        User user = userRepository.findById(pettyCash.getReceivedBy().getUserId()).orElseThrow(null);
+        dto.setReceivedById(user.getUserId());
 
         FundDto fund = fundMapper.toFundDto(pettyCash.getFund());
         dto.setFund(fund);
@@ -247,10 +250,20 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
 
-            /* USER Received By */
-            if (dto.getReceivedBy() != null) {
-                pettyCash.setReceivedBy(userMapper.toUserEntity(dto.getReceivedBy()));
-            }
+            // Map AccountDto to Account by fetching Account entities from the database using the IDs
+            Set<ClientAccount> clientAccounts = dto.getAccountIds()
+                    .stream()
+                    .map(clientAccountRepository::findById)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .collect(Collectors.toSet());
+            pettyCash.setAccounts(clientAccounts);
+
+
+            /*if (dto.getReceivedBy() != null) {
+                User user = userMapper.toUserEntity(dto.getReceivedBy());
+                pettyCash.setReceivedBy(user);
+            }*/
 
             User updatedBy = userRepository.findByUsername(username);
 
@@ -266,12 +279,13 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setApproved(false);
             }
 
-            //logger.info("Successfully updated petty cash: " + pettyCash);
+            logger.info("Successfully updated petty cash: " + pettyCash);
+            logger.info("Accounts save: " + pettyCash.getAccounts());
 
         } else {
             // CREATE NEW PETTY CASH
 
-            pettyCash = new PettyCashActivity();
+            pettyCash = pettyCashMapper.toPettyCashActivityEntity(dto);
 
             Fund manageFund = fundRepository.getReferenceById(dto.getFund().getFundId());
             pettyCash.setFund(manageFund);
@@ -282,20 +296,23 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             pettyCash.setActivityCategory(dto.getActivityCategory());
             pettyCash.setSoaCategory(dto.getSoaCategory());
 
-            /*Set<ClientAccount> accounts = dto.getAccounts().stream()
-                    .map(ClientAccountDto::getClientAccountId)
+            // Map AccountDto to Account by fetching Account entities from the database using the IDs
+            Set<ClientAccount> clientAccounts = dto.getAccountIds()
+                    .stream()
                     .map(clientAccountRepository::findById)
                     .filter(Optional::isPresent)
                     .map(Optional::get)
                     .collect(Collectors.toSet());
-            pettyCash.setAccounts(accounts);*/
+            pettyCash.setAccounts(clientAccounts);
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
             pettyCash.setApproved(dto.getApproved());
 
             /* USER Received By */
-            User user = userMapper.toUserEntity(dto.getReceivedBy());
-            pettyCash.setReceivedBy(user);
+            if (dto.getReceivedById() != null) {
+                User receivedBy = userRepository.findById(dto.getReceivedById()).orElseThrow(null);
+                pettyCash.setReceivedBy(receivedBy);
+            }
 
             User createdBy = userRepository.findByUsername(username);
             if (createdBy != null) {
@@ -307,6 +324,8 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             //logger.info("Successfully created new petty cash: " + pettyCash);
         }
         pettyCashActivityRepository.save(pettyCash);
+        logger.info("Successfully created petty cash: " + pettyCash);
+        logger.info("Added accounts successfully: " + pettyCash.getAccounts());
     }
 
     @Override
@@ -333,8 +352,9 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
             pettyCash.setTotalAmount(dto.getTotalAmount());
 
-            if (dto.getReceivedBy() != null) {
-                pettyCash.setReceivedBy(userMapper.toUserEntity(dto.getReceivedBy()));
+            if (dto.getReceivedById() != null) {
+                User receivedBy = userRepository.findById(dto.getReceivedById()).orElseThrow(null);
+                pettyCash.setReceivedBy(receivedBy);
             }
 
             User updatedBy = userRepository.findByUsername(username);

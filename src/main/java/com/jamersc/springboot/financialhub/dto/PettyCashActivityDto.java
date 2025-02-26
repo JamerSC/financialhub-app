@@ -32,7 +32,8 @@ public class PettyCashActivityDto {
 
     private Double totalAmount;
     private Boolean approved;
-    private UserDto receivedBy; // Many to One (user)
+    //private UserDto receivedBy; // Many to One (user)
+    private Long receivedById;
     private Long approvedBy;
     private Long createdBy;
     private Date createdAt;

@@ -19,7 +19,7 @@ public interface PettyCashMapper {
     PettyCashMapper INSTANCE = Mappers.getMapper(PettyCashMapper.class);
 
 
-
+    @Mapping(target = "receivedById", source = "receivedBy.userId")
     @Mapping(target = "fund", source = "fund")
     //@Mapping(target = "liquidations", expression = "java(mapActivityIds(pettyCashActivity.getLiquidations()))")
     @Mapping(target = "liquidations", source = "liquidations")
@@ -28,6 +28,7 @@ public interface PettyCashMapper {
     PettyCashActivityDto toPettyCashActivityDto(PettyCashActivity pettyCashActivity);
 
 
+    @Mapping(target = "receivedBy", ignore = true)
     @Mapping(target = "liquidations", ignore = true)
     @Mapping(target = "fund", ignore = true)
     @Mapping(target = "accounts", ignore = true)

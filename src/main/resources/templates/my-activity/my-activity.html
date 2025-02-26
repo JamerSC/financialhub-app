@@ -71,8 +71,8 @@
                                             </div>
                                         </td>
                                     <td sec:authorize="hasAnyRole('ADMIN', 'MANAGER')">
-                                        <span th:if="${tempActivity.receivedBy != null}"
-                                              th:text="${tempActivity.receivedBy.fullName}">
+                                        <span th:if="${tempActivity.receivedById != null}"
+                                              th:text="${tempActivity.receivedById}">
                                         </span>
                                     </td>
                                     <td>

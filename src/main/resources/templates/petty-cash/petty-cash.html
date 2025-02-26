@@ -184,7 +184,7 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="receivedBy" class="form-label">Received By</label>
-                                                    <select id="receivedBy" class="form-select" th:field="*{receivedBy}" required>
+                                                    <select id="receivedBy" class="form-select" th:field="*{receivedById}" required>
                                                         <option value="" selected>Select petty cash receiver...</option>
                                                         <option th:each="tempUser : ${internalUsers}"
                                                                 th:value="${tempUser.userId}"
@@ -264,11 +264,12 @@
                                                 </div>
                                                 <div class="col-md-6">
                                                     <label for="editReceivedBy" class="form-label">Received By</label>
-                                                    <select id="editReceivedBy" class="form-select" th:field="*{receivedBy}" required>
+                                                    <select id="editReceivedBy" class="form-select" th:field="*{receivedById}" required>
                                                         <option value="" selected>Select petty cash receiver...</option>
                                                         <option th:each="tempUser : ${internalUsers}"
                                                                 th:value="${tempUser.userId}"
-                                                                th:text="${tempUser.fullName}"></option>
+                                                                th:text="${tempUser.fullName}"
+                                                                th:selected="${tempUser.userId}"></option>
                                                     </select>
                                                 </div>
                                                 <div class="col-md-3 d-flex align-items-center mt-4">
