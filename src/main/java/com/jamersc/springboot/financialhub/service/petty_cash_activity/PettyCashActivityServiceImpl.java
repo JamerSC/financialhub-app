@@ -62,7 +62,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
     /*** Petty Cash  ****/
 
     @Override
-    public Set<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user) {
+    public List<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role ->
@@ -91,7 +91,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
                         return pettyCashDto;
                     })
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
         } else  {
             // Employee User View
             List<PettyCashActivity> pettyCashActivityList = pettyCashActivityRepository.findUnapprovedPettyCashByReceivedByDateDesc(user);
@@ -117,14 +117,14 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
                         return pettyCashDto;
                     })
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
         }
     }
 
     /****  My Activity ****/
 
     @Override
-    public Set<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user) {
+    public List<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user) {
         if (user.getRoles()
                 .stream()
                 .anyMatch(role -> role.getName()
@@ -153,7 +153,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
                         return pettyCashDto;
                     })
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
 
 
         } else  {
@@ -180,7 +180,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
 
                         return pettyCashDto;
                     })
-                    .collect(Collectors.toSet());
+                    .collect(Collectors.toList());
         }
     }
 
@@ -259,11 +259,10 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                     .collect(Collectors.toSet());
             pettyCash.setAccounts(clientAccounts);
 
-
-            /*if (dto.getReceivedBy() != null) {
-                User user = userMapper.toUserEntity(dto.getReceivedBy());
-                pettyCash.setReceivedBy(user);
-            }*/
+            if (dto.getReceivedById() != null) {
+                User receivedBy = userRepository.findById(dto.getReceivedById()).orElseThrow(null);
+                pettyCash.setReceivedBy(receivedBy);
+            }
 
             User updatedBy = userRepository.findByUsername(username);
 
@@ -280,7 +279,7 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
             }
 
             logger.info("Successfully updated petty cash: " + pettyCash);
-            logger.info("Accounts save: " + pettyCash.getAccounts());
+            logger.info("After accounts updated: " + pettyCash.getAccounts());
 
         } else {
             // CREATE NEW PETTY CASH
@@ -321,11 +320,10 @@ public class PettyCashActivityServiceImpl implements PettyCashActivityService {
                 pettyCash.setUpdatedBy(createdBy.getUserId()); // updated
             }
 
-            //logger.info("Successfully created new petty cash: " + pettyCash);
+            logger.info("Successfully created new petty cash: " + pettyCash);
+            logger.info("Accounts created in Petty Cash: " + pettyCash.getAccounts());
         }
         pettyCashActivityRepository.save(pettyCash);
-        logger.info("Successfully created petty cash: " + pettyCash);
-        logger.info("Added accounts successfully: " + pettyCash.getAccounts());
     }
 
     @Override
