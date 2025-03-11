@@ -11,9 +11,9 @@ public interface PettyCashActivityService {
 
     List<PettyCashActivityDto> getAllPettyCash();
     // Petty Cash Controller
-    Set<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user);
+    List<PettyCashActivityDto> getUnapprovedPettyCashByReceivedBy(User user);
     // MyActivity Controller
-    Set<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user);
+    List<PettyCashActivityDto> getApprovedPettyCashByReceivedBy(User user);
     List<PettyCashActivity> getByClientAccountId(Long id);
     List<PettyCashActivity> getAllPettyCashWithClientAccounts();
     PettyCashActivityDto getPettyCashById(Long id);

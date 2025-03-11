@@ -20,24 +20,12 @@ $(document).ready(function() {
         }
     });
 
-    // Update hidden input field with selected tag IDs for Add Modal
-    /*tagifyAdd.on('add', function() {
-        const values = tagifyAdd.value.map(tag => tag.id);
-        $("#clientAccountsJson").val(JSON.stringify(values));
-        //console.log("Accounts added in Add Modal:", JSON.stringify(values)); // Log added accounts
-    });*/
-
     tagifyAdd.on('add', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(values.join(','));
         console.log("Accounts added in Add Modal:", values.join(','));
     });
 
-    /*tagifyAdd.on('remove', function() {
-        const values = tagifyAdd.value.map(tag => tag.id);
-        $("#clientAccountsJson").val(JSON.stringify(values));
-        //console.log("Accounts removed in Add Modal:", JSON.stringify(values)); // Log removed accounts
-    });*/
     tagifyAdd.on('remove', function() {
         const values = tagifyAdd.value.map(tag => tag.id);
         $("#clientAccountsJson").val(values.join(','));
@@ -91,11 +79,24 @@ $(document).ready(function() {
                 tagifyEdit.addTags(selectedAccounts);
             }
 
+             // Function to update the hidden input field with selected account IDs
+           function updateEditAccountsJson() {
+               const selectedValues = tagifyEdit.value.map(tag => tag.id);
+               $("#editAccountsJson").val(selectedValues.join(','));
+               console.log("Updated Accounts JSON:", selectedValues);
+           }
+
+           // Listen to 'add' and 'remove' events to update the field
+           tagifyEdit.on('add', updateEditAccountsJson);
+           tagifyEdit.on('remove', updateEditAccountsJson);
+
             $('#editPettyCashModal').modal('show');
         });
     });
 
-    /*** ADMIN WORKS - ADD ACCOUNTS ***/
+
+
+    // Admin Employee - Add accounts
 
     // Initialize Tagify on "accounts" input in Add Modal
     //const inputAddAdmin = document.querySelector('#adminAccounts');
@@ -122,7 +123,7 @@ $(document).ready(function() {
     });
 
 
-    // UPDATE ADMIN WORKS - PETTY CASH
+    // Admin Employee - Update Petty Cash
 
     // Initialize Tagify on "editAccounts" input in Edit Modal
     const inputEditAdmin = document.querySelector('#editAdminAccounts');

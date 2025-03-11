@@ -41,7 +41,7 @@ public class MyActivityController {
 
         User loggedInUser = userService.getByUsername(principal.getName());
 
-        Set<PettyCashActivityDto> myActivities = pettyCashActivityService.getApprovedPettyCashByReceivedBy(loggedInUser);
+        List<PettyCashActivityDto> myActivities = pettyCashActivityService.getApprovedPettyCashByReceivedBy(loggedInUser);
         model.addAttribute("myActivities", myActivities);
 
         return "my-activity/my-activity";
